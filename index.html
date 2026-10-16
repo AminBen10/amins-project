@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{copy.title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="{{copy.description}}" />
+    <meta name="theme-color" content="#0a101c" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600&display=swap"
+    />
+    <!--@jsonld-->
+  </head>
+  <body>
+    <a class="skip" href="#reservar">Saltar a la reserva</a>
+    <canvas id="stage" aria-hidden="true"></canvas>
+
+    <header class="nav">
+      <a class="brand" href="#inicio" aria-label="{{brand.name}}, inicio">
+        <!--@brandMark-->
+        <span class="brand__name">{{brand.name}}</span>
+        <span class="brand__tag">{{brand.tagline}}</span>
+      </a>
+      <nav class="nav__links" aria-label="Secciones">
+        <!--@navLinks-->
+      </nav>
+      <a class="btn btn--small" href="#reservar">Reservar</a>
+    </header>
+
+    <main>
+      <section id="inicio" class="hero">
+        <div class="wrap">
+          <div class="copy">
+            <p class="eyebrow">{{copy.heroEyebrow}}</p>
+            <h1 class="hero__title">Cortes con oficio.<em>Sin esperas.</em></h1>
+            <p class="lede">{{copy.heroLede}}</p>
+            <div class="actions">
+              <a class="btn" href="#reservar">Reservar cita</a>
+              <a class="btn btn--ghost" href="#estilos">Probar estilos en 3D</a>
+            </div>
+            <p class="status" id="open-status"><span class="status__dot" aria-hidden="true"></span><span>Consulta el horario más abajo</span></p>
+          </div>
+        </div>
+        <p class="scroll-cue" aria-hidden="true">Desliza</p>
+      </section>
+
+      <section id="ritual" class="ritual" aria-labelledby="ritual-title">
+        <div class="beat beat--intro" data-beat="morph">
+          <div class="wrap">
+            <div class="copy panel">
+              <p class="eyebrow">El ritual</p>
+              <h2 id="ritual-title" class="h2">Del poste a la silla.</h2>
+              <p>
+                Rojo, blanco y azul: el poste de barbero lleva más de un siglo anunciando lo mismo en la puerta. Sigue bajando y
+                míralo convertirse en tu próximo corte.
+              </p>
+            </div>
+          </div>
+        </div>
+        <ol class="steps">
+          <li class="beat" data-beat="consult">
+            <div class="wrap">
+              <div class="copy panel">
+                <p class="step__num">01 <span>Consulta</span></p>
+                <h3 class="h3">Primero miramos, luego cortamos.</h3>
+                <p>Forma de la cabeza, remolinos, densidad y cómo te peinas cada mañana. Con eso decidimos alturas y largos.</p>
+              </div>
+            </div>
+          </li>
+          <li class="beat" data-beat="sides">
+            <div class="wrap">
+              <div class="copy panel">
+                <p class="step__num">02 <span>Máquina</span></p>
+                <h3 class="h3">Degradado sin escalones.</h3>
+                <p>De piel a largo con peines del 0 al 3, a mano alzada, ajustando la altura del degradado a tu cara.</p>
+              </div>
+            </div>
+          </li>
+          <li class="beat" data-beat="top">
+            <div class="wrap">
+              <div class="copy panel">
+                <p class="step__num">03 <span>Tijera</span></p>
+                <h3 class="h3">Textura arriba.</h3>
+                <p>Corte a tijera y entresacado para que el pelo caiga solo cuando te levantes, sin tener que pelearte con él.</p>
+              </div>
+            </div>
+          </li>
+          <li class="beat" data-beat="beard">
+            <div class="wrap">
+              <div class="copy panel">
+                <p class="step__num">04 <span>Navaja</span></p>
+                <h3 class="h3">Líneas limpias.</h3>
+                <p>Contornos de barba, patillas y nuca a navaja, con toalla caliente antes y bálsamo después.</p>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section id="estilos" class="studio" aria-labelledby="studio-title" data-beat="studio">
+        <div class="studio__drag" id="studio-drag" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="copy panel panel--studio">
+            <p class="eyebrow">Estudio de estilos</p>
+            <h2 id="studio-title" class="h2">Pruébatelo antes de sentarte.</h2>
+            <form class="studio__form" id="studio-form">
+              <fieldset class="group">
+                <legend>Corte</legend>
+                <div class="chips"><!--@hairChips--></div>
+              </fieldset>
+              <fieldset class="group">
+                <legend>Barba</legend>
+                <div class="chips"><!--@beardChips--></div>
+              </fieldset>
+            </form>
+            <div class="look" aria-live="polite">
+              <p class="look__name" id="look-name">Degradado <span>con barba corta</span></p>
+              <p class="look__desc" id="look-desc">Laterales a piel que suben en degradado y textura corta arriba.</p>
+              <p class="look__meta" id="look-meta">40 min · 18 € · Repaso cada 2–3 semanas</p>
+            </div>
+            <div class="studio__actions">
+              <a class="btn" href="#reservar" id="book-look">Reservar este look</a>
+              <div class="rotate" role="group" aria-label="Girar la cabeza">
+                <button type="button" class="icon-btn" id="rotate-left" aria-label="Girar a la izquierda">&#8630;</button>
+                <span class="rotate__hint">Arrastra para girar</span>
+                <button type="button" class="icon-btn" id="rotate-right" aria-label="Girar a la derecha">&#8631;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="servicios" class="board" aria-labelledby="board-title">
+        <div class="wrap wrap--split">
+          <div class="board__intro">
+            <p class="eyebrow">Carta</p>
+            <h2 id="board-title" class="h2">Servicios y precios</h2>
+            <p>{{copy.priceNote}}</p>
+          </div>
+          <ul class="board__list"><!--@services--></ul>
+        </div>
+      </section>
+
+<!--@reviews-->
+<!--@team-->
+
+      <section id="reservar" class="booking" aria-labelledby="booking-title">
+        <div class="wrap">
+          <p class="eyebrow">Reserva</p>
+          <h2 id="booking-title" class="h2">Elige silla y hora.</h2>
+          <form class="book" id="book-form" novalidate>
+            <div class="book__steps">
+              <fieldset class="group">
+                <legend><span class="n"></span> Servicio</legend>
+                <div class="options"><!--@bookingServices--></div>
+              </fieldset><!--@bookingBarberStep-->
+              <fieldset class="group">
+                <legend><span class="n"></span> Día</legend>
+                <div class="days" id="days"></div>
+              </fieldset>
+              <fieldset class="group">
+                <legend><span class="n"></span> Hora</legend>
+                <div class="slots" id="slots"></div>
+                <p class="hint" id="slots-hint"></p>
+              </fieldset>
+              <fieldset class="group">
+                <legend><span class="n"></span> Tus datos</legend>
+                <div class="fields">
+                  <label class="field">
+                    <span>Nombre</span>
+                    <input type="text" id="book-name" name="name" autocomplete="given-name" placeholder="Tu nombre" required />
+                  </label>
+                  <label class="field">
+                    <span>Móvil</span>
+                    <input type="tel" id="book-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="600 123 456" required />
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+            <aside class="ticket" aria-live="polite">
+              <p class="ticket__label">Tu cita</p>
+              <dl class="ticket__rows">
+                <div><dt>Servicio</dt><dd id="t-service">—</dd></div>
+                <div id="t-barber-row"><dt>Barbero</dt><dd id="t-barber">—</dd></div>
+                <div><dt>Día</dt><dd id="t-day">—</dd></div>
+                <div><dt>Hora</dt><dd id="t-time">—</dd></div>
+                <div id="t-look-row" hidden><dt>Look</dt><dd id="t-look">—</dd></div>
+              </dl>
+              <div class="ticket__total"><span id="t-duration">—</span><strong id="t-price">—</strong></div>
+              <button type="submit" class="btn btn--block" id="book-submit">Confirmar reserva</button>
+              <p class="hint" id="book-hint"></p>
+            </aside>
+          </form>
+          <div class="done" id="book-done" hidden tabindex="-1">
+            <p class="eyebrow">Reserva</p>
+            <h3 class="h2" id="done-title">Listo.</h3>
+            <p id="done-text"></p>
+            <p class="done__note" id="done-note"></p>
+            <button type="button" class="btn btn--ghost" id="book-again">Hacer otra reserva</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div class="wrap foot__grid">
+        <div>
+          <p class="brand brand--foot"><span class="brand__name">{{brand.name}}</span><span class="brand__tag">{{brand.tagline}}</span></p>
+          <p>{{brand.street}}<br />{{brand.postalCode}} {{brand.city}}</p>
+          <p><!--@contact--></p>
+        </div>
+        <div>
+          <p class="eyebrow">Horario</p>
+          <table class="hours"><tbody><!--@hours--></tbody></table>
+        </div>
+        <!--@pitchFooter-->
+      </div>
+    </footer>
+
+    <!--@pitch-->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
