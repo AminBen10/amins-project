@@ -1,15 +1,17 @@
 import * as THREE from 'three';
 import { headSDF, polygonize } from './headSdf.js';
 import { Hair } from './hair.js';
+import HeadWorker from './headWorker.js?worker&inline';
 
 // Polygonizing the head takes a few hundred milliseconds, so it runs in a
-// worker while the barber pole is already on screen.
+// worker while the barber pole is already on screen. The worker is inlined
+// so a single-file build still works.
 export function meshHead(step) {
   return new Promise((resolve) => {
     const fallback = () => resolve(polygonize(headSDF, undefined, step));
     let worker;
     try {
-      worker = new Worker(new URL('./headWorker.js', import.meta.url), { type: 'module' });
+      worker = new HeadWorker();
     } catch {
       setTimeout(fallback, 0);
       return;

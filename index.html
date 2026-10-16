@@ -2,9 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <title>{{brand.name}} {{brand.tagline}}</title>
+    <title>{{copy.title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="Barbería en {{brand.area}}, {{brand.city}}: degradados, tijera clásica, barba y afeitado a navaja. Prueba tu corte en 3D y reserva cita online." />
+    <meta name="description" content="{{copy.description}}" />
     <meta name="theme-color" content="#0a101c" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,21 +20,12 @@
 
     <header class="nav">
       <a class="brand" href="#inicio" aria-label="{{brand.name}}, inicio">
-        <svg class="brand__crown" viewBox="0 0 34 24" aria-hidden="true">
-          <path d="M4 19h26l2.6-12.5-8.2 5.6L17 3l-7.4 9.1-8.2-5.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-          <path d="M5 22.2h24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-          <circle cx="17" cy="3" r="1.6" fill="currentColor" />
-          <circle cx="1.6" cy="6.4" r="1.4" fill="currentColor" />
-          <circle cx="32.4" cy="6.4" r="1.4" fill="currentColor" />
-        </svg>
+        <!--@brandMark-->
         <span class="brand__name">{{brand.name}}</span>
         <span class="brand__tag">{{brand.tagline}}</span>
       </a>
       <nav class="nav__links" aria-label="Secciones">
-        <a href="#ritual">El ritual</a>
-        <a href="#estilos">Estilos</a>
-        <a href="#servicios">Precios</a>
-        <a href="#equipo">Equipo</a>
+        <!--@navLinks-->
       </nav>
       <a class="btn btn--small" href="#reservar">Reservar</a>
     </header>
@@ -43,12 +34,9 @@
       <section id="inicio" class="hero">
         <div class="wrap">
           <div class="copy">
-            <p class="eyebrow">Barbería en {{brand.city}} · {{brand.area}}</p>
+            <p class="eyebrow">{{copy.heroEyebrow}}</p>
             <h1 class="hero__title">Cortes con oficio.<em>Sin esperas.</em></h1>
-            <p class="lede">
-              Degradados a mano alzada, tijera clásica y afeitado a navaja con toalla caliente. Prueba tu corte en 3D y reserva tu
-              silla en menos de un minuto.
-            </p>
+            <p class="lede">{{copy.heroLede}}</p>
             <div class="actions">
               <a class="btn" href="#reservar">Reservar cita</a>
               <a class="btn btn--ghost" href="#estilos">Probar estilos en 3D</a>
@@ -150,19 +138,14 @@
           <div class="board__intro">
             <p class="eyebrow">Carta</p>
             <h2 id="board-title" class="h2">Servicios y precios</h2>
-            <p>Precios con IVA incluido. Puedes pagar con tarjeta, efectivo o Bizum.</p>
+            <p>{{copy.priceNote}}</p>
           </div>
           <ul class="board__list"><!--@services--></ul>
         </div>
       </section>
 
-      <section id="equipo" class="team" aria-labelledby="team-title">
-        <div class="wrap">
-          <p class="eyebrow">Equipo</p>
-          <h2 id="team-title" class="h2">Tres sillas, tres maneras de cortar.</h2>
-          <ul class="team__list"><!--@team--></ul>
-        </div>
-      </section>
+<!--@reviews-->
+<!--@team-->
 
       <section id="reservar" class="booking" aria-labelledby="booking-title">
         <div class="wrap">
@@ -171,24 +154,20 @@
           <form class="book" id="book-form" novalidate>
             <div class="book__steps">
               <fieldset class="group">
-                <legend><span class="n">1</span> Servicio</legend>
+                <legend><span class="n"></span> Servicio</legend>
                 <div class="options"><!--@bookingServices--></div>
-              </fieldset>
+              </fieldset><!--@bookingBarberStep-->
               <fieldset class="group">
-                <legend><span class="n">2</span> Barbero</legend>
-                <div class="chips"><!--@bookingBarbers--></div>
-              </fieldset>
-              <fieldset class="group">
-                <legend><span class="n">3</span> Día</legend>
+                <legend><span class="n"></span> Día</legend>
                 <div class="days" id="days"></div>
               </fieldset>
               <fieldset class="group">
-                <legend><span class="n">4</span> Hora</legend>
+                <legend><span class="n"></span> Hora</legend>
                 <div class="slots" id="slots"></div>
                 <p class="hint" id="slots-hint"></p>
               </fieldset>
               <fieldset class="group">
-                <legend><span class="n">5</span> Tus datos</legend>
+                <legend><span class="n"></span> Tus datos</legend>
                 <div class="fields">
                   <label class="field">
                     <span>Nombre</span>
@@ -205,7 +184,7 @@
               <p class="ticket__label">Tu cita</p>
               <dl class="ticket__rows">
                 <div><dt>Servicio</dt><dd id="t-service">—</dd></div>
-                <div><dt>Barbero</dt><dd id="t-barber">—</dd></div>
+                <div id="t-barber-row"><dt>Barbero</dt><dd id="t-barber">—</dd></div>
                 <div><dt>Día</dt><dd id="t-day">—</dd></div>
                 <div><dt>Hora</dt><dd id="t-time">—</dd></div>
                 <div id="t-look-row" hidden><dt>Look</dt><dd id="t-look">—</dd></div>
@@ -231,15 +210,17 @@
         <div>
           <p class="brand brand--foot"><span class="brand__name">{{brand.name}}</span><span class="brand__tag">{{brand.tagline}}</span></p>
           <p>{{brand.street}}<br />{{brand.postalCode}} {{brand.city}}</p>
-          <p>Teléfono: <span class="selectable">{{brand.phone}}</span><br />Instagram: <span class="selectable">{{brand.instagram}}</span></p>
+          <p><!--@contact--></p>
         </div>
         <div>
           <p class="eyebrow">Horario</p>
           <table class="hours"><tbody><!--@hours--></tbody></table>
         </div>
+        <!--@pitchFooter-->
       </div>
     </footer>
 
+    <!--@pitch-->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

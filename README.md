@@ -1,4 +1,7 @@
-# Corte Real · web 3D para barbería
+# Web 3D para barberías
+
+Plantilla de web para barberías con dos clientes de ejemplo: **Corte Real** (ficticia, Madrid) y
+**Barbería BK** (propuesta de diseño para la barbería de Carrer de Joaquín Costa, 3, Barcelona).
 
 Web de una sola página para una barbería con una experiencia 3D guiada por el scroll:
 
@@ -23,18 +26,31 @@ npm run build    # genera dist/ listo para subir a cualquier hosting estático
 npm run preview  # sirve dist/ en local
 ```
 
+Para elegir la barbería se usa la variable `CLIENT` (nombre de un archivo de `src/clients/`), y
+`SINGLE=1` genera un único `.html` autocontenido, útil para enseñar la demo:
+
+```bash
+CLIENT=barberia-bk npm run dev
+CLIENT=barberia-bk SINGLE=1 npm run build   # → dist-barberia-bk/index.html
+```
+
 Se puede publicar `dist/` tal cual en Vercel, Netlify, GitHub Pages o cualquier servidor.
 
 ## Personalizar para otra barbería
 
-Todo lo que cambia de un cliente a otro está en [`src/config.js`](src/config.js):
+Cada barbería es un archivo en [`src/clients/`](src/clients/). Para una nueva, copia uno, cámbiale
+los datos y compila con `CLIENT=<nombre del archivo>`:
 
 | Qué | Dónde |
 | --- | --- |
 | Nombre, dirección, teléfono, Instagram | `BRAND` |
 | Horario (para el estado "Abierto ahora" y las horas reservables) | `OPENING` y `HOURS_TABLE` |
 | Servicios, precios y duración | `SERVICES` |
-| Barberos | `BARBERS` |
+| Textos de portada, título y descripción para Google | `COPY` |
+| Barberos (vacío = se reserva por silla, con `CHAIRS` sillas) | `BARBERS`, `CHAIRS` |
+| Valoraciones y reseñas (vacío = se oculta la sección) | `RATINGS`, `REVIEWS` |
+| Precios "desde" / servicios sin precio público (`price: null` → "Consultar") | `PRICES_FROM`, `SERVICES` |
+| Aviso de "propuesta de diseño" para enseñar la demo a una barbería | `PITCH` |
 | Cortes y barbas del estudio 3D | `HAIR_LOOKS`, `BEARD_LOOKS`, `DEFAULT_LOOK` |
 | Reserva de demostración o real | `BOOKING.mode` |
 
@@ -56,7 +72,8 @@ y poner `BOOKING.mode = 'live'`.
 
 ```
 index.html              estructura y textos de la página
-src/config.js           datos de la barbería
+src/clients/            datos de cada barbería
+src/config.js           exporta la barbería elegida con CLIENT
 src/content.js          HTML y schema.org generados desde config.js
 src/main.js             arranque y conexión scroll → escena 3D
 src/styles.css          diseño

@@ -1,4 +1,5 @@
-import { HAIR_LOOKS, BEARD_LOOKS, SERVICES } from '../config.js';
+import { HAIR_LOOKS, BEARD_LOOKS, SERVICES, BEARD_SERVICE, PRICES_FROM } from '../config.js';
+import { priceLabel } from '../price.js';
 
 const BEARD_PHRASE = {
   none: 'sin barba',
@@ -14,7 +15,7 @@ export const beardPhrase = (id) => BEARD_PHRASE[id] || '';
 // Which service on the price list covers a look.
 export function serviceForLook(look) {
   const hair = hairLook(look.hair);
-  const id = look.beard === 'short' || look.beard === 'full' ? 'corte-barba' : hair.service;
+  const id = look.beard === 'short' || look.beard === 'full' ? BEARD_SERVICE : hair.service;
   return SERVICES.find((s) => s.id === id) || SERVICES[0];
 }
 
@@ -25,7 +26,7 @@ export function describeLook(look) {
     name: hair.name,
     beard: beardPhrase(look.beard),
     desc: hair.desc,
-    meta: `${service.minutes} min · ${service.price} € · ${hair.upkeep}`,
+    meta: `${service.minutes} min · ${priceLabel(service.price, PRICES_FROM)} · ${hair.upkeep}`,
     short: `${hair.name} ${beardPhrase(look.beard)}`,
     service,
   };

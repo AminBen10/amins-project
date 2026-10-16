@@ -197,11 +197,16 @@ main,
   margin-right: auto;
 }
 
-.brand__crown {
+.brand__mark {
   width: 30px;
   height: 22px;
   color: var(--brass);
   flex: none;
+}
+
+.brand__mark--pole {
+  width: 14px;
+  height: 30px;
 }
 
 .brand__name {
@@ -717,6 +722,140 @@ main,
   margin-left: 0.35rem;
 }
 
+/* ---------------------------------------------------------------- reviews */
+
+.reviews {
+  padding-block: 5rem;
+  background: var(--ink);
+  border-top: 1px solid var(--line-soft);
+}
+
+.reviews .wrap {
+  display: grid;
+  gap: 1rem;
+}
+
+.ratings {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 2.5rem;
+}
+
+.rating {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+
+.rating__score {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--brass);
+  font-variant-numeric: tabular-nums;
+}
+
+.rating__meta {
+  font-family: var(--font-label);
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.rating__meta b {
+  color: var(--paper);
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+
+.quotes {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.quote {
+  display: grid;
+  align-content: space-between;
+  gap: 1.2rem;
+  padding: 1.5rem;
+  background: var(--ink-2);
+  border: 1px solid var(--line-soft);
+}
+
+.quote blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.35;
+}
+
+.quote__by {
+  font-family: var(--font-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ pitch */
+
+.pitch {
+  position: fixed;
+  z-index: 25;
+  left: calc(12px + env(safe-area-inset-left, 0px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  max-width: min(340px, calc(100vw - 24px));
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 2.4rem 0.6rem 0.85rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.pitch b {
+  font-family: var(--font-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.pitch__close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.pitch__close:hover {
+  color: var(--paper);
+}
+
+.foot__pitch {
+  grid-column: 1 / -1;
+  font-size: 0.88rem;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 1rem;
+}
+
 /* ------------------------------------------------------------------- team */
 
 .team {
@@ -793,6 +932,12 @@ main,
   display: grid;
   gap: 2.2rem;
   min-width: 0;
+  counter-reset: step;
+}
+
+.book .group legend .n::before {
+  counter-increment: step;
+  content: counter(step);
 }
 
 .book .group legend .n {
@@ -1177,8 +1322,21 @@ main,
     position: static;
   }
 
-  .team__list {
+  .team__list,
+  .quotes {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pitch {
+    left: auto;
+    right: calc(10px + env(safe-area-inset-right, 0px));
+    top: calc(var(--nav-h) + 8px + env(safe-area-inset-top, 0px));
+    bottom: auto;
+    padding: 0.4rem 2.2rem 0.4rem 0.7rem;
+  }
+
+  .pitch span {
+    display: none;
   }
 
   .board {

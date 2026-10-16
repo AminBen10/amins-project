@@ -1,4 +1,5 @@
-import { OPENING, SERVICES, BARBERS, BOOKING } from '../config.js';
+import { OPENING, SERVICES, BARBERS, CHAIRS, BOOKING, PRICES_FROM } from '../config.js';
+import { priceLabel } from '../price.js';
 import { toMinutes } from './status.js';
 
 const WEEKDAY_SHORT = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -24,9 +25,12 @@ function isTaken(barberId, day, mins) {
   return hash(`${barberId}|${day}|${mins}`) < 0.32;
 }
 
+// With no named barbers the shop is booked by chair.
+const POOL = BARBERS.length ? BARBERS : Array.from({ length: CHAIRS || 1 }, (_, i) => ({ id: `silla-${i + 1}`, name: '' }));
+
 function freeBarbers(day, start, minutes) {
   const step = BOOKING.slotMinutes;
-  return BARBERS.filter((b) => {
+  return POOL.filter((b) => {
     for (let t = start; t < start + minutes; t += step) if (isTaken(b.id, day, t)) return false;
     return true;
   });
@@ -49,6 +53,7 @@ export function initBooking() {
     time: document.getElementById('t-time'),
     lookRow: document.getElementById('t-look-row'),
     look: document.getElementById('t-look'),
+    barberRow: document.getElementById('t-barber-row'),
     duration: document.getElementById('t-duration'),
     price: document.getElementById('t-price'),
   };
@@ -57,7 +62,7 @@ export function initBooking() {
   let days = [];
 
   const service = () => SERVICES.find((s) => s.id === form.elements.service.value) || SERVICES[0];
-  const barberId = () => form.elements.barber.value;
+  const barberId = () => form.elements.barber?.value || 'any';
   const barberName = (id) => (id === 'any' ? 'Sin preferencia' : BARBERS.find((b) => b.id === id)?.name || '');
 
   function buildDays() {
@@ -156,13 +161,14 @@ export function initBooking() {
     const s = service();
     const day = days.find((d) => d.iso === state.day);
     out.service.textContent = s.name;
+    out.barberRow.hidden = !BARBERS.length;
     out.barber.textContent = barberName(barberId());
     out.day.textContent = day ? `${WEEKDAY_LONG[day.date.getDay()]} ${day.date.getDate()} de ${MONTHS[day.date.getMonth()]}` : '—';
     out.time.textContent = state.time || '—';
     out.lookRow.hidden = !state.look;
     out.look.textContent = state.look || '';
     out.duration.textContent = `${s.minutes} min`;
-    out.price.textContent = `${s.price} €`;
+    out.price.textContent = priceLabel(s.price, PRICES_FROM);
     const why = missing();
     submit.setAttribute('aria-disabled', why ? 'true' : 'false');
     hint.textContent = state.touched ? why : why && !state.time ? why : '';
@@ -209,13 +215,17 @@ export function initBooking() {
     let barber = barberName(barberId());
     if (barberId() === 'any') {
       const free = freeBarbers(day.iso, toMinutes(state.time), s.minutes);
-      barber = free[0]?.name || 'el primer barbero libre';
+      barber = free[0]?.name || '';
     }
+    const withWho = barber ? ` con ${barber}` : '';
+    const cost =
+      s.price == null
+        ? `Son unos ${s.minutes} minutos; el precio te lo confirman en la barbería.`
+        : `Son ${s.minutes} minutos y ${priceLabel(s.price, PRICES_FROM)}, se paga en la barbería.`;
     const first = nameInput.value.trim().split(/\s+/)[0];
     document.getElementById('done-title').textContent = `Listo, ${first}.`;
     document.getElementById('done-text').textContent =
-      `${s.name} con ${barber} el ${WEEKDAY_LONG[day.date.getDay()]} ${day.date.getDate()} de ${MONTHS[day.date.getMonth()]} a las ${state.time}. ` +
-      `Son ${s.minutes} minutos y ${s.price} €, se paga en la barbería.`;
+      `${s.name}${withWho} el ${WEEKDAY_LONG[day.date.getDay()]} ${day.date.getDate()} de ${MONTHS[day.date.getMonth()]} a las ${state.time}. ${cost}`;
     document.getElementById('done-note').textContent =
       BOOKING.mode === 'demo'
         ? 'Modo demostración: esta web todavía no está conectada a la agenda de la barbería, así que no se ha guardado ninguna cita.'

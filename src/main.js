@@ -31,6 +31,10 @@ const booking = initBooking();
 initStudio({ stage, booking });
 initStatus();
 
+document.getElementById('pitch-close')?.addEventListener('click', () => {
+  document.getElementById('pitch').hidden = true;
+});
+
 // ------------------------------------------------------------ scroll → 3D
 
 const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
