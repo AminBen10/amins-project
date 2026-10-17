@@ -6,12 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="{{copy.description}}" />
     <meta name="theme-color" content="#0a101c" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600&display=swap"
-    />
+    <link rel="preload" href="/src/fonts/bodoni-moda-latin-500-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/fonts/barlow-latin-400.woff2" as="font" type="font/woff2" crossorigin />
     <!--@jsonld-->
   </head>
   <body>
@@ -22,7 +18,7 @@
       <a class="brand" href="#inicio" aria-label="{{brand.name}}, inicio">
         <!--@brandMark-->
         <span class="brand__name">{{brand.name}}</span>
-        <span class="brand__tag">{{brand.tagline}}</span>
+        <span class="brand__tag">{{copy.tag}}</span>
       </a>
       <nav class="nav__links" aria-label="Secciones">
         <!--@navLinks-->
@@ -34,9 +30,8 @@
       <section id="inicio" class="hero">
         <div class="wrap">
           <div class="copy">
-            <p class="eyebrow">{{copy.heroEyebrow}}</p>
             <h1 class="hero__title">Cortes con oficio.<em>Sin esperas.</em></h1>
-            <p class="lede">{{copy.heroLede}}</p>
+            <p class="lede"><!--@heroFacts--></p>
             <div class="actions">
               <a class="btn" href="#reservar">Reservar cita</a>
               <a class="btn btn--ghost" href="#estilos">Probar estilos en 3D</a>
@@ -208,7 +203,7 @@
     <footer class="foot">
       <div class="wrap foot__grid">
         <div>
-          <p class="brand brand--foot"><span class="brand__name">{{brand.name}}</span><span class="brand__tag">{{brand.tagline}}</span></p>
+          <p class="brand brand--foot"><span class="brand__name">{{brand.name}}</span><span class="brand__tag">{{copy.tag}}</span></p>
           <p>{{brand.street}}<br />{{brand.postalCode}} {{brand.city}}</p>
           <p><!--@contact--></p>
         </div>
