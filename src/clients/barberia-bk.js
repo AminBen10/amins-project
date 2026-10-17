@@ -40,11 +40,11 @@ export const COPY = {
   priceNote: 'Precios desde, con IVA. Se paga en la barbería, con tarjeta o en efectivo.', // fuente: Treatwell (precios "desde"); confirmar formas de pago
   bookIntro: 'Elige día y hora y te dejamos el mensaje preparado para WhatsApp. La cita queda confirmada cuando la barbería te contesta.',
   agendaLabel: 'Agenda sin conectar: lo que mandas es una petición.',
-  hoursHint: 'Horario de la barbería: de 10:00 a 23:00. Te confirman por WhatsApp si la hora está libre.', // fuente: Treatwell (10:00–23:00)
+  hoursHint: 'Horario de la barbería: de lunes a jueves, de 10:00 a 23:00; de viernes a domingo, consultar. Te confirman por WhatsApp si la hora está libre.', // fuente: Treatwell (lunes a jueves 10:00–23:00); viernes a domingo sin confirmar (ver OPENING)
   // additive: the other client-specific deck strings
   posterAlt: 'Fachada de Barbería BK de noche, con el poste de barbero junto a la puerta.',
   doorAddress: 'Carrer de Joaquín Costa, 3 · 08001 Barcelona', // fuente: Google Maps (dirección)
-  doorHours: 'Lunes a sábado 10:00–23:00 · Domingo: consultar', // fuente: Treatwell y Google; viernes a domingo, confirmar
+  doorHours: 'Lunes a jueves 10:00–23:00 · Viernes a domingo: consultar', // fuente: Treatwell (lunes a jueves); viernes a domingo sin confirmar (ver OPENING)
   doorLinks: 'WhatsApp · Treatwell',
   reviewsIntro: 'Reseñas de Google, copiadas tal cual y en el idioma en que se escribieron.',
   bookCta: 'Mandar por WhatsApp',
@@ -96,12 +96,16 @@ export const OPENING = {
   2: ['10:00', '23:00'], // fuente: Treatwell
   3: ['10:00', '23:00'], // fuente: Treatwell
   4: ['10:00', '23:00'], // fuente: Treatwell
-  5: ['10:00', '23:00'], // fuente: ninguna, se supone como de lunes a jueves; confirmar
-  6: ['10:00', '23:00'], // fuente: Google ("abre a las 10:00 el sábado"); el cierre se supone, confirmar
+  // Friday: Google showed "Cerrado · abre a las 10:00 el sábado" on Fri 16 Oct 2026 at
+  // 22:11, so it closes before 22:11; the hour is unknown. Never guess it.
+  5: 'consultar', // fuente: perfil de Google (16/10/2026, 22:11: ya cerrado); hora de cierre, confirmar
+  6: 'consultar', // fuente: Google ("abre a las 10:00 el sábado"); hora de cierre desconocida, confirmar
 };
 
 export const HOURS_TABLE = [
-  ['Lunes a sábado', '10:00–23:00'], // fuente: Treatwell y Google; viernes y sábado, confirmar
+  ['Lunes a jueves', '10:00–23:00'], // fuente: Treatwell
+  ['Viernes', 'Consultar'], // fuente: Google (cierra antes de las 22:11); hora de cierre, confirmar
+  ['Sábado', 'Desde las 10:00; cierre, consultar'], // fuente: Google (abre a las 10:00); cierre, confirmar
   ['Domingo', 'Consultar'], // fuente: no publicado; confirmar
 ];
 
