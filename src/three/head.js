@@ -1,84 +1,137 @@
 import * as THREE from 'three';
-import { headSDF, polygonize } from './headSdf.js';
 import { Hair } from './hair.js';
+import { HEAD_CAGE } from './headAsset.js';
+import { ANCHORS, ANCHOR_NAMES, EYES, HEAD_BOUNDS, HEAD_POINTS, MM } from './hairField.js';
+import { base64Bytes, buildHead, transferList } from './headWorker.js';
 import HeadWorker from './headWorker.js?worker&inline';
 
-// Polygonizing the head takes a few hundred milliseconds, so it runs in a
-// worker while the barber pole is already on screen. The worker is inlined
-// so a single-file build still works.
-export function meshHead(step) {
+// The practice head: a sculpted plaster bust of a neutral adult man, built from the MakeHuman
+// CC0 base mesh (scripts/head/). The asset is a quad cage; the worker subdivides it
+// (Catmull-Clark, 2 levels on the high tier, 1 on low) while the pole is already on screen.
+// The worker is inlined so a single-file build still works.
+
+let cageBytes = null;
+const cage = () => (cageBytes ||= base64Bytes(HEAD_CAGE));
+
+function levelsFor(opts) {
+  if (typeof opts === 'number') return opts >= 0.025 ? 1 : 2; // legacy: SDF step
+  if (opts && opts.levels) return opts.levels;
+  if (opts && opts.tier) return opts.tier === 'high' ? 2 : 1;
+  if (opts && opts.skinStep) return opts.skinStep >= 0.024 ? 1 : 2;
+  return 2;
+}
+
+/**
+ * meshHead({tier|skinStep|levels}, onProgress?) → Promise<HeadData>
+ * HeadData: positions, normals, indices, bake [ao, cavity, thickness], edge [hair, beard]
+ * (signed, head units), mask [hair, beard], eye, hair (shell subset), levels, stats.
+ */
+export function meshHead(opts = {}, onProgress) {
+  const levels = levelsFor(opts);
   return new Promise((resolve) => {
-    const fallback = () => resolve(polygonize(headSDF, undefined, step));
-    let worker;
+    let done = false;
+    let worker = null;
+    let timer = 0;
+    const finish = (data) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      if (worker) worker.terminate();
+      resolve(data);
+    };
+    const fallback = () => {
+      if (worker) worker.terminate();
+      worker = null;
+      clearTimeout(timer);
+      setTimeout(() => {
+        if (!done) finish(buildHead(cage(), { levels, onProgress }));
+      }, 0);
+    };
     try {
       worker = new HeadWorker();
     } catch {
-      setTimeout(fallback, 0);
+      fallback();
       return;
     }
+    timer = setTimeout(fallback, 6000);
     worker.onmessage = (e) => {
-      worker.terminate();
-      resolve(e.data);
+      const msg = e.data || {};
+      if (msg.type === 'progress') onProgress?.(msg.p);
+      else if (msg.type === 'mesh') finish(msg.data);
+      else fallback();
     };
-    worker.onerror = () => {
-      worker.terminate();
-      fallback();
-    };
-    worker.postMessage({ step });
+    worker.onerror = fallback;
+    const bytes = cage().slice();
+    worker.postMessage({ type: 'mesh', levels, cage: bytes.buffer }, [bytes.buffer]);
   });
 }
 
-const HEAD_GLSL = /* glsl */ `
-  vec3 hash33h(vec3 p) {
+export { transferList };
+
+// ------------------------------------------------------------------ plaster
+
+// Plaster tone: neutral warm grey, no skin tone. Head-owned env intensity.
+export const PLASTER = { color: '#A99D8E', roughness: 0.87, envMapIntensity: 0.35 };
+
+const PLASTER_GLSL = /* glsl */ `
+  vec3 hash33p(vec3 p) {
     p = fract(p * vec3(0.1031, 0.1030, 0.0973));
     p += dot(p, p.yxz + 33.33);
     return fract((p.xxy + p.yxx) * p.zyx);
   }
-  float vnoiseh(vec3 p) {
-    vec3 i = floor(p);
-    vec3 f = fract(p);
-    f = f * f * (3.0 - 2.0 * f);
-    float n000 = hash33h(i).x, n100 = hash33h(i + vec3(1, 0, 0)).x;
-    float n010 = hash33h(i + vec3(0, 1, 0)).x, n110 = hash33h(i + vec3(1, 1, 0)).x;
-    float n001 = hash33h(i + vec3(0, 0, 1)).x, n101 = hash33h(i + vec3(1, 0, 1)).x;
-    float n011 = hash33h(i + vec3(0, 1, 1)).x, n111 = hash33h(i + vec3(1, 1, 1)).x;
-    return mix(mix(mix(n000, n100, f.x), mix(n010, n110, f.x), f.y),
-               mix(mix(n001, n101, f.x), mix(n011, n111, f.x), f.y), f.z);
+  // value noise with its analytic gradient (xyz) in .yzw
+  vec4 vnoiseD(vec3 x) {
+    vec3 i = floor(x);
+    vec3 f = fract(x);
+    vec3 u = f * f * (3.0 - 2.0 * f);
+    vec3 du = 6.0 * f * (1.0 - f);
+    float a = hash33p(i).x, b = hash33p(i + vec3(1, 0, 0)).x;
+    float c = hash33p(i + vec3(0, 1, 0)).x, d = hash33p(i + vec3(1, 1, 0)).x;
+    float e = hash33p(i + vec3(0, 0, 1)).x, f1 = hash33p(i + vec3(1, 0, 1)).x;
+    float g = hash33p(i + vec3(0, 1, 1)).x, h = hash33p(i + vec3(1, 1, 1)).x;
+    float k0 = a, k1 = b - a, k2 = c - a, k3 = e - a, k4 = a - b - c + d;
+    float k5 = a - c - e + g, k6 = a - b - e + f1, k7 = -a + b + c - d + e - f1 - g + h;
+    float v = k0 + k1 * u.x + k2 * u.y + k3 * u.z + k4 * u.x * u.y + k5 * u.y * u.z + k6 * u.z * u.x + k7 * u.x * u.y * u.z;
+    vec3 dv = du * vec3(k1 + k4 * u.y + k6 * u.z + k7 * u.y * u.z,
+                        k2 + k5 * u.z + k4 * u.x + k7 * u.z * u.x,
+                        k3 + k6 * u.x + k5 * u.y + k7 * u.x * u.y);
+    return vec4(v, dv);
   }
 `;
 
-// Height of a head point mapped to 0 (neck cut) … 1 (crown); the reveal and
-// the particle morph both use it so the head fills in where particles land.
-export const HEAD_Y0 = -1.45;
-export const HEAD_H = 2.6;
-
-export function createHead(data, { layers = 28, skin = '#b8a48c' } = {}) {
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.BufferAttribute(data.positions, 3));
-  geometry.setAttribute('normal', new THREE.BufferAttribute(data.normals, 3));
-  geometry.setIndex(new THREE.BufferAttribute(data.indices, 1));
-  geometry.computeBoundingSphere();
-
-  const hair = new Hair(geometry, { layers });
-  hair.uniforms.uSkin.value.set(skin);
-
-  const uReveal = { value: 1 };
-  const uEdge = { value: new THREE.Color('#ffc770') };
-  const material = new THREE.MeshStandardMaterial({ color: skin, roughness: 0.62, metalness: 0, envMapIntensity: 0.55 });
+function plasterMaterial(hair, { tier }) {
+  const material = new THREE.MeshStandardMaterial({
+    color: PLASTER.color,
+    roughness: PLASTER.roughness,
+    metalness: 0,
+    envMapIntensity: PLASTER.envMapIntensity,
+  });
+  const uniforms = {
+    uProg: hair.uniforms.uProg,
+    uWidth: hair.uniforms.uWidth,
+    uGrow: hair.uniforms.uGrow,
+    uShaved: { value: 6 * MM }, // hair length (head units) at which the shaved tint is full
+    uAO: { value: 1 },
+    uCavity: { value: 0.55 },
+    uMicro: { value: 0.02 },
+    uPlate: { value: 0 },
+    uIris: { value: new THREE.Vector3(0.0, 0.26, 0.34) }, // incised ring, drilled pupil, iris radius (rad)
+    uEyeL: { value: new THREE.Vector3().fromArray(EYES.l) },
+    uEyeR: { value: new THREE.Vector3().fromArray(EYES.r) },
+    // lip slit: stomion y, drop of the slit at the corners, mouth-corner |x|, stomion z
+    uLip: { value: new THREE.Vector4(HEAD_POINTS.stomion[1], -0.012, HEAD_POINTS.mouth_corner[0], HEAD_POINTS.stomion[2]) },
+  };
+  material.userData.uniforms = uniforms;
+  material.defines = { PLASTER_HQ: tier === 'low' ? 0 : 1 };
   material.onBeforeCompile = (shader) => {
-    Object.assign(shader.uniforms, {
-      uProg: hair.uniforms.uProg,
-      uWidth: hair.uniforms.uWidth,
-      uGrow: hair.uniforms.uGrow,
-      uDensity: hair.uniforms.uDensity,
-      uRoot: hair.uniforms.uRoot,
-      uReveal,
-      uEdge,
-    });
+    Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader
       .replace(
         '#include <common>',
         `#include <common>
+        attribute vec3 aBake;
+        attribute vec2 aMask;
+        attribute float aEye;
         attribute float aFrom;
         attribute float aTo;
         attribute vec3 aZone;
@@ -86,56 +139,195 @@ export function createHead(data, { layers = 28, skin = '#b8a48c' } = {}) {
         uniform vec3 uProg;
         uniform float uWidth;
         uniform float uGrow;
+        varying vec3 vBake;
+        varying vec2 vMaskP;
+        varying float vEye;
         varying float vHairLen;
-        varying vec3 vRestPos;`,
+        varying vec3 vRestPos;
+        varying vec3 vRestN;`,
       )
       .replace(
         '#include <begin_vertex>',
         `#include <begin_vertex>
         vec3 tzH = clamp((uProg * (1.0 + uWidth) - aSweep) / uWidth, 0.0, 1.0);
         vHairLen = mix(aFrom, aTo, dot(aZone, tzH)) * uGrow;
-        vRestPos = position;`,
+        vRestPos = position;
+        vRestN = normal;
+        vBake = aBake;
+        vMaskP = aMask;
+        vEye = aEye;`,
       );
     shader.fragmentShader = shader.fragmentShader
       .replace(
         '#include <common>',
         `#include <common>
-        uniform float uDensity;
-        uniform vec3 uRoot;
-        uniform float uReveal;
-        uniform vec3 uEdge;
+        uniform mat3 normalMatrix;
+        uniform float uShaved;
+        uniform float uAO;
+        uniform float uCavity;
+        uniform float uMicro;
+        uniform float uPlate;
+        uniform vec3 uIris;
+        uniform vec3 uEyeL;
+        uniform vec3 uEyeR;
+        uniform vec4 uLip;
+        varying vec3 vBake;
+        varying vec2 vMaskP;
+        varying float vEye;
         varying float vHairLen;
         varying vec3 vRestPos;
-        ${HEAD_GLSL}`,
+        varying vec3 vRestN;
+        ${PLASTER_GLSL}`,
       )
       .replace(
-        '#include <clipping_planes_fragment>',
-        `#include <clipping_planes_fragment>
-        float yn = (vRestPos.y - (${HEAD_Y0.toFixed(3)})) / ${HEAD_H.toFixed(3)};
-        float rv = (1.0 - yn) * 0.4 + 0.52 + vnoiseh(vRestPos * 5.0) * 0.06;
-        if (uReveal < rv) discard;
-        float revealEdge = (1.0 - smoothstep(0.0, 0.035, uReveal - rv)) * (1.0 - step(0.999, uReveal));`,
+        '#include <lights_physical_pars_fragment>',
+        // wrap terminator on the diffuse term only: the plaster's soft roll-off into shadow
+        // (specular keeps the true N.L, or GGX blows up at the terminator)
+        THREE.ShaderChunk.lights_physical_pars_fragment.replace(
+          'reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );',
+          'reflectedLight.directDiffuse += saturate( ( dot( geometryNormal, directLight.direction ) + 0.25 ) / 1.25 ) * directLight.color * BRDF_Lambert( material.diffuseColor );',
+        ),
       )
       .replace(
         '#include <color_fragment>',
         `#include <color_fragment>
-        float shade = smoothstep(0.0, 0.03, vHairLen);
-        vec3 hc = vRestPos * uDensity;
-        vec3 hr = hash33h(floor(hc));
-        float hd = length(fract(hc) - (0.25 + 0.5 * hr));
-        float dots = (1.0 - smoothstep(0.26, 0.4, hd)) * step(0.0015, vHairLen);
-        float cover = clamp(shade * 0.85 + dots * 0.55 * (1.0 - shade), 0.0, 1.0);
-        diffuseColor.rgb = mix(diffuseColor.rgb, uRoot * 1.5, cover);`,
+        // cavity: sockets, nostrils, lip line, concha read darker in the plaster
+        diffuseColor.rgb *= 1.0 - uCavity * (1.0 - uPlate) * vBake.y;
+        // lip slit: the upper lip shades the top of the lower lip (no shadow maps on the bust),
+        // so the closed mouth reads as one carved line instead of a lit sliver; lipOcc also
+        // damps the grazing env reflection there (see the AO step below)
+        float lipOcc;
+        {
+          float u = abs(vRestPos.x) / uLip.z;
+          float dy = vRestPos.y - (uLip.x + uLip.y * u * u);
+          lipOcc = 1.0 - smoothstep(0.003, 0.012, abs(dy));
+          lipOcc *= 1.0 - smoothstep(0.95, 1.12, u);
+          lipOcc *= smoothstep(uLip.w - 0.3, uLip.w - 0.2, vRestPos.z);
+          // the inside of the mouth, seen through the 1 mm slit: dark
+          // (surfaces behind the lips that face back into the head)
+          float inner = smoothstep(uLip.w - 0.04, uLip.w - 0.08, vRestPos.z) * (1.0 - smoothstep(0.12, 0.18, abs(dy)));
+          inner *= smoothstep(0.05, -0.15, dot(normalize(vRestN), normalize(vec3(vRestPos.x, 0.0, vRestPos.z + 0.07))));
+          lipOcc = max(lipOcc, inner) * (1.0 - uPlate);
+          diffuseColor.rgb *= 1.0 - 0.6 * lipOcc;
+        }
+        // sculpted eyes: incised iris line and a shallow drilled pupil
+        if (vEye > 0.5) {
+          vec3 ec = vRestPos.x > 0.0 ? uEyeL : uEyeR;
+          float ca = dot(normalize(vRestPos - ec), vec3(0.0, -0.06, 0.998));
+          float a = acos(clamp(ca, -1.0, 1.0));
+          float aw = fwidth(a) + 0.004;
+          float ring = 1.0 - smoothstep(0.0, 0.022 + aw, abs(a - uIris.z));
+          float pupil = 1.0 - smoothstep(0.10 - aw, 0.14 + aw, a);
+          diffuseColor.rgb *= 1.0 - uIris.x * ring - uIris.y * pupil;
+        }
+        // shaved skin under very short hair (0..6 mm) reads as a cool grey tint, never as
+        // painted dots; longer hair adds a contact shade at the scalp
+        float zoneM = max(vMaskP.x, vMaskP.y);
+        float shaved = smoothstep(0.0, uShaved, vHairLen) * zoneM;
+        diffuseColor.rgb *= mix(vec3(1.0), vec3(0.62, 0.64, 0.66), shaved);
+        diffuseColor.rgb *= 1.0 - 0.45 * smoothstep(0.0, 0.03, vHairLen) * zoneM;`,
       )
       .replace(
-        '#include <emissivemap_fragment>',
-        `#include <emissivemap_fragment>
-        totalEmissiveRadiance += uEdge * revealEdge * 4.0;`,
+        '#include <normal_fragment_maps>',
+        `#include <normal_fragment_maps>
+        // plaster micro-surface: value-noise gradient, one octave (two on the high tier)
+        {
+          vec4 nz = vnoiseD(vRestPos * 60.0);
+          vec3 g = nz.yzw;
+          #if PLASTER_HQ == 1
+            g += vnoiseD(vRestPos * 150.0 + 7.1).yzw * 0.45;
+          #endif
+          vec3 gv = normalize(normalMatrix * g + 1e-6);
+          gv -= normal * dot(gv, normal);
+          normal = normalize(normal - gv * uMicro * (1.0 - uPlate));
+        }`,
+      )
+      .replace(
+        '#include <aomap_fragment>',
+        `// baked AO: full on indirect light, half on direct
+        float aoP = mix(1.0, vBake.x, uAO) * (1.0 - 0.85 * lipOcc);
+        reflectedLight.indirectDiffuse *= aoP;
+        reflectedLight.indirectSpecular *= aoP;
+        reflectedLight.directDiffuse *= mix(1.0, aoP, 0.5);
+        reflectedLight.directSpecular *= mix(1.0, aoP, 0.5);`,
       );
   };
+  material.customProgramCacheKey = () => `plaster-${tier === 'low' ? 0 : 1}`;
+  return material;
+}
 
-  const mesh = new THREE.Mesh(geometry, material);
+// ------------------------------------------------------------------ head
+
+const v3 = (a) => new THREE.Vector3(a[0], a[1], a[2]);
+
+/**
+ * createHead(data, {layers, tier}) → Head{group, skin, hair, bounds, anchors, setLighting,
+ * setLayers, setPlate, dispose} (+ legacy mesh, geometry, uReveal for the old stage).
+ */
+export function createHead(data, { layers = 26, tier = 'high' } = {}) {
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(data.positions, 3));
+  geometry.setAttribute('normal', new THREE.BufferAttribute(data.normals, 3));
+  geometry.setAttribute('aBake', new THREE.BufferAttribute(data.bake, 3));
+  geometry.setAttribute('aMask', new THREE.BufferAttribute(data.mask, 2));
+  geometry.setAttribute('aEdge', new THREE.BufferAttribute(data.edge, 2));
+  geometry.setAttribute('aEye', new THREE.BufferAttribute(data.eye, 1));
+  geometry.setIndex(new THREE.BufferAttribute(data.indices, 1));
+  geometry.computeBoundingSphere();
+
+  const hair = new Hair(geometry, { layers, data });
+  const material = plasterMaterial(hair, { tier });
+  const skin = new THREE.Mesh(geometry, material);
+  // three applies scene.environmentIntensity to materials without their own envMap; binding the
+  // scene environment here keeps the head's own envMapIntensity (0.35) in charge.
+  skin.onBeforeRender = (renderer, scene) => {
+    const env = scene.environment || null;
+    if (material.envMap !== env) material.envMap = env;
+  };
   const group = new THREE.Group();
-  group.add(mesh, hair.mesh);
-  return { group, mesh, hair, uReveal, geometry };
+  group.add(skin, hair.mesh);
+
+  const b = HEAD_BOUNDS;
+  const bounds = {
+    center: v3(b.center),
+    radius: b.radius,
+    top: b.top,
+    chin: b.chin,
+    neck: { ...b.neck },
+  };
+  const anchors = Object.fromEntries(ANCHOR_NAMES.map((k) => [k, v3(ANCHORS[k])]));
+
+  return {
+    group,
+    skin,
+    hair,
+    bounds,
+    anchors,
+    // world directions, linear colour x intensity (the hair shades itself; the skin uses scene lights)
+    setLighting({ keyDir, keyColor, fillDir, fillColor, ambient } = {}) {
+      const u = hair.uniforms;
+      if (keyDir) u.uKeyDir.value.copy(keyDir).normalize();
+      if (keyColor) u.uKeyCol.value.copy(keyColor);
+      if (fillDir) u.uRimDir.value.copy(fillDir).normalize();
+      if (fillColor) u.uRimCol.value.copy(fillColor);
+      if (ambient) u.uAmb.value.copy(ambient);
+    },
+    setLayers(n) {
+      hair.setLayers(n);
+    },
+    // plate (engraving) renders: plain plaster without micro-surface or cavity tint
+    setPlate(on) {
+      material.userData.uniforms.uPlate.value = on ? 1 : 0;
+    },
+    dispose() {
+      geometry.dispose();
+      material.dispose();
+      hair.dispose();
+    },
+    // legacy (base stage): the reveal is gone; uReveal is kept as an inert handle
+    mesh: skin,
+    geometry,
+    uReveal: { value: 1 },
+    stats: data.stats,
+  };
 }
