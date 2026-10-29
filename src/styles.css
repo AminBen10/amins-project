@@ -1,5 +1,77 @@
 /* Layout: a fixed WebGL stage on the right (top on phones) with the story
    scrolling over it on the left; the menu, team and booking sit on solid ink. */
+
+/* Self-hosted type (src/fonts, OFL). Each family has a local fallback face whose
+   size and vertical metrics are matched to it, so the swap does not move text.
+   Overrides measured on a Spanish sample of the copy against Times New Roman,
+   Arial and Arial Narrow (Liberation Serif/Sans are metric-compatible). */
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('./fonts/bodoni-moda-latin-500-600.woff2') format('woff2');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('./fonts/barlow-condensed-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('./fonts/barlow-condensed-latin-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('./fonts/barlow-latin-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('./fonts/barlow-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bodoni Moda Fallback';
+  src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Times'), local('Liberation Serif');
+  size-adjust: 114.7%;
+  ascent-override: 98.08%;
+  descent-override: 34.87%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed Fallback';
+  src: local('Arial Narrow'), local('ArialNarrow'), local('Liberation Sans Narrow');
+  size-adjust: 94.05%;
+  ascent-override: 106.33%;
+  descent-override: 21.27%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Barlow Fallback';
+  src: local('Arial'), local('ArialMT'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 94.47%;
+  ascent-override: 105.86%;
+  descent-override: 21.17%;
+  line-gap-override: 0%;
+}
+
 :root {
   color-scheme: dark;
   --ink: #0a101c;
@@ -15,9 +87,25 @@
   --open: #6fcf8e;
   --closed: #e0796f;
 
-  --font-display: 'Bodoni Moda', 'Bodoni 72', Didot, 'Times New Roman', serif;
-  --font-label: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
-  --font-body: Barlow, 'Helvetica Neue', Arial, sans-serif;
+  /* Type roles, one medium each:
+     sign    the window sign-writing: Bodoni 600, upright caps
+     spoken  the barber's three spoken lines: Bodoni 500, upright, sentence case
+     pencil  grease pencil on the glass and print on paper: Barlow Condensed 500/600
+             (sentence case; uppercase only on printed objects)
+     read    reading text and forms: Barlow 400/500, never under 16px on phones
+     Tracking stays at or under 0.06em; numbers that are minutes, prices or hours
+     use tabular figures; no italics outside a real quotation. */
+  --font-sign: 'Bodoni Moda', 'Bodoni Moda Fallback', serif;
+  --font-spoken: 'Bodoni Moda', 'Bodoni Moda Fallback', serif;
+  --font-pencil: 'Barlow Condensed', 'Barlow Condensed Fallback', 'Arial Narrow', sans-serif;
+  --font-read: 'Barlow', 'Barlow Fallback', Arial, sans-serif;
+  --track-print: 0.06em;
+  --track-sign: 0.04em;
+
+  /* Older names kept for the rules below. */
+  --font-display: var(--font-spoken);
+  --font-label: var(--font-pencil);
+  --font-body: var(--font-read);
 
   --fs-hero: clamp(2.9rem, 6.4vw, 5.8rem);
   --fs-h2: clamp(2.1rem, 4.2vw, 3.5rem);
@@ -77,6 +165,61 @@ h3 {
   line-height: 1.04;
   margin: 0;
   text-wrap: balance;
+}
+
+/* Type roles as classes, for markup that is not styled by a component rule. */
+.type-sign {
+  font-family: var(--font-sign);
+  font-weight: 600;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: var(--track-sign);
+}
+
+.type-spoken {
+  font-family: var(--font-spoken);
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0;
+}
+
+.type-pencil {
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.type-print {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: var(--track-print);
+  font-variant-numeric: tabular-nums;
+}
+
+.type-read {
+  font-family: var(--font-read);
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Minutes, prices and hours line up in columns wherever they appear. */
+time,
+table,
+input,
+.tnum,
+.board__price,
+.board__time,
+.option__meta,
+.look__meta,
+.ticket__total,
+.day,
+.slot,
+.hours {
+  font-variant-numeric: tabular-nums;
 }
 
 p {
@@ -151,7 +294,7 @@ main,
   font-family: var(--font-label);
   font-weight: 600;
   font-size: 0.86rem;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   color: var(--brass);
 }
@@ -213,14 +356,14 @@ main,
   font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
 }
 
 .brand__tag {
   font-family: var(--font-label);
   font-size: 0.72rem;
-  letter-spacing: 0.24em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   color: var(--muted);
   padding-left: 0.6rem;
@@ -236,7 +379,7 @@ main,
   font-family: var(--font-label);
   font-weight: 500;
   font-size: 0.95rem;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   text-decoration: none;
   color: var(--muted);
@@ -263,7 +406,7 @@ main,
   font-family: var(--font-label);
   font-weight: 600;
   font-size: 1rem;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
@@ -342,7 +485,7 @@ main,
 
 .hero__title em {
   display: block;
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   color: var(--brass);
 }
@@ -364,7 +507,7 @@ main,
   gap: 0.6rem;
   font-family: var(--font-label);
   font-size: 0.95rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -391,7 +534,7 @@ main,
   transform: translateX(-50%);
   font-family: var(--font-label);
   font-size: 0.78rem;
-  letter-spacing: 0.3em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   color: var(--muted);
   display: grid;
@@ -452,7 +595,7 @@ main,
   font-family: var(--font-label);
   font-weight: 600;
   font-size: 0.95rem;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-print);
   color: var(--brass);
   display: flex;
   align-items: center;
@@ -522,7 +665,7 @@ main,
   font-family: var(--font-label);
   font-weight: 600;
   font-size: 0.86rem;
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   color: var(--muted);
   display: flex;
@@ -600,13 +743,13 @@ main,
 }
 
 .look__name span {
-  font-style: italic;
+  font-style: normal;
   color: var(--brass);
 }
 
 .look__meta {
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
@@ -627,7 +770,7 @@ main,
 .rotate__hint {
   font-family: var(--font-label);
   font-size: 0.85rem;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-print);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -716,7 +859,7 @@ main,
 
 .board__time {
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--paper);
   white-space: nowrap;
   margin-left: 0.35rem;
@@ -760,7 +903,7 @@ main,
 
 .rating__meta {
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -791,14 +934,14 @@ main,
 .quote blockquote {
   margin: 0;
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-size: 1.3rem;
   line-height: 1.35;
 }
 
 .quote__by {
   font-family: var(--font-label);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: 0.85rem;
   color: var(--muted);
@@ -814,7 +957,7 @@ main,
   max-width: min(340px, calc(100vw - 24px));
   display: grid;
   gap: 0.15rem;
-  padding: 0.6rem 2.4rem 0.6rem 0.85rem;
+  padding: 0.6rem 0.85rem 0.2rem;
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--ink) 88%, transparent);
   backdrop-filter: blur(8px);
@@ -827,21 +970,23 @@ main,
 .pitch b {
   font-family: var(--font-label);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--brass);
 }
 
 .pitch__close {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  width: 32px;
-  height: 32px;
+  justify-self: start;
+  min-height: 44px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: var(--muted);
-  font-size: 1.2rem;
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
 }
 
@@ -894,7 +1039,7 @@ main,
   place-items: center;
   border: 1px solid var(--brass);
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-size: 2rem;
   color: var(--brass);
 }
@@ -1031,6 +1176,7 @@ main,
 
 .day small {
   font-size: 0.78rem;
+  letter-spacing: 0.04em;
   color: var(--muted);
   text-transform: uppercase;
 }
@@ -1107,7 +1253,7 @@ main,
   display: grid;
   gap: 0.35rem;
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -1146,7 +1292,7 @@ main,
 
 .ticket__label {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-size: 1.6rem;
 }
 
@@ -1167,7 +1313,7 @@ main,
 .ticket__rows dt {
   color: var(--muted);
   font-family: var(--font-label);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: 0.86rem;
 }
