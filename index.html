@@ -1,226 +1,196 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="no-js" data-client="{{site.client}}" data-board="{{site.board}}" data-booking="{{site.mode}}">
   <head>
     <meta charset="utf-8" />
     <title>{{copy.title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="{{copy.description}}" />
-    <meta name="theme-color" content="#0a101c" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600&display=swap"
-    />
+    <meta name="theme-color" content="{{site.night}}" />
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+    <link rel="preload" href="/src/fonts/bodoni-moda-latin-500-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/fonts/barlow-condensed-latin-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/fonts/barlow-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <!--@theme-->
     <!--@jsonld-->
   </head>
   <body>
-    <a class="skip" href="#reservar">Saltar a la reserva</a>
+    <a class="skip" href="#reservar">Saltar a pedir hora</a>
     <canvas id="stage" aria-hidden="true"></canvas>
+    <div id="mirror-frame" aria-hidden="true"></div>
+    <div id="mirror-window" aria-hidden="true"></div>
 
     <header class="nav">
-      <a class="brand" href="#inicio" aria-label="{{brand.name}}, inicio">
-        <!--@brandMark-->
+      <a class="brand" href="#inicio">
         <span class="brand__name">{{brand.name}}</span>
-        <span class="brand__tag">{{brand.tagline}}</span>
+        <span class="brand__tag">{{copy.tag}}</span>
       </a>
       <nav class="nav__links" aria-label="Secciones">
         <!--@navLinks-->
       </nav>
-      <a class="btn btn--small" href="#reservar">Reservar</a>
+      <a class="cta nav__cta" href="#reservar">Pedir hora</a>
     </header>
+    <!--@pitch-->
 
     <main>
-      <section id="inicio" class="hero">
-        <div class="wrap">
-          <div class="copy">
-            <p class="eyebrow">{{copy.heroEyebrow}}</p>
-            <h1 class="hero__title">Cortes con oficio.<em>Sin esperas.</em></h1>
-            <p class="lede">{{copy.heroLede}}</p>
-            <div class="actions">
-              <a class="btn" href="#reservar">Reservar cita</a>
-              <a class="btn btn--ghost" href="#estilos">Probar estilos en 3D</a>
-            </div>
-            <p class="status" id="open-status"><span class="status__dot" aria-hidden="true"></span><span>Consulta el horario más abajo</span></p>
-          </div>
-        </div>
-        <p class="scroll-cue" aria-hidden="true">Desliza</p>
-      </section>
-
-      <section id="ritual" class="ritual" aria-labelledby="ritual-title">
-        <div class="beat beat--intro" data-beat="morph">
-          <div class="wrap">
-            <div class="copy panel">
-              <p class="eyebrow">El ritual</p>
-              <h2 id="ritual-title" class="h2">Del poste a la silla.</h2>
-              <p>
-                Rojo, blanco y azul: el poste de barbero lleva más de un siglo anunciando lo mismo en la puerta. Sigue bajando y
-                míralo convertirse en tu próximo corte.
-              </p>
+      <!-- 0 · The shopfront at night: frame, glass with the sign-writing, the pole by the door. -->
+      <section id="inicio" class="shopfront" aria-labelledby="sign">
+        <div class="shop__fascia" aria-hidden="true"></div>
+        <div class="shop__front">
+          <div class="shop__glass">
+            <!--@shopInterior-->
+            <!--@heroPoster-->
+            <div class="shop__window">
+              <h1 class="sign" id="sign"><!--@sign--></h1>
+              <p class="question">{{copy.question}}</p>
+              <p class="facts"><!--@heroFacts--></p>
             </div>
           </div>
+          <div class="shop__pole" data-pole aria-hidden="true">
+            <span class="pole"><span class="pole__globe"></span><span class="pole__cap"></span><span class="pole__glass"></span><span class="pole__cap pole__cap--foot"></span></span>
+          </div>
+          <div class="shop__door">
+            <span class="shop__door-glass" aria-hidden="true"></span>
+            <span class="shop__door-handle" aria-hidden="true"></span>
+            <p class="door-sign" data-door-sign></p>
+          </div>
+          <!--@shutter-->
         </div>
-        <ol class="steps">
-          <li class="beat" data-beat="consult">
-            <div class="wrap">
-              <div class="copy panel">
-                <p class="step__num">01 <span>Consulta</span></p>
-                <h3 class="h3">Primero miramos, luego cortamos.</h3>
-                <p>Forma de la cabeza, remolinos, densidad y cómo te peinas cada mañana. Con eso decidimos alturas y largos.</p>
-              </div>
-            </div>
-          </li>
-          <li class="beat" data-beat="sides">
-            <div class="wrap">
-              <div class="copy panel">
-                <p class="step__num">02 <span>Máquina</span></p>
-                <h3 class="h3">Degradado sin escalones.</h3>
-                <p>De piel a largo con peines del 0 al 3, a mano alzada, ajustando la altura del degradado a tu cara.</p>
-              </div>
-            </div>
-          </li>
-          <li class="beat" data-beat="top">
-            <div class="wrap">
-              <div class="copy panel">
-                <p class="step__num">03 <span>Tijera</span></p>
-                <h3 class="h3">Textura arriba.</h3>
-                <p>Corte a tijera y entresacado para que el pelo caiga solo cuando te levantes, sin tener que pelearte con él.</p>
-              </div>
-            </div>
-          </li>
-          <li class="beat" data-beat="beard">
-            <div class="wrap">
-              <div class="copy panel">
-                <p class="step__num">04 <span>Navaja</span></p>
-                <h3 class="h3">Líneas limpias.</h3>
-                <p>Contornos de barba, patillas y nuca a navaja, con toalla caliente antes y bálsamo después.</p>
-              </div>
-            </div>
-          </li>
-        </ol>
+        <div class="shop__riser" aria-hidden="true"></div>
       </section>
 
-      <section id="estilos" class="studio" aria-labelledby="studio-title" data-beat="studio">
-        <div class="studio__drag" id="studio-drag" aria-hidden="true"></div>
-        <div class="wrap">
-          <div class="copy panel panel--studio">
-            <p class="eyebrow">Estudio de estilos</p>
-            <h2 id="studio-title" class="h2">Pruébatelo antes de sentarte.</h2>
-            <form class="studio__form" id="studio-form">
-              <fieldset class="group">
-                <legend>Corte</legend>
-                <div class="chips"><!--@hairChips--></div>
-              </fieldset>
-              <fieldset class="group">
-                <legend>Barba</legend>
-                <div class="chips"><!--@beardChips--></div>
-              </fieldset>
+      <!-- 1–6 · The visit, in the station mirror: one div.beat per step, notes on the glass. -->
+      <section id="visita" class="visit">
+        <!--@story-->
+      </section>
+
+      <!-- 7 · Carta de cortes, taped to the mirror. -->
+      <section id="carta" class="carta" data-beat="carta" aria-labelledby="carta-title">
+        <p class="spoken carta__lead">¿Lo dejamos así o le damos un poco más?</p>
+        <div class="carta__grid">
+          <div class="carta__sheet">
+            <h2 id="carta-title" class="carta__title">Carta de cortes</h2>
+            <p class="carta__sub">Se acabó enseñarle al barbero una foto del móvil.</p>
+            <p class="carta__intro">Toca un corte y te lo hacemos aquí, en la cabeza de prácticas: qué peine, a qué altura y cuánto se deja arriba.</p>
+            <form id="carta-form" class="chart">
+              <!--@cartaPlates-->
             </form>
-            <div class="look" aria-live="polite">
-              <p class="look__name" id="look-name">Degradado <span>con barba corta</span></p>
-              <p class="look__desc" id="look-desc">Laterales a piel que suben en degradado y textura corta arriba.</p>
-              <p class="look__meta" id="look-meta">40 min · 18 € · Repaso cada 2–3 semanas</p>
+            <button type="button" class="textbtn composer__open" id="composer-open" aria-expanded="false" aria-controls="composer">Compón tu corte</button>
+            <form id="composer" class="composer" hidden>
+              <!--@composer-->
+            </form>
+          </div>
+          <div id="recipe" class="carta__recipe"></div>
+          <div id="carta-player" class="player">
+            <p id="film-title" class="player__title"></p>
+            <p id="film-caption" class="player__caption" aria-live="polite">Toca un corte para ver cómo se hace.</p>
+            <div class="player__controls">
+              <button type="button" class="textbtn" data-film="play">Así se hace</button>
+              <button type="button" class="textbtn" data-film="pause" hidden>Pausa</button>
+              <button type="button" class="textbtn" data-film="resume" hidden>Seguir</button>
+              <button type="button" class="textbtn" data-film="repeat">Repetir</button>
+              <button type="button" class="textbtn" data-film="finish">Ver cómo queda</button>
+              <button type="button" class="textbtn" data-film="prev">Corte anterior</button>
+              <button type="button" class="textbtn" data-film="next">Corte siguiente</button>
+              <button type="button" class="textbtn" data-film="back">Volver a la carta</button>
             </div>
-            <div class="studio__actions">
-              <a class="btn" href="#reservar" id="book-look">Reservar este look</a>
-              <div class="rotate" role="group" aria-label="Girar la cabeza">
-                <button type="button" class="icon-btn" id="rotate-left" aria-label="Girar a la izquierda">&#8630;</button>
-                <span class="rotate__hint">Arrastra para girar</span>
-                <button type="button" class="icon-btn" id="rotate-right" aria-label="Girar a la derecha">&#8631;</button>
-              </div>
+            <div class="player__views">
+              <button type="button" class="textbtn" data-view="frente" aria-pressed="true">De frente</button>
+              <button type="button" class="textbtn" data-view="perfil" aria-pressed="false">De perfil</button>
+              <button type="button" class="textbtn" data-view="nuca" aria-pressed="false">La nuca</button>
             </div>
+          </div>
+          <noscript>
+          <!--@recipeList-->
+          </noscript>
+        </div>
+        <div class="carta__templates">
+<!--@recipes-->
+        </div>
+      </section>
+
+      <!-- 8 · The chair turns back to the room. -->
+      <div class="beat beat--turn" data-beat="turn" aria-hidden="true"></div>
+
+      <!-- 9 · Tarifa, on the tiled wall. -->
+      <section id="tarifa" class="tarifa" aria-labelledby="tarifa-title">
+        <!--@wall-->
+        <div class="tarifa__inner">
+          <div class="board">
+            <h2 id="tarifa-title" class="board__title">Tarifa</h2>
+            <ul class="board__rows"><!--@tarifa-->
+            </ul>
+            <p class="board__note">{{copy.priceNote}}</p>
+          </div>
+          <!--@tarifaFoot-->
+          <div class="includes">
+            <h3 class="includes__title">Qué lleva cada uno</h3>
+            <dl class="includes__list"><!--@includes--></dl>
           </div>
         </div>
       </section>
 
-      <section id="servicios" class="board" aria-labelledby="board-title">
-        <div class="wrap wrap--split">
-          <div class="board__intro">
-            <p class="eyebrow">Carta</p>
-            <h2 id="board-title" class="h2">Servicios y precios</h2>
-            <p>{{copy.priceNote}}</p>
-          </div>
-          <ul class="board__list"><!--@services--></ul>
+      <!-- 10 · Las sillas (only shops that list their barbers). -->
+      <!--@sillas-->
+
+      <!-- 11 · Pide hora: the appointment book on the counter. -->
+      <section id="reservar" class="reservar" aria-labelledby="reservar-title">
+        <div class="reservar__head">
+          <h2 id="reservar-title" class="title">Pide hora</h2>
+          <p class="reservar__intro">{{copy.bookIntro}}</p>
         </div>
-      </section>
-
-<!--@reviews-->
-<!--@team-->
-
-      <section id="reservar" class="booking" aria-labelledby="booking-title">
-        <div class="wrap">
-          <p class="eyebrow">Reserva</p>
-          <h2 id="booking-title" class="h2">Elige silla y hora.</h2>
-          <form class="book" id="book-form" novalidate>
-            <div class="book__steps">
-              <fieldset class="group">
-                <legend><span class="n"></span> Servicio</legend>
-                <div class="options"><!--@bookingServices--></div>
-              </fieldset><!--@bookingBarberStep-->
-              <fieldset class="group">
-                <legend><span class="n"></span> Día</legend>
-                <div class="days" id="days"></div>
-              </fieldset>
-              <fieldset class="group">
-                <legend><span class="n"></span> Hora</legend>
-                <div class="slots" id="slots"></div>
-                <p class="hint" id="slots-hint"></p>
-              </fieldset>
-              <fieldset class="group">
-                <legend><span class="n"></span> Tus datos</legend>
-                <div class="fields">
-                  <label class="field">
-                    <span>Nombre</span>
-                    <input type="text" id="book-name" name="name" autocomplete="given-name" placeholder="Tu nombre" required />
-                  </label>
-                  <label class="field">
-                    <span>Móvil</span>
-                    <input type="tel" id="book-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="600 123 456" required />
-                  </label>
-                </div>
-              </fieldset>
+        <form id="book-form" class="book" data-mode="{{site.mode}}" novalidate>
+          <div class="book__page book__page--left">
+            <p class="book__agenda">{{copy.agendaLabel}}</p>
+            <fieldset class="book__group book__group--service">
+              <legend>Servicio</legend>
+              <!--@bookingServices-->
+            </fieldset>
+            <div class="book__group book__group--cut">
+              <p class="book__label" id="book-cut-legend">Corte</p>
+              <p class="book__cutline" aria-describedby="book-cut-legend"><span id="book-cut-label">Sin elegir</span> <a class="textbtn" id="book-cut-change" href="#carta">Elegir en la carta</a></p>
+              <p class="book__ficha" id="book-cut-ficha" hidden></p>
             </div>
-            <aside class="ticket" aria-live="polite">
-              <p class="ticket__label">Tu cita</p>
-              <dl class="ticket__rows">
-                <div><dt>Servicio</dt><dd id="t-service">—</dd></div>
-                <div id="t-barber-row"><dt>Barbero</dt><dd id="t-barber">—</dd></div>
-                <div><dt>Día</dt><dd id="t-day">—</dd></div>
-                <div><dt>Hora</dt><dd id="t-time">—</dd></div>
-                <div id="t-look-row" hidden><dt>Look</dt><dd id="t-look">—</dd></div>
-              </dl>
-              <div class="ticket__total"><span id="t-duration">—</span><strong id="t-price">—</strong></div>
-              <button type="submit" class="btn btn--block" id="book-submit">Confirmar reserva</button>
-              <p class="hint" id="book-hint"></p>
-            </aside>
-          </form>
-          <div class="done" id="book-done" hidden tabindex="-1">
-            <p class="eyebrow">Reserva</p>
-            <h3 class="h2" id="done-title">Listo.</h3>
-            <p id="done-text"></p>
-            <p class="done__note" id="done-note"></p>
-            <button type="button" class="btn btn--ghost" id="book-again">Hacer otra reserva</button>
+            <!--@bookingBarbers-->
+            <dl class="hours book__hours"><!--@hours--></dl>
           </div>
-        </div>
+          <div class="book__page book__page--right">
+            <fieldset class="book__group book__live">
+              <legend>Día</legend>
+              <div class="days" id="days"></div>
+            </fieldset>
+            <fieldset class="book__group book__live">
+              <legend>Hora</legend>
+              <div class="slots" id="slots"></div>
+              <p class="hint" id="slots-hint" role="status"><!--@slotsHint--></p>
+            </fieldset>
+            <div class="book__group book__live book__you">
+              <label class="field" for="book-name">
+                <span class="field__label">Tu nombre</span>
+                <input type="text" id="book-name" name="name" autocomplete="given-name" />
+              </label>
+              <!--@bookingPhone-->
+            </div>
+            <div class="book__action book__live">
+              <!--@bookingAction-->
+              <p class="hint" id="book-hint" role="status"></p>
+            </div>
+            <!--@bookingNoScript-->
+          </div>
+        </form>
+        <!--@bookingCard-->
       </section>
     </main>
 
-    <footer class="foot">
-      <div class="wrap foot__grid">
-        <div>
-          <p class="brand brand--foot"><span class="brand__name">{{brand.name}}</span><span class="brand__tag">{{brand.tagline}}</span></p>
-          <p>{{brand.street}}<br />{{brand.postalCode}} {{brand.city}}</p>
-          <p><!--@contact--></p>
-        </div>
-        <div>
-          <p class="eyebrow">Horario</p>
-          <table class="hours"><tbody><!--@hours--></tbody></table>
-        </div>
-        <!--@pitchFooter-->
-      </div>
+    <!-- 12 · The door, seen from the street. -->
+    <footer id="puerta" class="door">
+      <!--@door-->
     </footer>
 
-    <!--@pitch-->
+    <nav id="thumbbar" class="thumbbar" aria-label="Pedir hora">
+      <a class="cta" id="thumbbar-cta" href="#reservar">Pedir hora</a>
+    </nav>
+    <div id="note-strip" class="note-strip" aria-hidden="true"></div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

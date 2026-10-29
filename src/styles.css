@@ -1,34 +1,160 @@
 /* Layout: a fixed WebGL stage on the right (top on phones) with the story
    scrolling over it on the left; the menu, team and booking sit on solid ink. */
-:root {
-  color-scheme: dark;
-  --ink: #0a101c;
-  --ink-2: #0f1828;
-  --ink-3: #18233a;
-  --paper: #efe7d7;
-  --muted: #a5abb9;
-  --brass: #c9a35b;
-  --brass-hi: #ebd19a;
-  --brass-ink: #1a1206;
-  --line: rgba(201, 163, 91, 0.24);
-  --line-soft: rgba(239, 231, 215, 0.1);
-  --open: #6fcf8e;
-  --closed: #e0796f;
 
-  --font-display: 'Bodoni Moda', 'Bodoni 72', Didot, 'Times New Roman', serif;
-  --font-label: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
-  --font-body: Barlow, 'Helvetica Neue', Arial, sans-serif;
-
-  --fs-hero: clamp(2.9rem, 6.4vw, 5.8rem);
-  --fs-h2: clamp(2.1rem, 4.2vw, 3.5rem);
-  --fs-h3: clamp(1.55rem, 2.6vw, 2.15rem);
-  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
-  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
-  --nav-h: 64px;
-  --edge-l: max(var(--gutter-l), calc((100vw - 1240px) / 2 + 16px));
-  --edge-r: max(var(--gutter-r), calc((100vw - 1240px) / 2 + 16px));
+/* Self-hosted type (src/fonts, OFL). Each family has a local fallback face whose
+   size and vertical metrics are matched to it, so the swap does not move text.
+   Overrides measured on a Spanish sample of the copy against Times New Roman,
+   Arial and Arial Narrow (Liberation Serif/Sans are metric-compatible). */
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('./fonts/bodoni-moda-latin-500-600.woff2') format('woff2');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
 }
 
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('./fonts/barlow-condensed-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('./fonts/barlow-condensed-latin-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('./fonts/barlow-latin-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('./fonts/barlow-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bodoni Moda Fallback';
+  src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Times'), local('Liberation Serif');
+  size-adjust: 114.7%;
+  ascent-override: 98.08%;
+  descent-override: 34.87%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed Fallback';
+  src: local('Arial Narrow'), local('ArialNarrow'), local('Liberation Sans Narrow');
+  size-adjust: 94.05%;
+  ascent-override: 106.33%;
+  descent-override: 21.27%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Barlow Fallback';
+  src: local('Arial'), local('ArialMT'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 94.47%;
+  ascent-override: 105.86%;
+  descent-override: 21.17%;
+  line-gap-override: 0%;
+}
+
+/* ==========================================================================
+   Tokens. Client colours arrive from the client file as :root custom properties
+   (content.js themeStyle); the values below are the Corte Real defaults, so the
+   sheet also reads on its own. Every surface is a material of the shop at night:
+   the street, painted shopfront, mirror glass, tiled wall, a counter. Cream card
+   stock appears only as lit objects (Carta sheet, recipe, book, card).
+   No soft gradients (hard stops only), no blur, no box-shadows, no pills.
+   ========================================================================== */
+/* :where() keeps these at zero specificity so the client's #theme tokens win. */
+:where(:root) {
+  color-scheme: dark;
+  --night: #111214;
+  --cape: #111214;
+  --chrome: #c8ccd0;
+  --chrome-line: #2a2d31;
+  --cta: #5b1f1d;
+  --cta-ink: #f3f1ea;
+  --sign-open: #9db6a2;
+  --tile: #d9d3c4;
+  --grout: #2a2925;
+  --window: #ffb874;
+  --tube: #e6eff0;
+  --note: #f3f1ea;
+  --paper: #efe7d6;
+  --ink: #1b1a17;
+  --leaf: #c8a04a;
+  --leaf-line: #1a1206;
+  --leaf-shade: #0b0906;
+  --brass: #b08d57;
+  --pole-red: #c1272d;
+  --pole-white: #f4efe4;
+  --pole-blue: #1d4fb0;
+
+  /* Derived surfaces. */
+  --text: var(--note);
+  --text-2: #a9adb1; /* 7.9:1 on the night */
+  --rule: var(--chrome-line);
+  --frame: #0b0b0c; /* painted shopfront: black enamel paint */
+  --frame-edge: #2a2c2f;
+  --glass: #0c0d0e;
+  --mirror-glass: #0f1113;
+  --counter: #17120f;
+  --ink-2: #4a463e; /* secondary ink on paper, 8.4:1 */
+  --rule-paper: #cfc4ad;
+  --interior-wall: #0d0e0f;
+  --interior-mirror: #15181b;
+  --interior-rail: #24272b;
+  --interior-glare: rgba(255, 255, 255, 0.035);
+  --glass-tint: rgba(9, 9, 10, 0.42);
+
+  /* Type roles, one medium each (see D1):
+     sign    the window sign-writing: Bodoni 600, upright caps (hero only)
+     spoken  the barber's three spoken lines: Bodoni 500, upright, sentence case
+     pencil  grease pencil on the glass and print on paper: Barlow Condensed 500/600
+             (sentence case; uppercase only on printed objects)
+     read    reading text and forms: Barlow 400/500, never under 16px on phones
+     Tracking stays at or under 0.06em; minutes, prices and hours use tabular
+     figures; no italics outside a real quotation. */
+  --font-sign: 'Bodoni Moda', 'Bodoni Moda Fallback', serif;
+  --font-spoken: 'Bodoni Moda', 'Bodoni Moda Fallback', serif;
+  --font-pencil: 'Barlow Condensed', 'Barlow Condensed Fallback', 'Arial Narrow', sans-serif;
+  --font-read: 'Barlow', 'Barlow Fallback', Arial, sans-serif;
+  --track-print: 0.06em;
+  --track-sign: 0.04em;
+
+  --nav-h: 60px;
+  --thumb-h: 0px;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --wide: 1240px;
+  --edge: max(var(--gutter), calc((100vw - var(--wide)) / 2));
+}
+
+/* BK: aluminium shopfront and a galvanised shutter; felt board for the tarifa. */
+html[data-board='felt'] {
+  --frame: #1d2022;
+  --frame-edge: #3b3f42;
+  --counter: #141414;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
 *,
 *::before,
 *::after {
@@ -41,1330 +167,2686 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+  scroll-padding-top: calc(var(--nav-h) + 8px);
   -webkit-text-size-adjust: 100%;
+  background: var(--night);
+}
+
+html[data-motion='off'] {
+  scroll-behavior: auto;
 }
 
 body {
   margin: 0;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-body);
+  padding-top: var(--nav-h);
+  padding-bottom: var(--thumb-h);
+  background: var(--night);
+  color: var(--text);
+  font-family: var(--font-read);
   font-size: 1.0625rem;
-  line-height: 1.6;
+  line-height: 1.55;
   overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0 0 auto;
-  height: env(safe-area-inset-top, 0px);
-  background: var(--ink);
-  z-index: 30;
-}
-
-img,
-canvas {
-  max-width: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
-h3 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.04;
+h3,
+p,
+dl,
+dd,
+ol,
+ul,
+figure,
+blockquote {
   margin: 0;
-  text-wrap: balance;
 }
 
-p {
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+fieldset {
   margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
 }
 
 a {
   color: inherit;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Minutes, prices and hours line up in columns wherever they appear. */
+time,
+input,
+.row__min,
+.row__price,
+.hours,
+.days,
+.slots,
+.note__stamp,
+.facts,
+.door__number,
+.door__hours,
+.card__rows,
+.recipe__tarifa,
+.plate__n,
+.recipe__n {
+  font-variant-numeric: tabular-nums;
 }
 
 :focus-visible {
-  outline: 2px solid var(--brass-hi);
+  outline: 2px solid var(--note);
   outline-offset: 3px;
 }
 
-.skip {
+.sr-only {
   position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: fixed;
   left: 16px;
-  top: -60px;
-  z-index: 40;
-  background: var(--brass);
-  color: var(--brass-ink);
-  padding: 0.6rem 1rem;
+  top: -80px;
+  z-index: 60;
+  padding: 10px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
 }
 
 .skip:focus {
-  top: calc(12px + env(safe-area-inset-top, 0px));
+  top: 10px;
 }
 
-/* ------------------------------------------------------------------ stage */
+/* Type roles as classes. */
+.spoken {
+  font-family: var(--font-spoken);
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0;
+  line-height: 1.12;
+  color: var(--note);
+}
 
+.title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.hint {
+  font-size: 1rem;
+  color: var(--text-2);
+}
+
+.hint:empty {
+  display: none;
+}
+
+/* Text buttons: Barlow Condensed with an underline, no box, no pill. */
+.textbtn {
+  display: inline-block;
+  padding: 10px 0;
+  min-height: 44px;
+  border: 0;
+  background: none;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.1875rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+}
+
+.textbtn:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* The one action colour: flat client colour, square corners. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 10px 22px;
+  border: 2px solid var(--cta);
+  border-radius: 2px;
+  background: var(--cta);
+  color: var(--cta-ink);
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.1875rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.cta:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Disabled: full-contrast outline, never faded. */
+.cta[aria-disabled='true'],
+.cta:disabled {
+  background: transparent;
+  color: currentColor;
+  border-color: currentColor;
+  cursor: default;
+}
+
+/* ==========================================================================
+   Stage, mirror frame, mirror window (motion measures #mirror-window)
+   ========================================================================== */
 #stage {
   position: fixed;
   inset: 0;
+  z-index: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
-  z-index: 0;
-  transition: opacity 0.4s linear;
+  pointer-events: none;
 }
 
-.no-webgl #stage {
+html.no-js #stage,
+html.no-webgl #stage,
+html[data-stage='off'] #stage {
   display: none;
 }
 
 main,
-.foot {
+.nav,
+.door,
+.pitch {
   position: relative;
   z-index: 1;
 }
 
-.wrap {
-  width: 100%;
-  max-width: 1240px;
-  margin-inline: auto;
-  padding-left: var(--gutter-l);
-  padding-right: var(--gutter-r);
+/* The station mirror's thin chrome edge frames the viewport during the visit. */
+#mirror-frame {
+  position: fixed;
+  inset: calc(var(--nav-h) + 10px) 10px 10px;
+  z-index: 2;
+  border: 2px solid var(--chrome);
+  outline: 1px solid var(--chrome-line);
+  border-radius: 6px;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateX(calc(var(--turn, 0) * -110%));
 }
 
-.copy {
-  max-width: 33rem;
-  display: grid;
-  gap: 1.1rem;
+html[data-scene='mirror'] #mirror-frame {
+  visibility: visible;
 }
 
-.copy p:not(.eyebrow):not(.step__num):not(.status) {
-  color: color-mix(in srgb, var(--paper) 86%, var(--ink));
-  max-width: 62ch;
+html.no-webgl #mirror-frame,
+html.no-js #mirror-frame {
+  display: none;
 }
 
-.eyebrow {
-  font-family: var(--font-label);
-  font-weight: 600;
-  font-size: 0.86rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--brass);
+/* Where the head is framed: the right of the glass on desktop, the top on phones. */
+#mirror-window {
+  position: fixed;
+  top: calc(var(--nav-h) + 24px);
+  right: 24px;
+  bottom: 24px;
+  left: 42%;
+  pointer-events: none;
+  visibility: hidden;
 }
 
-.h2 {
-  font-size: var(--fs-h2);
+/* Poster capture: only the canvas. */
+html.poster-capture body > :not(#stage) {
+  visibility: hidden !important;
 }
 
-.h3 {
-  font-size: var(--fs-h3);
-}
-
-/* -------------------------------------------------------------------- nav */
-
+/* ==========================================================================
+   Nav (solid cape black, no blur)
+   ========================================================================== */
 .nav {
   position: fixed;
-  top: env(safe-area-inset-top, 0px);
-  left: 0;
-  right: 0;
-  z-index: 20;
+  inset: 0 0 auto;
+  z-index: 30;
   height: var(--nav-h);
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding-left: var(--edge-l);
-  padding-right: var(--edge-r);
-  transition: background 0.3s, border-color 0.3s;
-  border-bottom: 1px solid transparent;
-}
-
-.nav--solid {
-  background: color-mix(in srgb, var(--ink) 86%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: var(--line-soft);
+  gap: 32px;
+  padding: 0 var(--gutter-r) 0 var(--gutter);
+  background: var(--cape);
+  border-bottom: 1px solid var(--chrome-line);
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
   text-decoration: none;
-  margin-right: auto;
-}
-
-.brand__mark {
-  width: 30px;
-  height: 22px;
-  color: var(--brass);
-  flex: none;
-}
-
-.brand__mark--pole {
-  width: 14px;
-  height: 30px;
+  white-space: nowrap;
 }
 
 .brand__name {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-family: var(--font-pencil);
   font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 1.375rem;
+  line-height: 1;
 }
 
 .brand__tag {
-  font-family: var(--font-label);
-  font-size: 0.72rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding-left: 0.6rem;
-  border-left: 1px solid var(--line);
+  font-size: 0.9375rem;
+  color: var(--text-2);
 }
 
 .nav__links {
   display: flex;
-  gap: 1.6rem;
+  gap: 28px;
+  margin-left: auto;
 }
 
 .nav__links a {
-  font-family: var(--font-label);
+  font-family: var(--font-pencil);
   font-weight: 500;
-  font-size: 0.95rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 1.1875rem;
+  color: var(--text-2);
   text-decoration: none;
-  color: var(--muted);
-  transition: color 0.2s;
+  padding: 8px 0;
 }
 
-.nav__links a:hover {
-  color: var(--paper);
+.nav__links a:hover,
+.nav__links a[aria-current] {
+  color: var(--text);
+  text-decoration: underline;
 }
 
-/* ---------------------------------------------------------------- buttons */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 48px;
-  padding: 0.8rem 1.45rem;
-  border: 1px solid var(--brass);
-  border-radius: 2px;
-  background: var(--brass);
-  color: var(--brass-ink);
-  font-family: var(--font-label);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
-}
-
-.btn:hover {
-  background: var(--brass-hi);
-  border-color: var(--brass-hi);
-}
-
-.btn:active {
-  transform: translateY(1px);
-}
-
-.btn--ghost {
-  background: transparent;
-  color: var(--paper);
-  border-color: var(--line);
-}
-
-.btn--ghost:hover {
-  background: rgba(201, 163, 91, 0.12);
-  border-color: var(--brass);
-}
-
-.btn--small {
+.nav__cta {
   min-height: 40px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
+  padding: 6px 18px;
 }
 
-.btn--block {
-  width: 100%;
-}
-
-.btn[disabled],
-.btn[aria-disabled='true'] {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.icon-btn {
-  width: 40px;
-  height: 40px;
-  display: inline-grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--paper);
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
-.icon-btn:hover {
-  border-color: var(--brass);
-}
-
-/* ------------------------------------------------------------------- hero */
-
-.hero {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: grid;
-  align-items: center;
-  padding-block: calc(var(--nav-h) + 2rem) 5rem;
-  position: relative;
-}
-
-.hero__title {
-  font-size: var(--fs-hero);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.hero__title em {
-  display: block;
-  font-style: italic;
-  font-weight: 400;
-  color: var(--brass);
-}
-
-.lede {
-  font-size: 1.15rem;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 0.4rem;
-}
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-label);
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-}
-
-.status__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--muted);
-}
-
-.status--open .status__dot {
-  background: var(--open);
-  box-shadow: 0 0 0 4px rgba(111, 207, 142, 0.18);
-}
-
-.status--closed .status__dot {
-  background: var(--closed);
-}
-
-.scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 1.4rem;
-  transform: translateX(-50%);
-  font-family: var(--font-label);
-  font-size: 0.78rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--muted);
-  display: grid;
-  justify-items: center;
-  gap: 0.5rem;
-}
-
-.scroll-cue::after {
-  content: '';
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(var(--brass), transparent);
-  animation: cue 2.2s ease-in-out infinite;
-  transform-origin: top;
-}
-
-@keyframes cue {
-  0% {
-    transform: scaleY(0);
-    opacity: 1;
-  }
-  60% {
-    transform: scaleY(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scaleY(1);
-    opacity: 0;
-  }
-}
-
-/* ----------------------------------------------------------------- ritual */
-
-.ritual {
-  position: relative;
-}
-
-.steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.beat {
-  min-height: 105vh;
-  min-height: 105svh;
-  display: flex;
-  align-items: center;
-  padding-block: 4rem;
-}
-
-.beat--intro {
-  min-height: 110vh;
-  min-height: 110svh;
-}
-
-.step__num {
-  font-family: var(--font-label);
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.2em;
-  color: var(--brass);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  text-transform: uppercase;
-}
-
-.step__num span {
-  color: var(--paper);
-  padding-left: 0.8rem;
-  border-left: 1px solid var(--line);
-}
-
-/* ----------------------------------------------------------------- studio */
-
-.studio {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  padding-block: calc(var(--nav-h) + 2rem) 4rem;
-  position: relative;
-}
-
-.studio__drag {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 52%;
-  cursor: grab;
-  touch-action: pan-y;
-  z-index: 0;
-}
-
-.studio__drag:active {
-  cursor: grabbing;
-}
-
-.studio .wrap {
-  position: relative;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.panel--studio {
-  pointer-events: auto;
-}
-
-.studio__form {
-  display: grid;
-  gap: 1rem;
-}
-
-.group {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-  display: grid;
-  gap: 0.6rem;
-}
-
-.group legend {
-  padding: 0;
-  margin-bottom: 0.6rem;
-  font-family: var(--font-label);
-  font-weight: 600;
-  font-size: 0.86rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.chip {
-  position: relative;
-}
-
-.chip input,
-.option input,
-.day input,
-.slot input {
-  position: absolute;
-  opacity: 0;
-  inset: 0;
-  margin: 0;
-  cursor: pointer;
-}
-
-.chip span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0.4rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-family: var(--font-label);
-  font-weight: 500;
-  font-size: 1rem;
-  letter-spacing: 0.06em;
-  color: var(--paper);
-  background: color-mix(in srgb, var(--ink) 55%, transparent);
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
-  cursor: pointer;
-}
-
-.chip input:hover + span {
-  border-color: var(--brass);
-}
-
-.chip input:checked + span {
-  background: var(--brass);
-  border-color: var(--brass);
-  color: var(--brass-ink);
-}
-
-.chip input:focus-visible + span,
-.option input:focus-visible + .option__body,
-.day input:focus-visible + span,
-.slot input:focus-visible + span {
-  outline: 2px solid var(--brass-hi);
-  outline-offset: 3px;
-}
-
-.look {
-  border-top: 1px solid var(--line);
-  padding-top: 1rem;
-  display: grid;
-  gap: 0.35rem;
-}
-
-.look__name {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  line-height: 1.15;
-}
-
-.look__name span {
-  font-style: italic;
-  color: var(--brass);
-}
-
-.look__meta {
-  font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.studio__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem 1.4rem;
-}
-
-.rotate {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.rotate__hint {
-  font-family: var(--font-label);
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* -------------------------------------------------------------- price board */
-
-.board,
-.team,
-.booking,
-.foot {
-  background: var(--ink);
-}
-
-.board {
-  padding-block: 7rem 5rem;
-  border-top: 1px solid var(--line-soft);
-  background:
-    radial-gradient(60rem 30rem at 85% 0%, rgba(201, 163, 91, 0.08), transparent 70%),
-    var(--ink);
-}
-
-.wrap--split {
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 3rem 5rem;
-  align-items: start;
-}
-
-.board__intro {
-  display: grid;
-  gap: 1rem;
-  position: sticky;
-  top: calc(var(--nav-h) + 2rem);
-}
-
-.board__intro p:not(.eyebrow) {
-  color: var(--muted);
-}
-
-.board__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-}
-
-.board__item {
-  padding-block: 1.15rem;
-  border-bottom: 1px solid var(--line-soft);
-  display: grid;
-  gap: 0.3rem;
-}
-
-.board__line {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.board__name {
-  font-size: 1.5rem;
-  font-weight: 500;
-  min-width: 0;
-}
-
-.board__dots {
-  flex: 1;
-  min-width: 1.5rem;
-  border-bottom: 2px dotted var(--line);
-  transform: translateY(-0.3rem);
-}
-
-.board__price {
-  font-family: var(--font-label);
-  font-weight: 600;
-  font-size: 1.45rem;
-  color: var(--brass);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.board__desc {
-  color: var(--muted);
-  font-size: 0.98rem;
-}
-
-.board__time {
-  font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  color: var(--paper);
-  white-space: nowrap;
-  margin-left: 0.35rem;
-}
-
-/* ---------------------------------------------------------------- reviews */
-
-.reviews {
-  padding-block: 5rem;
-  background: var(--ink);
-  border-top: 1px solid var(--line-soft);
-}
-
-.reviews .wrap {
-  display: grid;
-  gap: 1rem;
-}
-
-.ratings {
-  list-style: none;
-  margin: 0.8rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem 2.5rem;
-}
-
-.rating {
-  display: flex;
-  align-items: baseline;
-  gap: 0.7rem;
-}
-
-.rating__score {
-  font-family: var(--font-display);
-  font-size: 3rem;
-  line-height: 1;
-  color: var(--brass);
-  font-variant-numeric: tabular-nums;
-}
-
-.rating__meta {
-  font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  color: var(--muted);
-}
-
-.rating__meta b {
-  color: var(--paper);
-  font-weight: 600;
-  margin-right: 0.3rem;
-}
-
-.quotes {
-  list-style: none;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.quote {
-  display: grid;
-  align-content: space-between;
-  gap: 1.2rem;
-  padding: 1.5rem;
-  background: var(--ink-2);
-  border: 1px solid var(--line-soft);
-}
-
-.quote blockquote {
-  margin: 0;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.3rem;
-  line-height: 1.35;
-}
-
-.quote__by {
-  font-family: var(--font-label);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-/* ------------------------------------------------------------------ pitch */
-
+/* BK: the proposal strip, under the nav. */
 .pitch {
-  position: fixed;
-  z-index: 25;
-  left: calc(12px + env(safe-area-inset-left, 0px));
-  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-  max-width: min(340px, calc(100vw - 24px));
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.6rem 2.4rem 0.6rem 0.85rem;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  font-size: 0.78rem;
-  line-height: 1.35;
-  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px var(--gutter-r) 10px var(--gutter);
+  background: var(--note);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.4;
 }
 
-.pitch b {
-  font-family: var(--font-label);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--brass);
+.pitch__text {
+  max-width: 980px;
 }
 
 .pitch__close {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  width: 32px;
-  height: 32px;
+  margin-left: auto;
+  padding: 6px 0;
   border: 0;
+  background: none;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* ==========================================================================
+   0 · The shopfront at night
+   ========================================================================== */
+.shopfront {
+  --pad: clamp(10px, 1.1vw, 16px);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: calc(100svh - var(--nav-h));
+  min-height: 560px;
+  max-height: 1100px;
+  background: var(--frame);
+}
+
+/* The fascia board over the window, painted. */
+.shop__fascia {
+  height: clamp(22px, 3.4vh, 36px);
+  background: var(--frame);
+  border-bottom: 1px solid var(--frame-edge);
+}
+
+/* Frame and mullions are the painted front; the panes sit in it. */
+.shop__front {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr clamp(44px, 3.6vw, 60px) clamp(220px, 21vw, 300px);
+  grid-template-areas: 'glass pole door';
+  gap: var(--pad);
+  padding: var(--pad) clamp(16px, 2.6vw, 40px);
+  background: var(--frame);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.shop__glass {
+  grid-area: glass;
+  position: relative;
+  overflow: hidden;
+  background: var(--interior-wall);
+  border: 1px solid #000;
+  outline: 1px solid var(--frame-edge);
+  outline-offset: 2px;
+}
+
+.shop__interior {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.shop__interior .tile {
+  fill-opacity: 0.16;
+}
+
+.shop__tube {
+  opacity: 0.8;
+}
+
+.shop__interior .shop__tiles {
+  opacity: 1;
+}
+
+/* The poster from engineering, when present, covers the drawn interior. */
+.shop__glass .poster {
+  position: absolute;
+  inset: 0;
+}
+
+.poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shop__window {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2.2vh, 26px);
+  padding: 8% clamp(20px, 4vw, 64px) 14%;
+  text-align: center;
+  transform-origin: 50% 40%;
+  transform: scale(calc(1 + var(--enter, 0) * 2.4));
+}
+
+/* Gold leaf, once on the whole site: flat leaf, 1px dark outline, 3-step 45° shade. */
+.sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.18em;
+  font-family: var(--font-sign);
+  font-weight: 600;
+  font-style: normal;
+  font-size: clamp(2.9rem, 7.2vw, 6.6rem);
+  line-height: 0.92;
+  letter-spacing: var(--track-sign);
+  text-transform: uppercase;
+  color: var(--leaf);
+  -webkit-text-stroke: 2px var(--leaf-line);
+  paint-order: stroke fill;
+  text-shadow:
+    0.012em 0.012em 0 var(--leaf-shade),
+    0.024em 0.024em 0 var(--leaf-shade),
+    0.036em 0.036em 0 var(--leaf-shade);
+  text-wrap: balance;
+}
+
+.sign__line--small {
+  font-size: 0.34em;
+  letter-spacing: 0.06em;
+  -webkit-text-stroke-width: 1px;
+}
+
+/* The barber's first spoken line: Bodoni upright, cream (not gold). */
+.question {
+  font-family: var(--font-spoken);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.1;
+  color: var(--note);
+}
+
+.facts {
+  max-width: 40rem;
+  font-size: clamp(1rem, 1.25vw, 1.1875rem);
+  line-height: 1.45;
+  color: #d9d6cf;
+  text-wrap: balance;
+}
+
+.facts__line {
+  display: block;
+}
+
+/* The pole by the door (drawn when there is no 3D; the 3D pole takes the slot). */
+.shop__pole {
+  grid-area: pole;
+  position: relative;
+}
+
+.pole {
+  position: absolute;
+  left: 50%;
+  top: 14%;
+  width: 70%;
+  height: 54%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-rows: auto 7% 1fr 7%;
+  justify-items: center;
+}
+
+.pole__globe {
+  width: 86%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #e9e4d8;
+  border: 2px solid var(--chrome);
+  margin-bottom: -2px;
+}
+
+.pole__cap {
+  width: 100%;
+  background:
+    linear-gradient(90deg, #8d9196 0 22%, var(--chrome) 22% 64%, #8d9196 64%);
+  border-radius: 2px;
+}
+
+/* Enamel stripes behind glass, with hard-stop cylinder shading. */
+.pole__glass {
+  width: 76%;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0 14%, transparent 14% 70%, rgba(0, 0, 0, 0.22) 70%),
+    repeating-linear-gradient(
+      -58deg,
+      var(--pole-red) 0 12px,
+      var(--pole-white) 12px 20px,
+      var(--pole-blue) 20px 32px,
+      var(--pole-white) 32px 40px
+    );
+  border-left: 1px solid #0006;
+  border-right: 1px solid #0006;
+}
+
+.shop__door {
+  grid-area: door;
+  position: relative;
+  background: var(--frame);
+  border: 1px solid var(--frame-edge);
+}
+
+.shop__door-glass {
+  position: absolute;
+  inset: 18px 18px 30% 18px;
+  background: var(--glass);
+  border: 1px solid #000;
+  outline: 1px solid var(--frame-edge);
+}
+
+.shop__door-handle {
+  position: absolute;
+  left: 30px;
+  top: 46%;
+  width: 6px;
+  height: 22%;
+  background: linear-gradient(90deg, #8d9196 0 40%, var(--chrome) 40%);
+  border-radius: 3px;
+}
+
+/* The hanging card sign: printed, the only uppercase label on the glass. */
+.door-sign {
+  --string: #8f897c;
+  position: absolute;
+  left: 50%;
+  top: 92px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 28px);
+  padding: 10px 14px 9px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid #c9bfa9;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+
+/* Two strings to a hook above the card. */
+.door-sign::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 64px;
+  height: 46px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(to top right, transparent calc(50% - 0.7px), var(--string) calc(50% - 0.7px) calc(50% + 0.7px), transparent calc(50% + 0.7px)) left / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - 0.7px), var(--string) calc(50% - 0.7px) calc(50% + 0.7px), transparent calc(50% + 0.7px)) right / 50% 100% no-repeat;
+}
+
+.door-sign::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 44px);
+  width: 6px;
+  height: 6px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--chrome);
+}
+
+.door-sign:empty {
+  display: none;
+}
+
+html[data-open='open'] .door-sign {
+  background: var(--sign-open);
+  border-color: #7f9884;
+}
+
+/* BK: the galvanised shutter, painted CERRADO, half down when the shop is shut. */
+.shutter {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 66%;
+  bottom: 0;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(to bottom, #7b8083 0 2px, var(--shutter, #6d7275) 2px 11px, #575b5e 11px 13px);
+  border-top: 6px solid #4c5053;
+  transform: translateY(calc(var(--shutter, 0) * -150%));
+}
+
+html[data-open='closed'] .shutter {
+  display: flex;
+}
+
+/* With the shutter half down, the lettering sits higher on the glass. */
+html[data-open='closed'] .shop__window:has(~ .shutter),
+html[data-open='closed'] .shop__front:has(.shutter) .shop__window {
+  justify-content: flex-start;
+  padding-top: 7%;
+}
+
+.shutter__paint {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: #e9e7e1;
+}
+
+/* The stallriser and the pavement edge. */
+.shop__riser {
+  height: clamp(24px, 5vh, 52px);
+  background: var(--frame);
+  border-top: 1px solid var(--frame-edge);
+}
+
+/* With the 3D running, the panes are glass onto the canvas. */
+html[data-stage='ready'] .shop__glass,
+html[data-stage='ready'] .shop__pole {
   background: transparent;
-  color: var(--muted);
-  font-size: 1.2rem;
-  cursor: pointer;
 }
 
-.pitch__close:hover {
-  color: var(--paper);
+html[data-stage='ready'] .shop__interior,
+html[data-stage='ready'] .pole {
+  visibility: hidden;
 }
 
-.foot__pitch {
-  grid-column: 1 / -1;
-  font-size: 0.88rem;
-  border-top: 1px solid var(--line-soft);
-  padding-top: 1rem;
+/* ==========================================================================
+   1–6 · The visit, in the station mirror
+   ========================================================================== */
+.visit {
+  position: relative;
+  margin: clamp(24px, 4vw, 56px) clamp(10px, 2vw, 24px) 0;
+  padding: clamp(24px, 4vw, 64px) clamp(20px, 5vw, 96px);
+  background: var(--mirror-glass);
+  border: 2px solid var(--chrome);
+  outline: 1px solid var(--chrome-line);
+  border-radius: 6px 6px 0 0;
+  border-bottom: 0;
 }
 
-/* ------------------------------------------------------------------- team */
-
-.team {
-  padding-block: 5rem;
-}
-
-.team .wrap {
+.beat {
+  position: relative;
   display: grid;
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
+  align-items: center;
+  gap: clamp(24px, 5vw, 96px);
+  padding: clamp(28px, 5vh, 56px) 0;
 }
 
-.team__list {
-  list-style: none;
-  margin: 1.5rem 0 0;
+.beat__notes {
+  display: grid;
+  gap: 18px;
+  max-width: 44rem;
+}
+
+/* Grease pencil on the glass. */
+.note {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 20px;
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.3vw, 2.125rem);
+  line-height: 1.12;
+  color: var(--note);
+}
+
+.note__text {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* The guard stamp, as it reads on the clipper. */
+.note__stamp {
+  grid-column: 1;
+  grid-row: 1;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--chrome);
+  white-space: nowrap;
+}
+
+/* Beats without stamps keep their lines in one column. */
+.beat:not(.beat--clipper) .note {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.beat:not(.beat--clipper) .note__text {
+  grid-column: 1;
+}
+
+.beat__figure {
+  --paper: var(--mirror-glass);
+  justify-self: center;
+  color: var(--chrome);
+}
+
+.beat__figure .drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.beat__figure--guia {
+  color: var(--note);
+}
+
+.beat__figure--guia .guia {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+.drawing--chair {
+  width: 200px !important;
+}
+
+.drawing--comb,
+.drawing--scissors,
+.drawing--razor {
+  width: 320px !important;
+}
+
+/* The mirror beat: the spoken line, then the hand mirror with the nape. */
+.beat--mirror .spoken {
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+}
+
+.beat__hand {
+  position: relative;
+  width: min(280px, 64vw);
+}
+
+.beat__hand .drawing--mirror {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.beat__hand-guia {
+  position: absolute;
+  left: 50%;
+  top: 30.5%;
+  width: 52%;
+  transform: translate(-50%, -50%);
+  color: var(--note);
+}
+
+.beat__hand-guia .guia {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Hand-mirror controls exist only while the 3D shows the mirror. */
+.beat--mirror .hint,
+.hand-mirror__slider,
+.hand-mirror__mask {
+  display: none;
+}
+
+html[data-stage='ready'] .beat--mirror .hint {
+  display: block;
+}
+
+html[data-stage='ready'] .hand-mirror__slider {
+  display: block;
+  position: relative;
+  width: min(320px, 70vw);
+  height: 44px;
+  touch-action: pan-y;
+}
+
+.hand-mirror__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 21px;
+  height: 2px;
+  background: var(--chrome-line);
+}
+
+.hand-mirror__thumb {
+  position: absolute;
+  top: 12px;
+  left: calc(50% + (var(--mirror-angle, 0) / 35) * 50% - 10px);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--chrome);
+  border-radius: 50%;
+  background: var(--night);
+}
+
+html[data-mirror='mask'] .hand-mirror__mask {
+  display: block;
+  position: fixed;
+  right: 9%;
+  bottom: 9%;
+  width: min(30vw, 300px);
+  color: var(--chrome);
+  pointer-events: none;
+}
+
+@media (pointer: coarse) {
+  .beat--mirror .hint[data-coarse] {
+    font-size: 0;
+  }
+
+  .beat--mirror .hint[data-coarse]::after {
+    content: attr(data-coarse);
+    font-size: 1rem;
+  }
+}
+
+/* The turn back to the room: scroll space only, for the 3D. */
+.beat--turn {
+  display: block;
+  height: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
 }
 
-.barber {
+/* --- With the 3D: beats get their scroll lengths and notes go on the glass. --- */
+html.js:not(.no-webgl) .visit {
+  background: transparent;
+  border-color: transparent;
+  outline-color: transparent;
+  margin: 0;
+  padding: 0 clamp(20px, 4vw, 64px);
+}
+
+html.js:not(.no-webgl) .beat {
+  display: block;
+  padding: 0;
+}
+
+html.js:not(.no-webgl) .beat__notes {
+  position: sticky;
+  top: calc(var(--nav-h) + 48px);
+  max-width: 34rem;
+}
+
+html.js:not(.no-webgl) [data-beat='enter'] { height: 70vh; }
+html.js:not(.no-webgl) [data-beat='consult'] { height: 60vh; }
+html.js:not(.no-webgl) [data-beat='clipper'] { height: 140vh; }
+html.js:not(.no-webgl) [data-beat='scissors'] { height: 50vh; }
+html.js:not(.no-webgl) [data-beat='razor'] { height: 70vh; }
+html.js:not(.no-webgl) [data-beat='mirror'] { height: 80vh; }
+html.js:not(.no-webgl) [data-beat='turn'] { height: 50vh; }
+
+html[data-stage='ready'] .beat__figure {
+  display: none;
+}
+
+/* Notes placed by motion beside their spot on the head. */
+html.callouts-on .beat .note {
+  position: fixed;
+  left: var(--x, 0);
+  top: var(--y, 0);
+  display: block;
+  width: max-content;
+  max-width: min(24rem, 38vw);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s linear, visibility 0s linear 0.2s;
+}
+
+html.callouts-on .beat .note[data-side='left'] {
+  transform: translateX(-100%);
+  text-align: right;
+}
+
+html.callouts-on .beat .note.is-active {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.2s linear;
+}
+
+html.callouts-on .note__stamp {
+  display: block;
+  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   7 · Carta de cortes: one cream sheet taped to the mirror
+   ========================================================================== */
+.carta {
+  position: relative;
+  margin: 0 clamp(10px, 2vw, 24px);
+  padding: clamp(32px, 5vw, 72px) clamp(20px, 5vw, 96px) clamp(48px, 6vw, 96px);
+  background: var(--mirror-glass);
+  border: 2px solid var(--chrome);
+  border-top: 0;
+  outline: 1px solid var(--chrome-line);
+  border-radius: 0 0 6px 6px;
+}
+
+html.js:not(.no-webgl) .carta {
+  background: transparent;
+  border-color: transparent;
+  outline-color: transparent;
+}
+
+.carta__lead {
+  max-width: 22ch;
+  margin-bottom: clamp(28px, 4vw, 56px);
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+}
+
+.carta__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 640px) minmax(0, 1fr);
+  grid-template-areas: 'sheet side';
+  align-items: start;
+  gap: clamp(28px, 4vw, 72px);
+}
+
+.carta__sheet {
+  grid-area: sheet;
+  position: relative;
+  padding: clamp(28px, 3.4vw, 48px) clamp(20px, 3vw, 44px) clamp(28px, 3vw, 40px);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Two strips of tape hold the sheet to the glass. */
+.carta__sheet::before,
+.carta__sheet::after {
+  content: '';
+  position: absolute;
+  top: -14px;
+  width: 92px;
+  height: 28px;
+  background: rgba(226, 219, 201, 0.78);
+  border-left: 1px dashed rgba(0, 0, 0, 0.08);
+  border-right: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+.carta__sheet::before {
+  left: 28px;
+  transform: rotate(-3deg);
+}
+
+.carta__sheet::after {
+  right: 28px;
+  transform: rotate(2.5deg);
+}
+
+.carta__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+  line-height: 1;
+}
+
+.carta__sub {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 1.1875rem;
+  line-height: 1.35;
+}
+
+.carta__intro {
+  margin-top: 8px;
+  max-width: 36rem;
+  color: var(--ink-2);
+}
+
+.chart {
+  margin-top: clamp(24px, 3vw, 36px);
+  display: grid;
+  gap: 28px;
+}
+
+.family__name {
   display: flex;
   align-items: center;
-  gap: 1.1rem;
-  padding: 1.4rem;
-  border: 1px solid var(--line-soft);
-  background: var(--ink-2);
-}
-
-.barber__mono {
-  flex: none;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--brass);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 2rem;
-  color: var(--brass);
-}
-
-.barber__name {
-  font-size: 1.5rem;
-}
-
-.barber__spec {
-  color: var(--muted);
-  font-size: 0.98rem;
-}
-
-/* ---------------------------------------------------------------- booking */
-
-.booking {
-  padding-block: 5rem 6rem;
-  border-top: 1px solid var(--line-soft);
-}
-
-.booking .wrap {
-  display: grid;
-  gap: 1rem;
-}
-
-.book {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: 2rem 3rem;
-  align-items: start;
-  margin-top: 1.5rem;
-}
-
-.book__steps {
-  display: grid;
-  gap: 2.2rem;
-  min-width: 0;
-  counter-reset: step;
-}
-
-.book .group legend .n::before {
-  counter-increment: step;
-  content: counter(step);
-}
-
-.book .group legend .n {
-  display: inline-grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid var(--brass);
-  color: var(--brass);
-  font-size: 0.8rem;
-  letter-spacing: 0;
-}
-
-.options {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
-}
-
-.option {
-  position: relative;
-}
-
-.option__body {
-  display: grid;
-  gap: 0.15rem;
-  height: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--line-soft);
-  background: var(--ink-2);
-  transition: border-color 0.2s, background 0.2s;
-  cursor: pointer;
-}
-
-.option__name {
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 14px;
+  font-family: var(--font-pencil);
   font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.2;
 }
 
-.option__meta {
-  font-family: var(--font-label);
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+/* A printed rule runs from the family name to the edge of the sheet. */
+.family__name::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
 }
 
-.option input:hover + .option__body {
-  border-color: var(--line);
-}
-
-.option input:checked + .option__body {
-  border-color: var(--brass);
-  background: color-mix(in srgb, var(--brass) 12%, var(--ink-2));
-}
-
-.days {
-  display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding-bottom: 0.4rem;
-  scrollbar-width: thin;
-  scroll-snap-type: x proximity;
-}
-
-.day {
-  position: relative;
-  flex: none;
-  scroll-snap-align: start;
-}
-
-.day span {
+.family__plates {
   display: grid;
-  justify-items: center;
-  gap: 0.1rem;
-  width: 64px;
-  padding: 0.55rem 0;
-  border: 1px solid var(--line-soft);
-  background: var(--ink-2);
-  font-family: var(--font-label);
-  letter-spacing: 0.06em;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 22px 18px;
+}
+
+.plate {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 2px;
   cursor: pointer;
 }
 
-.day b {
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  font-weight: 500;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
+.plate input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
 }
 
-.day small {
-  font-size: 0.78rem;
-  color: var(--muted);
+.plate__img {
+  display: block;
+  aspect-ratio: 1;
+  margin-bottom: 8px;
+  color: var(--ink);
+  outline: 1px solid transparent;
+  outline-offset: 3px;
+}
+
+.plate__img svg,
+.plate__img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.plate__n {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.day input:checked + span {
-  border-color: var(--brass);
-  background: var(--brass);
-  color: var(--brass-ink);
+.plate__name {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.12;
 }
 
-.day input:checked + span small {
-  color: var(--brass-ink);
+.plate__alias {
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  color: var(--ink-2);
 }
 
-.day input:disabled + span {
-  opacity: 0.35;
-  cursor: not-allowed;
-  text-decoration: line-through;
+/* Selected: a pencil tick and a 1px brass frame. */
+.plate__tick {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  width: 30px;
+  color: #34312b;
+  visibility: hidden;
+}
+
+.plate input:checked ~ .plate__img {
+  outline-color: var(--brass);
+}
+
+.plate input:checked ~ .plate__tick {
+  visibility: visible;
+}
+
+.plate input:focus-visible ~ .plate__img {
+  outline: 2px solid var(--ink);
+}
+
+.plate:hover .plate__name {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+/* 'Sin barba' is a plain ruled option after the beard plates. */
+.plate--none {
+  align-self: end;
+  margin-top: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule-paper);
+  width: max-content;
+}
+
+.plate--none input:checked ~ .plate__name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.composer__open {
+  margin-top: 26px;
+  color: var(--ink);
+}
+
+/* 'Compón tu corte': ruled radio rows, label on the line, no chips. */
+.composer {
+  margin-top: 8px;
+  display: grid;
+  gap: 22px;
+}
+
+.composer__part legend,
+.composer__label {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.1875rem;
+  margin-bottom: 6px;
+}
+
+.composer__label {
+  margin-top: 10px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.composer__rules {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 22px;
+}
+
+.rule {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  min-height: 44px;
+  padding: 0 2px 4px;
+  border-bottom: 1px solid var(--rule-paper);
+  cursor: pointer;
+}
+
+.rule input {
+  position: absolute;
+  opacity: 0;
+}
+
+.rule input:checked + span {
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.rule input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.composer__part:disabled {
+  color: var(--ink-2);
+}
+
+.composer__part:disabled .rule {
+  cursor: default;
+  border-bottom-style: dashed;
+}
+
+/* The right column: the player over the mirror (3D), or the recipe (no 3D). */
+.carta__recipe {
+  grid-area: side;
+}
+
+.carta__recipe:empty {
+  display: none;
+}
+
+.carta__grid > noscript {
+  grid-area: side;
+  display: block;
+}
+
+.carta__nojs {
+  display: grid;
+  gap: 32px;
+}
+
+#carta-player {
+  grid-area: side;
+  display: none;
+}
+
+html.js:not(.no-webgl) .carta__recipe {
+  grid-area: sheet;
+}
+
+/* With the 3D the recipe takes the sheet's place while a cut is open. */
+html.js:not(.no-webgl) .carta__grid:has(.carta__recipe:not(:empty)) .carta__sheet {
+  display: none;
+}
+
+html[data-stage='ready'] #carta-player {
+  display: grid;
+  align-content: space-between;
+  min-height: min(76vh, 760px);
+  gap: 20px;
+  color: var(--note);
+}
+
+.player__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.player__caption {
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: clamp(1.375rem, 2vw, 1.875rem);
+  line-height: 1.15;
+  max-width: 28ch;
+}
+
+.player__controls,
+.player__views {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 22px;
+}
+
+.player__views [aria-pressed='true'] {
+  text-decoration-thickness: 3px;
+}
+
+.carta__templates {
+  display: none;
+}
+
+/* --- The recipe card (renderRecipe): printed on the same paper. --- */
+.recipe {
+  --paper-local: var(--paper);
+  display: block;
+  padding: clamp(24px, 3vw, 44px);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.recipe__n {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.recipe__name {
+  margin-top: 2px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  line-height: 1.02;
+}
+
+.recipe__alias {
+  font-family: var(--font-read);
+  font-weight: 400;
+  font-size: 0.5em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.recipe__desc {
+  margin-top: 10px;
+  font-size: 1.125rem;
+  max-width: 34rem;
+}
+
+.recipe__spec {
+  margin-top: 22px;
+  border-top: 1px solid var(--ink);
+}
+
+.recipe__row {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule-paper);
+}
+
+.recipe__row dt,
+.recipe__k {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.recipe__steps {
+  margin-top: 22px;
+  display: grid;
+}
+
+.recipe__step {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 0 8px 22px;
+  border: 0;
+  border-bottom: 1px solid var(--rule-paper);
+  background: none;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.35;
+  position: relative;
+}
+
+/* A short pencil dash marks each step; the current one gets a stroke, done ones a tick. */
+.recipe__step::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 1.15em;
+  width: 10px;
+  height: 1.5px;
+  background: var(--ink);
+}
+
+.recipe__step[aria-current='step'] {
+  font-weight: 500;
+}
+
+.recipe__step[aria-current='step']::before {
+  width: 14px;
+  height: 3px;
+}
+
+.recipe__step.is-done::before {
+  width: 10px;
+  height: 6px;
+  top: 0.95em;
+  background: none;
+  border-left: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  transform: rotate(-45deg);
+}
+
+.recipe__tarifa {
+  margin-top: 22px;
+  font-size: 1.125rem;
+}
+
+.recipe__tarifa .recipe__v {
+  font-weight: 500;
+}
+
+.recipe__guia {
+  margin-top: 22px;
+  color: var(--ink);
+}
+
+.recipe__guia .guia {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+}
+
+.recipe__guia figcaption,
+.recipe__note {
+  margin-top: 6px;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+
+.recipe__ficha {
+  margin-top: 22px;
+  padding: 14px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  font-size: 1rem;
+}
+
+.recipe__ficha .recipe__k {
+  display: block;
+}
+
+.recipe__note {
+  margin-top: 12px;
+}
+
+.recipe__book {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 22px;
+  background: var(--cta);
+  color: var(--cta-ink);
+  border-radius: 2px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.1875rem;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   9 · Tarifa, on the tiled wall of the room
+   ========================================================================== */
+.tarifa {
+  position: relative;
+  padding: clamp(56px, 8vw, 120px) var(--edge);
+  background: var(--night);
+  overflow: hidden;
+}
+
+.wall {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.wall .tile {
+  fill-opacity: 0.26;
+}
+
+.tarifa__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
+  grid-template-areas:
+    'board includes'
+    'foot includes';
+  align-items: start;
+  column-gap: clamp(32px, 6vw, 96px);
+  row-gap: 28px;
+}
+
+/* Corte Real: black glass board, cream sign-painted letters, four chrome standoffs. */
+.board {
+  grid-area: board;
+  position: relative;
+  padding: clamp(28px, 4vw, 56px) clamp(22px, 4vw, 56px);
+  background:
+    radial-gradient(circle at 18px 18px, var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
+    radial-gradient(circle at calc(100% - 18px) 18px, var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
+    radial-gradient(circle at 18px calc(100% - 18px), var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
+    radial-gradient(circle at calc(100% - 18px) calc(100% - 18px), var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
+    linear-gradient(115deg, transparent 0 62%, rgba(255, 255, 255, 0.035) 62% 70%, transparent 70%),
+    #09090a;
+  border: 1px solid #2c2f33;
+  color: var(--note);
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.board__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  padding-bottom: 18px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid currentColor;
+}
+
+.board__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5.5rem 7.5rem;
+  align-items: baseline;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid #2c2f33;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  line-height: 1.15;
+}
+
+.row__min,
+.row__price {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.board .row__min {
+  color: #c9c6be;
+}
+
+.board__note {
+  margin-top: 18px;
+  font-size: 1rem;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: #c9c6be;
+}
+
+/* BK: felt letter board, white plastic letters, in a thin aluminium frame. */
+html[data-board='felt'] .board {
+  background:
+    repeating-linear-gradient(to bottom, var(--felt, #151515) 0 7px, #1f1f1f 7px 8px);
+  border: 10px solid #2b2e30;
+  outline: 1px solid #6d7275;
+  outline-offset: -10px;
+  color: #f4f4f2;
+}
+
+html[data-board='felt'] .board__title {
+  border-bottom: 0;
+  padding-bottom: 6px;
+}
+
+html[data-board='felt'] .board__row {
+  border-bottom: 0;
+  padding: 10px 0;
+}
+
+/* Review pins (BK): small paper notes next to the service they talk about. */
+.pin {
+  position: relative;
+  padding: 18px 18px 14px;
+  background: var(--note);
+  color: var(--ink);
+  font-family: var(--font-read);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  transform: rotate(-0.8deg);
+}
+
+.pin::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--pole-red);
+  border: 1px solid #7b1418;
+}
+
+.pin blockquote p {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.pin figcaption {
+  margin-top: 8px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.board__pins {
+  position: absolute;
+  top: 2px;
+  left: calc(100% + clamp(40px, 5vw, 76px));
+  width: min(280px, 24vw);
+  display: grid;
+  gap: 16px;
+}
+
+.board__row + .board__row .pin {
+  transform: rotate(0.7deg);
+}
+
+.tarifa__foot {
+  grid-area: foot;
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+
+.tarifa__source {
+  padding: 14px 18px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.tarifa__ratings {
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* Printed card with what each service includes, pinned to the wall. */
+.includes {
+  grid-area: includes;
+  padding: clamp(22px, 3vw, 36px);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+html[data-board='felt'] .includes {
+  margin-top: 0;
+}
+
+.includes__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.625rem;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.includes__row {
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-paper);
+}
+
+.includes__row dt {
+  font-weight: 500;
+}
+
+.includes__row dd {
+  color: var(--ink-2);
+}
+
+/* BK has pins to the right of the board: the includes card goes under them. */
+html[data-board='felt'] .tarifa__inner {
+  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
+  grid-template-areas:
+    'board .'
+    'foot includes';
+}
+
+/* ==========================================================================
+   10 · Las sillas: plan of the shop and the ledger
+   ========================================================================== */
+.sillas {
+  position: relative;
+  padding: clamp(56px, 8vw, 112px) var(--edge);
+  background: var(--night);
+  border-top: 1px solid var(--chrome-line);
+}
+
+.sillas__grid {
+  margin-top: clamp(28px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+
+.plan {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--chrome);
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ledger {
+  border-top: 1px solid var(--chrome);
+}
+
+.ledger__row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'tool chair see'
+    'tool name see'
+    'tool days see'
+    'tool known see';
+  column-gap: 28px;
+  align-items: center;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--chrome-line);
+}
+
+.ledger__tool {
+  grid-area: tool;
+  color: var(--chrome);
+}
+
+.ledger__tool .drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ledger__chair {
+  grid-area: chair;
+  font-size: 0.9375rem;
+  color: var(--text-2);
+}
+
+.ledger__name {
+  grid-area: name;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.875rem;
+  line-height: 1.05;
+}
+
+.ledger__days {
+  grid-area: days;
+}
+
+.ledger__known {
+  grid-area: known;
+  color: var(--text-2);
+}
+
+.ledger__see {
+  grid-area: see;
+}
+
+/* ==========================================================================
+   11 · Pide hora: the appointment book on the counter
+   ========================================================================== */
+.reservar {
+  position: relative;
+  padding: clamp(56px, 8vw, 112px) var(--edge);
+  background: var(--counter);
+  border-top: 1px solid #000;
+}
+
+.reservar__head {
+  display: grid;
+  gap: 14px;
+  max-width: 40rem;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.reservar__intro {
+  color: #d9d6cf;
+}
+
+/* Two facing pages; the gutter is a hard fold line. */
+.book {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid #000;
+}
+
+.book__page {
+  position: relative;
+  padding: clamp(24px, 3.4vw, 52px);
+  display: grid;
+  align-content: start;
+  gap: 28px;
+}
+
+.book__page--left {
+  border-right: 1px solid #b9ab90;
+  background: linear-gradient(90deg, transparent calc(100% - 10px), #e4dac6 calc(100% - 10px));
+}
+
+.book__page--right {
+  background: linear-gradient(90deg, #e4dac6 0 10px, transparent 10px);
+}
+
+.book__agenda {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.book__group > legend,
+.book__label,
+.field__label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+/* A ruled line per option; the radio is a pencil ring. */
+.line {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  column-gap: 14px;
+  min-height: 46px;
+  padding: 11px 0 9px;
+  border-bottom: 1px solid var(--rule-paper);
+  cursor: pointer;
+}
+
+.line input {
+  position: absolute;
+  opacity: 0;
+}
+
+.line::before {
+  content: '';
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+}
+
+.line:has(input:checked)::before {
+  background: radial-gradient(circle, var(--ink) 0 4px, transparent 4.5px);
+}
+
+.line:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.line .row__name {
+  grid-column: 2;
+}
+
+.line .row__min {
+  color: var(--ink-2);
+}
+
+.line .row__price {
+  min-width: 5.5rem;
+  font-weight: 500;
+}
+
+.line--barber {
+  grid-template-columns: 26px auto minmax(0, 1fr);
+}
+
+.line .row__note {
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+}
+
+.book__cutline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule-paper);
+  font-size: 1.125rem;
+}
+
+.book__cutline .textbtn {
+  padding: 4px 0;
+  min-height: 0;
+}
+
+.book__ficha {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+
+.hours {
+  display: grid;
+}
+
+.hours__row {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule-paper);
+  font-size: 1rem;
+}
+
+.hours__row dt {
+  font-weight: 500;
+}
+
+/* Days as columns, hours as ruled lines (filled in by the booking script). */
+.days {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(68px, 1fr);
+  overflow-x: auto;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  scrollbar-width: thin;
+}
+
+.days > * {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-height: 64px;
+  padding: 10px 6px;
+  border: 0;
+  border-right: 1px solid var(--rule-paper);
+  background: none;
+  color: var(--ink);
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.1;
+}
+
+.days > [aria-pressed='true'],
+.days > :has(input:checked) {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.days > :disabled,
+.days > [aria-disabled='true'] {
+  color: var(--ink-2);
+  font-weight: 500;
+  cursor: default;
 }
 
 .slots {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-  gap: 0.45rem;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  column-gap: 18px;
 }
 
-.slot {
-  position: relative;
+.slots > * {
+  min-height: 44px;
+  padding: 10px 0 6px;
+  border: 0;
+  border-bottom: 1px solid var(--rule-paper);
+  background: none;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  text-align: left;
 }
 
-.slot span {
-  display: block;
-  text-align: center;
-  padding: 0.6rem 0;
-  border: 1px solid var(--line-soft);
-  background: var(--ink-2);
-  font-family: var(--font-label);
+.slots > [aria-pressed='true'],
+.slots > :has(input:checked) {
   font-weight: 500;
-  font-size: 1.02rem;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
+  border-bottom: 2px solid var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
-.slot input:hover:not(:disabled) + span {
-  border-color: var(--line);
+.slots:empty,
+.days:empty {
+  min-height: 46px;
+  background: repeating-linear-gradient(to bottom, transparent 0 45px, var(--rule-paper) 45px 46px);
 }
 
-.slot input:checked + span {
-  background: var(--brass);
-  border-color: var(--brass);
-  color: var(--brass-ink);
-}
-
-.slot input:disabled + span {
-  color: color-mix(in srgb, var(--muted) 55%, transparent);
-  text-decoration: line-through;
-  cursor: not-allowed;
-  background: transparent;
-}
-
-.hint {
-  font-size: 0.92rem;
-  color: var(--muted);
-}
-
-.fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
+.book .hint {
+  color: var(--ink-2);
+  margin-top: 8px;
 }
 
 .field {
-  display: grid;
-  gap: 0.35rem;
-  font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  color: var(--muted);
+  display: block;
 }
 
 .field input {
   width: 100%;
-  min-height: 48px;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--line-soft);
-  border-radius: 2px;
-  background: var(--ink-2);
-  color: var(--paper);
-  font: inherit;
-  font-family: var(--font-body);
-  letter-spacing: 0;
+  min-height: 46px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  font-size: 1.1875rem;
 }
 
-.field input:focus {
-  border-color: var(--brass);
-  outline: none;
+.field input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
 }
 
-.field input[aria-invalid='true'] {
-  border-color: var(--closed);
-}
-
-.ticket {
-  position: sticky;
-  top: calc(var(--nav-h) + 1.5rem);
+.book__you {
   display: grid;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: var(--ink-2);
-  border: 1px solid var(--line);
-  min-width: 0;
+  gap: 18px;
 }
 
-.ticket__label {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.6rem;
-}
-
-.ticket__rows {
-  margin: 0;
+.book__action {
   display: grid;
-  gap: 0.55rem;
+  gap: 12px;
 }
 
-.ticket__rows div {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.55rem;
-  border-bottom: 1px dashed var(--line-soft);
+.cta--book {
+  width: 100%;
+  min-height: 56px;
+  font-size: 1.375rem;
 }
 
-.ticket__rows dt {
-  color: var(--muted);
-  font-family: var(--font-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.86rem;
+.book__ctanote,
+.book__alt {
+  font-size: 0.9375rem;
+  color: var(--ink-2);
 }
 
-.ticket__rows dd {
-  margin: 0;
-  text-align: right;
-  min-width: 0;
-}
-
-.ticket__total {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-family: var(--font-label);
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.ticket__total strong {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
+.book__alt a {
+  color: var(--ink);
   font-weight: 500;
-  color: var(--brass);
+}
+
+/* Without JS: plain links that book. */
+.book__nojs {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.book__nojs-lead {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.375rem;
+}
+
+.book__nojs a:not(.cta) {
+  font-weight: 500;
+}
+
+html.no-js .book__live {
+  display: none;
+}
+
+/* --- The cream appointment card. --- */
+.card {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.card__front {
+  padding: 30px 30px 24px;
+  background: var(--paper);
+  color: var(--ink);
+  /* Perforated top edge. */
+  -webkit-mask: radial-gradient(circle 5px at 9px 0, transparent 98%, #000) -9px 0 / 18px 100% repeat-x;
+  mask: radial-gradient(circle 5px at 9px 0, transparent 98%, #000) -9px 0 / 18px 100% repeat-x;
+}
+
+.card__header {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.card__row {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule-paper);
+}
+
+.card__row dt {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+}
+
+.card__back {
+  margin-top: 16px;
+  font-size: 0.9375rem;
+}
+
+.card__k {
+  font-weight: 500;
+}
+
+.card__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  line-height: 1.1;
+}
+
+.card__body,
+.card__fallback,
+.card__demo {
+  margin-top: 12px;
+  color: #d9d6cf;
+}
+
+.card__actions {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 24px;
+}
+
+/* ==========================================================================
+   12 · The door, seen from the street
+   ========================================================================== */
+.door {
+  display: grid;
+  gap: clamp(24px, 3vw, 40px);
+  padding: clamp(48px, 7vw, 96px) var(--edge) clamp(40px, 6vw, 80px);
+  background: #1a1b1d; /* the street wall at night, so the black door frame reads */
+  border-top: 1px solid #000;
+}
+
+/* The door: painted frame, dark glass, white vinyl, a push bar. */
+.door__glass {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  column-gap: clamp(28px, 5vw, 80px);
+  min-height: clamp(420px, 40vw, 560px);
+  padding: clamp(28px, 4vw, 56px) clamp(24px, 4vw, 56px) 120px;
+  background: var(--glass);
+  border: 18px solid var(--frame);
+  outline: 1px solid var(--frame-edge);
+  color: #f4f4f2;
+}
+
+.door__number {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: min(22vw, 280px);
+  line-height: 0.78;
   letter-spacing: 0;
 }
 
-.done {
-  margin-top: 1.5rem;
-  padding: 2rem;
-  border: 1px solid var(--brass);
-  background: var(--ink-2);
+.door__vinyl {
   display: grid;
-  gap: 1rem;
-  justify-items: start;
-  max-width: 40rem;
+  gap: 6px;
+  max-width: 26rem;
+  padding-bottom: 6px;
 }
 
-.done__note {
-  color: var(--muted);
-  font-size: 0.95rem;
+.door__name {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1.875rem;
+  line-height: 1.1;
 }
 
-/* ----------------------------------------------------------------- footer */
-
-.foot {
-  padding-block: 3.5rem calc(3rem + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--line-soft);
-  color: var(--muted);
+.door__hours {
+  margin-top: 8px;
 }
 
-.foot__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem;
+.door__transit {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.foot__grid > div {
-  display: grid;
-  gap: 0.9rem;
-  align-content: start;
+.door__metro {
+  display: inline-block;
+  padding: 2px 7px;
+  background: var(--metro, #2fa84f);
+  color: #fff;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-.brand--foot {
-  color: var(--paper);
+.door__links a {
+  font-weight: 500;
 }
 
-.selectable {
-  color: var(--paper);
-  user-select: all;
+.door .door-sign--door {
+  left: auto;
+  right: clamp(40px, 6vw, 96px);
+  top: 70px;
+  transform: none;
 }
 
-.hours {
-  border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
+.door .door-sign--door::before,
+.door .door-sign--door::after {
+  left: 50%;
 }
 
-.hours th,
-.hours td {
-  text-align: left;
-  padding: 0.3rem 1.5rem 0.3rem 0;
+/* Push bar. */
+.door__handle {
+  position: absolute;
+  right: 40px;
+  bottom: 50px;
+  width: 38%;
+  height: 10px;
+  background: linear-gradient(to bottom, var(--chrome) 0 55%, #8d9196 55%);
+  border-radius: 5px;
+}
+
+.door__step {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 40px;
+}
+
+.cta--call {
+  min-height: 72px;
+  padding: 14px 40px;
+  font-size: 1.75rem;
+}
+
+.cta__sub {
+  font-family: var(--font-read);
   font-weight: 400;
+  font-size: 1.0625rem;
+  letter-spacing: 0;
 }
 
-.hours td {
-  color: var(--paper);
+.door__notice {
+  max-width: 30rem;
+  font-size: 0.9375rem;
+  color: var(--text-2);
 }
 
-/* ----------------------------------------------------------------- phones */
+/* ==========================================================================
+   Phones: thumb bar and note strip
+   ========================================================================== */
+.thumbbar,
+.note-strip {
+  display: none;
+}
+
+/* ==========================================================================
+   No 3D (no WebGL, no JS): the visit reads as a list on the mirror glass
+   ========================================================================== */
+html.no-webgl .beat,
+html.no-js .beat {
+  height: auto;
+}
+
+/* ==========================================================================
+   Narrow screens
+   ========================================================================== */
+@media (max-width: 1099px) {
+  .tarifa__inner,
+  html[data-board='felt'] .tarifa__inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'board'
+      'foot'
+      'includes';
+  }
+
+  .board__pins {
+    position: static;
+    width: auto;
+    margin-top: 14px;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
+    text-transform: none;
+  }
+}
 
 @media (max-width: 899px) {
-  :root {
-    --nav-h: 58px;
+  .carta__grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'sheet' 'side';
   }
 
-  .nav__links,
-  .brand__tag {
-    display: none;
-  }
-
-  .hero {
-    align-items: end;
-    padding-block: 52svh 4.5rem;
-  }
-
-  .hero .copy {
-    gap: 0.9rem;
-  }
-
-  .lede {
-    font-size: 1.02rem;
-  }
-
-  .scroll-cue {
-    display: none;
-  }
-
-  .beat {
-    align-items: flex-end;
-    padding-block: 52svh 3rem;
-    min-height: 100svh;
-  }
-
-  .panel {
-    padding: 1.3rem 1.2rem;
-    background: color-mix(in srgb, var(--ink) 78%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--line-soft);
-  }
-
-  .studio {
-    align-items: flex-end;
-    padding-block: 50svh 2rem;
-  }
-
-  .studio__drag {
-    width: 100%;
-    bottom: auto;
-    height: 50svh;
-  }
-
-  .wrap--split,
   .book,
-  .foot__grid {
+  .door,
+  .card,
+  .sillas__grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .board__intro,
-  .ticket {
-    position: static;
+  .book__page--left {
+    border-right: 0;
+    border-bottom: 1px solid #b9ab90;
+    background: none;
   }
 
-  .team__list,
-  .quotes {
+  .book__page--right {
+    background: none;
+  }
+
+  #mirror-window {
+    top: calc(var(--nav-h) + 10px);
+    left: 10px;
+    right: 10px;
+    bottom: auto;
+    height: 58svh;
+  }
+
+  .reservar__head {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Phone player: the top of the screen is the mirror, the controls sit below. */
+  html.player-open #carta-player {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-rows: 58svh auto;
+    align-content: stretch;
+    min-height: 0;
+    padding: 0;
+  }
+
+  html.player-open #carta-player > * {
+    background: var(--cape);
+    padding: 0 16px;
+  }
+
+  html.player-open #carta-player .player__title {
+    background: transparent;
+    padding-top: calc(var(--nav-h) + 16px);
+  }
+}
+
+@media (max-width: 699px) {
+  :root {
+    --nav-h: 56px;
+    --thumb-h: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body {
+    font-size: 1.0625rem;
+  }
+
+  .brand__tag,
+  .nav__cta {
+    display: none;
+  }
+
+  .nav {
+    gap: 16px;
+  }
+
+  .brand__name {
+    font-size: 1.25rem;
+  }
+
+  .nav__links {
+    gap: 16px;
+  }
+
+  .nav__links a {
+    font-size: 1.0625rem;
   }
 
   .pitch {
-    left: auto;
-    right: calc(10px + env(safe-area-inset-right, 0px));
-    top: calc(var(--nav-h) + 8px + env(safe-area-inset-top, 0px));
-    bottom: auto;
-    padding: 0.4rem 2.2rem 0.4rem 0.7rem;
+    align-items: flex-start;
+    font-size: 1rem;
   }
 
-  .pitch span {
+  /* The window takes the width; the card sign hangs inside the glass. */
+  .shopfront {
+    height: calc(100svh - var(--nav-h) - var(--thumb-h));
+    min-height: 520px;
+  }
+
+  .shop__front {
+    grid-template-columns: 1fr 30px;
+    grid-template-areas: 'glass pole';
+    padding: 10px 12px;
+  }
+
+  .shop__door {
+    grid-area: glass;
+    background: none;
+    border: 0;
+    pointer-events: none;
+  }
+
+  .shop__door-glass,
+  .shop__door-handle {
     display: none;
   }
 
-  .board {
-    padding-block: 5rem 3rem;
+  /* The card hangs low in the window on phones, clear of the lettering. */
+  .door-sign {
+    top: 70%;
+    z-index: 3;
+    max-width: calc(100% - 40px);
+    font-size: 1rem;
   }
-}
 
-@media (max-width: 520px) {
-  .options,
-  .fields {
+  .shop__window,
+  html[data-open='closed'] .shop__front:has(.shutter) .shop__window {
+    padding: 14% 16px 30%;
+    justify-content: flex-start;
+  }
+
+  .sign {
+    font-size: clamp(2.2rem, 11.5vw, 3.6rem);
+  }
+
+  .sign__line--small {
+    font-size: 0.4em;
+  }
+
+  .facts {
+    font-size: 1rem;
+  }
+
+  .pole {
+    width: 86%;
+    top: 22%;
+    height: 46%;
+  }
+
+  .shutter {
+    top: 62%;
+  }
+
+  /* On a phone the hanging card says it for the shutter. */
+  .shop__front:has(.door-sign:not(:empty)) .shutter__paint {
+    visibility: hidden;
+  }
+
+  .visit,
+  .carta {
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .beat {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .beat__figure {
+    justify-self: start;
+    max-width: 200px;
+  }
+
+  .beat--clipper .beat__figure {
+    max-width: 180px;
+  }
+
+  .note {
+    grid-template-columns: minmax(0, 1fr);
+    font-size: 1.5rem;
+  }
+
+  .note__text,
+  .note__stamp {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .note__stamp {
+    order: -1;
+  }
+
+  .carta__sheet {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .family__plates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 16px;
+  }
+
+  .plate__alias,
+  .plate__n {
+    font-size: 1rem;
+  }
+
+  .recipe__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .board__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'name price' 'min min';
+    row-gap: 2px;
+  }
+
+  .board__row .row__name { grid-area: name; }
+  .board__row .row__price { grid-area: price; }
+  .board__row .row__min { grid-area: min; text-align: left; font-size: 1.0625rem; }
+
+  .tarifa__foot {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .board__name {
-    font-size: 1.3rem;
+  .ledger__row {
+    grid-template-columns: 76px minmax(0, 1fr);
+    grid-template-areas:
+      'tool chair'
+      'tool name'
+      'days days'
+      'known known'
+      'see see';
+    column-gap: 18px;
   }
+
+  .ledger__see {
+    justify-self: start;
+  }
+
+  .line {
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    grid-template-areas: 'mark name price' 'mark min min';
+  }
+
+  .line::before { grid-area: mark; }
+  .line .row__name { grid-area: name; }
+  .line .row__price { grid-area: price; min-width: 0; text-align: right; }
+  .line .row__min { grid-area: min; text-align: left; }
+
+  .line--barber {
+    grid-template-columns: 26px minmax(0, 1fr);
+    grid-template-areas: 'mark name' 'mark note';
+  }
+
+  .line--barber .row__note { grid-area: note; }
+
+  .book__ctanote,
+  .book__alt,
+  .tarifa__source,
+  .door__notice,
+  .recipe__guia figcaption,
+  .recipe__note,
+  .book__ficha,
+  .card__back,
+  .pin blockquote p,
+  .hours__row,
+  .includes,
+  .pitch {
+    font-size: 1rem;
+  }
+
+  .door__glass {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    border-width: 12px;
+    padding-bottom: 96px;
+  }
+
+  .door .door-sign--door {
+    position: relative;
+    right: auto;
+    top: auto;
+    display: inline-block;
+    margin-top: 72px;
+  }
+
+  .cta--call {
+    width: 100%;
+  }
+
+  /* Thumb bar: 'Pedir hora' always under the thumb. */
+  .thumbbar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 35;
+    display: block;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--cape);
+    border-top: 1px solid var(--chrome-line);
+  }
+
+  .thumbbar .cta {
+    width: 100%;
+    min-height: 52px;
+  }
+
+  /* One note at a time, on a solid strip above the thumb bar (motion fills it). */
+  html.callouts-on .note-strip:not(:empty) {
+    position: fixed;
+    inset: auto 0 var(--thumb-h);
+    z-index: 34;
+    display: block;
+    padding: 14px 16px;
+    background: var(--cape);
+    border-top: 1px solid var(--chrome-line);
+    font-family: var(--font-pencil);
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.15;
+    color: var(--note);
+  }
+
+  html.callouts-on .beat .note {
+    visibility: hidden !important;
+  }
+
+  html.js:not(.no-webgl) [data-beat='enter'] { height: 60svh; }
+  html.js:not(.no-webgl) [data-beat='consult'] { height: 60svh; }
+  html.js:not(.no-webgl) [data-beat='clipper'] { height: 130svh; }
+  html.js:not(.no-webgl) [data-beat='scissors'] { height: 50svh; }
+  html.js:not(.no-webgl) [data-beat='razor'] { height: 60svh; }
+  html.js:not(.no-webgl) [data-beat='mirror'] { height: 80svh; }
+  html.js:not(.no-webgl) [data-beat='turn'] { height: 50svh; }
 }
 
+/* ==========================================================================
+   Reduced motion: nothing moves on its own
+   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .scroll-cue::after {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
   }
+}
 
-  #stage {
-    transition: none;
-  }
+html[data-motion='off'] *,
+html[data-motion='off'] *::before,
+html[data-motion='off'] *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
 }
