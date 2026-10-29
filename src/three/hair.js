@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { HEAD_POINTS, LANDMARKS, MM, DEDO_MM } from './hairField.js';
 
 // Hair and beard are drawn as "fur shells": the scalp and jaw of the head mesh
 // are copied N times, each copy pushed a little further out along the normal,
@@ -33,64 +34,12 @@ function noise3(x, y, z) {
 }
 
 // ---------------------------------------------------------------- regions
+// Hair and beard zones come with the head asset (signed edge distances measured on the
+// MakeHuman head, see scripts/head/); hairField.js holds the anatomy used below.
 
-// Hairline height (y) against azimuth around the head, 0 = forehead, π = nape.
-const HAIRLINE = [
-  [0, 0.6], [0.45, 0.56], [0.8, 0.42], [1.12, 0.3], [1.3, -0.08],
-  [1.75, -0.12], [2.3, -0.3], [Math.PI, -0.5],
-];
-
-function hairlineAt(phi) {
-  for (let i = 1; i < HAIRLINE.length; i++) {
-    const [p1, y1] = HAIRLINE[i];
-    if (phi <= p1) {
-      const [p0, y0] = HAIRLINE[i - 1];
-      return mix(y0, y1, smooth(0, 1, (phi - p0) / (p1 - p0)));
-    }
-  }
-  return HAIRLINE[HAIRLINE.length - 1][1];
-}
-
-function earClearance(x, y, z) {
-  const ex = (Math.abs(x) - 0.7) / 0.15, ey = (y + 0.05) / 0.28, ez = (z + 0.14) / 0.15;
-  return smooth(1.0, 1.25, ex * ex + ey * ey + ez * ez);
-}
-
-export function hairMask(x, y, z) {
-  const phi = Math.abs(Math.atan2(x, z));
-  const h = hairlineAt(phi);
-  return smooth(h - 0.03, h + 0.09, y) * earClearance(x, y, z);
-}
-
-// Upper edge of the beard against |x|: moustache, mouth corner, cheek line, sideburn.
-const CHEEK_LINE = [[0, -0.36], [0.16, -0.37], [0.25, -0.47], [0.45, -0.34], [0.62, -0.12], [0.85, -0.1]];
-
-function cheekLineAt(ax) {
-  for (let i = 1; i < CHEEK_LINE.length; i++) {
-    const [x1, y1] = CHEEK_LINE[i];
-    if (ax <= x1) {
-      const [x0, y0] = CHEEK_LINE[i - 1];
-      return mix(y0, y1, (ax - x0) / (x1 - x0));
-    }
-  }
-  return CHEEK_LINE[CHEEK_LINE.length - 1][1];
-}
-
-export function beardMask(x, y, z) {
-  const ax = Math.abs(x);
-  const phi = Math.abs(Math.atan2(x, z));
-  const top = cheekLineAt(ax);
-  let m = 1 - smooth(top - 0.025, top + 0.025, y);
-  m *= 1 - smooth(1.42, 1.56, phi);
-  // neckline: from the jaw angle down to just under the chin
-  const bottom = -0.62 - 0.38 * smooth(-0.15, 0.45, z);
-  m *= smooth(bottom - 0.03, bottom + 0.05, y);
-  if (z > 0.5) {
-    const lx = x / 0.17, ly = (y + 0.5) / 0.068;
-    m *= smooth(1.0, 1.4, lx * lx + ly * ly);
-  }
-  return m * earClearance(x, y, z);
-}
+const P_ = HEAD_POINTS;
+// legacy looks keep the beard tidy: a neckline a finger and a half above the Adam's apple
+const NECKLINE = LANDMARKS.NUEZ + 1.5 * DEDO_MM * MM;
 
 // ------------------------------------------------------------------ looks
 // A look returns the strand length (head units, 1 ≈ 11 cm) and the direction
@@ -276,43 +225,22 @@ export function hairUniforms() {
 // ------------------------------------------------------------- the system
 
 export class Hair {
-  constructor(headGeometry, { layers = 28 } = {}) {
-    const P = headGeometry.attributes.position.array;
-    const N = headGeometry.attributes.normal.array;
-    const I = headGeometry.index.array;
-    const total = P.length / 3;
-
-    const remap = new Int32Array(total).fill(-1);
-    const keepHair = [], keepBeard = [], keepIdx = [];
-    for (let i = 0; i < total; i++) {
-      const x = P[i * 3], y = P[i * 3 + 1], z = P[i * 3 + 2];
-      const hm = hairMask(x, y, z), bm = beardMask(x, y, z);
-      if (hm > 0.002 || bm > 0.002) {
-        remap[i] = keepIdx.length;
-        keepIdx.push(i);
-        keepHair.push(hm);
-        keepBeard.push(bm);
-      }
-    }
-    const n = keepIdx.length;
+  // data: HeadData from meshHead(); data.hair is the subset of skin vertices inside the hair
+  // or beard zone (positions, normals, indices, mask [hair, beard], keep = skin vertex index).
+  constructor(headGeometry, { layers = 28, data } = {}) {
+    const total = headGeometry.attributes.position.count;
+    const src = data.hair;
+    const n = src.keep.length;
     this.count = n;
-    this.keepIdx = Int32Array.from(keepIdx);
-    this.pos = new Float32Array(n * 3);
-    this.nrm = new Float32Array(n * 3);
+    this.keepIdx = src.keep;
+    this.pos = src.positions;
+    this.nrm = src.normals;
+    this.hm = new Float32Array(n);
+    this.bm = new Float32Array(n);
     for (let k = 0; k < n; k++) {
-      const i = keepIdx[k];
-      for (let c = 0; c < 3; c++) {
-        this.pos[k * 3 + c] = P[i * 3 + c];
-        this.nrm[k * 3 + c] = N[i * 3 + c];
-      }
+      this.hm[k] = src.mask[k * 2];
+      this.bm[k] = src.mask[k * 2 + 1];
     }
-    const tris = [];
-    for (let t = 0; t < I.length; t += 3) {
-      const a = remap[I[t]], b = remap[I[t + 1]], c = remap[I[t + 2]];
-      if (a >= 0 && b >= 0 && c >= 0) tris.push(a, b, c);
-    }
-    this.hm = Float32Array.from(keepHair);
-    this.bm = Float32Array.from(keepBeard);
 
     // which tool owns each vertex, and where along that tool's pass it sits
     this.zone = new Float32Array(n * 3);
@@ -338,7 +266,7 @@ export class Hair {
     const headZone = new Float32Array(total * 3);
     const headSweep = new Float32Array(total * 3);
     for (let k = 0; k < n; k++) {
-      const i = keepIdx[k];
+      const i = this.keepIdx[k];
       for (let c = 0; c < 3; c++) {
         headZone[i * 3 + c] = this.zone[k * 3 + c];
         headSweep[i * 3 + c] = this.sweep[k * 3 + c];
@@ -350,7 +278,7 @@ export class Hair {
     headGeometry.setAttribute('aSweep', new THREE.BufferAttribute(headSweep, 3));
 
     const geo = new THREE.InstancedBufferGeometry();
-    geo.setIndex(n > 65535 ? new THREE.Uint32BufferAttribute(tris, 1) : new THREE.Uint16BufferAttribute(tris, 1));
+    geo.setIndex(new THREE.BufferAttribute(src.indices, 1));
     geo.setAttribute('position', new THREE.BufferAttribute(this.pos, 3));
     geo.setAttribute('normal', new THREE.BufferAttribute(this.nrm, 3));
     geo.setAttribute('aZone', new THREE.BufferAttribute(this.zone, 3));
@@ -363,10 +291,8 @@ export class Hair {
     geo.setAttribute('aTo', this.to);
     geo.setAttribute('aCombFrom', this.combFrom);
     geo.setAttribute('aCombTo', this.combTo);
-    const layerValues = new Float32Array(layers);
-    for (let i = 0; i < layers; i++) layerValues[i] = i / (layers - 1);
-    geo.setAttribute('aLayer', new THREE.InstancedBufferAttribute(layerValues, 1));
-    geo.instanceCount = layers;
+    this.geometry = geo;
+    this.setLayers(layers);
 
     this.uniforms = hairUniforms();
     this.material = new THREE.ShaderMaterial({
@@ -387,6 +313,27 @@ export class Hair {
     this.activity = { sides: 0, top: 0, beard: 0, zones: [false, false, false] };
   }
 
+  // Shell count at runtime (governor / mirror pass): rewrites the per-instance layer values in
+  // place (no new program, no new geometry) and sets instanceCount.
+  setLayers(layers) {
+    const n = Math.max(2, Math.round(layers));
+    if (this.layers === n) return;
+    this.layers = n;
+    let attr = this.geometry.getAttribute('aLayer');
+    if (!attr || attr.count < n) {
+      attr = new THREE.InstancedBufferAttribute(new Float32Array(Math.max(n, 32)), 1);
+      this.geometry.setAttribute('aLayer', attr);
+    }
+    for (let i = 0; i < n; i++) attr.array[i] = i / (n - 1);
+    attr.needsUpdate = true;
+    this.geometry.instanceCount = n;
+  }
+
+  dispose() {
+    this.geometry.dispose();
+    this.material.dispose();
+  }
+
   // Length and comb fields for one hair + beard combination, cached.
   field(hair, beard) {
     const key = `${hair}|${beard}`;
@@ -398,11 +345,13 @@ export class Hair {
     for (let k = 0; k < n; k++) {
       const x = this.pos[k * 3], y = this.pos[k * 3 + 1], z = this.pos[k * 3 + 2];
       const nz = this.noise[k];
-      const chin = smooth(-0.55, -0.85, y) * smooth(0.15, 0.5, z);
-      const stache = smooth(-0.47, -0.42, y) * smooth(0.6, 0.7, z) * (1 - smooth(0.2, 0.28, Math.abs(x)));
+      const chin = smooth(P_.lip_lower[1], P_.pogonion[1], y) * smooth(0.15, 0.5, z);
+      const stache = smooth(P_.stomion[1] + 0.02, P_.stomion[1] + 0.07, y) * smooth(0.6, 0.7, z) *
+        (1 - smooth(P_.mouth_corner[0] - 0.03, P_.mouth_corner[0] + 0.05, Math.abs(x)));
       const h = hairFn(x, y, z, nz);
       const b = beardFn(x, y, z, nz, chin, stache);
-      const lh = this.hm[k] ** 1.6 * h[0], lb = this.bm[k] ** 1.3 * b[0];
+      const lh = this.hm[k] ** 1.6 * h[0];
+      const lb = this.bm[k] ** 1.3 * b[0] * smooth(NECKLINE - 0.02, NECKLINE + 0.03, y);
       const src = lh >= lb ? h : b;
       len[k] = Math.max(lh, lb);
       // project the comb direction onto the surface
