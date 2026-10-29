@@ -2605,22 +2605,22 @@ html.no-js .beat {
     display: none;
   }
 
+  /* The card hangs low in the window on phones, clear of the lettering. */
   .door-sign {
-    left: auto;
-    right: 16px;
-    top: 56px;
-    transform: none;
-    max-width: 62%;
+    top: 70%;
+    z-index: 3;
+    max-width: calc(100% - 40px);
     font-size: 1rem;
   }
 
-  .shop__window {
-    padding: 34% 18px 18%;
+  .shop__window,
+  html[data-open='closed'] .shop__front:has(.shutter) .shop__window {
+    padding: 14% 16px 30%;
     justify-content: flex-start;
   }
 
   .sign {
-    font-size: clamp(2.6rem, 14.5vw, 4.2rem);
+    font-size: clamp(2.2rem, 11.5vw, 3.6rem);
   }
 
   .sign__line--small {
@@ -2638,7 +2638,12 @@ html.no-js .beat {
   }
 
   .shutter {
-    top: 66%;
+    top: 62%;
+  }
+
+  /* On a phone the hanging card says it for the shutter. */
+  .shop__front:has(.door-sign:not(:empty)) .shutter__paint {
+    visibility: hidden;
   }
 
   .visit,
