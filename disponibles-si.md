@@ -1,7 +1,7 @@
 # Dominios .si disponibles
 
 Comprobados en Namecheap el 2026-11-04. Precio: 12,88 $/año (precio normal 15,48 $/año).
-Total: 261 dominios.
+Total: 334 dominios.
 
 Prioridad:
 - **A**: comprar ya (comprador claro y que gasta en publicidad)
@@ -342,7 +342,7 @@ Añadidos el 2026-11-04 (lote 2).
 | aunque.si | C | Débil |
 | ysolo.si | C | Débil |
 
-## Catalán (19)
+## Catalán (92)
 
 Para negocios de Cataluña. "Sí" también es "sí" en catalán.
 
@@ -367,10 +367,83 @@ Para negocios de Cataluña. "Sí" también es "sí" en catalán.
 | escoles.si | B | Escuelas y academias |
 | vendes.si | B | Doble lectura: "ventas" en catalán y "¿vendes? Sí" en castellano |
 | perque.si | B | "Perquè sí" |
+| habitatge.si | A | Vivienda, el sector que más dinero mueve |
+| immobiliaria.si | A | Inmobiliarias |
+| assegurances.si | A | Seguros |
+| hipoteques.si | A | Brokers hipotecarios |
+| herencies.si | A | Abogados de herencias |
+| divorci.si | A | Abogados de familia |
+| reclamacions.si | A | Abogados de reclamaciones |
+| autoescola.si | A | Autoescuelas |
+| oposicions.si | A | Academias de oposiciones |
+| perruqueria.si | A | Muchas peluquerías locales |
+| dentistes.si | A | Clínicas dentales |
+| botiga.si | A | "Tienda": corta y fácil de convertir en marca |
+| perfums.si | A | Uso propio para Orienfragance en catalán |
+| casesrurals.si | A | Muchos negocios de turismo rural que se anuncian |
+| casament.si | A | Bodas, mismo pitch que dijeque.si |
+| lampista.si | A | "Fontanero", solo se dice en catalán; se anuncian mucho por urgencias |
+| serraller.si | A | Cerrajeros, urgencias |
+| mudances.si | A | Empresas de mudanzas |
+| plaquessolars.si | A | Instaladores solares |
+| immobiliaries.si | B | Duplica a immobiliaria.si |
+| compravenda.si | B |  |
+| llogar.si | B | "Alquilar" |
+| lloguers.si | B | Duplica a lloguer.si |
+| prestecs.si | B | Préstamos |
+| estalvi.si | B | Ahorro |
+| advocada.si | B |  |
+| impostos.si | B | Impuestos |
+| divorcis.si | B | Duplica a divorci.si |
+| multes.si | B | Multas |
+| treball.si | B | Trabajo |
+| ocupacio.si | B | Empleo |
+| formacio.si | B | Formación |
+| idiomes.si | B | Idiomas |
+| metge.si | B | Médico |
+| psicoleg.si | B | Profesión con la publicidad regulada |
+| veterinari.si | B |  |
+| bellesa.si | B | Belleza |
+| botigues.si | B | Duplica a botiga.si |
+| rebaixes.si | B | Rebajas |
+| descomptes.si | B | Descuentos |
+| sabates.si | B | Zapatos |
+| joies.si | B | Joyas |
+| mobles.si | B | Muebles |
+| cuina.si | B | Cocina |
+| receptes.si | B | Recetas |
+| menjar.si | B | Comida |
+| sopar.si | B | Cena |
+| esmorzar.si | B | Desayuno |
+| turisme.si | B |  |
+| allotjament.si | B | Alojamiento |
+| platja.si | B | Playa |
+| muntanya.si | B | Montaña |
+| casaments.si | B | Duplica a casament.si |
+| noces.si | B | Bodas |
+| nuvis.si | B | Novios |
+| anell.si | B | Anillo |
+| festes.si | B | Fiestas |
+| aniversari.si | B |  |
+| cotxe.si | B | Coche |
+| recanvis.si | B | Recambios |
+| lampistes.si | B | Duplica a lampista.si |
+| manyans.si | B | Cerrajeros |
+| fuster.si | B | Carpintero |
+| jardiner.si | B | Jardinero |
+| neteja.si | B | Limpieza |
+| obres.si | B | Obras |
+| construccio.si | B | Construcción |
+| arquitectes.si | B |  |
+| interiorisme.si | B | Interiorismo |
+| decoracio.si | B | Decoración |
+| empreses.si | B | Empresas |
+| negocis.si | B | Negocios |
+| emprenedors.si | B | Emprendedores |
 
 ## Lista plana para el carrito
 
-Solo prioridad A (86):
+Solo prioridad A (105):
 
 ```
 puedoreclamar.si
@@ -459,6 +532,25 @@ campamentodeverano.si
 equipaciones.si
 ropadeportiva.si
 zapatillasrunning.si
+habitatge.si
+immobiliaria.si
+assegurances.si
+hipoteques.si
+herencies.si
+divorci.si
+reclamacions.si
+autoescola.si
+oposicions.si
+perruqueria.si
+dentistes.si
+botiga.si
+perfums.si
+casesrurals.si
+casament.si
+lampista.si
+serraller.si
+mudances.si
+plaquessolars.si
 ```
 
 ## Pendiente de revisar más tarde
