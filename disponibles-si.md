@@ -1,7 +1,7 @@
 # Dominios .si disponibles
 
 Comprobados en Namecheap el 2026-11-04. Precio: 12,88 $/año (precio normal 15,48 $/año).
-Total: 97 dominios.
+Total: 144 dominios.
 
 Prioridad:
 - **A**: comprar ya (comprador claro y que gasta en publicidad)
@@ -122,7 +122,7 @@ Prioridad:
 | placassolares.si | A | Instaladores con mucha publicidad |
 | instala.si | B | |
 
-## Deportes: pádel, tenis y pesca (9)
+## Pádel, tenis y raqueta (21)
 
 Añadidos el 2026-11-04 (lote 2).
 
@@ -131,12 +131,84 @@ Añadidos el 2026-11-04 (lote 2).
 | pistas.si | A | Clubes de pádel y tenis que alquilan pistas |
 | clubdepadel.si | A | Clubes de pádel, mercado muy grande en España |
 | torneos.si | A | Organizadores de torneos y apps de pádel |
-| raquetas.si | A | Tiendas de deporte. Ojo: en tu captura no se veía el precio, compruébalo en el carrito |
+| raquetas.si | A | Tiendas de deporte. Ojo: en la primera captura no se veía el precio, compruébalo en el carrito |
+| juegapadel.si | A | "Juega pádel, sí" |
+| reservapista.si | A | Clubes y apps de reserva |
+| pistasdepadel.si | A | Clubes y constructores de pistas |
+| clasesdepadel.si | A | Escuelas y monitores |
+| paladepadel.si | A | Tiendas de palas |
+| clasesdetenis.si | A | Escuelas de tenis |
+| juegapickleball.si | A | Deporte en crecimiento en España: entras antes |
+| pistapadel.si | B | Duplica a pistasdepadel.si, elige uno |
+| clasespadel.si | B | Duplica a clasesdepadel.si, elige uno |
+| partidos.si | B | |
+| raqueta.si | B | Duplica a raquetas.si, elige uno |
+| juegagolf.si | B | |
 | padelistas.si | B | Comunidad, blog o tienda de pádel |
 | saque.si | B | Corto y con gancho para tenis o pádel |
 | peloteo.si | B | Para clases o una app de buscar pareja de juego |
+
+## Fitness y deporte (17)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| entrenadorpersonal.si | A | Muchos entrenadores compitiendo por clientes |
+| calistenia.si | A | Tendencia en crecimiento |
+| proteina.si | A | Tiendas de suplementos online, mucho gasto en anuncios |
+| suplementos.si | A | Igual. Ojo: la publicidad de suplementos está regulada |
+| escalada.si | A | Rocódromos en crecimiento |
+| entrenamiento.si | B | |
+| musculacion.si | B | |
+| mediamaraton.si | B | Las carreras suelen usar el nombre de su ciudad |
+| artesmarciales.si | B | |
+| bicis.si | B | |
+| senderismo.si | B | |
+| acampa.si | B | |
+| futbolsala.si | B | |
+| juegafutbol.si | B | |
+| pescar.si | B | |
 | aparejos.si | B | Tiendas de pesca |
 | pescasport.si | B | Ojo: puede coincidir con el nombre de alguna tienda; revisa EUIPO y OEPM |
+
+## Mascotas (4)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| peluqueriacanina.si | A | Muchos negocios locales |
+| guarderiacanina.si | A | Las residencias caninas se anuncian mucho en verano |
+| adoptar.si | B | Las protectoras tienen poco presupuesto |
+| adiestramiento.si | B | |
+
+## Energía y movilidad (4)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| cocheelectrico.si | A | Concesionarios e instaladores de cargadores |
+| autoconsumo.si | A | Instaladores solares, compiten mucho |
+| bombadecalor.si | A | Instaladores de aerotermia, gracias a las ayudas |
+| patinete.si | B | |
+
+## Extranjería e inmigración (7)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| arraigo.si | A | Abogados de extranjería, de los que más se anuncian |
+| regularizacion.si | A | Igual |
+| permisodetrabajo.si | A | Igual |
+| homologacion.si | A | Homologación de títulos, mucha demanda desde Latinoamérica |
+| homologar.si | B | Duplica a homologacion.si |
+| nomadadigital.si | B | Ese público busca en inglés |
+| visadonomada.si | B | Igual |
+
+## Aficiones y ocio (5)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| guitarra.si | B | Escuelas de música |
+| manualidades.si | B | |
+| jardineria.si | B | |
+| tapea.si | B | Rutas de tapas y restaurantes |
+| enoturismo.si | B | Bodegas |
 
 ## Comercio y web (5)
 
@@ -159,7 +231,7 @@ Añadidos el 2026-11-04 (lote 2).
 
 ## Lista plana para el carrito
 
-Solo prioridad A (31):
+Solo prioridad A (52):
 
 ```
 puedoreclamar.si
@@ -193,6 +265,27 @@ pistas.si
 clubdepadel.si
 torneos.si
 raquetas.si
+juegapadel.si
+reservapista.si
+pistasdepadel.si
+clasesdepadel.si
+paladepadel.si
+clasesdetenis.si
+juegapickleball.si
+entrenadorpersonal.si
+calistenia.si
+proteina.si
+suplementos.si
+escalada.si
+peluqueriacanina.si
+guarderiacanina.si
+cocheelectrico.si
+autoconsumo.si
+bombadecalor.si
+arraigo.si
+regularizacion.si
+permisodetrabajo.si
+homologacion.si
 ```
 
 ## Pendiente de revisar más tarde
