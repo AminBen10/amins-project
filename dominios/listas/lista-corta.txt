@@ -10,8 +10,12 @@ plusvalia.si
 retrasovuelo.si
 extranjeria.si
 arraigo.si
+arraigosocial.si
+arraigosocial.com
 arraigosociolaboral.si
 arraigosociolaboral.com
+arraigofamiliar.si
+arraigofamiliar.com
 canaldenuncias.si
 dijeque.si
 dijeque.com
@@ -43,4 +47,6 @@ lampista.si
 decants.si
 mayoristaperfumesarabes.com
 distribuidorperfumesarabes.com
+parfumsarabes.com
+lotesperfumes.com
 perfums.si

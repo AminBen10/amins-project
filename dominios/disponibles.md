@@ -6,7 +6,7 @@
 ## Resumen
 
 - **697 dominios disponibles**: 200 de prioridad A, 474 de prioridad B y 23 de prioridad C.
-- **Lista corta:** 39 nombres para vender y 4 de uso propio (41 en .si y 5 en .com), unos 608 $ al año.
+- **Lista corta:** 41 nombres para vender y 6 de uso propio (43 en .si y 9 en .com), unos 698 $ al año.
 - Comprar todos los de prioridad A costaría unos 2.576 $ al año.
 - Comprados: 0.
 - **.com del mismo nombre:** 48 libres y 649 ocupados.
@@ -25,21 +25,28 @@ Lo que se compraría primero: los dominios de **uso propio** para Orienfragance 
 | **decants** | .si | uso propio | Perfumería | Las muestras de perfume (decants) tienen mucha demanda |
 | **mayoristaperfumesarabes** | .com | uso propio | Perfumería | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
 | **distribuidorperfumesarabes** | .com | uso propio | Perfumería | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
-| **perfums** | .si | uso propio | Catalán | Uso propio para Orienfragance en catalán |
 | **puedoreclamar** | .si + .com | prueba | Abogados y reclamaciones | Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos |
 | **segundaoportunidad** | .si | prueba | Abogados y reclamaciones | Ley de Segunda Oportunidad, sector con mucha publicidad |
 | **finiquito** | .si | prueba | Abogados y reclamaciones | Millones de búsquedas para calcular o reclamar el finiquito |
-| **arraigosociolaboral** | .si + .com | prueba | Extranjería e inmigración | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
-| **dijeque** | .si + .com | prueba | Bodas | "Dije que sí", el mejor del bloque. Comprar con el .com para venderlos juntos |
-| **licenciavtc** | .si | prueba | Motor y taller | Las licencias se compran y venden por decenas de miles de euros, con intermediarios |
+| **irph** | .si | prueba | Reclamaciones bancarias y de viajes | Miles de demandas por el índice IRPH de las hipotecas |
+| **plusvalia** | .si | prueba | Reclamaciones bancarias y de viajes | Reclamación de la plusvalía municipal |
+| **arraigo** | .si | prueba | Extranjería e inmigración | Abogados de extranjería, de los que más se anuncian |
+| **arraigosocial** | .si + .com | prueba | Extranjería e inmigración | El arraigo más conocido y buscado. Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigofamiliar.si |
+| **arraigofamiliar** | .si + .com | prueba | Extranjería e inmigración | Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigosocial.si |
 | **agenteinmobiliario** | .si | prueba | Agentes e IA para pymes | Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria |
-| **recepcionistavirtual** | .si | prueba | Agentes e IA para pymes | Agentes de voz que contestan el teléfono en clínicas y negocios |
 | **faltauno** | .si | prueba | Pádel, tenis y raqueta | "Falta uno": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores |
-| **lampista** | .si | prueba | Catalán | "Fontanero", solo se dice en catalán; se anuncian mucho por urgencias |
+
+Opcionales, para uso propio si los vas a usar de verdad:
+
+| Nombre | Comprar | Nota |
+|---|---|---|
+| **parfumsarabes** | .com | Uso propio opcional, solo si abres Francia. Allí vale más el .com: en francés "si" no se lee como "sí" |
+| **lotesperfumes** | .com | Uso propio opcional: página aparte para vender lotes a revendedores, separada de la marca principal |
+| **perfums** | .si | Uso propio para Orienfragance en catalán |
 
 ## Vender rápido
 
-Los 35 dominios con 8 puntos o más en el filtro de venta rápida. La puntuación y sus reglas están explicadas en `README.md`.
+Los 37 dominios con 8 puntos o más en el filtro de venta rápida. La puntuación y sus reglas están explicadas en `README.md`.
 
 | Dominio | Puntos | Precio a pedir | Mínimo | Sector | .com | En lista corta |
 |---|---|---|---|---|---|---|
@@ -66,6 +73,8 @@ Los 35 dominios con 8 puntos o más en el filtro de venta rápida. La puntuació
 | **regularizacion.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
 | **permisodetrabajo.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
 | **homologacion.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
+| **arraigosocial.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | libre | sí |
+| **arraigofamiliar.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | libre | sí |
 | **leybeckham.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
 | **tarifaluz.si** | 8 | 690 – 990 € | 290 € | Energía y movilidad | ocupado | sí |
 | **kitsolar.si** | 8 | 690 – 990 € | 290 € | Energía y movilidad | ocupado |  |
@@ -94,7 +103,9 @@ Los 35 dominios con 8 puntos o más en el filtro de venta rápida. La puntuació
 | **retrasovuelo** | .si | Reclamaciones bancarias y de viajes | vender | Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho |
 | **extranjeria** | .si | Extranjería e inmigración | vender |  |
 | **arraigo** | .si | Extranjería e inmigración | vender | Abogados de extranjería, de los que más se anuncian |
+| **arraigosocial** | .si + .com | Extranjería e inmigración | vender | El arraigo más conocido y buscado. Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigofamiliar.si |
 | **arraigosociolaboral** | .si + .com | Extranjería e inmigración | vender | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
+| **arraigofamiliar** | .si + .com | Extranjería e inmigración | vender | Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigosocial.si |
 | **canaldenuncias** | .si | Empresas y cumplimiento | vender | Obligatorio en empresas de más de 50 trabajadores |
 | **dijeque** | .si + .com | Bodas | vender | "Dije que sí", el mejor del bloque. Comprar con el .com para venderlos juntos |
 | **pedida** | .si | Bodas | vender | Pedidas de mano |
@@ -125,6 +136,8 @@ Los 35 dominios con 8 puntos o más en el filtro de venta rápida. La puntuació
 | **decants** | .si | Perfumería | uso propio | Las muestras de perfume (decants) tienen mucha demanda |
 | **mayoristaperfumesarabes** | .com | Perfumería | uso propio | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
 | **distribuidorperfumesarabes** | .com | Perfumería | uso propio | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| **parfumsarabes** | .com | Perfumería | uso propio | Uso propio opcional, solo si abres Francia. Allí vale más el .com: en francés "si" no se lee como "sí" |
+| **lotesperfumes** | .com | Perfumería | uso propio | Uso propio opcional: página aparte para vender lotes a revendedores, separada de la marca principal |
 | **perfums** | .si | Catalán | uso propio | Uso propio para Orienfragance en catalán |
 
 ## Con el .com también libre
@@ -137,9 +150,9 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 | **puedocobrar** | Abogados y reclamaciones | B |  |
 | **puedorecurrir** | Abogados y reclamaciones | B |  |
 | **fianzasjudiciales** | Abogados y reclamaciones | B |  |
-| **arraigosocial** | Extranjería e inmigración | A | Tipo de arraigo |
+| **arraigosocial** | Extranjería e inmigración | A | El arraigo más conocido y buscado. Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigofamiliar.si |
 | **arraigosociolaboral** | Extranjería e inmigración | A | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
-| **arraigofamiliar** | Extranjería e inmigración | A | Tipo de arraigo |
+| **arraigofamiliar** | Extranjería e inmigración | A | Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigosocial.si |
 | **reagrupacionfamiliar** | Extranjería e inmigración | A |  |
 | **visadonomada** | Extranjería e inmigración | B | Igual |
 | **examennacionalidad** | Extranjería e inmigración | B | Academias que preparan los exámenes |
@@ -168,9 +181,9 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 | **mayoristaperfumesarabes** | Perfumería | A | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
 | **distribuidorperfumesarabes** | Perfumería | A | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
 | **muestrasperfumes** | Perfumería | A | Complementa a decants.si |
-| **parfumsarabes** | Perfumería | A | Francés. Francia es un gran mercado de perfumes árabes |
+| **parfumsarabes** | Perfumería | A | Uso propio opcional, solo si abres Francia. Allí vale más el .com: en francés "si" no se lee como "sí" |
 | **perfumsarabs** | Perfumería | A | Catalán |
-| **lotesperfumes** | Perfumería | B | Puede sonar a producto de saldo |
+| **lotesperfumes** | Perfumería | B | Uso propio opcional: página aparte para vender lotes a revendedores, separada de la marca principal |
 | **stockperfumes** | Perfumería | B | Puede sonar a producto de saldo |
 | **importadorperfumes** | Perfumería | B |  |
 | **parfumeriearabe** | Perfumería | B | Francés |
@@ -312,9 +325,9 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 | regularizacion.si | A | ocupado | Igual |
 | permisodetrabajo.si | A | ocupado | Igual |
 | homologacion.si | A | ocupado | Homologación de títulos, mucha demanda desde Latinoamérica |
-| arraigosocial.si | A | libre | Tipo de arraigo |
+| arraigosocial.si | A | libre | El arraigo más conocido y buscado. Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigofamiliar.si |
 | arraigosociolaboral.si | A | libre | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
-| arraigofamiliar.si | A | libre | Tipo de arraigo |
+| arraigofamiliar.si | A | libre | Comprar con el .com para venderlos juntos. Mismos compradores que arraigo.si y arraigosocial.si |
 | leybeckham.si | A | ocupado | Régimen fiscal para expatriados; asesores fiscales |
 | reagrupacionfamiliar.si | A | libre |  |
 | papeles.si | B | ocupado | Extranjería, pero ambiguo |
@@ -954,7 +967,7 @@ Sobre todo para uso propio en Orienfragance. Incluye nombres en castellano, cata
 | perfumesorientales.si | A | ocupado |  |
 | perfumesdenicho.si | A | ocupado | Perfumes de nicho, segmento en crecimiento |
 | muestrasperfumes.si | A | libre | Complementa a decants.si |
-| parfumsarabes.si | A | libre | Francés. Francia es un gran mercado de perfumes árabes |
+| parfumsarabes.si | A | libre | Uso propio opcional, solo si abres Francia. Allí vale más el .com: en francés "si" no se lee como "sí" |
 | perfumsarabs.si | A | libre | Catalán |
 | extractos.si | B | ocupado | Ambiguo: también "extracto bancario" |
 | mayoristaperfumes.si | B | ocupado | Uso propio para Orienfragance |
@@ -965,7 +978,7 @@ Sobre todo para uso propio en Orienfragance. Incluye nombres en castellano, cata
 | perfumerianicho.si | B | ocupado | Duplica a perfumesdenicho.si |
 | comprarperfumes.si | B | ocupado |  |
 | tiendadeperfumes.si | B | ocupado |  |
-| lotesperfumes.si | B | libre | Puede sonar a producto de saldo |
+| lotesperfumes.si | B | libre | Uso propio opcional: página aparte para vender lotes a revendedores, separada de la marca principal |
 | stockperfumes.si | B | libre | Puede sonar a producto de saldo |
 | decantsperfumes.si | B | ocupado | Duplica a decants.si |
 | importadorperfumes.si | B | libre |  |
@@ -1108,6 +1121,7 @@ En la carpeta `listas/`, un dominio por línea, listas para pegar en el carrito 
 
 - `listas/primera-compra.txt`: uso propio y lote de prueba
 - `listas/vender-rapido.txt`: los del filtro de venta rápida
+- `listas/opcionales.txt`: los opcionales de uso propio
 - `listas/lista-corta.txt`: la lista corta (vender y uso propio)
 - `listas/prioridad-a.txt`: todos los de prioridad A
 - `listas/todos.txt`: todos los disponibles

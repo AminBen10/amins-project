@@ -72,7 +72,7 @@ PRECIO_COM = 15.98
 # Estado del mismo nombre en .com. Vacío = sin comprobar.
 COM = {"": "?", "libre": "libre", "ocupado": "ocupado"}
 
-GRUPOS = ("", "uso propio", "prueba")
+GRUPOS = ("", "uso propio", "prueba", "opcional")
 
 # ---------------------------------------------------------------------------
 # Filtro "vender rápido"
@@ -193,7 +193,7 @@ def leer():
         if r.get("comprar_com") and r.get("com") != "libre":
             errores.append(f"línea {i}: comprar_com marcado pero el .com no está libre: {d}")
         if r.get("grupo", "") not in GRUPOS:
-            errores.append(f"línea {i}: grupo no válido: {r.get('grupo')!r} (usa uso propio, prueba o vacío)")
+            errores.append(f"línea {i}: grupo no válido: {r.get('grupo')!r} (usa uso propio, prueba, opcional o vacío)")
         if r.get("sector") in ORDEN_SECTORES and r["sector"] not in VELOCIDAD_SECTOR:
             errores.append(f"línea {i}: el sector {r['sector']!r} no tiene puntuación en VELOCIDAD_SECTOR")
     if errores:
@@ -272,6 +272,13 @@ def main():
         ("Sector", lambda r: r["sector"]),
         ("Nota", lambda r: r["nota"]),
     ])
+    opcionales = [r for r in orden if r.get("grupo") == "opcional"]
+    md += ["", "Opcionales, para uso propio si los vas a usar de verdad:", ""]
+    md += tabla(opcionales, [
+        ("Nombre", lambda r: f"**{r['dominio'][:-3]}**"),
+        ("Comprar", lambda r: " + ".join(x for x, s in ((".si", r["lista_corta"]), (".com", r.get("comprar_com"))) if s)),
+        ("Nota", lambda r: r["nota"]),
+    ])
     rapido = sorted((r for r in orden if r["sector"] != "Perfumería" and r.get("grupo") != "uso propio"
                      and puntuar(r)[0] >= UMBRAL_RAPIDO), key=lambda r: -puntuar(r)[0])
     md += [
@@ -348,6 +355,7 @@ def main():
         "",
         "- `listas/primera-compra.txt`: uso propio y lote de prueba",
         "- `listas/vender-rapido.txt`: los del filtro de venta rápida",
+        "- `listas/opcionales.txt`: los opcionales de uso propio",
         "- `listas/lista-corta.txt`: la lista corta (vender y uso propio)",
         "- `listas/prioridad-a.txt`: todos los de prioridad A",
         "- `listas/todos.txt`: todos los disponibles",
@@ -365,6 +373,7 @@ def main():
 
     escribir_lista("primera-compra.txt", con_com(primera))
     escribir_lista("vender-rapido.txt", [r["dominio"] for r in rapido])
+    escribir_lista("opcionales.txt", con_com(opcionales))
     escribir_lista("lista-corta.txt", [d for r in vender + propio for d, s in (
         (r["dominio"], r["lista_corta"]), (r["dominio"][:-3] + ".com", r.get("comprar_com"))) if s])
     escribir_lista("prioridad-a.txt", [r["dominio"] for r in orden if r["prioridad"] == "A"])

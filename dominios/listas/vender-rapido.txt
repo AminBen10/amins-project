@@ -21,6 +21,8 @@ nacionalidad.si
 regularizacion.si
 permisodetrabajo.si
 homologacion.si
+arraigosocial.si
+arraigofamiliar.si
 leybeckham.si
 tarifaluz.si
 kitsolar.si
