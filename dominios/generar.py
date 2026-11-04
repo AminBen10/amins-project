@@ -179,6 +179,8 @@ def main():
         "- `listas/lista-corta.txt`: la lista corta (vender y uso propio)",
         "- `listas/prioridad-a.txt`: todos los de prioridad A",
         "- `listas/todos.txt`: todos los disponibles",
+        "- `listas/si-y-com.txt`: cada nombre en .si y en .com, para ver si el .com está ocupado",
+        "- `listas/palabras.txt`: solo los nombres, sin extensión, para Beast Mode marcando .si y .com",
         "",
     ]
     OUT_MD.write_text("\n".join(md), encoding="utf-8")
@@ -186,6 +188,9 @@ def main():
     escribir_lista("lista-corta.txt", [r["dominio"] for r in vender + propio])
     escribir_lista("prioridad-a.txt", [r["dominio"] for r in orden if r["prioridad"] == "A"])
     escribir_lista("todos.txt", [r["dominio"] for r in orden])
+    nombres = [r["dominio"][: -len(".si")] for r in orden]
+    escribir_lista("palabras.txt", nombres)
+    escribir_lista("si-y-com.txt", [d for n in nombres for d in (n + ".si", n + ".com")])
     print(f"OK: {len(disponibles)} disponibles, {cuenta['A']} A, lista corta {len(vender) + len(propio)}")
 
 

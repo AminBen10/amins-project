@@ -988,3 +988,5 @@ En la carpeta `listas/`, un dominio por línea, listas para pegar en el carrito 
 - `listas/lista-corta.txt`: la lista corta (vender y uso propio)
 - `listas/prioridad-a.txt`: todos los de prioridad A
 - `listas/todos.txt`: todos los disponibles
+- `listas/si-y-com.txt`: cada nombre en .si y en .com, para ver si el .com está ocupado
+- `listas/palabras.txt`: solo los nombres, sin extensión, para Beast Mode marcando .si y .com
