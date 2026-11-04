@@ -13,6 +13,7 @@ Investigación de dominios .si en español y catalán. El .si es de Eslovenia, p
 | `listas/todos.txt` | Todos los disponibles. |
 | `listas/si-y-com.txt` | Cada nombre en .si y en .com, uno detrás de otro, para ver si el .com está ocupado. |
 | `listas/palabras.txt` | Solo los nombres, sin extensión, para Beast Mode marcando .si y .com. |
+| `listas/com-libres.txt` | Los nombres que tienen el .com libre, en .si y en .com. |
 | `pitches.md` | Emails y mensajes de venta, respuestas preparadas y registro de contactos. |
 | `candidatos/` | Todas las listas que hemos pasado por la búsqueda masiva, por lotes. |
 | `generar.py` | Script que regenera `disponibles.md` y `listas/` a partir del CSV. |
@@ -42,6 +43,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 | `idioma` | `es` (castellano), `ca` (catalán), `fr` (francés) o `en` (inglés) |
 | `prioridad` | `A` comprar ya, `B` solo con comprador o uso propio, `C` descartar |
 | `lista_corta` | `vender`, `uso propio` o vacío |
+| `com` | Si el mismo nombre en .com está `libre` u `ocupado`. Vacío = sin comprobar |
 | `estado` | `disponible` o `comprado` |
 | `comprobado` | Fecha en que se comprobó (AAAA-MM-DD) |
 | `registrador` | Dónde se comprobó o se compró |

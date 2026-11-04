@@ -66,6 +66,9 @@ DESCRIPCION = {
 
 PRIORIDADES = {"A": 0, "B": 1, "C": 2}
 
+# Estado del mismo nombre en .com. Vacío = sin comprobar.
+COM = {"": "?", "libre": "libre", "ocupado": "ocupado"}
+
 
 def leer():
     with CSV.open(newline="", encoding="utf-8") as f:
@@ -85,6 +88,8 @@ def leer():
             errores.append(f"línea {i}: sector desconocido: {r['sector']!r} (añádelo a ORDEN_SECTORES)")
         if r["lista_corta"] not in ("", "vender", "uso propio"):
             errores.append(f"línea {i}: lista_corta no válida: {r['lista_corta']!r}")
+        if r.get("com", "") not in COM:
+            errores.append(f"línea {i}: com no válido: {r.get('com')!r} (usa libre, ocupado o vacío)")
     if errores:
         sys.exit("\n".join(errores))
     return filas
@@ -119,6 +124,8 @@ def main():
     precio = sum(float(r["precio_usd_ano"] or 0) for r in vender + propio)
     precio_a = sum(float(r["precio_usd_ano"] or 0) for r in disponibles if r["prioridad"] == "A")
     comprados = [r for r in filas if r["estado"] == "comprado"]
+    com_libre = [r for r in orden if r.get("com") == "libre"]
+    com_ocupado = [r for r in orden if r.get("com") == "ocupado"]
 
     md = [
         "# Dominios .si disponibles",
@@ -134,6 +141,7 @@ def main():
         f"unos {miles(precio)} $ al año.",
         f"- Comprar todos los de prioridad A costaría unos {miles(precio_a)} $ al año.",
         f"- Comprados: {len(comprados)}.",
+        f"- **.com del mismo nombre:** {len(com_libre)} libres y {len(com_ocupado)} ocupados.",
         "",
         "Prioridad:",
         "- **A**: comprar ya (comprador claro y que gasta en publicidad)",
@@ -147,6 +155,22 @@ def main():
         ("Dominio", lambda r: f"**{r['dominio']}**"),
         ("Sector", lambda r: r["sector"]),
         ("Para", lambda r: r["lista_corta"]),
+        (".com", lambda r: COM[r.get("com", "")]),
+        ("Nota", lambda r: r["nota"]),
+    ])
+    md += [
+        "",
+        "## Con el .com también libre",
+        "",
+        "Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un negocio activo, "
+        "ese negocio es un posible comprador del .si; si está libre, nadie ha montado todavía un negocio "
+        "con ese nombre.",
+        "",
+    ]
+    md += tabla(com_libre, [
+        ("Nombre", lambda r: f"**{r['dominio'][:-3]}**"),
+        ("Sector", lambda r: r["sector"]),
+        ("Prioridad", lambda r: r["prioridad"]),
         ("Nota", lambda r: r["nota"]),
     ])
     md += ["", "## Por sector", ""]
@@ -167,6 +191,7 @@ def main():
         md += tabla(por_sector[s], [
             ("Dominio", lambda r: r["dominio"]),
             ("Prioridad", lambda r: r["prioridad"]),
+            (".com", lambda r: COM[r.get("com", "")]),
             ("Nota", lambda r: r["nota"]),
         ])
 
@@ -181,6 +206,7 @@ def main():
         "- `listas/todos.txt`: todos los disponibles",
         "- `listas/si-y-com.txt`: cada nombre en .si y en .com, para ver si el .com está ocupado",
         "- `listas/palabras.txt`: solo los nombres, sin extensión, para Beast Mode marcando .si y .com",
+        "- `listas/com-libres.txt`: los nombres con el .com libre, en .si y en .com",
         "",
     ]
     OUT_MD.write_text("\n".join(md), encoding="utf-8")
@@ -191,6 +217,7 @@ def main():
     nombres = [r["dominio"][: -len(".si")] for r in orden]
     escribir_lista("palabras.txt", nombres)
     escribir_lista("si-y-com.txt", [d for n in nombres for d in (n + ".si", n + ".com")])
+    escribir_lista("com-libres.txt", [d for r in com_libre for d in (r["dominio"], r["dominio"][:-3] + ".com")])
     print(f"OK: {len(disponibles)} disponibles, {cuenta['A']} A, lista corta {len(vender) + len(propio)}")
 
 
