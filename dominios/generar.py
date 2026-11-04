@@ -39,6 +39,7 @@ ORDEN_SECTORES = [
     "Agentes e IA para pymes",
     "Tecnología e IA",
     "Robots y drones",
+    "Infraestructura 2030 (inglés)",
     "Pádel, tenis y raqueta",
     "Fitness y entrenamiento",
     "Running y ciclismo",

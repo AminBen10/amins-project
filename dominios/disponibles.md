@@ -5,7 +5,7 @@
 
 ## Resumen
 
-- **680 dominios disponibles**: 200 de prioridad A, 474 de prioridad B y 6 de prioridad C.
+- **697 dominios disponibles**: 200 de prioridad A, 484 de prioridad B y 13 de prioridad C.
 - **Lista corta:** 39 para vender y 2 de uso propio, unos 528 $ al año.
 - Comprar todos los de prioridad A costaría unos 2.576 $ al año.
 - Comprados: 0.
@@ -86,6 +86,7 @@ Prioridad:
 | [Agentes e IA para pymes](#agentes-e-ia-para-pymes) | 23 | 8 | 15 | 0 |
 | [Tecnología e IA](#tecnología-e-ia) | 21 | 6 | 15 | 0 |
 | [Robots y drones](#robots-y-drones) | 13 | 5 | 8 | 0 |
+| [Infraestructura 2030 (inglés)](#infraestructura-2030-inglés) | 17 | 0 | 10 | 7 |
 | [Pádel, tenis y raqueta](#pádel-tenis-y-raqueta) | 55 | 21 | 33 | 1 |
 | [Fitness y entrenamiento](#fitness-y-entrenamiento) | 18 | 5 | 13 | 0 |
 | [Running y ciclismo](#running-y-ciclismo) | 15 | 4 | 11 | 0 |
@@ -581,6 +582,28 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | licenciadron.si | B |  |
 | topografia.si | B |  |
 | fotogrametria.si | B |  |
+
+## Infraestructura 2030 (inglés)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| antisybil.si | B | Inglés. Protección contra cuentas falsas en masa. Compradores: pocas startups de identidad y cripto |
+| offsetter.si | B | Inglés. Compensación de carbono |
+| carbonoracle.si | B | Inglés. Datos de emisiones para contratos automáticos; nicho muy pequeño |
+| oligos.si | B | Inglés. Oligonucleótidos: proveedores de reactivos de biotecnología |
+| biosurveillance.si | B | Inglés. Vigilancia de brotes (aguas residuales, aeropuertos) |
+| genecheck.si | B | Inglés. Suena a nombre de empresa: búscalo en EUIPO antes de comprar |
+| smelters.si | B | Inglés. Fundiciones de minerales críticos |
+| feedstocks.si | B | Inglés. Materias primas para la industria química |
+| reclaimers.si | B | Inglés. Recuperación de gases, metales y disolventes |
+| loadshed.si | B | Inglés. Cortes selectivos de carga en la red eléctrica |
+| offsetagent.si | C | Inglés. Compuesto débil, peor que offsetter.si |
+| telemetries.si | C | Inglés. El plural suena raro; el singular está ocupado |
+| custodianship.si | C | Inglés. Palabra larga y abstracta |
+| novations.si | C | Inglés. Plural poco usado |
+| insolvencies.si | C | Inglés. El singular es el que se busca |
+| provenances.si | C | Inglés. Plural poco usado; el singular está ocupado |
+| telemetrist.si | C | Inglés. Palabra casi inexistente |
 
 ## Pádel, tenis y raqueta
 
