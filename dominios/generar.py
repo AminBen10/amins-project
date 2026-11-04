@@ -36,7 +36,9 @@ ORDEN_SECTORES = [
     "Salud y estética",
     "Mascotas",
     "Formación y empleo",
+    "Agentes e IA para pymes",
     "Tecnología e IA",
+    "Robots y drones",
     "Pádel, tenis y raqueta",
     "Fitness y entrenamiento",
     "Running y ciclismo",
@@ -47,7 +49,7 @@ ORDEN_SECTORES = [
     "Alimentación",
     "Comercio y web",
     "Perfumería",
-    "Inversión",
+    "Finanzas e inversión",
     "Frases",
     "Catalán",
 ]

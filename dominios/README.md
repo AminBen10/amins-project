@@ -53,7 +53,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 | `lote3-deportes.txt` | Pádel, tenis, golf, surf, running, ciclismo (121) | Comprobado |
 | `lote4-catalan.txt` | Palabras de alto valor en catalán (92) | Comprobado |
 | `lote5-nichos-tecnicos.txt` | Leyes nuevas, reclamaciones técnicas, IA, deporte digital, alimentación (180) | Comprobado |
-| `lote6-angulos-ocultos.txt` | "Agente" con doble sentido, IA para pymes, protocolos de agentes, robots de casa, drones, fertilidad, casas modulares, apagón (151) | **Pendiente** |
+| `lote6-angulos-ocultos.txt` | "Agente" con doble sentido, IA para pymes, protocolos de agentes, robots de casa, drones, fertilidad, casas modulares, apagón (151) | Comprobado |
 | (sin archivo) | Búsquedas propias de Amin: oficios, industria, logística, agro, herencias, salud | Comprobado |
 
 ## Antes de comprar o vender

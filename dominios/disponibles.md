@@ -5,9 +5,9 @@
 
 ## Resumen
 
-- **547 dominios disponibles**: 155 de prioridad A, 387 de prioridad B y 5 de prioridad C.
+- **643 dominios disponibles**: 189 de prioridad A, 449 de prioridad B y 5 de prioridad C.
 - **Lista corta:** 34 para vender y 2 de uso propio, unos 464 $ al año.
-- Comprar todos los de prioridad A costaría unos 1.996 $ al año.
+- Comprar todos los de prioridad A costaría unos 2.434 $ al año.
 - Comprados: 0.
 
 Prioridad:
@@ -66,30 +66,32 @@ Prioridad:
 | [Fiscal y autónomos](#fiscal-y-autónomos) | 10 | 2 | 8 | 0 |
 | [Empresas y cumplimiento](#empresas-y-cumplimiento) | 18 | 6 | 12 | 0 |
 | [Bodas](#bodas) | 17 | 7 | 10 | 0 |
-| [Vivienda](#vivienda) | 10 | 5 | 5 | 0 |
+| [Vivienda](#vivienda) | 17 | 7 | 10 | 0 |
 | [Alquiler turístico](#alquiler-turístico) | 6 | 2 | 4 | 0 |
 | [Hogar y reformas](#hogar-y-reformas) | 23 | 6 | 17 | 0 |
 | [Seguros](#seguros) | 8 | 2 | 6 | 0 |
 | [Mayores y decesos](#mayores-y-decesos) | 13 | 5 | 8 | 0 |
-| [Energía y movilidad](#energía-y-movilidad) | 13 | 7 | 6 | 0 |
-| [Motor y taller](#motor-y-taller) | 5 | 4 | 1 | 0 |
+| [Energía y movilidad](#energía-y-movilidad) | 23 | 12 | 11 | 0 |
+| [Motor y taller](#motor-y-taller) | 10 | 7 | 3 | 0 |
 | [Industria, logística y maquinaria](#industria-logística-y-maquinaria) | 34 | 1 | 33 | 0 |
 | [Agro y medio ambiente](#agro-y-medio-ambiente) | 6 | 0 | 6 | 0 |
-| [Salud y estética](#salud-y-estética) | 24 | 6 | 16 | 2 |
+| [Salud y estética](#salud-y-estética) | 33 | 11 | 20 | 2 |
 | [Mascotas](#mascotas) | 4 | 2 | 2 | 0 |
 | [Formación y empleo](#formación-y-empleo) | 5 | 1 | 4 | 0 |
-| [Tecnología e IA](#tecnología-e-ia) | 5 | 2 | 3 | 0 |
+| [Agentes e IA para pymes](#agentes-e-ia-para-pymes) | 23 | 8 | 15 | 0 |
+| [Tecnología e IA](#tecnología-e-ia) | 21 | 6 | 15 | 0 |
+| [Robots y drones](#robots-y-drones) | 13 | 5 | 8 | 0 |
 | [Pádel, tenis y raqueta](#pádel-tenis-y-raqueta) | 55 | 21 | 33 | 1 |
 | [Fitness y entrenamiento](#fitness-y-entrenamiento) | 18 | 5 | 13 | 0 |
 | [Running y ciclismo](#running-y-ciclismo) | 15 | 4 | 11 | 0 |
 | [Montaña, nieve y agua](#montaña-nieve-y-agua) | 18 | 5 | 13 | 0 |
-| [Golf, fútbol y otros deportes](#golf-fútbol-y-otros-deportes) | 15 | 2 | 13 | 0 |
-| [Fútbol y deporte digital](#fútbol-y-deporte-digital) | 15 | 2 | 13 | 0 |
+| [Golf, fútbol y otros deportes](#golf-fútbol-y-otros-deportes) | 18 | 2 | 16 | 0 |
+| [Fútbol y deporte digital](#fútbol-y-deporte-digital) | 23 | 4 | 19 | 0 |
 | [Aficiones y ocio](#aficiones-y-ocio) | 5 | 0 | 5 | 0 |
 | [Alimentación](#alimentación) | 9 | 1 | 8 | 0 |
 | [Comercio y web](#comercio-y-web) | 5 | 0 | 5 | 0 |
 | [Perfumería](#perfumería) | 3 | 2 | 1 | 0 |
-| [Inversión](#inversión) | 4 | 1 | 3 | 0 |
+| [Finanzas e inversión](#finanzas-e-inversión) | 6 | 1 | 5 | 0 |
 | [Frases](#frases) | 3 | 0 | 1 | 2 |
 | [Catalán](#catalán) | 92 | 23 | 69 | 0 |
 
@@ -268,11 +270,18 @@ Obligaciones legales de las empresas. Los vendedores de software y las consultor
 | tasaciones.si | A | Tasadoras, se necesitan para cada hipoteca |
 | certificadoenergetico.si | A | Obligatorio para vender o alquilar; muchos técnicos se anuncian |
 | ceduladehabitabilidad.si | A | Obligatoria en Cataluña y otras comunidades para alquilar o vender |
+| casasmodulares.si | A | Casas modulares, en auge por el precio de la vivienda |
+| casasprefabricadas.si | A | Igual |
 | habitaciones.si | B |  |
 | certificadosenergeticos.si | B | Duplica a certificadoenergetico.si |
 | inspecciontecnica.si | B | Inspección técnica de edificios |
 | licenciadeobra.si | B |  |
 | zonatensionada.si | B | Ley de vivienda; temático, poco comprador directo |
+| casamodular.si | B | Duplica a casasmodulares.si |
+| casaprefabricada.si | B | Duplica a casasprefabricadas.si |
+| casascontenedor.si | B |  |
+| autoconstruccion.si | B |  |
+| antiokupas.si | B | Empresas de seguridad con mucha publicidad, pero el sector es polémico |
 
 ## Alquiler turístico
 
@@ -357,12 +366,22 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | bombadecalor.si | A | Instaladores de aerotermia, gracias a las ayudas |
 | puntodecarga.si | A | Instaladores de cargadores para coche eléctrico |
 | fotovoltaica.si | A | Instaladores solares |
+| generadores.si | A | Más demanda tras el apagón de abril de 2025 |
+| bateriasolar.si | A | Baterías para placas solares |
+| kitsolar.si | A | Kits solares para casas y balcones |
+| climatizacion.si | A | Instaladores de climatización, mucho gasto en verano |
+| aireacondicionado.si | A | Igual |
 | patinete.si | B |  |
 | puntosdecarga.si | B | Duplica a puntodecarga.si |
 | cargadores.si | B |  |
 | baterias.si | B |  |
 | comunidadenergetica.si | B |  |
 | comunidadesenergeticas.si | B |  |
+| generador.si | B | Duplica a generadores.si |
+| kitsolares.si | B | Duplica a kitsolar.si |
+| centrodedatos.si | B | Boom de centros de datos en España |
+| centrosdedatos.si | B |  |
+| subestacion.si | B |  |
 
 ## Motor y taller
 
@@ -372,7 +391,12 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | recambios.si | A | Tiendas online de recambios |
 | talleres.si | A | Muchos talleres locales |
 | balizav16.si | A | Baliza V16 obligatoria desde 2026. Ojo: la demanda baja cuando todos la tengan |
+| licenciavtc.si | A | Las licencias se compran y venden por decenas de miles de euros, con intermediarios |
+| licenciataxi.si | A | Igual |
+| patinetelectrico.si | A | Tiendas online de patinetes |
 | balizas.si | B |  |
+| licenciasvtc.si | B | Duplica a licenciavtc.si |
+| carnetdemoto.si | B | Autoescuelas |
 
 ## Industria, logística y maquinaria
 
@@ -434,6 +458,11 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | injertos.si | A | Injerto capilar, más corto que injertocapilar.si |
 | podologia.si | A | Muchas clínicas de podología |
 | varices.si | A | Clínicas de varices, mucho gasto en anuncios |
+| analiticas.si | A | Laboratorios y análisis a domicilio |
+| menopausia.si | A | Salud femenina, mercado poco atendido y en crecimiento |
+| congelaciondeovulos.si | A | Clínicas de fertilidad. Publicidad sanitaria regulada |
+| ovodonacion.si | A | España es líder europeo. Publicidad sanitaria regulada |
+| reproduccionasistida.si | A | Clínicas de fertilidad. Publicidad sanitaria regulada |
 | cirugias.si | B | Publicidad de cirugía estética regulada |
 | blanqueamiento.si | B |  |
 | depilacion.si | B | Cadenas de depilación láser |
@@ -450,6 +479,10 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | ferulas.si | B | Férulas de descarga |
 | psicologos.si | B | Publicidad sanitaria regulada |
 | psiquiatria.si | B |  |
+| edadbiologica.si | B | Longevidad |
+| chequeo.si | B |  |
+| analisisdesangre.si | B |  |
+| testgenetico.si | B |  |
 | masaje.si | C | Se puede asociar con contenido para adultos |
 | masajes.si | C | Igual |
 
@@ -472,15 +505,77 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | extraescolares.si | B | Temporada de septiembre |
 | guarderia.si | B |  |
 
+## Agentes e IA para pymes
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| agenteinmobiliario.si | A | Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria |
+| agentedeseguros.si | A | Doble sentido: el agente de siempre y el agente de IA. Corredurías y startups de IA para seguros |
+| agentesdeviajes.si | A | Doble sentido: el agente de siempre y el agente de IA. El singular agentedeviajes.si está ocupado |
+| agentedeventas.si | A | Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman "AI SDR", producto muy de moda |
+| recepcionistavirtual.si | A | Agentes de voz que contestan el teléfono en clínicas y negocios |
+| secretariavirtual.si | A | Igual |
+| centralita.si | A | Centralitas virtuales: proveedores con mucho gasto en anuncios |
+| contestador.si | A | "Contestador, sí": agentes de voz para pymes |
+| agentesinmobiliarios.si | B | Duplica a agenteinmobiliario.si |
+| agentesdeseguros.si | B | Duplica a agentedeseguros.si |
+| agentecomercial.si | B | Doble sentido: el agente de siempre y el agente de IA |
+| agentescomerciales.si | B | Duplica a agentecomercial.si |
+| agentedeaduanas.si | B | Doble sentido: el agente de siempre y el agente de IA |
+| agentedejugadores.si | B | Representantes de futbolistas |
+| agentimmobiliari.si | B | Catalán. Doble sentido: el agente de siempre y el agente de IA |
+| agentdeviatges.si | B | Catalán. Doble sentido: el agente de siempre y el agente de IA |
+| telefonista.si | B |  |
+| centralitavirtual.si | B | Duplica a centralita.si |
+| contestadorautomatico.si | B | Duplica a contestador.si |
+| atencionalcliente.si | B |  |
+| citaonline.si | B | Software de citas |
+| agendar.si | B |  |
+| aisdrs.si | B | Inglés. El único compuesto de agentes en inglés que salió libre |
+
 ## Tecnología e IA
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
 | agentesia.si | A | Agencias de agentes de IA, tendencia fuerte |
 | cursosia.si | A | Cursos de IA, mucho gasto en anuncios |
+| detectoria.si | A | Detectores de textos hechos con IA, muy buscados por profesores y estudiantes |
+| antiplagio.si | A | Software antiplagio para universidades y estudiantes |
+| parafrasear.si | A | Herramientas de parafrasear, muchísimas búsquedas |
+| seoia.si | A | Agencias de SEO para buscadores con IA |
 | cursoia.si | B | Duplica a cursosia.si |
 | formacionia.si | B |  |
 | consultoriaia.si | B |  |
+| detectordeia.si | B | Duplica a detectoria.si |
+| plagio.si | B |  |
+| suplantacion.si | B | Suplantación de identidad |
+| verificacion.si | B |  |
+| leyia.si | B | Ley europea de IA |
+| reglamentoia.si | B |  |
+| auditoriaia.si | B |  |
+| iaresponsable.si | B |  |
+| posicionamientoia.si | B |  |
+| abogadoia.si | B |  |
+| asesoriaia.si | B |  |
+| gestoriaia.si | B |  |
+
+## Robots y drones
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| robotaspirador.si | A | Tiendas online y webs de comparativas |
+| robotcortacesped.si | A | Tiendas online |
+| robotdecocina.si | A | Robots de cocina, categoría enorme en España |
+| antidrones.si | A | Seguridad y defensa, sector en crecimiento en Europa |
+| pilotodedrones.si | A | Academias que dan la licencia de piloto |
+| robotsaspiradores.si | B | Duplica a robotaspirador.si |
+| robotlimpiacristales.si | B |  |
+| robotfregasuelos.si | B |  |
+| antidron.si | B | Duplica a antidrones.si |
+| cursodedrones.si | B |  |
+| licenciadron.si | B |  |
+| topografia.si | B |  |
+| fotogrametria.si | B |  |
 
 ## Pádel, tenis y raqueta
 
@@ -627,6 +722,9 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | voleyplaya.si | B |  |
 | balonmano.si | B |  |
 | patinaje.si | B |  |
+| frontenis.si | B | Deporte que casi solo existe en España y México |
+| fronton.si | B |  |
+| pelotavasca.si | B |  |
 
 ## Fútbol y deporte digital
 
@@ -634,6 +732,8 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 |---|---|---|
 | alineaciones.si | A | Fantasy y apuestas deportivas; mucho tráfico |
 | porra.si | A | Porras entre amigos |
+| futbolfemenino.si | A | En pleno crecimiento |
+| campusdefutbol.si | A | Campus de verano, mucho gasto en primavera |
 | porras.si | B | Duplica a porra.si |
 | clasificacion.si | B |  |
 | marcador.si | B |  |
@@ -647,6 +747,12 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | futbol5.si | B |  |
 | quedada.si | B |  |
 | quedadas.si | B |  |
+| arbitros.si | B |  |
+| ojeador.si | B |  |
+| ojeadores.si | B |  |
+| tecnificacion.si | B | Jerga de clubes: entrenamientos técnicos |
+| videoanalisis.si | B | Software de análisis de vídeo para clubes |
+| entrenadordefutbol.si | B |  |
 
 ## Aficiones y ocio
 
@@ -692,7 +798,7 @@ Uso propio para Orienfragance.
 | esencias.si | A |  |
 | extractos.si | B | Ambiguo: también "extracto bancario" |
 
-## Inversión
+## Finanzas e inversión
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
@@ -700,6 +806,8 @@ Uso propio para Orienfragance.
 | lingotes.si | B | Venta de oro. Sector con fraudes, los compradores serán prudentes |
 | creditosfallidos.si | B |  |
 | lotes.si | B |  |
+| enviodedinero.si | B | Los compradores necesitan licencia del Banco de España |
+| cambiodedivisas.si | B |  |
 
 ## Frases
 

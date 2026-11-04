@@ -212,7 +212,7 @@ talleres.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,Muchos ta
 decants.si,Perfumería,es,A,uso propio,disponible,2026-11-04,Namecheap,12.88,Las muestras de perfume (decants) tienen mucha demanda
 esencias.si,Perfumería,es,A,,disponible,2026-11-04,Namecheap,12.88,
 extractos.si,Perfumería,es,B,,disponible,2026-11-04,Namecheap,12.88,"Ambiguo: también ""extracto bancario"""
-lingotes.si,Inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,"Venta de oro. Sector con fraudes, los compradores serán prudentes"
+lingotes.si,Finanzas e inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,"Venta de oro. Sector con fraudes, los compradores serán prudentes"
 peluqueriacanina.si,Mascotas,es,A,,disponible,2026-11-04,Namecheap,12.88,Muchos negocios locales
 guarderiacanina.si,Mascotas,es,A,,disponible,2026-11-04,Namecheap,12.88,Las residencias caninas se anuncian mucho en verano
 adoptar.si,Mascotas,es,B,,disponible,2026-11-04,Namecheap,12.88,Las protectoras tienen poco presupuesto
@@ -528,9 +528,9 @@ viales.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namec
 gasesmedicinales.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 criogenia.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 concursos.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: concurso de acreedores y concursos de premios
-subastasjudiciales.si,Inversión,es,A,,disponible,2026-11-04,Namecheap,12.88,Inversores en subastas y plataformas que las buscan
-creditosfallidos.si,Inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,
-lotes.si,Inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,
+subastasjudiciales.si,Finanzas e inversión,es,A,,disponible,2026-11-04,Namecheap,12.88,Inversores en subastas y plataformas que las buscan
+creditosfallidos.si,Finanzas e inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,
+lotes.si,Finanzas e inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,
 dacion.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,Dación en pago
 auditorias.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,
 convenios.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Convenios colectivos: muchas búsquedas
@@ -546,3 +546,99 @@ desinfecciones.si,Hogar y reformas,es,B,,disponible,2026-11-04,Namecheap,12.88,D
 caldereria.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 mecanizado.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
 fillrate.si,"Industria, logística y maquinaria",en,B,,disponible,2026-11-04,Namecheap,12.88,Término en inglés: porcentaje de pedidos servidos (logística) o de anuncios servidos (publicidad online). Compradores: software de logística y de publicidad
+agenteinmobiliario.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria
+agentesinmobiliarios.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a agenteinmobiliario.si
+agentedeseguros.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Corredurías y startups de IA para seguros
+agentesdeseguros.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentedeseguros.si
+agentesdeviajes.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. El singular agentedeviajes.si está ocupado
+agentecomercial.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
+agentescomerciales.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentecomercial.si
+agentedeventas.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,"Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman ""AI SDR"", producto muy de moda"
+agentedeaduanas.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
+agentedejugadores.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Representantes de futbolistas
+agentimmobiliari.si,Agentes e IA para pymes,ca,B,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
+agentdeviatges.si,Agentes e IA para pymes,ca,B,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
+recepcionistavirtual.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Agentes de voz que contestan el teléfono en clínicas y negocios
+secretariavirtual.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
+telefonista.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,
+centralita.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Centralitas virtuales: proveedores con mucho gasto en anuncios
+centralitavirtual.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a centralita.si
+contestador.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,"""Contestador, sí"": agentes de voz para pymes"
+contestadorautomatico.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a contestador.si
+atencionalcliente.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,
+citaonline.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Software de citas
+agendar.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,
+aisdrs.si,Agentes e IA para pymes,en,B,,disponible,2026-11-04,Namecheap,12.88,Inglés. El único compuesto de agentes en inglés que salió libre
+detectoria.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,"Detectores de textos hechos con IA, muy buscados por profesores y estudiantes"
+detectordeia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a detectoria.si
+antiplagio.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,Software antiplagio para universidades y estudiantes
+plagio.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+parafrasear.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,"Herramientas de parafrasear, muchísimas búsquedas"
+suplantacion.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,Suplantación de identidad
+verificacion.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+leyia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,Ley europea de IA
+reglamentoia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+auditoriaia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+iaresponsable.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+seoia.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,Agencias de SEO para buscadores con IA
+posicionamientoia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+abogadoia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+asesoriaia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+gestoriaia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+robotaspirador.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,Tiendas online y webs de comparativas
+robotsaspiradores.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a robotaspirador.si
+robotcortacesped.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
+robotdecocina.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,"Robots de cocina, categoría enorme en España"
+robotlimpiacristales.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+robotfregasuelos.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+antidron.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a antidrones.si
+antidrones.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,"Seguridad y defensa, sector en crecimiento en Europa"
+pilotodedrones.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,Academias que dan la licencia de piloto
+cursodedrones.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+licenciadron.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+topografia.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+fotogrametria.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+edadbiologica.si,Salud y estética,es,B,,disponible,2026-11-04,Namecheap,12.88,Longevidad
+chequeo.si,Salud y estética,es,B,,disponible,2026-11-04,Namecheap,12.88,
+analiticas.si,Salud y estética,es,A,,disponible,2026-11-04,Namecheap,12.88,Laboratorios y análisis a domicilio
+analisisdesangre.si,Salud y estética,es,B,,disponible,2026-11-04,Namecheap,12.88,
+testgenetico.si,Salud y estética,es,B,,disponible,2026-11-04,Namecheap,12.88,
+menopausia.si,Salud y estética,es,A,,disponible,2026-11-04,Namecheap,12.88,"Salud femenina, mercado poco atendido y en crecimiento"
+congelaciondeovulos.si,Salud y estética,es,A,,disponible,2026-11-04,Namecheap,12.88,Clínicas de fertilidad. Publicidad sanitaria regulada
+ovodonacion.si,Salud y estética,es,A,,disponible,2026-11-04,Namecheap,12.88,España es líder europeo. Publicidad sanitaria regulada
+reproduccionasistida.si,Salud y estética,es,A,,disponible,2026-11-04,Namecheap,12.88,Clínicas de fertilidad. Publicidad sanitaria regulada
+casasmodulares.si,Vivienda,es,A,,disponible,2026-11-04,Namecheap,12.88,"Casas modulares, en auge por el precio de la vivienda"
+casamodular.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a casasmodulares.si
+casaprefabricada.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a casasprefabricadas.si
+casasprefabricadas.si,Vivienda,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
+casascontenedor.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,
+autoconstruccion.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,
+antiokupas.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,"Empresas de seguridad con mucha publicidad, pero el sector es polémico"
+generador.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a generadores.si
+generadores.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,Más demanda tras el apagón de abril de 2025
+bateriasolar.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,Baterías para placas solares
+kitsolar.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,Kits solares para casas y balcones
+kitsolares.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a kitsolar.si
+climatizacion.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,"Instaladores de climatización, mucho gasto en verano"
+aireacondicionado.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
+centrodedatos.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,Boom de centros de datos en España
+centrosdedatos.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
+subestacion.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
+licenciavtc.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,"Las licencias se compran y venden por decenas de miles de euros, con intermediarios"
+licenciataxi.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
+licenciasvtc.si,Motor y taller,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a licenciavtc.si
+carnetdemoto.si,Motor y taller,es,B,,disponible,2026-11-04,Namecheap,12.88,Autoescuelas
+patinetelectrico.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,Tiendas online de patinetes
+enviodedinero.si,Finanzas e inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,Los compradores necesitan licencia del Banco de España
+cambiodedivisas.si,Finanzas e inversión,es,B,,disponible,2026-11-04,Namecheap,12.88,
+futbolfemenino.si,Fútbol y deporte digital,es,A,,disponible,2026-11-04,Namecheap,12.88,En pleno crecimiento
+arbitros.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+ojeador.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+ojeadores.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+campusdefutbol.si,Fútbol y deporte digital,es,A,,disponible,2026-11-04,Namecheap,12.88,"Campus de verano, mucho gasto en primavera"
+tecnificacion.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,Jerga de clubes: entrenamientos técnicos
+videoanalisis.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,Software de análisis de vídeo para clubes
+entrenadordefutbol.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+frontenis.si,"Golf, fútbol y otros deportes",es,B,,disponible,2026-11-04,Namecheap,12.88,Deporte que casi solo existe en España y México
+fronton.si,"Golf, fútbol y otros deportes",es,B,,disponible,2026-11-04,Namecheap,12.88,
+pelotavasca.si,"Golf, fútbol y otros deportes",es,B,,disponible,2026-11-04,Namecheap,12.88,
