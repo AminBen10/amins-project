@@ -86,3 +86,12 @@ paginaweb.si
 segundamano.si
 ocasion.si
 perque.si
+pistas.si
+clubdepadel.si
+torneos.si
+raquetas.si
+padelistas.si
+saque.si
+peloteo.si
+aparejos.si
+pescasport.si

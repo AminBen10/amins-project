@@ -1,7 +1,7 @@
 # Dominios .si disponibles
 
 Comprobados en Namecheap el 2026-11-04. Precio: 12,88 $/año (precio normal 15,48 $/año).
-Total: 88 dominios.
+Total: 97 dominios.
 
 Prioridad:
 - **A**: comprar ya (comprador claro y que gasta en publicidad)
@@ -122,6 +122,22 @@ Prioridad:
 | placassolares.si | A | Instaladores con mucha publicidad |
 | instala.si | B | |
 
+## Deportes: pádel, tenis y pesca (9)
+
+Añadidos el 2026-11-04 (lote 2).
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| pistas.si | A | Clubes de pádel y tenis que alquilan pistas |
+| clubdepadel.si | A | Clubes de pádel, mercado muy grande en España |
+| torneos.si | A | Organizadores de torneos y apps de pádel |
+| raquetas.si | A | Tiendas de deporte. Ojo: en tu captura no se veía el precio, compruébalo en el carrito |
+| padelistas.si | B | Comunidad, blog o tienda de pádel |
+| saque.si | B | Corto y con gancho para tenis o pádel |
+| peloteo.si | B | Para clases o una app de buscar pareja de juego |
+| aparejos.si | B | Tiendas de pesca |
+| pescasport.si | B | Ojo: puede coincidir con el nombre de alguna tienda; revisa EUIPO y OEPM |
+
 ## Comercio y web (5)
 
 | Dominio | Prioridad | Nota |
@@ -143,7 +159,7 @@ Prioridad:
 
 ## Lista plana para el carrito
 
-Solo prioridad A (27):
+Solo prioridad A (31):
 
 ```
 puedoreclamar.si
@@ -173,6 +189,10 @@ injertocapilar.si
 ortodoncia.si
 autoescuela.si
 placassolares.si
+pistas.si
+clubdepadel.si
+torneos.si
+raquetas.si
 ```
 
 ## Pendiente de revisar más tarde
