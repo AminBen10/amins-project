@@ -1,7 +1,7 @@
 # Dominios .si disponibles
 
 Comprobados en Namecheap el 2026-11-04. Precio: 12,88 $/año (precio normal 15,48 $/año).
-Total: 166 dominios.
+Total: 184 dominios.
 
 Prioridad:
 - **A**: comprar ya (comprador claro y que gasta en publicidad)
@@ -257,18 +257,43 @@ Añadidos el 2026-11-04 (lote 2).
 | paginaweb.si | B | |
 | segundamano.si | B | Ojo: "Segundamano" fue una marca conocida en España; revisa EUIPO y OEPM |
 
-## Frases (4)
+## Frases (3)
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
-| perque.si | B | Catalán, "perquè sí" |
 | suscribe.si | B | |
 | aunque.si | C | Débil |
 | ysolo.si | C | Débil |
 
+## Catalán (19)
+
+Para negocios de Cataluña. "Sí" también es "sí" en catalán.
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| finques.si | A | En Cataluña muchas inmobiliarias se llaman "Finques ..." |
+| lloguer.si | A | Alquiler, tema muy caliente en Barcelona |
+| advocats.si | A | Abogados |
+| reformes.si | A | Empresas de reformas |
+| feina.si | B | Empleo |
+| metges.si | B | Médicos |
+| cotxes.si | B | Coches |
+| segurs.si | B | Seguros |
+| viatges.si | B | Agencias de viajes |
+| preus.si | B | Precios, comparadores |
+| ofertes.si | B | Ofertas |
+| cuines.si | B | Tiendas de cocinas |
+| fusteria.si | B | Carpinterías |
+| pintors.si | B | Pintores |
+| tallers.si | B | Talleres |
+| carnets.si | B | Autoescuelas ("carnet de conduir") |
+| escoles.si | B | Escuelas y academias |
+| vendes.si | B | Doble lectura: "ventas" en catalán y "¿vendes? Sí" en castellano |
+| perque.si | B | "Perquè sí" |
+
 ## Lista plana para el carrito
 
-Solo prioridad A (61):
+Solo prioridad A (65):
 
 ```
 puedoreclamar.si
@@ -332,6 +357,10 @@ recambios.si
 talleres.si
 decants.si
 esencias.si
+finques.si
+lloguer.si
+advocats.si
+reformes.si
 ```
 
 ## Pendiente de revisar más tarde
