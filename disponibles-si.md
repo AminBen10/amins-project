@@ -1,14 +1,14 @@
 # Dominios .si disponibles
 
 Comprobados en Namecheap el 2026-11-04. Precio: 12,88 $/año (precio normal 15,48 $/año).
-Total: 144 dominios.
+Total: 166 dominios.
 
 Prioridad:
 - **A**: comprar ya (comprador claro y que gasta en publicidad)
 - **B**: solo si encaja con un proyecto propio o hay un comprador concreto
 - **C**: descartar, salvo uso propio
 
-## Abogados y reclamaciones (34)
+## Abogados y reclamaciones (38)
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
@@ -24,6 +24,10 @@ Prioridad:
 | indemnizacion.si | A | |
 | accidentes.si | A | |
 | desahucio.si | A | |
+| divorcios.si | A | Abogados de familia |
+| siniestros.si | A | Abogados y peritos de seguros |
+| desahucios.si | B | Duplica a desahucio.si, elige uno |
+| fianzas.si | B | Fianzas de alquiler; también fianzas penales |
 | reclamacion.si | B | |
 | puedocobrar.si | B | |
 | puedorecurrir.si | B | |
@@ -79,23 +83,26 @@ Prioridad:
 | seguromedico.si | B | |
 | segurohogar.si | B | |
 
-## Vivienda (5)
+## Vivienda (6)
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
 | vendetucasa.si | A | Inmobiliarias |
 | alquilatupiso.si | A | Inmobiliarias y gestoras de alquiler |
+| tasaciones.si | A | Tasadoras, se necesitan para cada hipoteca |
 | habitaciones.si | B | |
 | ventanas.si | B | |
 | tejado.si | B | |
 
-## Salud y estética (13)
+## Salud y estética (15)
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
 | implantes.si | A | Clínicas dentales |
 | injertocapilar.si | A | Sector muy grande |
 | ortodoncia.si | A | Clínicas dentales |
+| injertos.si | A | Injerto capilar, más corto que injertocapilar.si |
+| cirugias.si | B | Publicidad de cirugía estética regulada |
 | blanqueamiento.si | B | |
 | depilacion.si | B | Cadenas de depilación láser |
 | capilar.si | B | |
@@ -122,7 +129,7 @@ Prioridad:
 | placassolares.si | A | Instaladores con mucha publicidad |
 | instala.si | B | |
 
-## Pádel, tenis y raqueta (21)
+## Pádel, tenis y raqueta (19)
 
 Añadidos el 2026-11-04 (lote 2).
 
@@ -148,7 +155,7 @@ Añadidos el 2026-11-04 (lote 2).
 | saque.si | B | Corto y con gancho para tenis o pádel |
 | peloteo.si | B | Para clases o una app de buscar pareja de juego |
 
-## Fitness y deporte (17)
+## Fitness y deporte (25)
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
@@ -169,6 +176,36 @@ Añadidos el 2026-11-04 (lote 2).
 | pescar.si | B | |
 | aparejos.si | B | Tiendas de pesca |
 | pescasport.si | B | Ojo: puede coincidir con el nombre de alguna tienda; revisa EUIPO y OEPM |
+| golfistas.si | B | |
+| greenfee.si | B | Reserva de campos de golf, nicho pequeño |
+| ciclistas.si | B | |
+| maillots.si | B | Marcas de ropa de ciclismo |
+| rodillos.si | B | Rodillos de entrenamiento; la palabra es ambigua |
+| forfait.si | B | Estaciones de esquí, solo en temporada |
+| esquiadores.si | B | |
+| refugios.si | B | Refugios de montaña |
+
+## Motor y taller (3)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| neumaticos.si | A | Tiendas online de neumáticos, mucho gasto en anuncios |
+| recambios.si | A | Tiendas online de recambios |
+| talleres.si | A | Muchos talleres locales |
+
+## Perfumería: uso propio para Orienfragance (3)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| decants.si | A | Las muestras de perfume (decants) tienen mucha demanda |
+| esencias.si | A | |
+| extractos.si | B | Ambiguo: también "extracto bancario" |
+
+## Inversión (1)
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| lingotes.si | B | Venta de oro. Sector con fraudes, los compradores serán prudentes |
 
 ## Mascotas (4)
 
@@ -231,7 +268,7 @@ Añadidos el 2026-11-04 (lote 2).
 
 ## Lista plana para el carrito
 
-Solo prioridad A (52):
+Solo prioridad A (61):
 
 ```
 puedoreclamar.si
@@ -286,6 +323,15 @@ arraigo.si
 regularizacion.si
 permisodetrabajo.si
 homologacion.si
+divorcios.si
+siniestros.si
+tasaciones.si
+injertos.si
+neumaticos.si
+recambios.si
+talleres.si
+decants.si
+esencias.si
 ```
 
 ## Pendiente de revisar más tarde

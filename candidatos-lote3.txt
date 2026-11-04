@@ -74,7 +74,6 @@ podio.si
 medalla.si
 trofeos.si
 ciclista.si
-ciclistas.si
 bicicletas.si
 bicielectrica.si
 ebike.si
