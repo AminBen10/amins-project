@@ -50,7 +50,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 |---|---|---|
 | `lote1-general.txt` | Frases con "sí", bodas, abogados, finanzas, vivienda, salud, formación, comercio (335) | Comprobado |
 | `lote2-deportes-aficiones.txt` | Pádel, deportes, aficiones, energía, extranjería (113) | Comprobado |
-| `lote3-deportes.txt` | Pádel, tenis, golf, surf, running, ciclismo (120) | Comprobado |
+| `lote3-deportes.txt` | Pádel, tenis, golf, surf, running, ciclismo (121) | Comprobado |
 | `lote4-catalan.txt` | Palabras de alto valor en catalán (92) | Comprobado |
 | `lote5-nichos-tecnicos.txt` | Leyes nuevas, reclamaciones técnicas, IA, deporte digital, alimentación (180) | **Pendiente** |
 
