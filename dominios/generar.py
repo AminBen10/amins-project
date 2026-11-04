@@ -72,6 +72,101 @@ PRECIO_COM = 15.98
 # Estado del mismo nombre en .com. Vacío = sin comprobar.
 COM = {"": "?", "libre": "libre", "ocupado": "ocupado"}
 
+GRUPOS = ("", "uso propio", "prueba")
+
+# ---------------------------------------------------------------------------
+# Filtro "vender rápido"
+#
+# Puntuación por sector (0 a 5): lo rápido que se cierra una venta con ese tipo
+# de comprador. Sube si el comprador gasta en captar clientes, decide el propio
+# dueño y puede pagar con tarjeta. Baja si compra por licitación o por comité,
+# si el sector está regulado o si el comprador entiende poco de dominios.
+VELOCIDAD_SECTOR = {
+    "Abogados y reclamaciones": 5,
+    "Extranjería e inmigración": 5,
+    "Reclamaciones bancarias y de viajes": 4,
+    "Vivienda": 4,
+    "Energía y movilidad": 4,
+    "Agentes e IA para pymes": 4,
+    "Pádel, tenis y raqueta": 4,
+    "Bodas": 3,
+    "Hogar y reformas": 3,
+    "Motor y taller": 3,
+    "Salud y estética": 3,
+    "Tecnología e IA": 3,
+    "Robots y drones": 3,
+    "Fiscal y autónomos": 3,
+    "Empresas y cumplimiento": 3,
+    "Alquiler turístico": 3,
+    "Seguros": 2,
+    "Mayores y decesos": 2,
+    "Mascotas": 2,
+    "Formación y empleo": 2,
+    "Fitness y entrenamiento": 2,
+    "Running y ciclismo": 2,
+    "Montaña, nieve y agua": 2,
+    "Golf, fútbol y otros deportes": 2,
+    "Fútbol y deporte digital": 2,
+    "Catalán": 2,
+    "Industria, logística y maquinaria": 1,
+    "Agro y medio ambiente": 1,
+    "Aficiones y ocio": 1,
+    "Alimentación": 1,
+    "Comercio y web": 1,
+    "Finanzas e inversión": 1,
+    "Perfumería": 0,
+    "Frases": 0,
+    "Infraestructura 2030 (inglés)": 0,
+}
+
+# Palabras en la nota que indican freno para vender (regulación, polémica,
+# ambigüedad, temporada).
+FRENOS = ("regulad", "polémic", "Banco de España", "mbiguo", "mbigua", "temporada",
+          "emporal", "Débil", "demanda baja", "parecer oficial", "pocos compradores")
+
+# Puntuación mínima para entrar en "vender rápido".
+UMBRAL_RAPIDO = 8
+
+
+def puntuar(r):
+    """Devuelve (puntos, motivos) de un dominio para el filtro 'vender rápido'."""
+    nombre = r["dominio"][:-3]
+    nota = r["nota"]
+    puntos = VELOCIDAD_SECTOR[r["sector"]]
+    motivos = [f"sector {puntos}"]
+
+    def suma(n, motivo):
+        nonlocal puntos
+        puntos += n
+        motivos.append(f"{n:+d} {motivo}")
+
+    if r["prioridad"] == "A":
+        suma(2, "prioridad A")
+    elif r["prioridad"] == "C":
+        suma(-5, "prioridad C")
+    if r.get("com") == "ocupado":
+        suma(1, ".com ocupado: hay un negocio que puede comprar")
+    elif r.get("com") == "libre":
+        if r.get("comprar_com"):
+            suma(1, "se vende junto con el .com")
+        else:
+            suma(-2, ".com libre: el comprador puede registrarlo él")
+    if "Duplica" in nota:
+        suma(-4, "duplicado")
+    if any(f in nota for f in FRENOS):
+        suma(-2, "freno en la nota")
+    if r["idioma"] == "en":
+        suma(-3, "inglés")
+    elif r["idioma"] == "ca":
+        suma(-1, "catalán: mercado más pequeño")
+    if len(nombre) <= 9:
+        suma(1, "corto")
+    elif len(nombre) >= 19:
+        suma(-1, "largo")
+    if "Doble sentido" in nota or "Pregunta + sí" in nota:
+        suma(1, "frase o doble sentido")
+    return puntos, motivos
+
 
 def leer():
     with CSV.open(newline="", encoding="utf-8") as f:
@@ -97,6 +192,10 @@ def leer():
             errores.append(f"línea {i}: comprar_com no válido: {r.get('comprar_com')!r}")
         if r.get("comprar_com") and r.get("com") != "libre":
             errores.append(f"línea {i}: comprar_com marcado pero el .com no está libre: {d}")
+        if r.get("grupo", "") not in GRUPOS:
+            errores.append(f"línea {i}: grupo no válido: {r.get('grupo')!r} (usa uso propio, prueba o vacío)")
+        if r.get("sector") in ORDEN_SECTORES and r["sector"] not in VELOCIDAD_SECTOR:
+            errores.append(f"línea {i}: el sector {r['sector']!r} no tiene puntuación en VELOCIDAD_SECTOR")
     if errores:
         sys.exit("\n".join(errores))
     return filas
@@ -159,6 +258,41 @@ def main():
         "- **B**: solo si encaja con un proyecto propio o hay un comprador concreto",
         "- **C**: descartar, salvo uso propio",
         "",
+        "## Primera compra",
+        "",
+        "Lo que se compraría primero: los dominios de **uso propio** para Orienfragance y un **lote de prueba** "
+        "de venta. Si en 60 días y 30 contactos nadie del lote de prueba muestra interés, no se compra más.",
+        "",
+    ]
+    primera = [r for g in ("uso propio", "prueba") for r in orden if r.get("grupo") == g]
+    md += tabla(primera, [
+        ("Nombre", lambda r: f"**{r['dominio'][:-3]}**"),
+        ("Comprar", lambda r: " + ".join(x for x, s in ((".si", r["lista_corta"]), (".com", r.get("comprar_com"))) if s)),
+        ("Grupo", lambda r: r["grupo"]),
+        ("Sector", lambda r: r["sector"]),
+        ("Nota", lambda r: r["nota"]),
+    ])
+    rapido = sorted((r for r in orden if r["sector"] != "Perfumería" and r.get("grupo") != "uso propio"
+                     and puntuar(r)[0] >= UMBRAL_RAPIDO), key=lambda r: -puntuar(r)[0])
+    md += [
+        "",
+        "## Vender rápido",
+        "",
+        f"Los {len(rapido)} dominios con {UMBRAL_RAPIDO} puntos o más en el filtro de venta rápida. "
+        "La puntuación y sus reglas están explicadas en `README.md`.",
+        "",
+    ]
+    md += tabla(rapido, [
+        ("Dominio", lambda r: f"**{r['dominio']}**"),
+        ("Puntos", lambda r: str(puntuar(r)[0])),
+        ("Precio a pedir", lambda r: "990 – 1.490 €" if puntuar(r)[0] >= 9 else "690 – 990 €"),
+        ("Mínimo", lambda r: "490 €" if puntuar(r)[0] >= 9 else "290 €"),
+        ("Sector", lambda r: r["sector"]),
+        (".com", lambda r: COM[r.get("com", "")]),
+        ("En lista corta", lambda r: "sí" if r["lista_corta"] else ""),
+    ])
+    md += [
+        "",
         "## Lista corta: comprar primero",
         "",
     ]
@@ -212,6 +346,8 @@ def main():
         "",
         "En la carpeta `listas/`, un dominio por línea, listas para pegar en el carrito o en la búsqueda masiva:",
         "",
+        "- `listas/primera-compra.txt`: uso propio y lote de prueba",
+        "- `listas/vender-rapido.txt`: los del filtro de venta rápida",
         "- `listas/lista-corta.txt`: la lista corta (vender y uso propio)",
         "- `listas/prioridad-a.txt`: todos los de prioridad A",
         "- `listas/todos.txt`: todos los disponibles",
@@ -222,6 +358,13 @@ def main():
     ]
     OUT_MD.write_text("\n".join(md), encoding="utf-8")
 
+    def con_com(filas_):
+        return [d for r in filas_ for d, s in (
+            (r["dominio"], r["lista_corta"] or r.get("grupo") == "prueba"),
+            (r["dominio"][:-3] + ".com", r.get("comprar_com"))) if s]
+
+    escribir_lista("primera-compra.txt", con_com(primera))
+    escribir_lista("vender-rapido.txt", [r["dominio"] for r in rapido])
     escribir_lista("lista-corta.txt", [d for r in vender + propio for d, s in (
         (r["dominio"], r["lista_corta"]), (r["dominio"][:-3] + ".com", r.get("comprar_com"))) if s])
     escribir_lista("prioridad-a.txt", [r["dominio"] for r in orden if r["prioridad"] == "A"])

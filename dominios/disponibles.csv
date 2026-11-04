@@ -1,698 +1,698 @@
-dominio,sector,idioma,prioridad,lista_corta,com,comprar_com,estado,comprobado,registrador,precio_usd_ano,nota
-puedoreclamar.si,Abogados y reclamaciones,es,A,vender,libre,vender,disponible,2026-11-04,Namecheap,12.88,"Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos"
-tengoderecho.si,Abogados y reclamaciones,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Pregunta + sí
-reclama.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-reclamar.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-reclamaciones.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-segundaoportunidad.si,Abogados y reclamaciones,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Ley de Segunda Oportunidad, sector con mucha publicidad"
-extranjeria.si,Extranjería e inmigración,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-nacionalidad.si,Extranjería e inmigración,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-despido.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-indemnizacion.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-accidentes.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-desahucio.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-divorcios.si,Abogados y reclamaciones,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Abogados de familia
-siniestros.si,Abogados y reclamaciones,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Abogados y peritos de seguros
-desahucios.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Duplica a desahucio.si, elige uno"
-fianzas.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Fianzas de alquiler; también fianzas penales
-reclamacion.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-puedocobrar.si,Abogados y reclamaciones,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-puedorecurrir.si,Abogados y reclamaciones,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-mecorresponde.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tengocaso.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-denuncia.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-denuncias.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-indemniza.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-papeles.si,Extranjería e inmigración,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Extranjería, pero ambiguo"
-negligencia.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Negligencias médicas
-recurre.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Multas y recursos
-defiende.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pensiones.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-incapacidad.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-invalidez.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-impagos.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-deudas.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-sindeudas.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-bufete.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-declaracion.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Renta, temporada de abril a junio"
-clausulasuelo.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Mercado ya en declive: la mayoría de reclamaciones están resueltas
-gastoshipoteca.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Mercado ya en declive
-dijeque.si,Bodas,es,A,vender,libre,vender,disponible,2026-11-04,Namecheap,12.88,"""Dije que sí"", el mejor del bloque. Comprar con el .com para venderlos juntos"
-pedida.si,Bodas,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Pedidas de mano
-anillo.si,Bodas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Joyerías
-alianzas.si,Bodas,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Joyerías
-vestidodenovia.si,Bodas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de novia
-lunademiel.si,Bodas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Agencias de viajes
-despedidas.si,Bodas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Despedidas de soltero, sector grande"
-novios.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-casate.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-casarse.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-casamiento.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Más usado en Latinoamérica
-compromiso.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-invitaciones.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-banquete.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-despedida.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: también significa despido o funeral
-aniversario.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-propuesta.si,Bodas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tarifaluz.si,Energía y movilidad,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Los comparadores de luz pagan mucho por cliente
-segurodecoche.si,Seguros,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Comparadores de seguros
-segurodevida.si,Seguros,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-seguromedico.si,Seguros,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-segurohogar.si,Seguros,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-vendetucasa.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inmobiliarias
-alquilatupiso.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inmobiliarias y gestoras de alquiler
-tasaciones.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Tasadoras, se necesitan para cada hipoteca"
-habitaciones.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-ventanas.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tejado.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-implantes.si,Salud y estética,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clínicas dentales
-injertocapilar.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Sector muy grande
-ortodoncia.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clínicas dentales
-injertos.si,Salud y estética,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Injerto capilar, más corto que injertocapilar.si"
-cirugias.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Publicidad de cirugía estética regulada
-blanqueamiento.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-depilacion.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Cadenas de depilación láser
-capilar.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-barberia.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-dietas.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-adelgaza.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Publicidad sanitaria regulada
-audifonos.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-embarazo.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tema sensible
-masaje.si,Salud y estética,es,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Se puede asociar con contenido para adultos
-masajes.si,Salud y estética,es,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-autoescuela.si,Formación y empleo,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-selectividad.si,Formación y empleo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Ahora se llama PAU, temporal"
-entrevista.si,Formación y empleo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-placassolares.si,Energía y movilidad,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Instaladores con mucha publicidad
-instala.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pistas.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clubes de pádel y tenis que alquilan pistas
-clubdepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Clubes de pádel, mercado muy grande en España"
-torneos.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Organizadores de torneos y apps de pádel
-raquetas.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Tiendas de deporte. Ojo: en la primera captura no se veía el precio, compruébalo en el carrito"
-juegapadel.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Juega pádel, sí"""
-reservapista.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clubes y apps de reserva
-pistasdepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clubes y constructores de pistas
-clasesdepadel.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Escuelas y monitores
-paladepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de palas
-clasesdetenis.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Escuelas de tenis
-juegapickleball.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Deporte en crecimiento en España: entras antes
-pistapadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Duplica a pistasdepadel.si, elige uno"
-clasespadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Duplica a clasesdepadel.si, elige uno"
-partidos.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-raqueta.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Duplica a raquetas.si, elige uno"
-juegagolf.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelistas.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Comunidad, blog o tienda de pádel"
-saque.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Corto y con gancho para tenis o pádel
-peloteo.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Para clases o una app de buscar pareja de juego
-faltauno.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Falta uno"": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores"
-bandeja.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Golpe de pádel, corto y con gancho de marca"
-escueladepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Escuelas de pádel
-academiadepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-ligadepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Organizadores de ligas
-zapatillasdepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online, mucho gasto en anuncios"
-padelbarcelona.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clubes de Barcelona
-padelmadrid.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clubes de Madrid
-padelmarbella.si,"Pádel, tenis y raqueta",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Mercado de alto poder adquisitivo
-clasesdepickleball.si,"Pádel, tenis y raqueta",es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Deporte en crecimiento
-reservatupista.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a reservapista.si
-alquilapista.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pistalibre.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Para una app de pistas libres
-pistacubierta.si,"Pádel, tenis y raqueta",es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Clubes de pádel indoor
-monitordepadel.si,"Pádel, tenis y raqueta",es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-campusdepadel.si,"Pádel, tenis y raqueta",es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-padelinfantil.si,"Pádel, tenis y raqueta",es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-padelfemenino.si,"Pádel, tenis y raqueta",es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-ligapadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a ligadepadel.si
-rankingpadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pelotasdepadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelero.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padeleros.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelvalencia.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelsevilla.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelmalaga.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelmallorca.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-padelbilbao.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-buscopareja.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Sirve para pádel, pero también suena a web de citas"
-dejada.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Golpe de pádel y tenis
-pared.si,"Pádel, tenis y raqueta",es,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Débil
-tenista.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tenistas.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-escueladetenis.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-clubdetenis.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pistapickleball.si,"Pádel, tenis y raqueta",es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-palapickleball.si,"Pádel, tenis y raqueta",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-entrenadorpersonal.si,Fitness y entrenamiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchos entrenadores compitiendo por clientes
-calistenia.si,Fitness y entrenamiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tendencia en crecimiento
-proteina.si,Fitness y entrenamiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Tiendas de suplementos online, mucho gasto en anuncios"
-suplementos.si,Fitness y entrenamiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual. Ojo: la publicidad de suplementos está regulada
-escalada.si,"Montaña, nieve y agua",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Rocódromos en crecimiento
-entrenamiento.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-musculacion.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-mediamaraton.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Las carreras suelen usar el nombre de su ciudad
-artesmarciales.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-bicis.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-senderismo.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-acampa.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-futbolsala.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-juegafutbol.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pescar.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-aparejos.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de pesca
-pescasport.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ojo: puede coincidir con el nombre de alguna tienda; revisa EUIPO y OEPM
-golfistas.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-greenfee.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Reserva de campos de golf, nicho pequeño"
-ciclistas.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-maillots.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Marcas de ropa de ciclismo
-rodillos.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Rodillos de entrenamiento; la palabra es ambigua
-forfait.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Estaciones de esquí, solo en temporada"
-esquiadores.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-refugios.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Refugios de montaña
-rocodromo.si,"Montaña, nieve y agua",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Rocódromos en crecimiento
-surfcamp.si,"Montaña, nieve y agua",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Surf camps, mucho gasto en anuncios; también funciona en inglés"
-escueladesurf.si,"Montaña, nieve y agua",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Escuelas de surf
-inscribete.si,Running y ciclismo,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Inscríbete, sí"": plataformas de inscripción en carreras"
-bicicletas.si,Running y ciclismo,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de bicis
-bicielectrica.si,Running y ciclismo,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de bicis eléctricas
-fisiodeportivo.si,Fitness y entrenamiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchos fisios compitiendo
-campamentodeverano.si,"Montaña, nieve y agua",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Los campamentos se anuncian mucho en primavera
-equipaciones.si,"Golf, fútbol y otros deportes",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Equipaciones para clubes
-ropadeportiva.si,"Golf, fútbol y otros deportes",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
-zapatillasrunning.si,Running y ciclismo,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
-hipica.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-equitacion.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-golfista.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-campodegolf.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-clasesdegolf.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-clasesdesurf.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-paddlesurf.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-piraguismo.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-corredores.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-dorsales.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-inscripciones.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-medalla.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-trofeos.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de trofeos
-ciclista.si,Running y ciclismo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-funcional.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-entrenamientofuncional.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-defensapersonal.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-clasesdenatacion.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-aquagym.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-voleyplaya.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-balonmano.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-patinaje.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-nutriciondeportiva.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-readaptacion.si,Fitness y entrenamiento,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-campamento.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-campusdeverano.si,"Montaña, nieve y agua",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-deportista.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-hazdeporte.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-muevete.si,Fitness y entrenamiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-neumaticos.si,Motor y taller,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online de neumáticos, mucho gasto en anuncios"
-recambios.si,Motor y taller,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas online de recambios
-talleres.si,Motor y taller,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchos talleres locales
-decants.si,Perfumería,es,A,uso propio,ocupado,,disponible,2026-11-04,Namecheap,12.88,Las muestras de perfume (decants) tienen mucha demanda
-esencias.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-extractos.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Ambiguo: también ""extracto bancario"""
-lingotes.si,Finanzas e inversión,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Venta de oro. Sector con fraudes, los compradores serán prudentes"
-peluqueriacanina.si,Mascotas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchos negocios locales
-guarderiacanina.si,Mascotas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Las residencias caninas se anuncian mucho en verano
-adoptar.si,Mascotas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Las protectoras tienen poco presupuesto
-adiestramiento.si,Mascotas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cocheelectrico.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Concesionarios e instaladores de cargadores
-autoconsumo.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Instaladores solares, compiten mucho"
-bombadecalor.si,Energía y movilidad,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Instaladores de aerotermia, gracias a las ayudas"
-patinete.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-arraigo.si,Extranjería e inmigración,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Abogados de extranjería, de los que más se anuncian"
-regularizacion.si,Extranjería e inmigración,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-permisodetrabajo.si,Extranjería e inmigración,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-homologacion.si,Extranjería e inmigración,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Homologación de títulos, mucha demanda desde Latinoamérica"
-homologar.si,Extranjería e inmigración,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a homologacion.si
-nomadadigital.si,Extranjería e inmigración,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ese público busca en inglés
-visadonomada.si,Extranjería e inmigración,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Igual
-guitarra.si,Aficiones y ocio,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Escuelas de música
-manualidades.si,Aficiones y ocio,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-jardineria.si,Aficiones y ocio,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tapea.si,Aficiones y ocio,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Rutas de tapas y restaurantes
-enoturismo.si,Aficiones y ocio,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Bodegas
-ocasion.si,Comercio y web,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Coches de ocasión
-moviles.si,Comercio y web,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tuweb.si,Comercio y web,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-paginaweb.si,Comercio y web,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-segundamano.si,Comercio y web,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Ojo: ""Segundamano"" fue una marca conocida en España; revisa EUIPO y OEPM"
-suscribe.si,Frases,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-aunque.si,Frases,es,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Débil
-ysolo.si,Frases,es,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Débil
-finques.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"En Cataluña muchas inmobiliarias se llaman ""Finques ..."""
-lloguer.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Alquiler, tema muy caliente en Barcelona"
-advocats.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Abogados
-reformes.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empresas de reformas
-feina.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empleo
-metges.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Médicos
-cotxes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Coches
-segurs.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Seguros
-viatges.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Agencias de viajes
-preus.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Precios, comparadores"
-ofertes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ofertas
-cuines.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas de cocinas
-fusteria.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Carpinterías
-pintors.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Pintores
-tallers.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Talleres
-carnets.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Autoescuelas (""carnet de conduir"")"
-escoles.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Escuelas y academias
-vendes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Doble lectura: ""ventas"" en catalán y ""¿vendes? Sí"" en castellano"
-perque.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Perquè sí"""
-habitatge.si,Catalán,ca,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Vivienda, el sector que más dinero mueve"
-immobiliaria.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inmobiliarias
-assegurances.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Seguros
-hipoteques.si,Catalán,ca,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Brokers hipotecarios
-herencies.si,Catalán,ca,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Abogados de herencias
-divorci.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Abogados de familia
-reclamacions.si,Catalán,ca,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Abogados de reclamaciones
-autoescola.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Autoescuelas
-oposicions.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Academias de oposiciones
-perruqueria.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchas peluquerías locales
-dentistes.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clínicas dentales
-botiga.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Tienda"": corta y fácil de convertir en marca"
-perfums.si,Catalán,ca,A,uso propio,ocupado,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance en catalán
-casesrurals.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchos negocios de turismo rural que se anuncian
-casament.si,Catalán,ca,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Bodas, mismo pitch que dijeque.si"
-lampista.si,Catalán,ca,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Fontanero"", solo se dice en catalán; se anuncian mucho por urgencias"
-serraller.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Cerrajeros, urgencias"
-mudances.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empresas de mudanzas
-plaquessolars.si,Catalán,ca,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Instaladores solares
-immobiliaries.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a immobiliaria.si
-compravenda.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-llogar.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Alquilar"""
-lloguers.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a lloguer.si
-prestecs.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Préstamos
-estalvi.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ahorro
-advocada.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-impostos.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Impuestos
-divorcis.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a divorci.si
-multes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Multas
-treball.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Trabajo
-ocupacio.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empleo
-formacio.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Formación
-idiomes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Idiomas
-metge.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Médico
-psicoleg.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Profesión con la publicidad regulada
-veterinari.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-bellesa.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Belleza
-botigues.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a botiga.si
-rebaixes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Rebajas
-descomptes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Descuentos
-sabates.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Zapatos
-joies.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Joyas
-mobles.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muebles
-cuina.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Cocina
-receptes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Recetas
-menjar.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Comida
-sopar.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Cena
-esmorzar.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Desayuno
-turisme.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-allotjament.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Alojamiento
-platja.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Playa
-muntanya.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Montaña
-casaments.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a casament.si
-noces.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Bodas
-nuvis.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Novios
-anell.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Anillo
-festes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Fiestas
-aniversari.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cotxe.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Coche
-recanvis.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Recambios
-lampistes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a lampista.si
-manyans.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Cerrajeros
-fuster.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Carpintero
-jardiner.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Jardinero
-neteja.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Limpieza
-obres.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Obras
-construccio.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Construcción
-arquitectes.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-interiorisme.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Interiorismo
-decoracio.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Decoración
-empreses.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empresas
-negocis.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Negocios
-emprenedors.si,Catalán,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Emprendedores
-balizav16.si,Motor y taller,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Baliza V16 obligatoria desde 2026. Ojo: la demanda baja cuando todos la tengan
-balizas.si,Motor y taller,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-seguropatinete.si,Seguros,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Nueva obligación de seguro para patinetes; comprueba la fecha de entrada en vigor
-seguroperro.si,Seguros,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Seguro obligatorio por la ley de bienestar animal
-segurodeperro.si,Seguros,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a seguroperro.si
-seguromascotas.si,Seguros,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-certificadoenergetico.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Obligatorio para vender o alquilar; muchos técnicos se anuncian
-certificadosenergeticos.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a certificadoenergetico.si
-ceduladehabitabilidad.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Obligatoria en Cataluña y otras comunidades para alquilar o vender
-inspecciontecnica.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inspección técnica de edificios
-licenciadeobra.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-zonatensionada.si,Vivienda,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,"Ley de vivienda; temático, poco comprador directo"
-licenciaturistica.si,Alquiler turístico,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Gestorías que tramitan licencias
-pisoturistico.si,Alquiler turístico,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Gestoras de pisos turísticos
-viviendaturistica.si,Alquiler turístico,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-alquilerturistico.si,Alquiler turístico,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-registroviajeros.si,Alquiler turístico,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Software para el registro obligatorio de huéspedes
-tasaturistica.si,Alquiler turístico,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-facturaelectronica.si,Empresas y cumplimiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Factura electrónica obligatoria; el software compite mucho
-facturacionelectronica.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a facturaelectronica.si
-efactura.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-verifactu.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Nombre del sistema de Hacienda: podría parecer oficial. Las fechas se han retrasado
-canaldenuncias.si,Empresas y cumplimiento,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
-planigualdad.si,Empresas y cumplimiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
-planesdeigualdad.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a planigualdad.si
-registrojornada.si,Empresas y cumplimiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Registro de jornada obligatorio; software de fichaje
-fichaje.si,Empresas y cumplimiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Software de fichaje, mucho gasto en anuncios"
-controlhorario.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-lopd.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Ley antigua, pero se sigue buscando mucho"
-protecciondedatos.si,Empresas y cumplimiento,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Consultoras de protección de datos
-cumplimiento.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-mediacion.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Negociación obligatoria antes de juicio desde 2025 (MASC)
-mediador.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-mediadores.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-conciliacion.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-irph.si,Reclamaciones bancarias y de viajes,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Miles de demandas por el índice IRPH de las hipotecas
-tarjetarevolving.si,Reclamaciones bancarias y de viajes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Mercado de reclamaciones muy grande
-usura.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-plusvalia.si,Reclamaciones bancarias y de viajes,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Reclamación de la plusvalía municipal
-plusvalias.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a plusvalia.si
-retrasovuelo.si,Reclamaciones bancarias y de viajes,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho
-vuelocancelado.si,Reclamaciones bancarias y de viajes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-equipajeperdido.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-maletaperdida.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cartelcoches.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de coches
-cartelcamiones.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de camiones
-arraigosocial.si,Extranjería e inmigración,es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
-arraigosociolaboral.si,Extranjería e inmigración,es,A,vender,libre,vender,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos
-arraigosocioformativo.si,Extranjería e inmigración,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
-arraigofamiliar.si,Extranjería e inmigración,es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
-examennacionalidad.si,Extranjería e inmigración,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Academias que preparan los exámenes
-leybeckham.si,Extranjería e inmigración,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Régimen fiscal para expatriados; asesores fiscales
-residenciapermanente.si,Extranjería e inmigración,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-reagrupacion.si,Extranjería e inmigración,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a reagrupacionfamiliar.si
-reagrupacionfamiliar.si,Extranjería e inmigración,es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,
-modelo303.si,Fiscal y autónomos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,IVA trimestral: millones de autónomos lo buscan cada trimestre
-modelo130.si,Fiscal y autónomos,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,IRPF trimestral de autónomos
-modelo100.si,Fiscal y autónomos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Declaración de la renta
-modelo720.si,Fiscal y autónomos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Bienes en el extranjero
-tarifaplana.si,Fiscal y autónomos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tarifa plana de autónomos; gestorías y asesorías
-capitalizarparo.si,Fiscal y autónomos,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-prestacion.si,Fiscal y autónomos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-erte.si,Fiscal y autónomos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-impuestosucesiones.si,Fiscal y autónomos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-sucesiones.si,Fiscal y autónomos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-decesos.si,Mayores y decesos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,El seguro de decesos casi solo existe en España
-segurodedecesos.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a decesos.si
-funeraria.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tanatorio.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-esquelas.si,Mayores y decesos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Webs de esquelas con mucho tráfico
-teleasistencia.si,Mayores y decesos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Mercado en crecimiento por el envejecimiento
-ayudaadomicilio.si,Mayores y decesos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empresas de cuidados a domicilio
-cuidadores.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cuidadoras.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-dependencia.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-residencias.si,Mayores y decesos,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Residencias de mayores
-residenciamayores.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a residencias.si
-extraescolares.si,Formación y empleo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Temporada de septiembre
-guarderia.si,Formación y empleo,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-alineaciones.si,Fútbol y deporte digital,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Fantasy y apuestas deportivas; mucho tráfico
-porra.si,Fútbol y deporte digital,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Porras entre amigos
-porras.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a porra.si
-clasificacion.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-marcador.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-abono.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-abonos.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-penya.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Peñas, en catalán"
-penyes.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-estadisticas.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pachangas.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Combina con faltauno.si
-futbol7.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-futbol5.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-quedada.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-quedadas.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-puntodecarga.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Instaladores de cargadores para coche eléctrico
-puntosdecarga.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a puntodecarga.si
-cargadores.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-baterias.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-fotovoltaica.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Instaladores solares
-comunidadenergetica.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-comunidadesenergeticas.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-aove.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Aceite de oliva virgen extra
-aceitedeoliva.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-jamoniberico.si,Alimentación,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online de jamón, venden también fuera de España"
-pistacho.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pistachos.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-azafran.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-trufa.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-trufas.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-almendras.si,Alimentación,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-agentesia.si,Tecnología e IA,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Agencias de agentes de IA, tendencia fuerte"
-cursoia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a cursosia.si
-cursosia.si,Tecnología e IA,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Cursos de IA, mucho gasto en anuncios"
-formacionia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-consultoriaia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cerrajeria.si,Hogar y reformas,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Cerrajeros de urgencia, de los que más pagan por clic"
-fontaneria.si,Hogar y reformas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Fontaneros de urgencia
-desatascos.si,Hogar y reformas,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Urgencias, mucho gasto en anuncios"
-desinfeccion.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-aislamientos.si,Hogar y reformas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Aislamiento térmico, con ayudas públicas"
-tejados.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a tejado.si
-fachadas.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pintores.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pinturas.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-calderas.si,Hogar y reformas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Instalación y reparación de calderas, mucho gasto en invierno"
-tarimas.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cristaleria.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cerramientos.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Cerramientos de terrazas
-persianas.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Reparación de persianas, muchos negocios locales"
-toldos.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-electricistas.si,Hogar y reformas,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Electricistas de urgencia
-aluminio.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-soleras.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pavimentos.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-palets.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-contenedores.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Alquiler de contenedores de obra y marítimos
-cubas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Cubas de escombros
-gruas.si,"Industria, logística y maquinaria",es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Grúas de asistencia en carretera y de obra
-remolques.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-carretillas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Carretillas elevadoras
-plataformas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Plataformas elevadoras; palabra ambigua
-excavaciones.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-demoliciones.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-chatarras.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-chatarreria.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-residuos.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-furgonetas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Alquiler y venta de furgonetas
-transportes.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-flotas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Software de gestión de flotas
-almacenes.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-embalajes.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-suministros.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-graneles.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-depositos.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-bobinas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-finiquito.si,Abogados y reclamaciones,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Millones de búsquedas para calcular o reclamar el finiquito
-despidos.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a despido.si
-liquidaciones.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-quiebras.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-morosos.si,Abogados y reclamaciones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Empresas de recobro de deudas
-deudores.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tasadores.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a tasaciones.si
-herederos.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-testamentos.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Servicios de testamento online
-escrituras.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-poderes.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-notarias.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Los notarios casi no se anuncian
-gestiones.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-sanciones.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-embargos.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Abogados para levantar embargos
-cobros.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-podologia.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Muchas clínicas de podología
-fisioterapeutas.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-quiropractico.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-endodoncia.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-empastes.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-ferulas.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Férulas de descarga
-psicologos.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Publicidad sanitaria regulada
-psiquiatria.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-varices.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Clínicas de varices, mucho gasto en anuncios"
-facturae.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Formato oficial de factura electrónica
-fitosanitarios.si,Agro y medio ambiente,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Sector regulado
-biometano.si,Agro y medio ambiente,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Plantas de biometano en crecimiento en España
-regadio.si,Agro y medio ambiente,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-alpechin.si,Agro y medio ambiente,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Residuo de las almazaras; nicho muy técnico
-calibracion.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-metrologia.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-soldaduras.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-salasblancas.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-cadenadefrio.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-termometria.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-viales.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: viales de laboratorio y viales de carretera
-gasesmedicinales.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-criogenia.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-concursos.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: concurso de acreedores y concursos de premios
-subastasjudiciales.si,Finanzas e inversión,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inversores en subastas y plataformas que las buscan
-creditosfallidos.si,Finanzas e inversión,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-lotes.si,Finanzas e inversión,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-dacion.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Dación en pago
-auditorias.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-convenios.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Convenios colectivos: muchas búsquedas
-fianzasjudiciales.si,Abogados y reclamaciones,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-peritaciones.si,Abogados y reclamaciones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Peritos judiciales y de seguros
-certificadora.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-ensayos.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-trazabilidad.si,Empresas y cumplimiento,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-purines.si,Agro y medio ambiente,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-fumigacion.si,Agro y medio ambiente,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Fumigación agrícola y con drones
-tanatorios.si,Mayores y decesos,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a tanatorio.si
-desinfecciones.si,Hogar y reformas,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a desinfeccion.si
-caldereria.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-mecanizado.si,"Industria, logística y maquinaria",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
-fillrate.si,"Industria, logística y maquinaria",en,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Término en inglés: porcentaje de pedidos servidos (logística) o de anuncios servidos (publicidad online). Compradores: software de logística y de publicidad
-agenteinmobiliario.si,Agentes e IA para pymes,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria
-agentesinmobiliarios.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a agenteinmobiliario.si
-agentedeseguros.si,Agentes e IA para pymes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Corredurías y startups de IA para seguros
-agentesdeseguros.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentedeseguros.si
-agentesdeviajes.si,Agentes e IA para pymes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. El singular agentedeviajes.si está ocupado
-agentecomercial.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
-agentescomerciales.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentecomercial.si
-agentedeventas.si,Agentes e IA para pymes,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman ""AI SDR"", producto muy de moda"
-agentedeaduanas.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
-agentedejugadores.si,Agentes e IA para pymes,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Representantes de futbolistas
-agentimmobiliari.si,Agentes e IA para pymes,ca,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
-agentdeviatges.si,Agentes e IA para pymes,ca,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
-recepcionistavirtual.si,Agentes e IA para pymes,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,Agentes de voz que contestan el teléfono en clínicas y negocios
-secretariavirtual.si,Agentes e IA para pymes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-telefonista.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-centralita.si,Agentes e IA para pymes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Centralitas virtuales: proveedores con mucho gasto en anuncios
-centralitavirtual.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a centralita.si
-contestador.si,Agentes e IA para pymes,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"""Contestador, sí"": agentes de voz para pymes"
-contestadorautomatico.si,Agentes e IA para pymes,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Duplica a contestador.si
-atencionalcliente.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-citaonline.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Software de citas
-agendar.si,Agentes e IA para pymes,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-aisdrs.si,Agentes e IA para pymes,en,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. El único compuesto de agentes en inglés que salió libre
-detectoria.si,Tecnología e IA,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Detectores de textos hechos con IA, muy buscados por profesores y estudiantes"
-detectordeia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a detectoria.si
-antiplagio.si,Tecnología e IA,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Software antiplagio para universidades y estudiantes
-plagio.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-parafrasear.si,Tecnología e IA,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Herramientas de parafrasear, muchísimas búsquedas"
-suplantacion.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Suplantación de identidad
-verificacion.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-leyia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Ley europea de IA
-reglamentoia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-auditoriaia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-iaresponsable.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-seoia.si,Tecnología e IA,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Agencias de SEO para buscadores con IA
-posicionamientoia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-abogadoia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-asesoriaia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-gestoriaia.si,Tecnología e IA,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-robotaspirador.si,Robots y drones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas online y webs de comparativas
-robotsaspiradores.si,Robots y drones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a robotaspirador.si
-robotcortacesped.si,Robots y drones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
-robotdecocina.si,Robots y drones,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Robots de cocina, categoría enorme en España"
-robotlimpiacristales.si,Robots y drones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-robotfregasuelos.si,Robots y drones,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-antidron.si,Robots y drones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a antidrones.si
-antidrones.si,Robots y drones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Seguridad y defensa, sector en crecimiento en Europa"
-pilotodedrones.si,Robots y drones,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Academias que dan la licencia de piloto
-cursodedrones.si,Robots y drones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-licenciadron.si,Robots y drones,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-topografia.si,Robots y drones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-fotogrametria.si,Robots y drones,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-edadbiologica.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Longevidad
-chequeo.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-analiticas.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Laboratorios y análisis a domicilio
-analisisdesangre.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-testgenetico.si,Salud y estética,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-menopausia.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Salud femenina, mercado poco atendido y en crecimiento"
-congelaciondeovulos.si,Salud y estética,es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Clínicas de fertilidad. Publicidad sanitaria regulada
-ovodonacion.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,España es líder europeo. Publicidad sanitaria regulada
-reproduccionasistida.si,Salud y estética,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Clínicas de fertilidad. Publicidad sanitaria regulada
-casasmodulares.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Casas modulares, en auge por el precio de la vivienda"
-casamodular.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a casasmodulares.si
-casaprefabricada.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a casasprefabricadas.si
-casasprefabricadas.si,Vivienda,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-casascontenedor.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-autoconstruccion.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-antiokupas.si,Vivienda,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Empresas de seguridad con mucha publicidad, pero el sector es polémico"
-generador.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a generadores.si
-generadores.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Más demanda tras el apagón de abril de 2025
-bateriasolar.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Baterías para placas solares
-kitsolar.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Kits solares para casas y balcones
-kitsolares.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a kitsolar.si
-climatizacion.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Instaladores de climatización, mucho gasto en verano"
-aireacondicionado.si,Energía y movilidad,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-centrodedatos.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Boom de centros de datos en España
-centrosdedatos.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-subestacion.si,Energía y movilidad,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-licenciavtc.si,Motor y taller,es,A,vender,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Las licencias se compran y venden por decenas de miles de euros, con intermediarios"
-licenciataxi.si,Motor y taller,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Igual
-licenciasvtc.si,Motor y taller,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a licenciavtc.si
-carnetdemoto.si,Motor y taller,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Autoescuelas
-patinetelectrico.si,Motor y taller,es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Tiendas online de patinetes
-enviodedinero.si,Finanzas e inversión,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Los compradores necesitan licencia del Banco de España
-cambiodedivisas.si,Finanzas e inversión,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-futbolfemenino.si,Fútbol y deporte digital,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,En pleno crecimiento
-arbitros.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-ojeador.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-ojeadores.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-campusdefutbol.si,Fútbol y deporte digital,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Campus de verano, mucho gasto en primavera"
-tecnificacion.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Jerga de clubes: entrenamientos técnicos
-videoanalisis.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Software de análisis de vídeo para clubes
-entrenadordefutbol.si,Fútbol y deporte digital,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-frontenis.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Deporte que casi solo existe en España y México
-fronton.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-pelotavasca.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-perfumesarabes.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. La búsqueda principal de tu sector
-perfumeriaarabe.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance
-perfumesalpormayor.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. Para la parte de venta al por mayor
-mayoristaperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance
-distribuidorperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance
-perfumesarabesalpormayor.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Largo, pero es exactamente lo que buscan las tiendas"
-mayoristaperfumesarabes.si,Perfumería,es,A,,libre,uso propio,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes
-distribuidorperfumesarabes.si,Perfumería,es,A,,libre,uso propio,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes
-perfumesdubai.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Mucha gente busca ""perfumes de Dubái"""
-perfumeriadubai.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-perfumesorientales.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-perfumesoriginales.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Solo si vendes producto original con factura: promete autenticidad
-perfumesdenicho.si,Perfumería,es,A,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Perfumes de nicho, segmento en crecimiento"
-perfumerianicho.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a perfumesdenicho.si
-comprarperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-tiendadeperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-lotesperfumes.si,Perfumería,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Puede sonar a producto de saldo
-stockperfumes.si,Perfumería,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Puede sonar a producto de saldo
-muestrasperfumes.si,Perfumería,es,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Complementa a decants.si
-decantsperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Duplica a decants.si
-importadorperfumes.si,Perfumería,es,B,,libre,,disponible,2026-11-04,Namecheap,12.88,
-distribuidoroficial.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Genérico: vendible a cualquier distribuidor oficial de cualquier sector
-parfumsarabes.si,Perfumería,fr,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Francés. Francia es un gran mercado de perfumes árabes
-parfumeriearabe.si,Perfumería,fr,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Francés
-parfumsdubai.si,Perfumería,fr,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Francés
-grossisteparfum.si,Perfumería,fr,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Francés: mayorista de perfumes
-parfumsdegros.si,Perfumería,fr,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Francés
-grossisteparfums.si,Perfumería,fr,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Francés. Duplica a grossisteparfum.si
-perfumsarabs.si,Perfumería,ca,A,,libre,,disponible,2026-11-04,Namecheap,12.88,Catalán
-perfumeriaaraba.si,Perfumería,ca,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Catalán
-perfumsengros.si,Perfumería,ca,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Catalán: perfumes al por mayor
-majoristaperfums.si,Perfumería,ca,B,,libre,,disponible,2026-11-04,Namecheap,12.88,Catalán
-perfumesbaratos.si,Perfumería,es,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Para un distribuidor oficial puede dañar la imagen de marca
-outletperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-ofertasperfumes.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-perfumesexclusivos.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,
-perfumesdelujo.si,Perfumería,es,B,,ocupado,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
-antisybil.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Protección contra cuentas falsas en masa. Compradores: pocas startups de identidad y cripto. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-offsetter.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Compensación de carbono. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-carbonoracle.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Datos de emisiones para contratos automáticos; nicho muy pequeño. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-offsetagent.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Compuesto débil, peor que offsetter.si"
-telemetries.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. El plural suena raro; el singular está ocupado
-oligos.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Oligonucleótidos: proveedores de reactivos de biotecnología. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-biosurveillance.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Vigilancia de brotes (aguas residuales, aeropuertos). Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-genecheck.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Suena a nombre de empresa: búscalo en EUIPO antes de comprar. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-smelters.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Fundiciones de minerales críticos. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-feedstocks.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Materias primas para la industria química. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-reclaimers.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Recuperación de gases, metales y disolventes. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-loadshed.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Cortes selectivos de carga en la red eléctrica. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
-custodianship.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. Palabra larga y abstracta
-novations.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. Plural poco usado
-insolvencies.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. El singular es el que se busca
-provenances.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. Plural poco usado; el singular está ocupado
-telemetrist.si,Infraestructura 2030 (inglés),en,C,,ocupado,,disponible,2026-11-04,Namecheap,12.88,Inglés. Palabra casi inexistente
+dominio,sector,idioma,prioridad,lista_corta,com,comprar_com,grupo,estado,comprobado,registrador,precio_usd_ano,nota
+puedoreclamar.si,Abogados y reclamaciones,es,A,vender,libre,vender,prueba,disponible,2026-11-04,Namecheap,12.88,"Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos"
+tengoderecho.si,Abogados y reclamaciones,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Pregunta + sí
+reclama.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+reclamar.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+reclamaciones.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+segundaoportunidad.si,Abogados y reclamaciones,es,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,"Ley de Segunda Oportunidad, sector con mucha publicidad"
+extranjeria.si,Extranjería e inmigración,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+nacionalidad.si,Extranjería e inmigración,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+despido.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+indemnizacion.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+accidentes.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+desahucio.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+divorcios.si,Abogados y reclamaciones,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Abogados de familia
+siniestros.si,Abogados y reclamaciones,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Abogados y peritos de seguros
+desahucios.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Duplica a desahucio.si, elige uno"
+fianzas.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Fianzas de alquiler; también fianzas penales
+reclamacion.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+puedocobrar.si,Abogados y reclamaciones,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+puedorecurrir.si,Abogados y reclamaciones,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+mecorresponde.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tengocaso.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+denuncia.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+denuncias.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+indemniza.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+papeles.si,Extranjería e inmigración,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Extranjería, pero ambiguo"
+negligencia.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Negligencias médicas
+recurre.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Multas y recursos
+defiende.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pensiones.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+incapacidad.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+invalidez.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+impagos.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+deudas.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+sindeudas.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+bufete.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+declaracion.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Renta, temporada de abril a junio"
+clausulasuelo.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Mercado ya en declive: la mayoría de reclamaciones están resueltas
+gastoshipoteca.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Mercado ya en declive
+dijeque.si,Bodas,es,A,vender,libre,vender,prueba,disponible,2026-11-04,Namecheap,12.88,"""Dije que sí"", el mejor del bloque. Comprar con el .com para venderlos juntos"
+pedida.si,Bodas,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Pedidas de mano
+anillo.si,Bodas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Joyerías
+alianzas.si,Bodas,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Joyerías
+vestidodenovia.si,Bodas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de novia
+lunademiel.si,Bodas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Agencias de viajes
+despedidas.si,Bodas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Despedidas de soltero, sector grande"
+novios.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+casate.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+casarse.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+casamiento.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Más usado en Latinoamérica
+compromiso.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+invitaciones.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+banquete.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+despedida.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: también significa despido o funeral
+aniversario.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+propuesta.si,Bodas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tarifaluz.si,Energía y movilidad,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Los comparadores de luz pagan mucho por cliente
+segurodecoche.si,Seguros,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Comparadores de seguros
+segurodevida.si,Seguros,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+seguromedico.si,Seguros,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+segurohogar.si,Seguros,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+vendetucasa.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inmobiliarias
+alquilatupiso.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inmobiliarias y gestoras de alquiler
+tasaciones.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Tasadoras, se necesitan para cada hipoteca"
+habitaciones.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+ventanas.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tejado.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+implantes.si,Salud y estética,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clínicas dentales
+injertocapilar.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Sector muy grande
+ortodoncia.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clínicas dentales
+injertos.si,Salud y estética,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Injerto capilar, más corto que injertocapilar.si"
+cirugias.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Publicidad de cirugía estética regulada
+blanqueamiento.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+depilacion.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Cadenas de depilación láser
+capilar.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+barberia.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+dietas.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+adelgaza.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Publicidad sanitaria regulada
+audifonos.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+embarazo.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tema sensible
+masaje.si,Salud y estética,es,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Se puede asociar con contenido para adultos
+masajes.si,Salud y estética,es,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+autoescuela.si,Formación y empleo,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+selectividad.si,Formación y empleo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Ahora se llama PAU, temporal"
+entrevista.si,Formación y empleo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+placassolares.si,Energía y movilidad,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Instaladores con mucha publicidad
+instala.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pistas.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clubes de pádel y tenis que alquilan pistas
+clubdepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Clubes de pádel, mercado muy grande en España"
+torneos.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Organizadores de torneos y apps de pádel
+raquetas.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Tiendas de deporte. Ojo: en la primera captura no se veía el precio, compruébalo en el carrito"
+juegapadel.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"""Juega pádel, sí"""
+reservapista.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clubes y apps de reserva
+pistasdepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clubes y constructores de pistas
+clasesdepadel.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Escuelas y monitores
+paladepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de palas
+clasesdetenis.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Escuelas de tenis
+juegapickleball.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Deporte en crecimiento en España: entras antes
+pistapadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Duplica a pistasdepadel.si, elige uno"
+clasespadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Duplica a clasesdepadel.si, elige uno"
+partidos.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+raqueta.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Duplica a raquetas.si, elige uno"
+juegagolf.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelistas.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Comunidad, blog o tienda de pádel"
+saque.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Corto y con gancho para tenis o pádel
+peloteo.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Para clases o una app de buscar pareja de juego
+faltauno.si,"Pádel, tenis y raqueta",es,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,"""Falta uno"": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores"
+bandeja.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Golpe de pádel, corto y con gancho de marca"
+escueladepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Escuelas de pádel
+academiadepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+ligadepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Organizadores de ligas
+zapatillasdepadel.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online, mucho gasto en anuncios"
+padelbarcelona.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clubes de Barcelona
+padelmadrid.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clubes de Madrid
+padelmarbella.si,"Pádel, tenis y raqueta",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Mercado de alto poder adquisitivo
+clasesdepickleball.si,"Pádel, tenis y raqueta",es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Deporte en crecimiento
+reservatupista.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a reservapista.si
+alquilapista.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pistalibre.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Para una app de pistas libres
+pistacubierta.si,"Pádel, tenis y raqueta",es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Clubes de pádel indoor
+monitordepadel.si,"Pádel, tenis y raqueta",es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+campusdepadel.si,"Pádel, tenis y raqueta",es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+padelinfantil.si,"Pádel, tenis y raqueta",es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+padelfemenino.si,"Pádel, tenis y raqueta",es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+ligapadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a ligadepadel.si
+rankingpadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pelotasdepadel.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelero.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padeleros.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelvalencia.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelsevilla.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelmalaga.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelmallorca.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+padelbilbao.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+buscopareja.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Sirve para pádel, pero también suena a web de citas"
+dejada.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Golpe de pádel y tenis
+pared.si,"Pádel, tenis y raqueta",es,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Débil
+tenista.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tenistas.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+escueladetenis.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+clubdetenis.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pistapickleball.si,"Pádel, tenis y raqueta",es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+palapickleball.si,"Pádel, tenis y raqueta",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+entrenadorpersonal.si,Fitness y entrenamiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchos entrenadores compitiendo por clientes
+calistenia.si,Fitness y entrenamiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tendencia en crecimiento
+proteina.si,Fitness y entrenamiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Tiendas de suplementos online, mucho gasto en anuncios"
+suplementos.si,Fitness y entrenamiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual. Ojo: la publicidad de suplementos está regulada
+escalada.si,"Montaña, nieve y agua",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Rocódromos en crecimiento
+entrenamiento.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+musculacion.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+mediamaraton.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Las carreras suelen usar el nombre de su ciudad
+artesmarciales.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+bicis.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+senderismo.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+acampa.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+futbolsala.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+juegafutbol.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pescar.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+aparejos.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de pesca
+pescasport.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ojo: puede coincidir con el nombre de alguna tienda; revisa EUIPO y OEPM
+golfistas.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+greenfee.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Reserva de campos de golf, nicho pequeño"
+ciclistas.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+maillots.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Marcas de ropa de ciclismo
+rodillos.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Rodillos de entrenamiento; la palabra es ambigua
+forfait.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Estaciones de esquí, solo en temporada"
+esquiadores.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+refugios.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Refugios de montaña
+rocodromo.si,"Montaña, nieve y agua",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Rocódromos en crecimiento
+surfcamp.si,"Montaña, nieve y agua",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Surf camps, mucho gasto en anuncios; también funciona en inglés"
+escueladesurf.si,"Montaña, nieve y agua",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Escuelas de surf
+inscribete.si,Running y ciclismo,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"""Inscríbete, sí"": plataformas de inscripción en carreras"
+bicicletas.si,Running y ciclismo,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de bicis
+bicielectrica.si,Running y ciclismo,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de bicis eléctricas
+fisiodeportivo.si,Fitness y entrenamiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchos fisios compitiendo
+campamentodeverano.si,"Montaña, nieve y agua",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Los campamentos se anuncian mucho en primavera
+equipaciones.si,"Golf, fútbol y otros deportes",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Equipaciones para clubes
+ropadeportiva.si,"Golf, fútbol y otros deportes",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
+zapatillasrunning.si,Running y ciclismo,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
+hipica.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+equitacion.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+golfista.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+campodegolf.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+clasesdegolf.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+clasesdesurf.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+paddlesurf.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+piraguismo.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+corredores.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+dorsales.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+inscripciones.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+medalla.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+trofeos.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de trofeos
+ciclista.si,Running y ciclismo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+funcional.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+entrenamientofuncional.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+defensapersonal.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+clasesdenatacion.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+aquagym.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+voleyplaya.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+balonmano.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+patinaje.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+nutriciondeportiva.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+readaptacion.si,Fitness y entrenamiento,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+campamento.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+campusdeverano.si,"Montaña, nieve y agua",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+deportista.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+hazdeporte.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+muevete.si,Fitness y entrenamiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+neumaticos.si,Motor y taller,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online de neumáticos, mucho gasto en anuncios"
+recambios.si,Motor y taller,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas online de recambios
+talleres.si,Motor y taller,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchos talleres locales
+decants.si,Perfumería,es,A,uso propio,ocupado,,uso propio,disponible,2026-11-04,Namecheap,12.88,Las muestras de perfume (decants) tienen mucha demanda
+esencias.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+extractos.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Ambiguo: también ""extracto bancario"""
+lingotes.si,Finanzas e inversión,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Venta de oro. Sector con fraudes, los compradores serán prudentes"
+peluqueriacanina.si,Mascotas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchos negocios locales
+guarderiacanina.si,Mascotas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Las residencias caninas se anuncian mucho en verano
+adoptar.si,Mascotas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Las protectoras tienen poco presupuesto
+adiestramiento.si,Mascotas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cocheelectrico.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Concesionarios e instaladores de cargadores
+autoconsumo.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Instaladores solares, compiten mucho"
+bombadecalor.si,Energía y movilidad,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Instaladores de aerotermia, gracias a las ayudas"
+patinete.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+arraigo.si,Extranjería e inmigración,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Abogados de extranjería, de los que más se anuncian"
+regularizacion.si,Extranjería e inmigración,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+permisodetrabajo.si,Extranjería e inmigración,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+homologacion.si,Extranjería e inmigración,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Homologación de títulos, mucha demanda desde Latinoamérica"
+homologar.si,Extranjería e inmigración,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a homologacion.si
+nomadadigital.si,Extranjería e inmigración,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ese público busca en inglés
+visadonomada.si,Extranjería e inmigración,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Igual
+guitarra.si,Aficiones y ocio,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Escuelas de música
+manualidades.si,Aficiones y ocio,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+jardineria.si,Aficiones y ocio,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tapea.si,Aficiones y ocio,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Rutas de tapas y restaurantes
+enoturismo.si,Aficiones y ocio,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Bodegas
+ocasion.si,Comercio y web,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Coches de ocasión
+moviles.si,Comercio y web,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tuweb.si,Comercio y web,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+paginaweb.si,Comercio y web,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+segundamano.si,Comercio y web,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Ojo: ""Segundamano"" fue una marca conocida en España; revisa EUIPO y OEPM"
+suscribe.si,Frases,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+aunque.si,Frases,es,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Débil
+ysolo.si,Frases,es,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Débil
+finques.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"En Cataluña muchas inmobiliarias se llaman ""Finques ..."""
+lloguer.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Alquiler, tema muy caliente en Barcelona"
+advocats.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Abogados
+reformes.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empresas de reformas
+feina.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empleo
+metges.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Médicos
+cotxes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Coches
+segurs.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Seguros
+viatges.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Agencias de viajes
+preus.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Precios, comparadores"
+ofertes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ofertas
+cuines.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas de cocinas
+fusteria.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Carpinterías
+pintors.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Pintores
+tallers.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Talleres
+carnets.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Autoescuelas (""carnet de conduir"")"
+escoles.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Escuelas y academias
+vendes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Doble lectura: ""ventas"" en catalán y ""¿vendes? Sí"" en castellano"
+perque.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"""Perquè sí"""
+habitatge.si,Catalán,ca,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Vivienda, el sector que más dinero mueve"
+immobiliaria.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inmobiliarias
+assegurances.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Seguros
+hipoteques.si,Catalán,ca,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Brokers hipotecarios
+herencies.si,Catalán,ca,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Abogados de herencias
+divorci.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Abogados de familia
+reclamacions.si,Catalán,ca,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Abogados de reclamaciones
+autoescola.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Autoescuelas
+oposicions.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Academias de oposiciones
+perruqueria.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchas peluquerías locales
+dentistes.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clínicas dentales
+botiga.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"""Tienda"": corta y fácil de convertir en marca"
+perfums.si,Catalán,ca,A,uso propio,ocupado,,uso propio,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance en catalán
+casesrurals.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchos negocios de turismo rural que se anuncian
+casament.si,Catalán,ca,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Bodas, mismo pitch que dijeque.si"
+lampista.si,Catalán,ca,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,"""Fontanero"", solo se dice en catalán; se anuncian mucho por urgencias"
+serraller.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Cerrajeros, urgencias"
+mudances.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empresas de mudanzas
+plaquessolars.si,Catalán,ca,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Instaladores solares
+immobiliaries.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a immobiliaria.si
+compravenda.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+llogar.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"""Alquilar"""
+lloguers.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a lloguer.si
+prestecs.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Préstamos
+estalvi.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ahorro
+advocada.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+impostos.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Impuestos
+divorcis.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a divorci.si
+multes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Multas
+treball.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Trabajo
+ocupacio.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empleo
+formacio.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Formación
+idiomes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Idiomas
+metge.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Médico
+psicoleg.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Profesión con la publicidad regulada
+veterinari.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+bellesa.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Belleza
+botigues.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a botiga.si
+rebaixes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Rebajas
+descomptes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Descuentos
+sabates.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Zapatos
+joies.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Joyas
+mobles.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muebles
+cuina.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Cocina
+receptes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Recetas
+menjar.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Comida
+sopar.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Cena
+esmorzar.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Desayuno
+turisme.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+allotjament.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Alojamiento
+platja.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Playa
+muntanya.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Montaña
+casaments.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a casament.si
+noces.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Bodas
+nuvis.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Novios
+anell.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Anillo
+festes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Fiestas
+aniversari.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cotxe.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Coche
+recanvis.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Recambios
+lampistes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a lampista.si
+manyans.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Cerrajeros
+fuster.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Carpintero
+jardiner.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Jardinero
+neteja.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Limpieza
+obres.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Obras
+construccio.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Construcción
+arquitectes.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+interiorisme.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Interiorismo
+decoracio.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Decoración
+empreses.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empresas
+negocis.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Negocios
+emprenedors.si,Catalán,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Emprendedores
+balizav16.si,Motor y taller,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Baliza V16 obligatoria desde 2026. Ojo: la demanda baja cuando todos la tengan
+balizas.si,Motor y taller,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+seguropatinete.si,Seguros,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Nueva obligación de seguro para patinetes; comprueba la fecha de entrada en vigor
+seguroperro.si,Seguros,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Seguro obligatorio por la ley de bienestar animal
+segurodeperro.si,Seguros,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a seguroperro.si
+seguromascotas.si,Seguros,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+certificadoenergetico.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Obligatorio para vender o alquilar; muchos técnicos se anuncian
+certificadosenergeticos.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a certificadoenergetico.si
+ceduladehabitabilidad.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Obligatoria en Cataluña y otras comunidades para alquilar o vender
+inspecciontecnica.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inspección técnica de edificios
+licenciadeobra.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+zonatensionada.si,Vivienda,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,"Ley de vivienda; temático, poco comprador directo"
+licenciaturistica.si,Alquiler turístico,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Gestorías que tramitan licencias
+pisoturistico.si,Alquiler turístico,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Gestoras de pisos turísticos
+viviendaturistica.si,Alquiler turístico,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+alquilerturistico.si,Alquiler turístico,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+registroviajeros.si,Alquiler turístico,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Software para el registro obligatorio de huéspedes
+tasaturistica.si,Alquiler turístico,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+facturaelectronica.si,Empresas y cumplimiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Factura electrónica obligatoria; el software compite mucho
+facturacionelectronica.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a facturaelectronica.si
+efactura.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+verifactu.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Nombre del sistema de Hacienda: podría parecer oficial. Las fechas se han retrasado
+canaldenuncias.si,Empresas y cumplimiento,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
+planigualdad.si,Empresas y cumplimiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
+planesdeigualdad.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a planigualdad.si
+registrojornada.si,Empresas y cumplimiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Registro de jornada obligatorio; software de fichaje
+fichaje.si,Empresas y cumplimiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Software de fichaje, mucho gasto en anuncios"
+controlhorario.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+lopd.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Ley antigua, pero se sigue buscando mucho"
+protecciondedatos.si,Empresas y cumplimiento,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Consultoras de protección de datos
+cumplimiento.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+mediacion.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Negociación obligatoria antes de juicio desde 2025 (MASC)
+mediador.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+mediadores.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+conciliacion.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+irph.si,Reclamaciones bancarias y de viajes,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Miles de demandas por el índice IRPH de las hipotecas
+tarjetarevolving.si,Reclamaciones bancarias y de viajes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Mercado de reclamaciones muy grande
+usura.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+plusvalia.si,Reclamaciones bancarias y de viajes,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Reclamación de la plusvalía municipal
+plusvalias.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a plusvalia.si
+retrasovuelo.si,Reclamaciones bancarias y de viajes,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho
+vuelocancelado.si,Reclamaciones bancarias y de viajes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+equipajeperdido.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+maletaperdida.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cartelcoches.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de coches
+cartelcamiones.si,Reclamaciones bancarias y de viajes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de camiones
+arraigosocial.si,Extranjería e inmigración,es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
+arraigosociolaboral.si,Extranjería e inmigración,es,A,vender,libre,vender,prueba,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos
+arraigosocioformativo.si,Extranjería e inmigración,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
+arraigofamiliar.si,Extranjería e inmigración,es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
+examennacionalidad.si,Extranjería e inmigración,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Academias que preparan los exámenes
+leybeckham.si,Extranjería e inmigración,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Régimen fiscal para expatriados; asesores fiscales
+residenciapermanente.si,Extranjería e inmigración,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+reagrupacion.si,Extranjería e inmigración,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a reagrupacionfamiliar.si
+reagrupacionfamiliar.si,Extranjería e inmigración,es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+modelo303.si,Fiscal y autónomos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,IVA trimestral: millones de autónomos lo buscan cada trimestre
+modelo130.si,Fiscal y autónomos,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,IRPF trimestral de autónomos
+modelo100.si,Fiscal y autónomos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Declaración de la renta
+modelo720.si,Fiscal y autónomos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Bienes en el extranjero
+tarifaplana.si,Fiscal y autónomos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tarifa plana de autónomos; gestorías y asesorías
+capitalizarparo.si,Fiscal y autónomos,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+prestacion.si,Fiscal y autónomos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+erte.si,Fiscal y autónomos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+impuestosucesiones.si,Fiscal y autónomos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+sucesiones.si,Fiscal y autónomos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+decesos.si,Mayores y decesos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,El seguro de decesos casi solo existe en España
+segurodedecesos.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a decesos.si
+funeraria.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tanatorio.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+esquelas.si,Mayores y decesos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Webs de esquelas con mucho tráfico
+teleasistencia.si,Mayores y decesos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Mercado en crecimiento por el envejecimiento
+ayudaadomicilio.si,Mayores y decesos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empresas de cuidados a domicilio
+cuidadores.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cuidadoras.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+dependencia.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+residencias.si,Mayores y decesos,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Residencias de mayores
+residenciamayores.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a residencias.si
+extraescolares.si,Formación y empleo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Temporada de septiembre
+guarderia.si,Formación y empleo,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+alineaciones.si,Fútbol y deporte digital,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Fantasy y apuestas deportivas; mucho tráfico
+porra.si,Fútbol y deporte digital,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Porras entre amigos
+porras.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a porra.si
+clasificacion.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+marcador.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+abono.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+abonos.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+penya.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Peñas, en catalán"
+penyes.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+estadisticas.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pachangas.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Combina con faltauno.si
+futbol7.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+futbol5.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+quedada.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+quedadas.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+puntodecarga.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Instaladores de cargadores para coche eléctrico
+puntosdecarga.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a puntodecarga.si
+cargadores.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+baterias.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+fotovoltaica.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Instaladores solares
+comunidadenergetica.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+comunidadesenergeticas.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+aove.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Aceite de oliva virgen extra
+aceitedeoliva.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+jamoniberico.si,Alimentación,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online de jamón, venden también fuera de España"
+pistacho.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pistachos.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+azafran.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+trufa.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+trufas.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+almendras.si,Alimentación,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+agentesia.si,Tecnología e IA,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Agencias de agentes de IA, tendencia fuerte"
+cursoia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a cursosia.si
+cursosia.si,Tecnología e IA,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Cursos de IA, mucho gasto en anuncios"
+formacionia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+consultoriaia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cerrajeria.si,Hogar y reformas,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Cerrajeros de urgencia, de los que más pagan por clic"
+fontaneria.si,Hogar y reformas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Fontaneros de urgencia
+desatascos.si,Hogar y reformas,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Urgencias, mucho gasto en anuncios"
+desinfeccion.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+aislamientos.si,Hogar y reformas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Aislamiento térmico, con ayudas públicas"
+tejados.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a tejado.si
+fachadas.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pintores.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pinturas.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+calderas.si,Hogar y reformas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Instalación y reparación de calderas, mucho gasto en invierno"
+tarimas.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cristaleria.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cerramientos.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Cerramientos de terrazas
+persianas.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Reparación de persianas, muchos negocios locales"
+toldos.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+electricistas.si,Hogar y reformas,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Electricistas de urgencia
+aluminio.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+soleras.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pavimentos.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+palets.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+contenedores.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Alquiler de contenedores de obra y marítimos
+cubas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Cubas de escombros
+gruas.si,"Industria, logística y maquinaria",es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Grúas de asistencia en carretera y de obra
+remolques.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+carretillas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Carretillas elevadoras
+plataformas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Plataformas elevadoras; palabra ambigua
+excavaciones.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+demoliciones.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+chatarras.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+chatarreria.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+residuos.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+furgonetas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Alquiler y venta de furgonetas
+transportes.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+flotas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Software de gestión de flotas
+almacenes.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+embalajes.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+suministros.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+graneles.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+depositos.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+bobinas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+finiquito.si,Abogados y reclamaciones,es,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,Millones de búsquedas para calcular o reclamar el finiquito
+despidos.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a despido.si
+liquidaciones.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+quiebras.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+morosos.si,Abogados y reclamaciones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Empresas de recobro de deudas
+deudores.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tasadores.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a tasaciones.si
+herederos.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+testamentos.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Servicios de testamento online
+escrituras.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+poderes.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+notarias.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Los notarios casi no se anuncian
+gestiones.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+sanciones.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+embargos.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Abogados para levantar embargos
+cobros.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+podologia.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Muchas clínicas de podología
+fisioterapeutas.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+quiropractico.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+endodoncia.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+empastes.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+ferulas.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Férulas de descarga
+psicologos.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Publicidad sanitaria regulada
+psiquiatria.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+varices.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Clínicas de varices, mucho gasto en anuncios"
+facturae.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Formato oficial de factura electrónica
+fitosanitarios.si,Agro y medio ambiente,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Sector regulado
+biometano.si,Agro y medio ambiente,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Plantas de biometano en crecimiento en España
+regadio.si,Agro y medio ambiente,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+alpechin.si,Agro y medio ambiente,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Residuo de las almazaras; nicho muy técnico
+calibracion.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+metrologia.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+soldaduras.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+salasblancas.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+cadenadefrio.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+termometria.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+viales.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: viales de laboratorio y viales de carretera
+gasesmedicinales.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+criogenia.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+concursos.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ambiguo: concurso de acreedores y concursos de premios
+subastasjudiciales.si,Finanzas e inversión,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inversores en subastas y plataformas que las buscan
+creditosfallidos.si,Finanzas e inversión,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+lotes.si,Finanzas e inversión,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+dacion.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Dación en pago
+auditorias.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+convenios.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Convenios colectivos: muchas búsquedas
+fianzasjudiciales.si,Abogados y reclamaciones,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+peritaciones.si,Abogados y reclamaciones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Peritos judiciales y de seguros
+certificadora.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+ensayos.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+trazabilidad.si,Empresas y cumplimiento,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+purines.si,Agro y medio ambiente,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+fumigacion.si,Agro y medio ambiente,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Fumigación agrícola y con drones
+tanatorios.si,Mayores y decesos,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a tanatorio.si
+desinfecciones.si,Hogar y reformas,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a desinfeccion.si
+caldereria.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+mecanizado.si,"Industria, logística y maquinaria",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
+fillrate.si,"Industria, logística y maquinaria",en,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Término en inglés: porcentaje de pedidos servidos (logística) o de anuncios servidos (publicidad online). Compradores: software de logística y de publicidad
+agenteinmobiliario.si,Agentes e IA para pymes,es,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria
+agentesinmobiliarios.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a agenteinmobiliario.si
+agentedeseguros.si,Agentes e IA para pymes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Corredurías y startups de IA para seguros
+agentesdeseguros.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentedeseguros.si
+agentesdeviajes.si,Agentes e IA para pymes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. El singular agentedeviajes.si está ocupado
+agentecomercial.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
+agentescomerciales.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentecomercial.si
+agentedeventas.si,Agentes e IA para pymes,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman ""AI SDR"", producto muy de moda"
+agentedeaduanas.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
+agentedejugadores.si,Agentes e IA para pymes,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Representantes de futbolistas
+agentimmobiliari.si,Agentes e IA para pymes,ca,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
+agentdeviatges.si,Agentes e IA para pymes,ca,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
+recepcionistavirtual.si,Agentes e IA para pymes,es,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,Agentes de voz que contestan el teléfono en clínicas y negocios
+secretariavirtual.si,Agentes e IA para pymes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+telefonista.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+centralita.si,Agentes e IA para pymes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Centralitas virtuales: proveedores con mucho gasto en anuncios
+centralitavirtual.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a centralita.si
+contestador.si,Agentes e IA para pymes,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"""Contestador, sí"": agentes de voz para pymes"
+contestadorautomatico.si,Agentes e IA para pymes,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Duplica a contestador.si
+atencionalcliente.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+citaonline.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Software de citas
+agendar.si,Agentes e IA para pymes,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+aisdrs.si,Agentes e IA para pymes,en,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. El único compuesto de agentes en inglés que salió libre
+detectoria.si,Tecnología e IA,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Detectores de textos hechos con IA, muy buscados por profesores y estudiantes"
+detectordeia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a detectoria.si
+antiplagio.si,Tecnología e IA,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Software antiplagio para universidades y estudiantes
+plagio.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+parafrasear.si,Tecnología e IA,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Herramientas de parafrasear, muchísimas búsquedas"
+suplantacion.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Suplantación de identidad
+verificacion.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+leyia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Ley europea de IA
+reglamentoia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+auditoriaia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+iaresponsable.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+seoia.si,Tecnología e IA,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Agencias de SEO para buscadores con IA
+posicionamientoia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+abogadoia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+asesoriaia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+gestoriaia.si,Tecnología e IA,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+robotaspirador.si,Robots y drones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas online y webs de comparativas
+robotsaspiradores.si,Robots y drones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a robotaspirador.si
+robotcortacesped.si,Robots y drones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
+robotdecocina.si,Robots y drones,es,A,vender,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Robots de cocina, categoría enorme en España"
+robotlimpiacristales.si,Robots y drones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+robotfregasuelos.si,Robots y drones,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+antidron.si,Robots y drones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a antidrones.si
+antidrones.si,Robots y drones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Seguridad y defensa, sector en crecimiento en Europa"
+pilotodedrones.si,Robots y drones,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Academias que dan la licencia de piloto
+cursodedrones.si,Robots y drones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+licenciadron.si,Robots y drones,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+topografia.si,Robots y drones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+fotogrametria.si,Robots y drones,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+edadbiologica.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Longevidad
+chequeo.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+analiticas.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Laboratorios y análisis a domicilio
+analisisdesangre.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+testgenetico.si,Salud y estética,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+menopausia.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Salud femenina, mercado poco atendido y en crecimiento"
+congelaciondeovulos.si,Salud y estética,es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Clínicas de fertilidad. Publicidad sanitaria regulada
+ovodonacion.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,España es líder europeo. Publicidad sanitaria regulada
+reproduccionasistida.si,Salud y estética,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Clínicas de fertilidad. Publicidad sanitaria regulada
+casasmodulares.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Casas modulares, en auge por el precio de la vivienda"
+casamodular.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a casasmodulares.si
+casaprefabricada.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a casasprefabricadas.si
+casasprefabricadas.si,Vivienda,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+casascontenedor.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+autoconstruccion.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+antiokupas.si,Vivienda,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Empresas de seguridad con mucha publicidad, pero el sector es polémico"
+generador.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a generadores.si
+generadores.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Más demanda tras el apagón de abril de 2025
+bateriasolar.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Baterías para placas solares
+kitsolar.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Kits solares para casas y balcones
+kitsolares.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a kitsolar.si
+climatizacion.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Instaladores de climatización, mucho gasto en verano"
+aireacondicionado.si,Energía y movilidad,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+centrodedatos.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Boom de centros de datos en España
+centrosdedatos.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+subestacion.si,Energía y movilidad,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+licenciavtc.si,Motor y taller,es,A,vender,ocupado,,prueba,disponible,2026-11-04,Namecheap,12.88,"Las licencias se compran y venden por decenas de miles de euros, con intermediarios"
+licenciataxi.si,Motor y taller,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Igual
+licenciasvtc.si,Motor y taller,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a licenciavtc.si
+carnetdemoto.si,Motor y taller,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Autoescuelas
+patinetelectrico.si,Motor y taller,es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Tiendas online de patinetes
+enviodedinero.si,Finanzas e inversión,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Los compradores necesitan licencia del Banco de España
+cambiodedivisas.si,Finanzas e inversión,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+futbolfemenino.si,Fútbol y deporte digital,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,En pleno crecimiento
+arbitros.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+ojeador.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+ojeadores.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+campusdefutbol.si,Fútbol y deporte digital,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Campus de verano, mucho gasto en primavera"
+tecnificacion.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Jerga de clubes: entrenamientos técnicos
+videoanalisis.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Software de análisis de vídeo para clubes
+entrenadordefutbol.si,Fútbol y deporte digital,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+frontenis.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Deporte que casi solo existe en España y México
+fronton.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+pelotavasca.si,"Golf, fútbol y otros deportes",es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+perfumesarabes.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. La búsqueda principal de tu sector
+perfumeriaarabe.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance
+perfumesalpormayor.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. Para la parte de venta al por mayor
+mayoristaperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance
+distribuidorperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance
+perfumesarabesalpormayor.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Largo, pero es exactamente lo que buscan las tiendas"
+mayoristaperfumesarabes.si,Perfumería,es,A,,libre,uso propio,uso propio,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes
+distribuidorperfumesarabes.si,Perfumería,es,A,,libre,uso propio,uso propio,disponible,2026-11-04,Namecheap,12.88,Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes
+perfumesdubai.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Mucha gente busca ""perfumes de Dubái"""
+perfumeriadubai.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+perfumesorientales.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+perfumesoriginales.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Solo si vendes producto original con factura: promete autenticidad
+perfumesdenicho.si,Perfumería,es,A,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Perfumes de nicho, segmento en crecimiento"
+perfumerianicho.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a perfumesdenicho.si
+comprarperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+tiendadeperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+lotesperfumes.si,Perfumería,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Puede sonar a producto de saldo
+stockperfumes.si,Perfumería,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Puede sonar a producto de saldo
+muestrasperfumes.si,Perfumería,es,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Complementa a decants.si
+decantsperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Duplica a decants.si
+importadorperfumes.si,Perfumería,es,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,
+distribuidoroficial.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Genérico: vendible a cualquier distribuidor oficial de cualquier sector
+parfumsarabes.si,Perfumería,fr,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Francés. Francia es un gran mercado de perfumes árabes
+parfumeriearabe.si,Perfumería,fr,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Francés
+parfumsdubai.si,Perfumería,fr,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Francés
+grossisteparfum.si,Perfumería,fr,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Francés: mayorista de perfumes
+parfumsdegros.si,Perfumería,fr,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Francés
+grossisteparfums.si,Perfumería,fr,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Francés. Duplica a grossisteparfum.si
+perfumsarabs.si,Perfumería,ca,A,,libre,,,disponible,2026-11-04,Namecheap,12.88,Catalán
+perfumeriaaraba.si,Perfumería,ca,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Catalán
+perfumsengros.si,Perfumería,ca,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Catalán: perfumes al por mayor
+majoristaperfums.si,Perfumería,ca,B,,libre,,,disponible,2026-11-04,Namecheap,12.88,Catalán
+perfumesbaratos.si,Perfumería,es,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Para un distribuidor oficial puede dañar la imagen de marca
+outletperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+ofertasperfumes.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+perfumesexclusivos.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,
+perfumesdelujo.si,Perfumería,es,B,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
+antisybil.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Protección contra cuentas falsas en masa. Compradores: pocas startups de identidad y cripto. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+offsetter.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Compensación de carbono. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+carbonoracle.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Datos de emisiones para contratos automáticos; nicho muy pequeño. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+offsetagent.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Compuesto débil, peor que offsetter.si"
+telemetries.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. El plural suena raro; el singular está ocupado
+oligos.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Oligonucleótidos: proveedores de reactivos de biotecnología. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+biosurveillance.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Vigilancia de brotes (aguas residuales, aeropuertos). Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+genecheck.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Suena a nombre de empresa: búscalo en EUIPO antes de comprar. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+smelters.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Fundiciones de minerales críticos. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+feedstocks.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Materias primas para la industria química. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+reclaimers.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Recuperación de gases, metales y disolventes. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+loadshed.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,"Inglés. Cortes selectivos de carga en la red eléctrica. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional"
+custodianship.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. Palabra larga y abstracta
+novations.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. Plural poco usado
+insolvencies.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. El singular es el que se busca
+provenances.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. Plural poco usado; el singular está ocupado
+telemetrist.si,Infraestructura 2030 (inglés),en,C,,ocupado,,,disponible,2026-11-04,Namecheap,12.88,Inglés. Palabra casi inexistente

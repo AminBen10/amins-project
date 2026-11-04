@@ -8,6 +8,8 @@ Investigación de dominios .si en español y catalán. El .si es de Eslovenia, p
 |---|---|
 | `disponibles.csv` | **La fuente principal.** Todos los dominios que salieron disponibles, con sector, idioma, prioridad, estado y nota. Se abre en Excel o Google Sheets. |
 | `disponibles.md` | La misma información, ordenada por sectores para leerla cómodamente. Se genera a partir del CSV. |
+| `listas/primera-compra.txt` | **La primera compra:** uso propio para Orienfragance y el lote de prueba de venta, con sus .com. |
+| `listas/vender-rapido.txt` | Los dominios que pasan el filtro de venta rápida. |
 | `listas/lista-corta.txt` | Los que hay que comprar primero. Listo para pegar en el carrito. |
 | `listas/prioridad-a.txt` | Todos los de prioridad A. |
 | `listas/todos.txt` | Todos los disponibles. |
@@ -34,6 +36,28 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 
 **Cuando compres uno:** cambia su `estado` de `disponible` a `comprado` en el CSV y vuelve a ejecutar el script.
 
+## Filtro "vender rápido"
+
+`generar.py` da a cada dominio una puntuación y deja en "Vender rápido" los que llegan a 8 puntos. Combina los criterios de Claude y los de Gemini que resultaron correctos en el red team:
+
+| Regla | Puntos |
+|---|---|
+| Sector: lo rápido que se cierra una venta (comprador que gasta en captar clientes, decide el dueño, paga con tarjeta) | 0 a 5 |
+| Prioridad A / C | +2 / −5 |
+| El .com está ocupado (hay un negocio que puede querer el .si) | +1 |
+| El .com está libre y no lo compramos (el comprador puede registrarlo él) | −2 |
+| El .com está libre y lo compramos para venderlos juntos | +1 |
+| Duplica a otro dominio | −4 |
+| La nota avisa de regulación, polémica, ambigüedad o temporada | −2 |
+| En inglés (el inglés de la IA está barrido y su comprador busca .com o .ai) | −3 |
+| En catalán (mercado más pequeño, se usa .cat) | −1 |
+| Nombre corto (9 letras o menos) / largo (19 o más) | +1 / −1 |
+| Frase con "sí" o doble sentido | +1 |
+
+Los sectores y sus puntos están en `VELOCIDAD_SECTOR`, dentro de `generar.py`. La perfumería queda fuera porque es para uso propio.
+
+Precio orientativo: con 9 puntos, pedir entre 990 y 1.490 € (mínimo 490 €); con 8, entre 690 y 990 € (mínimo 290 €).
+
 ## Columnas del CSV
 
 | Columna | Valores |
@@ -45,6 +69,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 | `lista_corta` | `vender`, `uso propio` o vacío |
 | `com` | Si el mismo nombre en .com está `libre` u `ocupado`. Vacío = sin comprobar |
 | `comprar_com` | `vender`, `uso propio` o vacío: si hay que comprar también el .com |
+| `grupo` | `uso propio` o `prueba` (lote de prueba de venta), o vacío |
 | `estado` | `disponible` o `comprado` |
 | `comprobado` | Fecha en que se comprobó (AAAA-MM-DD) |
 | `registrador` | Dónde se comprobó o se compró |

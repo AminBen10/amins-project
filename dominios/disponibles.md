@@ -16,6 +16,69 @@ Prioridad:
 - **B**: solo si encaja con un proyecto propio o hay un comprador concreto
 - **C**: descartar, salvo uso propio
 
+## Primera compra
+
+Lo que se compraría primero: los dominios de **uso propio** para Orienfragance y un **lote de prueba** de venta. Si en 60 días y 30 contactos nadie del lote de prueba muestra interés, no se compra más.
+
+| Nombre | Comprar | Grupo | Sector | Nota |
+|---|---|---|---|---|
+| **decants** | .si | uso propio | Perfumería | Las muestras de perfume (decants) tienen mucha demanda |
+| **mayoristaperfumesarabes** | .com | uso propio | Perfumería | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| **distribuidorperfumesarabes** | .com | uso propio | Perfumería | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| **perfums** | .si | uso propio | Catalán | Uso propio para Orienfragance en catalán |
+| **puedoreclamar** | .si + .com | prueba | Abogados y reclamaciones | Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos |
+| **segundaoportunidad** | .si | prueba | Abogados y reclamaciones | Ley de Segunda Oportunidad, sector con mucha publicidad |
+| **finiquito** | .si | prueba | Abogados y reclamaciones | Millones de búsquedas para calcular o reclamar el finiquito |
+| **arraigosociolaboral** | .si + .com | prueba | Extranjería e inmigración | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
+| **dijeque** | .si + .com | prueba | Bodas | "Dije que sí", el mejor del bloque. Comprar con el .com para venderlos juntos |
+| **licenciavtc** | .si | prueba | Motor y taller | Las licencias se compran y venden por decenas de miles de euros, con intermediarios |
+| **agenteinmobiliario** | .si | prueba | Agentes e IA para pymes | Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria |
+| **recepcionistavirtual** | .si | prueba | Agentes e IA para pymes | Agentes de voz que contestan el teléfono en clínicas y negocios |
+| **faltauno** | .si | prueba | Pádel, tenis y raqueta | "Falta uno": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores |
+| **lampista** | .si | prueba | Catalán | "Fontanero", solo se dice en catalán; se anuncian mucho por urgencias |
+
+## Vender rápido
+
+Los 35 dominios con 8 puntos o más en el filtro de venta rápida. La puntuación y sus reglas están explicadas en `README.md`.
+
+| Dominio | Puntos | Precio a pedir | Mínimo | Sector | .com | En lista corta |
+|---|---|---|---|---|---|---|
+| **puedoreclamar.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | libre | sí |
+| **tengoderecho.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado | sí |
+| **reclama.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado |  |
+| **reclamar.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado |  |
+| **despido.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado |  |
+| **desahucio.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado |  |
+| **divorcios.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado | sí |
+| **mediacion.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado |  |
+| **finiquito.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado | sí |
+| **morosos.si** | 9 | 990 – 1.490 € | 490 € | Abogados y reclamaciones | ocupado |  |
+| **arraigo.si** | 9 | 990 – 1.490 € | 490 € | Extranjería e inmigración | ocupado | sí |
+| **reclamaciones.si** | 8 | 690 – 990 € | 290 € | Abogados y reclamaciones | ocupado |  |
+| **segundaoportunidad.si** | 8 | 690 – 990 € | 290 € | Abogados y reclamaciones | ocupado | sí |
+| **indemnizacion.si** | 8 | 690 – 990 € | 290 € | Abogados y reclamaciones | ocupado |  |
+| **accidentes.si** | 8 | 690 – 990 € | 290 € | Abogados y reclamaciones | ocupado |  |
+| **siniestros.si** | 8 | 690 – 990 € | 290 € | Abogados y reclamaciones | ocupado | sí |
+| **irph.si** | 8 | 690 – 990 € | 290 € | Reclamaciones bancarias y de viajes | ocupado | sí |
+| **plusvalia.si** | 8 | 690 – 990 € | 290 € | Reclamaciones bancarias y de viajes | ocupado | sí |
+| **extranjeria.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado | sí |
+| **nacionalidad.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
+| **regularizacion.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
+| **permisodetrabajo.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
+| **homologacion.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
+| **leybeckham.si** | 8 | 690 – 990 € | 290 € | Extranjería e inmigración | ocupado |  |
+| **tarifaluz.si** | 8 | 690 – 990 € | 290 € | Energía y movilidad | ocupado | sí |
+| **kitsolar.si** | 8 | 690 – 990 € | 290 € | Energía y movilidad | ocupado |  |
+| **agenteinmobiliario.si** | 8 | 690 – 990 € | 290 € | Agentes e IA para pymes | ocupado | sí |
+| **agentedeseguros.si** | 8 | 690 – 990 € | 290 € | Agentes e IA para pymes | ocupado |  |
+| **agentesdeviajes.si** | 8 | 690 – 990 € | 290 € | Agentes e IA para pymes | ocupado |  |
+| **agentedeventas.si** | 8 | 690 – 990 € | 290 € | Agentes e IA para pymes | ocupado | sí |
+| **pistas.si** | 8 | 690 – 990 € | 290 € | Pádel, tenis y raqueta | ocupado |  |
+| **torneos.si** | 8 | 690 – 990 € | 290 € | Pádel, tenis y raqueta | ocupado |  |
+| **raquetas.si** | 8 | 690 – 990 € | 290 € | Pádel, tenis y raqueta | ocupado |  |
+| **faltauno.si** | 8 | 690 – 990 € | 290 € | Pádel, tenis y raqueta | ocupado | sí |
+| **bandeja.si** | 8 | 690 – 990 € | 290 € | Pádel, tenis y raqueta | ocupado |  |
+
 ## Lista corta: comprar primero
 
 | Nombre | Comprar | Sector | Para | Nota |
@@ -1043,6 +1106,8 @@ Para negocios de Cataluña. "Sí" también es "sí" en catalán. Ojo: muchos neg
 
 En la carpeta `listas/`, un dominio por línea, listas para pegar en el carrito o en la búsqueda masiva:
 
+- `listas/primera-compra.txt`: uso propio y lote de prueba
+- `listas/vender-rapido.txt`: los del filtro de venta rápida
 - `listas/lista-corta.txt`: la lista corta (vender y uso propio)
 - `listas/prioridad-a.txt`: todos los de prioridad A
 - `listas/todos.txt`: todos los disponibles
