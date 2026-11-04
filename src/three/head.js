@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Hair } from './hair.js';
+import { SHAVED_GLSL } from './hairShaders.js';
 import { HEAD_CAGE } from './headAsset.js';
 import { ANCHORS, ANCHOR_NAMES, EYES, HEAD_BOUNDS, HEAD_POINTS, MM } from './hairField.js';
 import { base64Bytes, buildHead, transferList } from './headWorker.js';
@@ -110,7 +111,8 @@ function plasterMaterial(hair, { tier }) {
     uProg: hair.uniforms.uProg,
     uWidth: hair.uniforms.uWidth,
     uGrow: hair.uniforms.uGrow,
-    uShaved: { value: 6 * MM }, // hair length (head units) at which the shaved tint is full
+    uMM: { value: MM }, // head units per millimetre (shaved tint ramps)
+    uHairRoot: hair.uniforms.uRoot,
     uAO: { value: 1 },
     uCavity: { value: 0.55 },
     uMicro: { value: 0.02 },
@@ -134,6 +136,7 @@ function plasterMaterial(hair, { tier }) {
         attribute float aEye;
         attribute float aFrom;
         attribute float aTo;
+        attribute vec2 aCut;
         attribute vec3 aZone;
         attribute vec3 aSweep;
         uniform vec3 uProg;
@@ -143,6 +146,7 @@ function plasterMaterial(hair, { tier }) {
         varying vec2 vMaskP;
         varying float vEye;
         varying float vHairLen;
+        varying vec2 vCut;
         varying vec3 vRestPos;
         varying vec3 vRestN;`,
       )
@@ -153,6 +157,7 @@ function plasterMaterial(hair, { tier }) {
         vHairLen = mix(aFrom, aTo, dot(aZone, tzH)) * uGrow;
         vRestPos = position;
         vRestN = normal;
+        vCut = aCut;
         vBake = aBake;
         vMaskP = aMask;
         vEye = aEye;`,
@@ -162,7 +167,8 @@ function plasterMaterial(hair, { tier }) {
         '#include <common>',
         `#include <common>
         uniform mat3 normalMatrix;
-        uniform float uShaved;
+        uniform float uMM;
+        uniform vec3 uHairRoot;
         uniform float uAO;
         uniform float uCavity;
         uniform float uMicro;
@@ -175,9 +181,11 @@ function plasterMaterial(hair, { tier }) {
         varying vec2 vMaskP;
         varying float vEye;
         varying float vHairLen;
+        varying vec2 vCut;
         varying vec3 vRestPos;
         varying vec3 vRestN;
-        ${PLASTER_GLSL}`,
+        ${PLASTER_GLSL}
+        ${SHAVED_GLSL}`,
       )
       .replace(
         '#include <lights_physical_pars_fragment>',
@@ -220,12 +228,10 @@ function plasterMaterial(hair, { tier }) {
           float pupil = 1.0 - smoothstep(0.10 - aw, 0.14 + aw, a);
           diffuseColor.rgb *= 1.0 - uIris.x * ring - uIris.y * pupil;
         }
-        // shaved skin under very short hair (0..6 mm) reads as a cool grey tint, never as
-        // painted dots; longer hair adds a contact shade at the scalp
+        // hair shorter than the shells: shaved shadow, follicles, root colour under dense hair
         float zoneM = max(vMaskP.x, vMaskP.y);
-        float shaved = smoothstep(0.0, uShaved, vHairLen) * zoneM;
-        diffuseColor.rgb *= mix(vec3(1.0), vec3(0.62, 0.64, 0.66), shaved);
-        diffuseColor.rgb *= 1.0 - 0.45 * smoothstep(0.0, 0.03, vHairLen) * zoneM;`,
+        diffuseColor.rgb = shavedSkin(diffuseColor.rgb, vRestPos, normalize(vRestN), vHairLen, vMaskP, vCut, uHairRoot, uMM);
+        diffuseColor.rgb *= 1.0 - 0.35 * smoothstep(0.02, 0.08, vHairLen) * zoneM;`,
       )
       .replace(
         '#include <normal_fragment_maps>',
@@ -275,7 +281,7 @@ export function createHead(data, { layers = 26, tier = 'high' } = {}) {
   geometry.setIndex(new THREE.BufferAttribute(data.indices, 1));
   geometry.computeBoundingSphere();
 
-  const hair = new Hair(geometry, { layers, data });
+  const hair = new Hair(geometry, { layers, data, tier });
   const material = plasterMaterial(hair, { tier });
   const skin = new THREE.Mesh(geometry, material);
   // three applies scene.environmentIntensity to materials without their own envMap; binding the
@@ -308,8 +314,8 @@ export function createHead(data, { layers = 26, tier = 'high' } = {}) {
       const u = hair.uniforms;
       if (keyDir) u.uKeyDir.value.copy(keyDir).normalize();
       if (keyColor) u.uKeyCol.value.copy(keyColor);
-      if (fillDir) u.uRimDir.value.copy(fillDir).normalize();
-      if (fillColor) u.uRimCol.value.copy(fillColor);
+      if (fillDir) u.uFillDir.value.copy(fillDir).normalize();
+      if (fillColor) u.uFillCol.value.copy(fillColor);
       if (ambient) u.uAmb.value.copy(ambient);
     },
     setLayers(n) {
