@@ -5,9 +5,9 @@
 
 ## Resumen
 
-- **334 dominios disponibles**: 105 de prioridad A, 224 de prioridad B y 5 de prioridad C.
+- **449 dominios disponibles**: 143 de prioridad A, 301 de prioridad B y 5 de prioridad C.
 - **Lista corta:** 26 para vender y 2 de uso propio, unos 361 $ al año.
-- Comprar todos los de prioridad A costaría unos 1.352 $ al año.
+- Comprar todos los de prioridad A costaría unos 1.842 $ al año.
 - Comprados: 0.
 
 Prioridad:
@@ -52,23 +52,31 @@ Prioridad:
 
 | Sector | Total | A | B | C |
 |---|---|---|---|---|
-| [Abogados y reclamaciones](#abogados-y-reclamaciones) | 35 | 12 | 23 | 0 |
-| [Extranjería e inmigración](#extranjería-e-inmigración) | 10 | 6 | 4 | 0 |
+| [Abogados y reclamaciones](#abogados-y-reclamaciones) | 39 | 13 | 26 | 0 |
+| [Reclamaciones bancarias y de viajes](#reclamaciones-bancarias-y-de-viajes) | 11 | 5 | 6 | 0 |
+| [Extranjería e inmigración](#extranjería-e-inmigración) | 19 | 11 | 8 | 0 |
+| [Fiscal y autónomos](#fiscal-y-autónomos) | 10 | 2 | 8 | 0 |
+| [Empresas y cumplimiento](#empresas-y-cumplimiento) | 13 | 6 | 7 | 0 |
 | [Bodas](#bodas) | 17 | 7 | 10 | 0 |
-| [Vivienda](#vivienda) | 4 | 3 | 1 | 0 |
+| [Vivienda](#vivienda) | 10 | 5 | 5 | 0 |
+| [Alquiler turístico](#alquiler-turístico) | 6 | 2 | 4 | 0 |
 | [Hogar y reformas](#hogar-y-reformas) | 3 | 0 | 3 | 0 |
-| [Seguros](#seguros) | 4 | 0 | 4 | 0 |
-| [Energía y movilidad](#energía-y-movilidad) | 6 | 5 | 1 | 0 |
-| [Motor y taller](#motor-y-taller) | 3 | 3 | 0 | 0 |
+| [Seguros](#seguros) | 8 | 2 | 6 | 0 |
+| [Mayores y decesos](#mayores-y-decesos) | 12 | 5 | 7 | 0 |
+| [Energía y movilidad](#energía-y-movilidad) | 13 | 7 | 6 | 0 |
+| [Motor y taller](#motor-y-taller) | 5 | 4 | 1 | 0 |
 | [Salud y estética](#salud-y-estética) | 15 | 4 | 9 | 2 |
 | [Mascotas](#mascotas) | 4 | 2 | 2 | 0 |
-| [Formación y empleo](#formación-y-empleo) | 3 | 1 | 2 | 0 |
+| [Formación y empleo](#formación-y-empleo) | 5 | 1 | 4 | 0 |
+| [Tecnología e IA](#tecnología-e-ia) | 5 | 2 | 3 | 0 |
 | [Pádel, tenis y raqueta](#pádel-tenis-y-raqueta) | 55 | 21 | 33 | 1 |
 | [Fitness y entrenamiento](#fitness-y-entrenamiento) | 18 | 5 | 13 | 0 |
 | [Running y ciclismo](#running-y-ciclismo) | 15 | 4 | 11 | 0 |
 | [Montaña, nieve y agua](#montaña-nieve-y-agua) | 18 | 5 | 13 | 0 |
 | [Golf, fútbol y otros deportes](#golf-fútbol-y-otros-deportes) | 15 | 2 | 13 | 0 |
+| [Fútbol y deporte digital](#fútbol-y-deporte-digital) | 15 | 2 | 13 | 0 |
 | [Aficiones y ocio](#aficiones-y-ocio) | 5 | 0 | 5 | 0 |
+| [Alimentación](#alimentación) | 9 | 1 | 8 | 0 |
 | [Comercio y web](#comercio-y-web) | 5 | 0 | 5 | 0 |
 | [Perfumería](#perfumería) | 3 | 2 | 1 | 0 |
 | [Inversión](#inversión) | 1 | 0 | 1 | 0 |
@@ -91,6 +99,7 @@ Prioridad:
 | desahucio.si | A |  |
 | divorcios.si | A | Abogados de familia |
 | siniestros.si | A | Abogados y peritos de seguros |
+| mediacion.si | A | Negociación obligatoria antes de juicio desde 2025 (MASC) |
 | desahucios.si | B | Duplica a desahucio.si, elige uno |
 | fianzas.si | B | Fianzas de alquiler; también fianzas penales |
 | reclamacion.si | B |  |
@@ -114,6 +123,25 @@ Prioridad:
 | declaracion.si | B | Renta, temporada de abril a junio |
 | clausulasuelo.si | B | Mercado ya en declive: la mayoría de reclamaciones están resueltas |
 | gastoshipoteca.si | B | Mercado ya en declive |
+| mediador.si | B |  |
+| mediadores.si | B |  |
+| conciliacion.si | B |  |
+
+## Reclamaciones bancarias y de viajes
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| irph.si | A | Miles de demandas por el índice IRPH de las hipotecas |
+| tarjetarevolving.si | A | Mercado de reclamaciones muy grande |
+| plusvalia.si | A | Reclamación de la plusvalía municipal |
+| retrasovuelo.si | A | Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho |
+| vuelocancelado.si | A | Igual |
+| usura.si | B |  |
+| plusvalias.si | B | Duplica a plusvalia.si |
+| equipajeperdido.si | B |  |
+| maletaperdida.si | B |  |
+| cartelcoches.si | B | Reclamación por el cártel de coches |
+| cartelcamiones.si | B | Reclamación por el cártel de camiones |
 
 ## Extranjería e inmigración
 
@@ -125,10 +153,54 @@ Prioridad:
 | regularizacion.si | A | Igual |
 | permisodetrabajo.si | A | Igual |
 | homologacion.si | A | Homologación de títulos, mucha demanda desde Latinoamérica |
+| arraigosocial.si | A | Tipo de arraigo |
+| arraigosociolaboral.si | A | Nuevo arraigo del reglamento de 2025 |
+| arraigofamiliar.si | A | Tipo de arraigo |
+| leybeckham.si | A | Régimen fiscal para expatriados; asesores fiscales |
+| reagrupacionfamiliar.si | A |  |
 | papeles.si | B | Extranjería, pero ambiguo |
 | homologar.si | B | Duplica a homologacion.si |
 | nomadadigital.si | B | Ese público busca en inglés |
 | visadonomada.si | B | Igual |
+| arraigosocioformativo.si | B | Nuevo arraigo del reglamento de 2025 |
+| examennacionalidad.si | B | Academias que preparan los exámenes |
+| residenciapermanente.si | B |  |
+| reagrupacion.si | B | Duplica a reagrupacionfamiliar.si |
+
+## Fiscal y autónomos
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| modelo303.si | A | IVA trimestral: millones de autónomos lo buscan cada trimestre |
+| tarifaplana.si | A | Tarifa plana de autónomos; gestorías y asesorías |
+| modelo130.si | B | IRPF trimestral de autónomos |
+| modelo100.si | B | Declaración de la renta |
+| modelo720.si | B | Bienes en el extranjero |
+| capitalizarparo.si | B |  |
+| prestacion.si | B |  |
+| erte.si | B |  |
+| impuestosucesiones.si | B |  |
+| sucesiones.si | B |  |
+
+## Empresas y cumplimiento
+
+Obligaciones legales de las empresas. Los vendedores de software y las consultoras compiten mucho por estos clientes.
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| facturaelectronica.si | A | Factura electrónica obligatoria; el software compite mucho |
+| canaldenuncias.si | A | Obligatorio en empresas de más de 50 trabajadores |
+| planigualdad.si | A | Obligatorio en empresas de más de 50 trabajadores |
+| registrojornada.si | A | Registro de jornada obligatorio; software de fichaje |
+| fichaje.si | A | Software de fichaje, mucho gasto en anuncios |
+| protecciondedatos.si | A | Consultoras de protección de datos |
+| facturacionelectronica.si | B | Duplica a facturaelectronica.si |
+| efactura.si | B |  |
+| verifactu.si | B | Nombre del sistema de Hacienda: podría parecer oficial. Las fechas se han retrasado |
+| planesdeigualdad.si | B | Duplica a planigualdad.si |
+| controlhorario.si | B |  |
+| lopd.si | B | Ley antigua, pero se sigue buscando mucho |
+| cumplimiento.si | B |  |
 
 ## Bodas
 
@@ -159,7 +231,26 @@ Prioridad:
 | vendetucasa.si | A | Inmobiliarias |
 | alquilatupiso.si | A | Inmobiliarias y gestoras de alquiler |
 | tasaciones.si | A | Tasadoras, se necesitan para cada hipoteca |
+| certificadoenergetico.si | A | Obligatorio para vender o alquilar; muchos técnicos se anuncian |
+| ceduladehabitabilidad.si | A | Obligatoria en Cataluña y otras comunidades para alquilar o vender |
 | habitaciones.si | B |  |
+| certificadosenergeticos.si | B | Duplica a certificadoenergetico.si |
+| inspecciontecnica.si | B | Inspección técnica de edificios |
+| licenciadeobra.si | B |  |
+| zonatensionada.si | B | Ley de vivienda; temático, poco comprador directo |
+
+## Alquiler turístico
+
+Ojo: las normas cambian según el ayuntamiento y la comunidad.
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| licenciaturistica.si | A | Gestorías que tramitan licencias |
+| pisoturistico.si | A | Gestoras de pisos turísticos |
+| viviendaturistica.si | B |  |
+| alquilerturistico.si | B |  |
+| registroviajeros.si | B | Software para el registro obligatorio de huéspedes |
+| tasaturistica.si | B |  |
 
 ## Hogar y reformas
 
@@ -173,10 +264,31 @@ Prioridad:
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
+| seguropatinete.si | A | Nueva obligación de seguro para patinetes; comprueba la fecha de entrada en vigor |
+| seguroperro.si | A | Seguro obligatorio por la ley de bienestar animal |
 | segurodecoche.si | B | Comparadores de seguros |
 | segurodevida.si | B |  |
 | seguromedico.si | B |  |
 | segurohogar.si | B |  |
+| segurodeperro.si | B | Duplica a seguroperro.si |
+| seguromascotas.si | B |  |
+
+## Mayores y decesos
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| decesos.si | A | El seguro de decesos casi solo existe en España |
+| esquelas.si | A | Webs de esquelas con mucho tráfico |
+| teleasistencia.si | A | Mercado en crecimiento por el envejecimiento |
+| ayudaadomicilio.si | A | Empresas de cuidados a domicilio |
+| residencias.si | A | Residencias de mayores |
+| segurodedecesos.si | B | Duplica a decesos.si |
+| funeraria.si | B |  |
+| tanatorio.si | B |  |
+| cuidadores.si | B |  |
+| cuidadoras.si | B |  |
+| dependencia.si | B |  |
+| residenciamayores.si | B | Duplica a residencias.si |
 
 ## Energía y movilidad
 
@@ -187,7 +299,14 @@ Prioridad:
 | cocheelectrico.si | A | Concesionarios e instaladores de cargadores |
 | autoconsumo.si | A | Instaladores solares, compiten mucho |
 | bombadecalor.si | A | Instaladores de aerotermia, gracias a las ayudas |
+| puntodecarga.si | A | Instaladores de cargadores para coche eléctrico |
+| fotovoltaica.si | A | Instaladores solares |
 | patinete.si | B |  |
+| puntosdecarga.si | B | Duplica a puntodecarga.si |
+| cargadores.si | B |  |
+| baterias.si | B |  |
+| comunidadenergetica.si | B |  |
+| comunidadesenergeticas.si | B |  |
 
 ## Motor y taller
 
@@ -196,6 +315,8 @@ Prioridad:
 | neumaticos.si | A | Tiendas online de neumáticos, mucho gasto en anuncios |
 | recambios.si | A | Tiendas online de recambios |
 | talleres.si | A | Muchos talleres locales |
+| balizav16.si | A | Baliza V16 obligatoria desde 2026. Ojo: la demanda baja cuando todos la tengan |
+| balizas.si | B |  |
 
 ## Salud y estética
 
@@ -233,6 +354,18 @@ Prioridad:
 | autoescuela.si | A |  |
 | selectividad.si | B | Ahora se llama PAU, temporal |
 | entrevista.si | B |  |
+| extraescolares.si | B | Temporada de septiembre |
+| guarderia.si | B |  |
+
+## Tecnología e IA
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| agentesia.si | A | Agencias de agentes de IA, tendencia fuerte |
+| cursosia.si | A | Cursos de IA, mucho gasto en anuncios |
+| cursoia.si | B | Duplica a cursosia.si |
+| formacionia.si | B |  |
+| consultoriaia.si | B |  |
 
 ## Pádel, tenis y raqueta
 
@@ -380,6 +513,26 @@ Prioridad:
 | balonmano.si | B |  |
 | patinaje.si | B |  |
 
+## Fútbol y deporte digital
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| alineaciones.si | A | Fantasy y apuestas deportivas; mucho tráfico |
+| porra.si | A | Porras entre amigos |
+| porras.si | B | Duplica a porra.si |
+| clasificacion.si | B |  |
+| marcador.si | B |  |
+| abono.si | B |  |
+| abonos.si | B |  |
+| penya.si | B | Peñas, en catalán |
+| penyes.si | B |  |
+| estadisticas.si | B |  |
+| pachangas.si | B | Combina con faltauno.si |
+| futbol7.si | B |  |
+| futbol5.si | B |  |
+| quedada.si | B |  |
+| quedadas.si | B |  |
+
 ## Aficiones y ocio
 
 | Dominio | Prioridad | Nota |
@@ -389,6 +542,20 @@ Prioridad:
 | jardineria.si | B |  |
 | tapea.si | B | Rutas de tapas y restaurantes |
 | enoturismo.si | B | Bodegas |
+
+## Alimentación
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| jamoniberico.si | A | Tiendas online de jamón, venden también fuera de España |
+| aove.si | B | Aceite de oliva virgen extra |
+| aceitedeoliva.si | B |  |
+| pistacho.si | B |  |
+| pistachos.si | B |  |
+| azafran.si | B |  |
+| trufa.si | B |  |
+| trufas.si | B |  |
+| almendras.si | B |  |
 
 ## Comercio y web
 

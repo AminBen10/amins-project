@@ -19,22 +19,30 @@ LISTAS = DIR / "listas"
 # Orden en que salen los sectores en disponibles.md.
 ORDEN_SECTORES = [
     "Abogados y reclamaciones",
+    "Reclamaciones bancarias y de viajes",
     "Extranjería e inmigración",
+    "Fiscal y autónomos",
+    "Empresas y cumplimiento",
     "Bodas",
     "Vivienda",
+    "Alquiler turístico",
     "Hogar y reformas",
     "Seguros",
+    "Mayores y decesos",
     "Energía y movilidad",
     "Motor y taller",
     "Salud y estética",
     "Mascotas",
     "Formación y empleo",
+    "Tecnología e IA",
     "Pádel, tenis y raqueta",
     "Fitness y entrenamiento",
     "Running y ciclismo",
     "Montaña, nieve y agua",
     "Golf, fútbol y otros deportes",
+    "Fútbol y deporte digital",
     "Aficiones y ocio",
+    "Alimentación",
     "Comercio y web",
     "Perfumería",
     "Inversión",
@@ -44,6 +52,9 @@ ORDEN_SECTORES = [
 
 DESCRIPCION = {
     "Perfumería": "Uso propio para Orienfragance.",
+    "Empresas y cumplimiento": "Obligaciones legales de las empresas. Los vendedores de software y "
+                               "las consultoras compiten mucho por estos clientes.",
+    "Alquiler turístico": "Ojo: las normas cambian según el ayuntamiento y la comunidad.",
     "Catalán": 'Para negocios de Cataluña. "Sí" también es "sí" en catalán. '
                "Ojo: muchos negocios catalanes usan .cat como web principal.",
 }

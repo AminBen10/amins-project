@@ -333,3 +333,118 @@ decoracio.si,Catalán,ca,B,,disponible,2026-11-04,Namecheap,12.88,Decoración
 empreses.si,Catalán,ca,B,,disponible,2026-11-04,Namecheap,12.88,Empresas
 negocis.si,Catalán,ca,B,,disponible,2026-11-04,Namecheap,12.88,Negocios
 emprenedors.si,Catalán,ca,B,,disponible,2026-11-04,Namecheap,12.88,Emprendedores
+balizav16.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,Baliza V16 obligatoria desde 2026. Ojo: la demanda baja cuando todos la tengan
+balizas.si,Motor y taller,es,B,,disponible,2026-11-04,Namecheap,12.88,
+seguropatinete.si,Seguros,es,A,,disponible,2026-11-04,Namecheap,12.88,Nueva obligación de seguro para patinetes; comprueba la fecha de entrada en vigor
+seguroperro.si,Seguros,es,A,,disponible,2026-11-04,Namecheap,12.88,Seguro obligatorio por la ley de bienestar animal
+segurodeperro.si,Seguros,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a seguroperro.si
+seguromascotas.si,Seguros,es,B,,disponible,2026-11-04,Namecheap,12.88,
+certificadoenergetico.si,Vivienda,es,A,,disponible,2026-11-04,Namecheap,12.88,Obligatorio para vender o alquilar; muchos técnicos se anuncian
+certificadosenergeticos.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a certificadoenergetico.si
+ceduladehabitabilidad.si,Vivienda,es,A,,disponible,2026-11-04,Namecheap,12.88,Obligatoria en Cataluña y otras comunidades para alquilar o vender
+inspecciontecnica.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,Inspección técnica de edificios
+licenciadeobra.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,
+zonatensionada.si,Vivienda,es,B,,disponible,2026-11-04,Namecheap,12.88,"Ley de vivienda; temático, poco comprador directo"
+licenciaturistica.si,Alquiler turístico,es,A,,disponible,2026-11-04,Namecheap,12.88,Gestorías que tramitan licencias
+pisoturistico.si,Alquiler turístico,es,A,,disponible,2026-11-04,Namecheap,12.88,Gestoras de pisos turísticos
+viviendaturistica.si,Alquiler turístico,es,B,,disponible,2026-11-04,Namecheap,12.88,
+alquilerturistico.si,Alquiler turístico,es,B,,disponible,2026-11-04,Namecheap,12.88,
+registroviajeros.si,Alquiler turístico,es,B,,disponible,2026-11-04,Namecheap,12.88,Software para el registro obligatorio de huéspedes
+tasaturistica.si,Alquiler turístico,es,B,,disponible,2026-11-04,Namecheap,12.88,
+facturaelectronica.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Factura electrónica obligatoria; el software compite mucho
+facturacionelectronica.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a facturaelectronica.si
+efactura.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,
+verifactu.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Nombre del sistema de Hacienda: podría parecer oficial. Las fechas se han retrasado
+canaldenuncias.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
+planigualdad.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
+planesdeigualdad.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a planigualdad.si
+registrojornada.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Registro de jornada obligatorio; software de fichaje
+fichaje.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,"Software de fichaje, mucho gasto en anuncios"
+controlhorario.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,
+lopd.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,"Ley antigua, pero se sigue buscando mucho"
+protecciondedatos.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Consultoras de protección de datos
+cumplimiento.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,
+mediacion.si,Abogados y reclamaciones,es,A,,disponible,2026-11-04,Namecheap,12.88,Negociación obligatoria antes de juicio desde 2025 (MASC)
+mediador.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+mediadores.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+conciliacion.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
+irph.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Miles de demandas por el índice IRPH de las hipotecas
+tarjetarevolving.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Mercado de reclamaciones muy grande
+usura.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,
+plusvalia.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Reclamación de la plusvalía municipal
+plusvalias.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a plusvalia.si
+retrasovuelo.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho
+vuelocancelado.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
+equipajeperdido.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,
+maletaperdida.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,
+cartelcoches.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de coches
+cartelcamiones.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de camiones
+arraigosocial.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
+arraigosociolaboral.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
+arraigosocioformativo.si,Extranjería e inmigración,es,B,,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
+arraigofamiliar.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
+examennacionalidad.si,Extranjería e inmigración,es,B,,disponible,2026-11-04,Namecheap,12.88,Academias que preparan los exámenes
+leybeckham.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Régimen fiscal para expatriados; asesores fiscales
+residenciapermanente.si,Extranjería e inmigración,es,B,,disponible,2026-11-04,Namecheap,12.88,
+reagrupacion.si,Extranjería e inmigración,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a reagrupacionfamiliar.si
+reagrupacionfamiliar.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,
+modelo303.si,Fiscal y autónomos,es,A,,disponible,2026-11-04,Namecheap,12.88,IVA trimestral: millones de autónomos lo buscan cada trimestre
+modelo130.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,IRPF trimestral de autónomos
+modelo100.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,Declaración de la renta
+modelo720.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,Bienes en el extranjero
+tarifaplana.si,Fiscal y autónomos,es,A,,disponible,2026-11-04,Namecheap,12.88,Tarifa plana de autónomos; gestorías y asesorías
+capitalizarparo.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+prestacion.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+erte.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+impuestosucesiones.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+sucesiones.si,Fiscal y autónomos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+decesos.si,Mayores y decesos,es,A,,disponible,2026-11-04,Namecheap,12.88,El seguro de decesos casi solo existe en España
+segurodedecesos.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a decesos.si
+funeraria.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+tanatorio.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+esquelas.si,Mayores y decesos,es,A,,disponible,2026-11-04,Namecheap,12.88,Webs de esquelas con mucho tráfico
+teleasistencia.si,Mayores y decesos,es,A,,disponible,2026-11-04,Namecheap,12.88,Mercado en crecimiento por el envejecimiento
+ayudaadomicilio.si,Mayores y decesos,es,A,,disponible,2026-11-04,Namecheap,12.88,Empresas de cuidados a domicilio
+cuidadores.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+cuidadoras.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+dependencia.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,
+residencias.si,Mayores y decesos,es,A,,disponible,2026-11-04,Namecheap,12.88,Residencias de mayores
+residenciamayores.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a residencias.si
+extraescolares.si,Formación y empleo,es,B,,disponible,2026-11-04,Namecheap,12.88,Temporada de septiembre
+guarderia.si,Formación y empleo,es,B,,disponible,2026-11-04,Namecheap,12.88,
+alineaciones.si,Fútbol y deporte digital,es,A,,disponible,2026-11-04,Namecheap,12.88,Fantasy y apuestas deportivas; mucho tráfico
+porra.si,Fútbol y deporte digital,es,A,,disponible,2026-11-04,Namecheap,12.88,Porras entre amigos
+porras.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a porra.si
+clasificacion.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+marcador.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+abono.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+abonos.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+penya.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,"Peñas, en catalán"
+penyes.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+estadisticas.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+pachangas.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,Combina con faltauno.si
+futbol7.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+futbol5.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+quedada.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+quedadas.si,Fútbol y deporte digital,es,B,,disponible,2026-11-04,Namecheap,12.88,
+puntodecarga.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,Instaladores de cargadores para coche eléctrico
+puntosdecarga.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a puntodecarga.si
+cargadores.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
+baterias.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
+fotovoltaica.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,12.88,Instaladores solares
+comunidadenergetica.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
+comunidadesenergeticas.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
+aove.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,Aceite de oliva virgen extra
+aceitedeoliva.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+jamoniberico.si,Alimentación,es,A,,disponible,2026-11-04,Namecheap,12.88,"Tiendas online de jamón, venden también fuera de España"
+pistacho.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+pistachos.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+azafran.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+trufa.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+trufas.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+almendras.si,Alimentación,es,B,,disponible,2026-11-04,Namecheap,12.88,
+agentesia.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,"Agencias de agentes de IA, tendencia fuerte"
+cursoia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a cursosia.si
+cursosia.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,"Cursos de IA, mucho gasto en anuncios"
+formacionia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
+consultoriaia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
