@@ -55,7 +55,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 | `lote5-nichos-tecnicos.txt` | Leyes nuevas, reclamaciones técnicas, IA, deporte digital, alimentación (180) | Comprobado |
 | `lote6-angulos-ocultos.txt` | "Agente" con doble sentido, IA para pymes, protocolos de agentes, robots de casa, drones, fertilidad, casas modulares, apagón (151) | Comprobado |
 | `lote7-perfumes-arabes.txt` | Perfumes árabes: hacks ("huele.si"), oud, bakhoor, almizcle, halal, marca blanca, catalán, francés, italiano, inglés (108) | **Pendiente** |
-| `lote8-2030.txt` | Visión 2030 con leyes que tienen fecha: agentes en español, CBAM, pasaporte digital, accesibilidad, eIDAS 2, energía, criptografía post-cuántica (145) | **Pendiente** |
+| `lote8-2030.txt` | Visión 2030 con leyes que tienen fecha: agentes en español, CBAM, pasaporte digital, accesibilidad, eIDAS 2, energía, criptografía post-cuántica (125) | **Pendiente** |
 | (sin archivo) | Búsquedas propias de Amin y listas de Gemini: oficios, industria, logística, agro, herencias, salud, infraestructura 2030 | Comprobado |
 
 ## Antes de comprar o vender
