@@ -750,6 +750,10 @@ offsetter.si
 offsetter.com
 carbonoracle.si
 carbonoracle.com
+offsetagent.si
+offsetagent.com
+telemetries.si
+telemetries.com
 oligos.si
 oligos.com
 biosurveillance.si
@@ -764,10 +768,6 @@ reclaimers.si
 reclaimers.com
 loadshed.si
 loadshed.com
-offsetagent.si
-offsetagent.com
-telemetries.si
-telemetries.com
 custodianship.si
 custodianship.com
 novations.si

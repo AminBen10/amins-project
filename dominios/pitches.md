@@ -17,6 +17,7 @@ En España, la **LSSI (Ley 34/2002, artículo 21)** prohíbe enviar publicidad p
 - **No pongas el precio en el primer mensaje.** Que pregunten ellos.
 - **Nunca digas** "si no lo compráis se lo vendo a vuestra competencia". Es presión de mala fe y en una disputa (ARDS) te pueden quitar el dominio.
 - Cobra siempre a través de **Escrow.com o Dan.com**. Nunca transfieras el dominio antes de cobrar.
+- **No vendas el .si como dominio para anuncios de Google.** Un dominio que el usuario no reconoce puede bajar los clics. Su valor está en lo que se ve y se recuerda: furgonetas, radio, carteles, códigos QR, tarjetas, y como redirección a la web principal.
 
 ---
 
@@ -41,9 +42,11 @@ En España, la **LSSI (Ley 34/2002, artículo 21)** prohíbe enviar publicidad p
 >
 > Soy Amin. Tengo el dominio **puedoreclamar.si**: "¿Puedo reclamar? Sí."
 >
-> Es la pregunta exacta que se hacen vuestros clientes antes de llamar a un abogado, y la respuesta va en el propio dominio. Funciona muy bien como página de destino para campañas de Google Ads o Meta en accidentes, segunda oportunidad o reclamaciones bancarias.
+> Es la pregunta exacta que se hacen vuestros clientes antes de llamar a un abogado, y la respuesta va en el propio dominio. Es fácil de recordar al oírlo en la radio o verlo en un cartel, y se puede redirigir a vuestra web principal.
 >
-> Si os interesa, lo transfiero de forma segura mediante Escrow o Dan.com.
+> También tengo **puedoreclamar.com**, así que os quedaríais con las dos versiones.
+>
+> Si os interesa, los transfiero de forma segura mediante Escrow o Dan.com.
 >
 > Un saludo,
 > Amin
@@ -141,7 +144,7 @@ En España, la **LSSI (Ley 34/2002, artículo 21)** prohíbe enviar publicidad p
 >
 > És curt, fàcil de recordar i diu exactament què feu. Quan algú té una fuita d'aigua i busca un lampista, aquest és el nom que recordarà.
 >
-> Us pot servir com a web per a les urgències, per a campanyes de Google Ads o per posar-lo a la furgoneta.
+> Us pot servir per posar-lo a la furgoneta, a les targetes o als cartells, i redirigir-lo a la vostra web.
 >
 > Si us interessa, el transfereixo de manera segura a través d'Escrow o Dan.com. També puc oferir pagament a terminis.
 >
@@ -170,7 +173,7 @@ En España, la **LSSI (Ley 34/2002, artículo 21)** prohíbe enviar publicidad p
 >
 > Es corto, fácil de recordar y dice exactamente lo que hacéis. Cuando alguien tiene una fuga de agua y busca un lampista, es el nombre que va a recordar.
 >
-> Os puede servir como web para urgencias, para campañas de Google Ads o para ponerlo en la furgoneta.
+> Os puede servir para ponerlo en la furgoneta, en las tarjetas o en los carteles, y redirigirlo a vuestra web.
 >
 > Si os interesa, lo transfiero de forma segura mediante Escrow o Dan.com, y también puedo ofrecer pago a plazos.
 >
@@ -199,7 +202,11 @@ En España, la **LSSI (Ley 34/2002, artículo 21)** prohíbe enviar publicidad p
 
 **"¿Por qué .si y no .com o .es?"**
 
-> El .si se lee como "sí", así que el dominio entero se convierte en una frase. No sustituye a vuestra web principal: es para campañas, anuncios y materiales donde un nombre fácil de recordar hace que la gente os encuentre.
+> El .si se lee como "sí", así que el dominio entero se convierte en una frase. No sustituye a vuestra web principal: es para la furgoneta, la radio, los carteles o una tarjeta, donde un nombre fácil de recordar hace que la gente os encuentre. Al escribirlo, redirige a vuestra web de siempre.
+
+**"¿La gente se fía de un .si?"**
+
+> Para la web principal, mejor .es o .com, y lo entiendo. Este dominio no la sustituye: sirve para que os recuerden, y quien lo escribe acaba en vuestra web de siempre.
 
 ---
 

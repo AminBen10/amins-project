@@ -374,6 +374,8 @@ fotogrametria.si
 antisybil.si
 offsetter.si
 carbonoracle.si
+offsetagent.si
+telemetries.si
 oligos.si
 biosurveillance.si
 genecheck.si
@@ -381,8 +383,6 @@ smelters.si
 feedstocks.si
 reclaimers.si
 loadshed.si
-offsetagent.si
-telemetries.si
 custodianship.si
 novations.si
 insolvencies.si

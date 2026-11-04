@@ -374,6 +374,8 @@ fotogrametria
 antisybil
 offsetter
 carbonoracle
+offsetagent
+telemetries
 oligos
 biosurveillance
 genecheck
@@ -381,8 +383,6 @@ smelters
 feedstocks
 reclaimers
 loadshed
-offsetagent
-telemetries
 custodianship
 novations
 insolvencies

@@ -44,6 +44,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 | `prioridad` | `A` comprar ya, `B` solo con comprador o uso propio, `C` descartar |
 | `lista_corta` | `vender`, `uso propio` o vacío |
 | `com` | Si el mismo nombre en .com está `libre` u `ocupado`. Vacío = sin comprobar |
+| `comprar_com` | `vender`, `uso propio` o vacío: si hay que comprar también el .com |
 | `estado` | `disponible` o `comprado` |
 | `comprobado` | Fecha en que se comprobó (AAAA-MM-DD) |
 | `registrador` | Dónde se comprobó o se compró |

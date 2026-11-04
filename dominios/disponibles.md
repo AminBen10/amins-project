@@ -5,8 +5,8 @@
 
 ## Resumen
 
-- **697 dominios disponibles**: 200 de prioridad A, 484 de prioridad B y 13 de prioridad C.
-- **Lista corta:** 39 para vender y 2 de uso propio, unos 528 $ al año.
+- **697 dominios disponibles**: 200 de prioridad A, 474 de prioridad B y 23 de prioridad C.
+- **Lista corta:** 39 nombres para vender y 4 de uso propio (41 en .si y 5 en .com), unos 608 $ al año.
 - Comprar todos los de prioridad A costaría unos 2.576 $ al año.
 - Comprados: 0.
 - **.com del mismo nombre:** 48 libres y 649 ocupados.
@@ -18,49 +18,51 @@ Prioridad:
 
 ## Lista corta: comprar primero
 
-| Dominio | Sector | Para | .com | Nota |
+| Nombre | Comprar | Sector | Para | Nota |
 |---|---|---|---|---|
-| **puedoreclamar.si** | Abogados y reclamaciones | vender | libre | Pregunta + sí, ideal para Google Ads |
-| **tengoderecho.si** | Abogados y reclamaciones | vender | ocupado | Pregunta + sí |
-| **segundaoportunidad.si** | Abogados y reclamaciones | vender | ocupado | Ley de Segunda Oportunidad, sector con mucha publicidad |
-| **divorcios.si** | Abogados y reclamaciones | vender | ocupado | Abogados de familia |
-| **siniestros.si** | Abogados y reclamaciones | vender | ocupado | Abogados y peritos de seguros |
-| **finiquito.si** | Abogados y reclamaciones | vender | ocupado | Millones de búsquedas para calcular o reclamar el finiquito |
-| **irph.si** | Reclamaciones bancarias y de viajes | vender | ocupado | Miles de demandas por el índice IRPH de las hipotecas |
-| **plusvalia.si** | Reclamaciones bancarias y de viajes | vender | ocupado | Reclamación de la plusvalía municipal |
-| **retrasovuelo.si** | Reclamaciones bancarias y de viajes | vender | ocupado | Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho |
-| **extranjeria.si** | Extranjería e inmigración | vender | ocupado |  |
-| **arraigo.si** | Extranjería e inmigración | vender | ocupado | Abogados de extranjería, de los que más se anuncian |
-| **arraigosociolaboral.si** | Extranjería e inmigración | vender | libre | Nuevo arraigo del reglamento de 2025 |
-| **canaldenuncias.si** | Empresas y cumplimiento | vender | ocupado | Obligatorio en empresas de más de 50 trabajadores |
-| **dijeque.si** | Bodas | vender | libre | "Dije que sí", el mejor del bloque |
-| **pedida.si** | Bodas | vender | ocupado | Pedidas de mano |
-| **alianzas.si** | Bodas | vender | ocupado | Joyerías |
-| **cerrajeria.si** | Hogar y reformas | vender | ocupado | Cerrajeros de urgencia, de los que más pagan por clic |
-| **desatascos.si** | Hogar y reformas | vender | ocupado | Urgencias, mucho gasto en anuncios |
-| **tarifaluz.si** | Energía y movilidad | vender | ocupado | Los comparadores de luz pagan mucho por cliente |
-| **placassolares.si** | Energía y movilidad | vender | ocupado | Instaladores con mucha publicidad |
-| **bombadecalor.si** | Energía y movilidad | vender | ocupado | Instaladores de aerotermia, gracias a las ayudas |
-| **neumaticos.si** | Motor y taller | vender | ocupado | Tiendas online de neumáticos, mucho gasto en anuncios |
-| **recambios.si** | Motor y taller | vender | ocupado | Tiendas online de recambios |
-| **licenciavtc.si** | Motor y taller | vender | ocupado | Las licencias se compran y venden por decenas de miles de euros, con intermediarios |
-| **implantes.si** | Salud y estética | vender | ocupado | Clínicas dentales |
-| **injertos.si** | Salud y estética | vender | ocupado | Injerto capilar, más corto que injertocapilar.si |
-| **agenteinmobiliario.si** | Agentes e IA para pymes | vender | ocupado | Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria |
-| **agentedeventas.si** | Agentes e IA para pymes | vender | ocupado | Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman "AI SDR", producto muy de moda |
-| **recepcionistavirtual.si** | Agentes e IA para pymes | vender | ocupado | Agentes de voz que contestan el teléfono en clínicas y negocios |
-| **robotdecocina.si** | Robots y drones | vender | ocupado | Robots de cocina, categoría enorme en España |
-| **juegapadel.si** | Pádel, tenis y raqueta | vender | ocupado | "Juega pádel, sí" |
-| **clasesdepadel.si** | Pádel, tenis y raqueta | vender | ocupado | Escuelas y monitores |
-| **juegapickleball.si** | Pádel, tenis y raqueta | vender | ocupado | Deporte en crecimiento en España: entras antes |
-| **faltauno.si** | Pádel, tenis y raqueta | vender | ocupado | "Falta uno": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores |
-| **habitatge.si** | Catalán | vender | ocupado | Vivienda, el sector que más dinero mueve |
-| **hipoteques.si** | Catalán | vender | ocupado | Brokers hipotecarios |
-| **herencies.si** | Catalán | vender | ocupado | Abogados de herencias |
-| **casament.si** | Catalán | vender | ocupado | Bodas, mismo pitch que dijeque.si |
-| **lampista.si** | Catalán | vender | ocupado | "Fontanero", solo se dice en catalán; se anuncian mucho por urgencias |
-| **decants.si** | Perfumería | uso propio | ocupado | Las muestras de perfume (decants) tienen mucha demanda |
-| **perfums.si** | Catalán | uso propio | ocupado | Uso propio para Orienfragance en catalán |
+| **puedoreclamar** | .si + .com | Abogados y reclamaciones | vender | Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos |
+| **tengoderecho** | .si | Abogados y reclamaciones | vender | Pregunta + sí |
+| **segundaoportunidad** | .si | Abogados y reclamaciones | vender | Ley de Segunda Oportunidad, sector con mucha publicidad |
+| **divorcios** | .si | Abogados y reclamaciones | vender | Abogados de familia |
+| **siniestros** | .si | Abogados y reclamaciones | vender | Abogados y peritos de seguros |
+| **finiquito** | .si | Abogados y reclamaciones | vender | Millones de búsquedas para calcular o reclamar el finiquito |
+| **irph** | .si | Reclamaciones bancarias y de viajes | vender | Miles de demandas por el índice IRPH de las hipotecas |
+| **plusvalia** | .si | Reclamaciones bancarias y de viajes | vender | Reclamación de la plusvalía municipal |
+| **retrasovuelo** | .si | Reclamaciones bancarias y de viajes | vender | Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho |
+| **extranjeria** | .si | Extranjería e inmigración | vender |  |
+| **arraigo** | .si | Extranjería e inmigración | vender | Abogados de extranjería, de los que más se anuncian |
+| **arraigosociolaboral** | .si + .com | Extranjería e inmigración | vender | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
+| **canaldenuncias** | .si | Empresas y cumplimiento | vender | Obligatorio en empresas de más de 50 trabajadores |
+| **dijeque** | .si + .com | Bodas | vender | "Dije que sí", el mejor del bloque. Comprar con el .com para venderlos juntos |
+| **pedida** | .si | Bodas | vender | Pedidas de mano |
+| **alianzas** | .si | Bodas | vender | Joyerías |
+| **cerrajeria** | .si | Hogar y reformas | vender | Cerrajeros de urgencia, de los que más pagan por clic |
+| **desatascos** | .si | Hogar y reformas | vender | Urgencias, mucho gasto en anuncios |
+| **tarifaluz** | .si | Energía y movilidad | vender | Los comparadores de luz pagan mucho por cliente |
+| **placassolares** | .si | Energía y movilidad | vender | Instaladores con mucha publicidad |
+| **bombadecalor** | .si | Energía y movilidad | vender | Instaladores de aerotermia, gracias a las ayudas |
+| **neumaticos** | .si | Motor y taller | vender | Tiendas online de neumáticos, mucho gasto en anuncios |
+| **recambios** | .si | Motor y taller | vender | Tiendas online de recambios |
+| **licenciavtc** | .si | Motor y taller | vender | Las licencias se compran y venden por decenas de miles de euros, con intermediarios |
+| **implantes** | .si | Salud y estética | vender | Clínicas dentales |
+| **injertos** | .si | Salud y estética | vender | Injerto capilar, más corto que injertocapilar.si |
+| **agenteinmobiliario** | .si | Agentes e IA para pymes | vender | Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria |
+| **agentedeventas** | .si | Agentes e IA para pymes | vender | Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman "AI SDR", producto muy de moda |
+| **recepcionistavirtual** | .si | Agentes e IA para pymes | vender | Agentes de voz que contestan el teléfono en clínicas y negocios |
+| **robotdecocina** | .si | Robots y drones | vender | Robots de cocina, categoría enorme en España |
+| **juegapadel** | .si | Pádel, tenis y raqueta | vender | "Juega pádel, sí" |
+| **clasesdepadel** | .si | Pádel, tenis y raqueta | vender | Escuelas y monitores |
+| **juegapickleball** | .si | Pádel, tenis y raqueta | vender | Deporte en crecimiento en España: entras antes |
+| **faltauno** | .si | Pádel, tenis y raqueta | vender | "Falta uno": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores |
+| **habitatge** | .si | Catalán | vender | Vivienda, el sector que más dinero mueve |
+| **hipoteques** | .si | Catalán | vender | Brokers hipotecarios |
+| **herencies** | .si | Catalán | vender | Abogados de herencias |
+| **casament** | .si | Catalán | vender | Bodas, mismo pitch que dijeque.si |
+| **lampista** | .si | Catalán | vender | "Fontanero", solo se dice en catalán; se anuncian mucho por urgencias |
+| **decants** | .si | Perfumería | uso propio | Las muestras de perfume (decants) tienen mucha demanda |
+| **mayoristaperfumesarabes** | .com | Perfumería | uso propio | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| **distribuidorperfumesarabes** | .com | Perfumería | uso propio | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| **perfums** | .si | Catalán | uso propio | Uso propio para Orienfragance en catalán |
 
 ## Con el .com también libre
 
@@ -68,19 +70,19 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 
 | Nombre | Sector | Prioridad | Nota |
 |---|---|---|---|
-| **puedoreclamar** | Abogados y reclamaciones | A | Pregunta + sí, ideal para Google Ads |
+| **puedoreclamar** | Abogados y reclamaciones | A | Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos |
 | **puedocobrar** | Abogados y reclamaciones | B |  |
 | **puedorecurrir** | Abogados y reclamaciones | B |  |
 | **fianzasjudiciales** | Abogados y reclamaciones | B |  |
 | **arraigosocial** | Extranjería e inmigración | A | Tipo de arraigo |
-| **arraigosociolaboral** | Extranjería e inmigración | A | Nuevo arraigo del reglamento de 2025 |
+| **arraigosociolaboral** | Extranjería e inmigración | A | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
 | **arraigofamiliar** | Extranjería e inmigración | A | Tipo de arraigo |
 | **reagrupacionfamiliar** | Extranjería e inmigración | A |  |
 | **visadonomada** | Extranjería e inmigración | B | Igual |
 | **examennacionalidad** | Extranjería e inmigración | B | Academias que preparan los exámenes |
 | **modelo130** | Fiscal y autónomos | B | IRPF trimestral de autónomos |
 | **capitalizarparo** | Fiscal y autónomos | B |  |
-| **dijeque** | Bodas | A | "Dije que sí", el mejor del bloque |
+| **dijeque** | Bodas | A | "Dije que sí", el mejor del bloque. Comprar con el .com para venderlos juntos |
 | **zonatensionada** | Vivienda | B | Ley de vivienda; temático, poco comprador directo |
 | **viviendaturistica** | Alquiler turístico | B |  |
 | **tasaturistica** | Alquiler turístico | B |  |
@@ -100,8 +102,8 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 | **padelfemenino** | Pádel, tenis y raqueta | B |  |
 | **pistapickleball** | Pádel, tenis y raqueta | B |  |
 | **readaptacion** | Fitness y entrenamiento | B |  |
-| **mayoristaperfumesarabes** | Perfumería | A | Uso propio para Orienfragance. Describe exactamente tu negocio |
-| **distribuidorperfumesarabes** | Perfumería | A | Uso propio para Orienfragance. Describe exactamente tu negocio |
+| **mayoristaperfumesarabes** | Perfumería | A | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| **distribuidorperfumesarabes** | Perfumería | A | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
 | **muestrasperfumes** | Perfumería | A | Complementa a decants.si |
 | **parfumsarabes** | Perfumería | A | Francés. Francia es un gran mercado de perfumes árabes |
 | **perfumsarabs** | Perfumería | A | Catalán |
@@ -142,7 +144,7 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 | [Agentes e IA para pymes](#agentes-e-ia-para-pymes) | 23 | 8 | 15 | 0 |
 | [Tecnología e IA](#tecnología-e-ia) | 21 | 6 | 15 | 0 |
 | [Robots y drones](#robots-y-drones) | 13 | 5 | 8 | 0 |
-| [Infraestructura 2030 (inglés)](#infraestructura-2030-inglés) | 17 | 0 | 10 | 7 |
+| [Infraestructura 2030 (inglés)](#infraestructura-2030-inglés) | 17 | 0 | 0 | 17 |
 | [Pádel, tenis y raqueta](#pádel-tenis-y-raqueta) | 55 | 21 | 33 | 1 |
 | [Fitness y entrenamiento](#fitness-y-entrenamiento) | 18 | 5 | 13 | 0 |
 | [Running y ciclismo](#running-y-ciclismo) | 15 | 4 | 11 | 0 |
@@ -161,7 +163,7 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 
 | Dominio | Prioridad | .com | Nota |
 |---|---|---|---|
-| puedoreclamar.si | A | libre | Pregunta + sí, ideal para Google Ads |
+| puedoreclamar.si | A | libre | Pregunta + sí. Para campañas, radio, carteles y como redirección a la web del despacho. Comprar con el .com para venderlos juntos |
 | tengoderecho.si | A | ocupado | Pregunta + sí |
 | reclama.si | A | ocupado |  |
 | reclamar.si | A | ocupado |  |
@@ -248,7 +250,7 @@ Se puede registrar el nombre en .si y en .com. Si el .com está ocupado por un n
 | permisodetrabajo.si | A | ocupado | Igual |
 | homologacion.si | A | ocupado | Homologación de títulos, mucha demanda desde Latinoamérica |
 | arraigosocial.si | A | libre | Tipo de arraigo |
-| arraigosociolaboral.si | A | libre | Nuevo arraigo del reglamento de 2025 |
+| arraigosociolaboral.si | A | libre | Nuevo arraigo del reglamento de 2025. Comprar con el .com para venderlos juntos |
 | arraigofamiliar.si | A | libre | Tipo de arraigo |
 | leybeckham.si | A | ocupado | Régimen fiscal para expatriados; asesores fiscales |
 | reagrupacionfamiliar.si | A | libre |  |
@@ -305,7 +307,7 @@ Obligaciones legales de las empresas. Los vendedores de software y las consultor
 
 | Dominio | Prioridad | .com | Nota |
 |---|---|---|---|
-| dijeque.si | A | libre | "Dije que sí", el mejor del bloque |
+| dijeque.si | A | libre | "Dije que sí", el mejor del bloque. Comprar con el .com para venderlos juntos |
 | pedida.si | A | ocupado | Pedidas de mano |
 | anillo.si | A | ocupado | Joyerías |
 | alianzas.si | A | ocupado | Joyerías |
@@ -643,18 +645,18 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 
 | Dominio | Prioridad | .com | Nota |
 |---|---|---|---|
-| antisybil.si | B | ocupado | Inglés. Protección contra cuentas falsas en masa. Compradores: pocas startups de identidad y cripto |
-| offsetter.si | B | ocupado | Inglés. Compensación de carbono |
-| carbonoracle.si | B | ocupado | Inglés. Datos de emisiones para contratos automáticos; nicho muy pequeño |
-| oligos.si | B | ocupado | Inglés. Oligonucleótidos: proveedores de reactivos de biotecnología |
-| biosurveillance.si | B | ocupado | Inglés. Vigilancia de brotes (aguas residuales, aeropuertos) |
-| genecheck.si | B | ocupado | Inglés. Suena a nombre de empresa: búscalo en EUIPO antes de comprar |
-| smelters.si | B | ocupado | Inglés. Fundiciones de minerales críticos |
-| feedstocks.si | B | ocupado | Inglés. Materias primas para la industria química |
-| reclaimers.si | B | ocupado | Inglés. Recuperación de gases, metales y disolventes |
-| loadshed.si | B | ocupado | Inglés. Cortes selectivos de carga en la red eléctrica |
+| antisybil.si | C | ocupado | Inglés. Protección contra cuentas falsas en masa. Compradores: pocas startups de identidad y cripto. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| offsetter.si | C | ocupado | Inglés. Compensación de carbono. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| carbonoracle.si | C | ocupado | Inglés. Datos de emisiones para contratos automáticos; nicho muy pequeño. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
 | offsetagent.si | C | ocupado | Inglés. Compuesto débil, peor que offsetter.si |
 | telemetries.si | C | ocupado | Inglés. El plural suena raro; el singular está ocupado |
+| oligos.si | C | ocupado | Inglés. Oligonucleótidos: proveedores de reactivos de biotecnología. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| biosurveillance.si | C | ocupado | Inglés. Vigilancia de brotes (aguas residuales, aeropuertos). Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| genecheck.si | C | ocupado | Inglés. Suena a nombre de empresa: búscalo en EUIPO antes de comprar. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| smelters.si | C | ocupado | Inglés. Fundiciones de minerales críticos. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| feedstocks.si | C | ocupado | Inglés. Materias primas para la industria química. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| reclaimers.si | C | ocupado | Inglés. Recuperación de gases, metales y disolventes. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
+| loadshed.si | C | ocupado | Inglés. Cortes selectivos de carga en la red eléctrica. Rebajado a C tras el red team: sector cerrado, se compra por licitación o con .com tradicional |
 | custodianship.si | C | ocupado | Inglés. Palabra larga y abstracta |
 | novations.si | C | ocupado | Inglés. Plural poco usado |
 | insolvencies.si | C | ocupado | Inglés. El singular es el que se busca |
@@ -883,8 +885,8 @@ Sobre todo para uso propio en Orienfragance. Incluye nombres en castellano, cata
 | perfumesarabes.si | A | ocupado | Uso propio para Orienfragance. La búsqueda principal de tu sector |
 | perfumeriaarabe.si | A | ocupado | Uso propio para Orienfragance |
 | perfumesalpormayor.si | A | ocupado | Uso propio para Orienfragance. Para la parte de venta al por mayor |
-| mayoristaperfumesarabes.si | A | libre | Uso propio para Orienfragance. Describe exactamente tu negocio |
-| distribuidorperfumesarabes.si | A | libre | Uso propio para Orienfragance. Describe exactamente tu negocio |
+| mayoristaperfumesarabes.si | A | libre | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
+| distribuidorperfumesarabes.si | A | libre | Uso propio para Orienfragance. Describe exactamente tu negocio; en .com vale más que en .si para tus clientes |
 | perfumesdubai.si | A | ocupado | Mucha gente busca "perfumes de Dubái" |
 | perfumesorientales.si | A | ocupado |  |
 | perfumesdenicho.si | A | ocupado | Perfumes de nicho, segmento en crecimiento |

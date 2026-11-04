@@ -66,6 +66,9 @@ DESCRIPCION = {
 
 PRIORIDADES = {"A": 0, "B": 1, "C": 2}
 
+# Renovación anual del .com en Namecheap (el primer año suele ser más barato).
+PRECIO_COM = 15.98
+
 # Estado del mismo nombre en .com. Vacío = sin comprobar.
 COM = {"": "?", "libre": "libre", "ocupado": "ocupado"}
 
@@ -90,6 +93,10 @@ def leer():
             errores.append(f"línea {i}: lista_corta no válida: {r['lista_corta']!r}")
         if r.get("com", "") not in COM:
             errores.append(f"línea {i}: com no válido: {r.get('com')!r} (usa libre, ocupado o vacío)")
+        if r.get("comprar_com", "") not in ("", "vender", "uso propio"):
+            errores.append(f"línea {i}: comprar_com no válido: {r.get('comprar_com')!r}")
+        if r.get("comprar_com") and r.get("com") != "libre":
+            errores.append(f"línea {i}: comprar_com marcado pero el .com no está libre: {d}")
     if errores:
         sys.exit("\n".join(errores))
     return filas
@@ -119,9 +126,12 @@ def main():
 
     cuenta = Counter(r["prioridad"] for r in disponibles)
     orden = [r for s in ORDEN_SECTORES for r in por_sector.get(s, [])]
-    vender = [r for r in orden if r["lista_corta"] == "vender"]
-    propio = [r for r in orden if r["lista_corta"] == "uso propio"]
-    precio = sum(float(r["precio_usd_ano"] or 0) for r in vender + propio)
+    corta = [r for r in orden if r["lista_corta"] or r.get("comprar_com")]
+    vender = [r for r in corta if "vender" in (r["lista_corta"], r.get("comprar_com"))]
+    propio = [r for r in corta if r not in vender]
+    coms = [r for r in corta if r.get("comprar_com")]
+    precio = (sum(float(r["precio_usd_ano"] or 0) for r in corta if r["lista_corta"])
+              + PRECIO_COM * len(coms))
     precio_a = sum(float(r["precio_usd_ano"] or 0) for r in disponibles if r["prioridad"] == "A")
     comprados = [r for r in filas if r["estado"] == "comprado"]
     com_libre = [r for r in orden if r.get("com") == "libre"]
@@ -137,7 +147,8 @@ def main():
         "",
         f"- **{len(disponibles)} dominios disponibles**: {cuenta['A']} de prioridad A, "
         f"{cuenta['B']} de prioridad B y {cuenta['C']} de prioridad C.",
-        f"- **Lista corta:** {len(vender)} para vender y {len(propio)} de uso propio, "
+        f"- **Lista corta:** {len(vender)} nombres para vender y {len(propio)} de uso propio "
+        f"({sum(1 for r in corta if r['lista_corta'])} en .si y {len(coms)} en .com), "
         f"unos {miles(precio)} $ al año.",
         f"- Comprar todos los de prioridad A costaría unos {miles(precio_a)} $ al año.",
         f"- Comprados: {len(comprados)}.",
@@ -152,10 +163,10 @@ def main():
         "",
     ]
     md += tabla(vender + propio, [
-        ("Dominio", lambda r: f"**{r['dominio']}**"),
+        ("Nombre", lambda r: f"**{r['dominio'][:-3]}**"),
+        ("Comprar", lambda r: " + ".join(x for x, s in ((".si", r["lista_corta"]), (".com", r.get("comprar_com"))) if s)),
         ("Sector", lambda r: r["sector"]),
-        ("Para", lambda r: r["lista_corta"]),
-        (".com", lambda r: COM[r.get("com", "")]),
+        ("Para", lambda r: r["lista_corta"] or r.get("comprar_com")),
         ("Nota", lambda r: r["nota"]),
     ])
     md += [
@@ -211,7 +222,8 @@ def main():
     ]
     OUT_MD.write_text("\n".join(md), encoding="utf-8")
 
-    escribir_lista("lista-corta.txt", [r["dominio"] for r in vender + propio])
+    escribir_lista("lista-corta.txt", [d for r in vender + propio for d, s in (
+        (r["dominio"], r["lista_corta"]), (r["dominio"][:-3] + ".com", r.get("comprar_com"))) if s])
     escribir_lista("prioridad-a.txt", [r["dominio"] for r in orden if r["prioridad"] == "A"])
     escribir_lista("todos.txt", [r["dominio"] for r in orden])
     nombres = [r["dominio"][: -len(".si")] for r in orden]
