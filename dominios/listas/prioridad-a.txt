@@ -11,6 +11,8 @@ desahucio.si
 divorcios.si
 siniestros.si
 mediacion.si
+finiquito.si
+morosos.si
 irph.si
 tarjetarevolving.si
 plusvalia.si
@@ -49,6 +51,12 @@ certificadoenergetico.si
 ceduladehabitabilidad.si
 licenciaturistica.si
 pisoturistico.si
+cerrajeria.si
+fontaneria.si
+desatascos.si
+aislamientos.si
+calderas.si
+electricistas.si
 seguropatinete.si
 seguroperro.si
 decesos.si
@@ -67,10 +75,13 @@ neumaticos.si
 recambios.si
 talleres.si
 balizav16.si
+gruas.si
 implantes.si
 injertocapilar.si
 ortodoncia.si
 injertos.si
+podologia.si
+varices.si
 peluqueriacanina.si
 guarderiacanina.si
 autoescuela.si
@@ -118,6 +129,7 @@ porra.si
 jamoniberico.si
 decants.si
 esencias.si
+subastasjudiciales.si
 finques.si
 lloguer.si
 advocats.si

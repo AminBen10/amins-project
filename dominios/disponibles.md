@@ -5,9 +5,9 @@
 
 ## Resumen
 
-- **449 dominios disponibles**: 143 de prioridad A, 301 de prioridad B y 5 de prioridad C.
+- **546 dominios disponibles**: 155 de prioridad A, 386 de prioridad B y 5 de prioridad C.
 - **Lista corta:** 26 para vender y 2 de uso propio, unos 361 $ al año.
-- Comprar todos los de prioridad A costaría unos 1.842 $ al año.
+- Comprar todos los de prioridad A costaría unos 1.996 $ al año.
 - Comprados: 0.
 
 Prioridad:
@@ -52,20 +52,22 @@ Prioridad:
 
 | Sector | Total | A | B | C |
 |---|---|---|---|---|
-| [Abogados y reclamaciones](#abogados-y-reclamaciones) | 39 | 13 | 26 | 0 |
+| [Abogados y reclamaciones](#abogados-y-reclamaciones) | 59 | 15 | 44 | 0 |
 | [Reclamaciones bancarias y de viajes](#reclamaciones-bancarias-y-de-viajes) | 11 | 5 | 6 | 0 |
 | [Extranjería e inmigración](#extranjería-e-inmigración) | 19 | 11 | 8 | 0 |
 | [Fiscal y autónomos](#fiscal-y-autónomos) | 10 | 2 | 8 | 0 |
-| [Empresas y cumplimiento](#empresas-y-cumplimiento) | 13 | 6 | 7 | 0 |
+| [Empresas y cumplimiento](#empresas-y-cumplimiento) | 18 | 6 | 12 | 0 |
 | [Bodas](#bodas) | 17 | 7 | 10 | 0 |
 | [Vivienda](#vivienda) | 10 | 5 | 5 | 0 |
 | [Alquiler turístico](#alquiler-turístico) | 6 | 2 | 4 | 0 |
-| [Hogar y reformas](#hogar-y-reformas) | 3 | 0 | 3 | 0 |
+| [Hogar y reformas](#hogar-y-reformas) | 23 | 6 | 17 | 0 |
 | [Seguros](#seguros) | 8 | 2 | 6 | 0 |
-| [Mayores y decesos](#mayores-y-decesos) | 12 | 5 | 7 | 0 |
+| [Mayores y decesos](#mayores-y-decesos) | 13 | 5 | 8 | 0 |
 | [Energía y movilidad](#energía-y-movilidad) | 13 | 7 | 6 | 0 |
 | [Motor y taller](#motor-y-taller) | 5 | 4 | 1 | 0 |
-| [Salud y estética](#salud-y-estética) | 15 | 4 | 9 | 2 |
+| [Industria, logística y maquinaria](#industria-logística-y-maquinaria) | 33 | 1 | 32 | 0 |
+| [Agro y medio ambiente](#agro-y-medio-ambiente) | 6 | 0 | 6 | 0 |
+| [Salud y estética](#salud-y-estética) | 24 | 6 | 16 | 2 |
 | [Mascotas](#mascotas) | 4 | 2 | 2 | 0 |
 | [Formación y empleo](#formación-y-empleo) | 5 | 1 | 4 | 0 |
 | [Tecnología e IA](#tecnología-e-ia) | 5 | 2 | 3 | 0 |
@@ -79,7 +81,7 @@ Prioridad:
 | [Alimentación](#alimentación) | 9 | 1 | 8 | 0 |
 | [Comercio y web](#comercio-y-web) | 5 | 0 | 5 | 0 |
 | [Perfumería](#perfumería) | 3 | 2 | 1 | 0 |
-| [Inversión](#inversión) | 1 | 0 | 1 | 0 |
+| [Inversión](#inversión) | 4 | 1 | 3 | 0 |
 | [Frases](#frases) | 3 | 0 | 1 | 2 |
 | [Catalán](#catalán) | 92 | 23 | 69 | 0 |
 
@@ -100,6 +102,8 @@ Prioridad:
 | divorcios.si | A | Abogados de familia |
 | siniestros.si | A | Abogados y peritos de seguros |
 | mediacion.si | A | Negociación obligatoria antes de juicio desde 2025 (MASC) |
+| finiquito.si | A | Millones de búsquedas para calcular o reclamar el finiquito |
+| morosos.si | A | Empresas de recobro de deudas |
 | desahucios.si | B | Duplica a desahucio.si, elige uno |
 | fianzas.si | B | Fianzas de alquiler; también fianzas penales |
 | reclamacion.si | B |  |
@@ -126,6 +130,24 @@ Prioridad:
 | mediador.si | B |  |
 | mediadores.si | B |  |
 | conciliacion.si | B |  |
+| despidos.si | B | Duplica a despido.si |
+| liquidaciones.si | B |  |
+| quiebras.si | B |  |
+| deudores.si | B |  |
+| tasadores.si | B | Duplica a tasaciones.si |
+| herederos.si | B |  |
+| testamentos.si | B | Servicios de testamento online |
+| escrituras.si | B |  |
+| poderes.si | B |  |
+| notarias.si | B | Los notarios casi no se anuncian |
+| gestiones.si | B |  |
+| sanciones.si | B |  |
+| embargos.si | B | Abogados para levantar embargos |
+| cobros.si | B |  |
+| concursos.si | B | Ambiguo: concurso de acreedores y concursos de premios |
+| dacion.si | B | Dación en pago |
+| fianzasjudiciales.si | B |  |
+| peritaciones.si | B | Peritos judiciales y de seguros |
 
 ## Reclamaciones bancarias y de viajes
 
@@ -201,6 +223,11 @@ Obligaciones legales de las empresas. Los vendedores de software y las consultor
 | controlhorario.si | B |  |
 | lopd.si | B | Ley antigua, pero se sigue buscando mucho |
 | cumplimiento.si | B |  |
+| facturae.si | B | Formato oficial de factura electrónica |
+| auditorias.si | B |  |
+| convenios.si | B | Convenios colectivos: muchas búsquedas |
+| certificadora.si | B |  |
+| trazabilidad.si | B |  |
 
 ## Bodas
 
@@ -256,9 +283,29 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
+| cerrajeria.si | A | Cerrajeros de urgencia, de los que más pagan por clic |
+| fontaneria.si | A | Fontaneros de urgencia |
+| desatascos.si | A | Urgencias, mucho gasto en anuncios |
+| aislamientos.si | A | Aislamiento térmico, con ayudas públicas |
+| calderas.si | A | Instalación y reparación de calderas, mucho gasto en invierno |
+| electricistas.si | A | Electricistas de urgencia |
 | ventanas.si | B |  |
 | tejado.si | B |  |
 | instala.si | B |  |
+| desinfeccion.si | B |  |
+| tejados.si | B | Duplica a tejado.si |
+| fachadas.si | B |  |
+| pintores.si | B |  |
+| pinturas.si | B |  |
+| tarimas.si | B |  |
+| cristaleria.si | B |  |
+| cerramientos.si | B | Cerramientos de terrazas |
+| persianas.si | B | Reparación de persianas, muchos negocios locales |
+| toldos.si | B |  |
+| aluminio.si | B |  |
+| soleras.si | B |  |
+| pavimentos.si | B |  |
+| desinfecciones.si | B | Duplica a desinfeccion.si |
 
 ## Seguros
 
@@ -289,6 +336,7 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | cuidadoras.si | B |  |
 | dependencia.si | B |  |
 | residenciamayores.si | B | Duplica a residencias.si |
+| tanatorios.si | B | Duplica a tanatorio.si |
 
 ## Energía y movilidad
 
@@ -318,6 +366,55 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | balizav16.si | A | Baliza V16 obligatoria desde 2026. Ojo: la demanda baja cuando todos la tengan |
 | balizas.si | B |  |
 
+## Industria, logística y maquinaria
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| gruas.si | A | Grúas de asistencia en carretera y de obra |
+| palets.si | B |  |
+| contenedores.si | B | Alquiler de contenedores de obra y marítimos |
+| cubas.si | B | Cubas de escombros |
+| remolques.si | B |  |
+| carretillas.si | B | Carretillas elevadoras |
+| plataformas.si | B | Plataformas elevadoras; palabra ambigua |
+| excavaciones.si | B |  |
+| demoliciones.si | B |  |
+| chatarras.si | B |  |
+| chatarreria.si | B |  |
+| residuos.si | B |  |
+| furgonetas.si | B | Alquiler y venta de furgonetas |
+| transportes.si | B |  |
+| flotas.si | B | Software de gestión de flotas |
+| almacenes.si | B |  |
+| embalajes.si | B |  |
+| suministros.si | B |  |
+| graneles.si | B |  |
+| depositos.si | B |  |
+| bobinas.si | B |  |
+| calibracion.si | B |  |
+| metrologia.si | B |  |
+| soldaduras.si | B |  |
+| salasblancas.si | B |  |
+| cadenadefrio.si | B |  |
+| termometria.si | B |  |
+| viales.si | B | Ambiguo: viales de laboratorio y viales de carretera |
+| gasesmedicinales.si | B |  |
+| criogenia.si | B |  |
+| ensayos.si | B |  |
+| caldereria.si | B |  |
+| mecanizado.si | B | En lo que pegaste no salía el precio: compruébalo en el carrito |
+
+## Agro y medio ambiente
+
+| Dominio | Prioridad | Nota |
+|---|---|---|
+| fitosanitarios.si | B | Sector regulado |
+| biometano.si | B | Plantas de biometano en crecimiento en España |
+| regadio.si | B |  |
+| alpechin.si | B | Residuo de las almazaras; nicho muy técnico |
+| purines.si | B |  |
+| fumigacion.si | B | Fumigación agrícola y con drones |
+
 ## Salud y estética
 
 | Dominio | Prioridad | Nota |
@@ -326,6 +423,8 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | injertocapilar.si | A | Sector muy grande |
 | ortodoncia.si | A | Clínicas dentales |
 | injertos.si | A | Injerto capilar, más corto que injertocapilar.si |
+| podologia.si | A | Muchas clínicas de podología |
+| varices.si | A | Clínicas de varices, mucho gasto en anuncios |
 | cirugias.si | B | Publicidad de cirugía estética regulada |
 | blanqueamiento.si | B |  |
 | depilacion.si | B | Cadenas de depilación láser |
@@ -335,6 +434,13 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | adelgaza.si | B | Publicidad sanitaria regulada |
 | audifonos.si | B |  |
 | embarazo.si | B | Tema sensible |
+| fisioterapeutas.si | B |  |
+| quiropractico.si | B |  |
+| endodoncia.si | B |  |
+| empastes.si | B |  |
+| ferulas.si | B | Férulas de descarga |
+| psicologos.si | B | Publicidad sanitaria regulada |
+| psiquiatria.si | B |  |
 | masaje.si | C | Se puede asociar con contenido para adultos |
 | masajes.si | C | Igual |
 
@@ -581,7 +687,10 @@ Uso propio para Orienfragance.
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
+| subastasjudiciales.si | A | Inversores en subastas y plataformas que las buscan |
 | lingotes.si | B | Venta de oro. Sector con fraudes, los compradores serán prudentes |
+| creditosfallidos.si | B |  |
+| lotes.si | B |  |
 
 ## Frases
 

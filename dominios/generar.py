@@ -31,6 +31,8 @@ ORDEN_SECTORES = [
     "Mayores y decesos",
     "Energía y movilidad",
     "Motor y taller",
+    "Industria, logística y maquinaria",
+    "Agro y medio ambiente",
     "Salud y estética",
     "Mascotas",
     "Formación y empleo",
