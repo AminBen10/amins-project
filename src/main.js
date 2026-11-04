@@ -1,106 +1,129 @@
+// Boot. Interim (motion M8–M10, M2): the book, the door sign, the thumb bar,
+// the chairs and the scroll story run on the new page; the 3D stage still is
+// the old one, loaded lazily and fed through a small adapter until the scene
+// stream's stage lands (M1 rewrites this boot).
 import './styles.css';
-import { DEFAULT_LOOK } from './config.js';
-import { createStage } from './three/stage.js';
+import * as client from './config.js';
+import { compose, mixOf } from './cuts/compose.js';
+import { renderRecipe, programParts } from './cuts/recipe.js';
+import { serviceFor } from './cuts/ficha.js';
 import { initBooking } from './ui/booking.js';
-import { initStudio } from './ui/studio.js';
 import { initStatus } from './ui/status.js';
+import { initThumbbar } from './ui/thumbbar.js';
+import { initScroll } from './ui/scroll.js';
 
+const root = document.documentElement;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reducedMotion) root.dataset.motion = 'off';
 const canvas = document.getElementById('stage');
 
 function webglAvailable() {
   try {
-    const c = document.createElement('canvas');
-    return !!c.getContext('webgl2');
+    return !!document.createElement('canvas').getContext('webgl2');
   } catch {
     return false;
   }
 }
 
-let stage = null;
-if (webglAvailable()) {
-  try {
-    stage = createStage(canvas, { reducedMotion, look: DEFAULT_LOOK });
-  } catch (err) {
-    console.error(err);
-  }
-}
-if (!stage) document.documentElement.classList.add('no-webgl');
+// ---------------------------------------------------------------- the page (works without 3D)
 
-const booking = initBooking();
-initStudio({ stage, booking });
-initStatus();
+const thumbbar = initThumbbar();
+const booking = initBooking({ onCut: (cut) => thumbbar.setCut(cut) });
+const status = initStatus();
 
 document.getElementById('pitch-close')?.addEventListener('click', () => {
   document.getElementById('pitch').hidden = true;
 });
 
-// ------------------------------------------------------------ scroll → 3D
-
-const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
-const q = (sel) => document.querySelector(sel);
-const beats = {
-  morph: q('[data-beat="morph"]'),
-  consult: q('[data-beat="consult"]'),
-  sides: q('[data-beat="sides"]'),
-  top: q('[data-beat="top"]'),
-  beard: q('[data-beat="beard"]'),
-  studio: q('#estilos'),
-  after: q('#servicios'),
-};
-const nav = q('.nav');
-
-function readScroll() {
-  const vh = innerHeight;
-  const y = scrollY;
-  const top = (el) => el.getBoundingClientRect().top + y;
-  const seg = (a, b) => clamp01((y - a) / (b - a));
-  const step = (el) => seg(top(el) - vh * 0.5, top(el) + el.offsetHeight - vh * 0.5);
-  const intro = beats.morph;
-  return {
-    morph: seg(vh * 0.08, top(intro) + intro.offsetHeight * 0.5 - vh * 0.5),
-    consult: step(beats.consult),
-    sides: step(beats.sides),
-    top: step(beats.top),
-    beard: step(beats.beard),
-    studio: seg(top(beats.studio) - vh * 0.7, top(beats.studio) - vh * 0.15),
-    after: seg(top(beats.after) - vh * 0.85, top(beats.after) - vh * 0.25),
-  };
+// Interim Carta: the chosen plate's recipe card, so 'Pedir hora con este corte'
+// works before the Carta player (carta.js) exists.
+const cartaForm = document.getElementById('carta-form');
+const recipeEl = document.getElementById('recipe');
+let shown = null;
+function showRecipe() {
+  if (!cartaForm || !recipeEl) return;
+  const cut = cartaForm.elements.corte?.value || null;
+  const beard = cartaForm.elements.barba?.value;
+  const program = compose(mixOf(cut, beard && beard !== 'none' ? beard : null, client), client);
+  shown = program?.steps?.length ? program : null;
+  recipeEl.innerHTML = shown ? renderRecipe(shown, client) : '';
 }
+cartaForm?.addEventListener('change', showRecipe);
 
-let ticking = false;
-function onScroll() {
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    ticking = false;
-    nav.classList.toggle('nav--solid', scrollY > 40);
-    if (!stage) return;
-    const s = readScroll();
-    stage.setInput(s);
-    canvas.style.opacity = String(1 - s.after);
-    stage.setRunning(s.after < 0.999 && !document.hidden);
+// Any recipe card's booking link presets the book with that cut.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('a.recipe__book');
+  if (!a) return;
+  const d = a.dataset;
+  const all = [...client.CUTS, ...client.BEARDS];
+  const program = (shown && shown.id === d.program ? shown : null) || all.find((p) => p.id === d.program) || null;
+  const parts = programParts(program);
+  booking.preset({
+    serviceId: d.service || serviceFor(program, client)?.id,
+    cutId: d.cut || parts.cut,
+    beardId: d.beard || parts.beard,
+    cutLabel: d.cutLabel || parts.cutLabel,
+    beardLabel: d.beardLabel || parts.beardLabel,
+    ficha: program?.ficha || null,
   });
-}
-
-addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', () => {
-  stage?.resize();
-  onScroll();
 });
-document.addEventListener('visibilitychange', onScroll);
-if (stage) {
-  stage.onReady = () => {
-    document.documentElement.dataset.stage = 'ready';
-    onScroll();
+
+// Las sillas: 'Ver su …' picks that cut on the Carta and that barber in the book.
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest?.('.ledger__see[data-cut]');
+  if (!btn) return;
+  const input = cartaForm?.querySelector(`input[value="${CSS.escape(btn.dataset.cut)}"]`);
+  if (input) {
+    // A chair's cut is shown on its own: no beard from an earlier pick.
+    const none = input.name === 'corte' ? cartaForm.querySelector('input[name=barba][value=none]') : null;
+    if (none) none.checked = true;
+    input.checked = true;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (btn.dataset.barber) booking.preset({ barberId: btn.dataset.barber });
+  const carta = document.getElementById('carta');
+  carta?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
+});
+
+// ---------------------------------------------------------------- the 3D stage
+
+// The old stage speaks {morph, consult, sides, top, beard, studio, after}; map the
+// story beats onto it. A stage with the new API (setFrame) is used as is.
+function adapt(old) {
+  if (typeof old.setFrame === 'function') return old;
+  return {
+    setInput(i) {
+      old.setInput({ morph: i.enter, consult: i.consult, sides: i.clipper, top: i.scissors, beard: i.razor, studio: i.carta, after: i.turn });
+    },
+    setRunning: (on) => old.setRunning(on),
+    resize: () => old.resize?.(),
+    snap() {},
+    setOpen() {},
   };
 }
-document.fonts?.ready.then(onScroll);
-onScroll();
 
-// gentle parallax with the mouse
-if (stage && matchMedia('(pointer: fine)').matches && !reducedMotion) {
-  addEventListener('pointermove', (e) => {
-    stage.pointer((e.clientX / innerWidth) * 2 - 1, -((e.clientY / innerHeight) * 2 - 1));
-  });
+const scroll = initScroll({ stage: null, canvas, reducedMotion });
+
+if (canvas && webglAvailable()) {
+  root.dataset.stage = 'loading';
+  import('./three/stage.js')
+    .then(async ({ createStage }) => {
+      const old = await createStage(canvas, { reducedMotion, look: client.DEFAULT_LOOK || { hair: 'fade', beard: 'short' } });
+      const stage = adapt(old);
+      old.onReady = () => {
+        root.dataset.stage = 'ready';
+        scroll.update();
+      };
+      status.setStage(stage);
+      scroll.setStage(stage);
+      addEventListener('resize', () => stage.resize());
+    })
+    .catch((err) => {
+      console.error(err);
+      root.dataset.stage = 'off';
+      root.classList.add('no-webgl');
+    });
+} else {
+  root.classList.add('no-webgl');
+  root.dataset.stage = 'off';
 }
