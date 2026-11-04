@@ -1,7 +1,7 @@
 # Dominios .si disponibles
 
 Comprobados en Namecheap el 2026-11-04. Precio: 12,88 $/año (precio normal 15,48 $/año).
-Total: 184 dominios.
+Total: 261 dominios.
 
 Prioridad:
 - **A**: comprar ya (comprador claro y que gasta en publicidad)
@@ -129,7 +129,7 @@ Prioridad:
 | placassolares.si | A | Instaladores con mucha publicidad |
 | instala.si | B | |
 
-## Pádel, tenis y raqueta (19)
+## Pádel, tenis y raqueta (56)
 
 Añadidos el 2026-11-04 (lote 2).
 
@@ -154,8 +154,45 @@ Añadidos el 2026-11-04 (lote 2).
 | padelistas.si | B | Comunidad, blog o tienda de pádel |
 | saque.si | B | Corto y con gancho para tenis o pádel |
 | peloteo.si | B | Para clases o una app de buscar pareja de juego |
+| faltauno.si | A | "Falta uno": la frase de siempre cuando falta un jugador. Ideal para una app de buscar jugadores |
+| bandeja.si | A | Golpe de pádel, corto y con gancho de marca |
+| escueladepadel.si | A | Escuelas de pádel |
+| academiadepadel.si | A | Igual |
+| ligadepadel.si | A | Organizadores de ligas |
+| zapatillasdepadel.si | A | Tiendas online, mucho gasto en anuncios |
+| padelbarcelona.si | A | Clubes de Barcelona |
+| padelmadrid.si | A | Clubes de Madrid |
+| padelmarbella.si | A | Mercado de alto poder adquisitivo |
+| clasesdepickleball.si | A | Deporte en crecimiento |
+| reservatupista.si | B | Duplica a reservapista.si |
+| alquilapista.si | B |  |
+| pistalibre.si | B | Para una app de pistas libres |
+| pistacubierta.si | B | Clubes de pádel indoor |
+| monitordepadel.si | B |  |
+| campusdepadel.si | B |  |
+| padelinfantil.si | B |  |
+| padelfemenino.si | B |  |
+| ligapadel.si | B | Duplica a ligadepadel.si |
+| rankingpadel.si | B |  |
+| pelotasdepadel.si | B |  |
+| padelero.si | B |  |
+| padeleros.si | B |  |
+| padelvalencia.si | B |  |
+| padelsevilla.si | B |  |
+| padelmalaga.si | B |  |
+| padelmallorca.si | B |  |
+| padelbilbao.si | B |  |
+| buscopareja.si | B | Sirve para pádel, pero también suena a web de citas |
+| dejada.si | B | Golpe de pádel y tenis |
+| pared.si | C | Débil |
+| tenista.si | B |  |
+| tenistas.si | B |  |
+| escueladetenis.si | B |  |
+| clubdetenis.si | B |  |
+| pistapickleball.si | B |  |
+| palapickleball.si | B |  |
 
-## Fitness y deporte (25)
+## Fitness y deporte (65)
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
@@ -184,6 +221,46 @@ Añadidos el 2026-11-04 (lote 2).
 | forfait.si | B | Estaciones de esquí, solo en temporada |
 | esquiadores.si | B | |
 | refugios.si | B | Refugios de montaña |
+| rocodromo.si | A | Rocódromos en crecimiento |
+| surfcamp.si | A | Surf camps, mucho gasto en anuncios; también funciona en inglés |
+| escueladesurf.si | A | Escuelas de surf |
+| inscribete.si | A | "Inscríbete, sí": plataformas de inscripción en carreras |
+| bicicletas.si | A | Tiendas de bicis |
+| bicielectrica.si | A | Tiendas de bicis eléctricas |
+| fisiodeportivo.si | A | Muchos fisios compitiendo |
+| campamentodeverano.si | A | Los campamentos se anuncian mucho en primavera |
+| equipaciones.si | A | Equipaciones para clubes |
+| ropadeportiva.si | A | Tiendas online |
+| zapatillasrunning.si | A | Tiendas online |
+| hipica.si | B |  |
+| equitacion.si | B |  |
+| golfista.si | B |  |
+| campodegolf.si | B |  |
+| clasesdegolf.si | B |  |
+| clasesdesurf.si | B |  |
+| paddlesurf.si | B |  |
+| piraguismo.si | B |  |
+| corredores.si | B |  |
+| dorsales.si | B |  |
+| inscripciones.si | B |  |
+| medalla.si | B |  |
+| trofeos.si | B | Tiendas de trofeos |
+| ciclista.si | B |  |
+| funcional.si | B |  |
+| entrenamientofuncional.si | B |  |
+| defensapersonal.si | B |  |
+| clasesdenatacion.si | B |  |
+| aquagym.si | B |  |
+| voleyplaya.si | B |  |
+| balonmano.si | B |  |
+| patinaje.si | B |  |
+| nutriciondeportiva.si | B |  |
+| readaptacion.si | B |  |
+| campamento.si | B |  |
+| campusdeverano.si | B |  |
+| deportista.si | B |  |
+| hazdeporte.si | B |  |
+| muevete.si | B |  |
 
 ## Motor y taller (3)
 
@@ -293,7 +370,7 @@ Para negocios de Cataluña. "Sí" también es "sí" en catalán.
 
 ## Lista plana para el carrito
 
-Solo prioridad A (65):
+Solo prioridad A (86):
 
 ```
 puedoreclamar.si
@@ -361,6 +438,27 @@ finques.si
 lloguer.si
 advocats.si
 reformes.si
+faltauno.si
+bandeja.si
+escueladepadel.si
+academiadepadel.si
+ligadepadel.si
+zapatillasdepadel.si
+padelbarcelona.si
+padelmadrid.si
+padelmarbella.si
+clasesdepickleball.si
+rocodromo.si
+surfcamp.si
+escueladesurf.si
+inscribete.si
+bicicletas.si
+bicielectrica.si
+fisiodeportivo.si
+campamentodeverano.si
+equipaciones.si
+ropadeportiva.si
+zapatillasrunning.si
 ```
 
 ## Pendiente de revisar más tarde
