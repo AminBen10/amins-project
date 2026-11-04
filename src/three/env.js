@@ -59,6 +59,17 @@ function buildRoom() {
     m.rotation.y = -Math.PI / 2;
   });
 
+  // Product-film fill: a broad, dim ceiling softbox and a soft card behind the camera, so flat
+  // chrome (blades, razor faces) reads as graded silver instead of black mirror.
+  add(new THREE.PlaneGeometry(3.6, 2.6), emissive('#e9ecef', 0.9), (m) => {
+    m.position.set(0, 2.18, 0.6);
+    m.rotation.x = Math.PI / 2;
+  });
+  add(new THREE.PlaneGeometry(5.0, 1.6), emissive('#e8e2d8', 0.42), (m) => {
+    m.position.set(0.4, 0.9, 4.45);
+    m.rotation.y = Math.PI;
+  });
+
   // Dim warm floor (street light spilling in), darker towards the back.
   add(new THREE.PlaneGeometry(9, 9), emissive(ENV_COLORS.floor, 0.35), (m) => {
     m.rotation.x = -Math.PI / 2;
@@ -117,5 +128,32 @@ export function studioMaterials({ tier = 'high' } = {}) {
     brass,
     abs: new THREE.MeshStandardMaterial({ color: '#141518', metalness: 0, roughness: 0.45 }),
     walnut: new THREE.MeshStandardMaterial({ color: '#3b2417', metalness: 0, roughness: 0.4 }),
+  };
+}
+
+/**
+ * Studio materials plus the tool-only finishes: guard-comb plastic, cutting-comb
+ * carbon, printed guard ink, badger knot, soft neck-brush hair, paper neck strip and the
+ * clipper's ready LED (emissive ≤ 1 so it never blooms).
+ */
+export function toolMaterials({ tier = 'high' } = {}) {
+  const m = studioMaterials({ tier });
+  return {
+    ...m,
+    // satin chrome for blade housings and ferrules (less mirror, reads as machined)
+    // the clipper's waist band: brushed, so the tube does not burn it white
+    brassBand: new THREE.MeshStandardMaterial({ color: '#b8904c', metalness: 1, roughness: 0.42 }),
+    satin: new THREE.MeshStandardMaterial({ color: '#c4c8cc', metalness: 1, roughness: 0.32 }),
+    // polished blade faces: brushed enough to hold the softboxes as a grey gradient
+    blade: new THREE.MeshStandardMaterial({ color: '#cfd3d7', metalness: 1, roughness: 0.2 }),
+    // smoked guard plastic, a step lighter than the body so the fins read against it
+    guard: new THREE.MeshStandardMaterial({ color: '#2b2d31', metalness: 0, roughness: 0.26 }),
+    carbon: new THREE.MeshStandardMaterial({ color: '#1b1b1d', metalness: 0, roughness: 0.55 }),
+    grip: new THREE.MeshStandardMaterial({ color: '#0e0f11', metalness: 0, roughness: 0.75 }),
+    ivory: new THREE.MeshStandardMaterial({ color: '#e7dfcf', metalness: 0, roughness: 0.28 }),
+    knot: new THREE.MeshStandardMaterial({ vertexColors: true, metalness: 0, roughness: 0.92 }),
+    soft: new THREE.MeshStandardMaterial({ vertexColors: true, metalness: 0, roughness: 0.95 }),
+    lather: new THREE.MeshStandardMaterial({ color: '#f3f1ec', metalness: 0, roughness: 0.6 }),
+    led: new THREE.MeshStandardMaterial({ color: '#0b0d0c', emissive: '#7dffb0', emissiveIntensity: 0, roughness: 0.2 }),
   };
 }
