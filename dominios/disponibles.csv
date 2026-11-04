@@ -546,19 +546,19 @@ desinfecciones.si,Hogar y reformas,es,B,,disponible,2026-11-04,Namecheap,12.88,D
 caldereria.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 mecanizado.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
 fillrate.si,"Industria, logística y maquinaria",en,B,,disponible,2026-11-04,Namecheap,12.88,Término en inglés: porcentaje de pedidos servidos (logística) o de anuncios servidos (publicidad online). Compradores: software de logística y de publicidad
-agenteinmobiliario.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria
+agenteinmobiliario.si,Agentes e IA para pymes,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria
 agentesinmobiliarios.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a agenteinmobiliario.si
 agentedeseguros.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. Corredurías y startups de IA para seguros
 agentesdeseguros.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentedeseguros.si
 agentesdeviajes.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA. El singular agentedeviajes.si está ocupado
 agentecomercial.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
 agentescomerciales.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a agentecomercial.si
-agentedeventas.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,"Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman ""AI SDR"", producto muy de moda"
+agentedeventas.si,Agentes e IA para pymes,es,A,vender,disponible,2026-11-04,Namecheap,12.88,"Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman ""AI SDR"", producto muy de moda"
 agentedeaduanas.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Doble sentido: el agente de siempre y el agente de IA
 agentedejugadores.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,Representantes de futbolistas
 agentimmobiliari.si,Agentes e IA para pymes,ca,B,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
 agentdeviatges.si,Agentes e IA para pymes,ca,B,,disponible,2026-11-04,Namecheap,12.88,Catalán. Doble sentido: el agente de siempre y el agente de IA
-recepcionistavirtual.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Agentes de voz que contestan el teléfono en clínicas y negocios
+recepcionistavirtual.si,Agentes e IA para pymes,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Agentes de voz que contestan el teléfono en clínicas y negocios
 secretariavirtual.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
 telefonista.si,Agentes e IA para pymes,es,B,,disponible,2026-11-04,Namecheap,12.88,
 centralita.si,Agentes e IA para pymes,es,A,,disponible,2026-11-04,Namecheap,12.88,Centralitas virtuales: proveedores con mucho gasto en anuncios
@@ -588,7 +588,7 @@ gestoriaia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
 robotaspirador.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,Tiendas online y webs de comparativas
 robotsaspiradores.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a robotaspirador.si
 robotcortacesped.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,Tiendas online
-robotdecocina.si,Robots y drones,es,A,,disponible,2026-11-04,Namecheap,12.88,"Robots de cocina, categoría enorme en España"
+robotdecocina.si,Robots y drones,es,A,vender,disponible,2026-11-04,Namecheap,12.88,"Robots de cocina, categoría enorme en España"
 robotlimpiacristales.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
 robotfregasuelos.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,
 antidron.si,Robots y drones,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a antidrones.si
@@ -624,7 +624,7 @@ aireacondicionado.si,Energía y movilidad,es,A,,disponible,2026-11-04,Namecheap,
 centrodedatos.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,Boom de centros de datos en España
 centrosdedatos.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
 subestacion.si,Energía y movilidad,es,B,,disponible,2026-11-04,Namecheap,12.88,
-licenciavtc.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,"Las licencias se compran y venden por decenas de miles de euros, con intermediarios"
+licenciavtc.si,Motor y taller,es,A,vender,disponible,2026-11-04,Namecheap,12.88,"Las licencias se compran y venden por decenas de miles de euros, con intermediarios"
 licenciataxi.si,Motor y taller,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
 licenciasvtc.si,Motor y taller,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a licenciavtc.si
 carnetdemoto.si,Motor y taller,es,B,,disponible,2026-11-04,Namecheap,12.88,Autoescuelas

@@ -6,7 +6,7 @@
 ## Resumen
 
 - **643 dominios disponibles**: 189 de prioridad A, 449 de prioridad B y 5 de prioridad C.
-- **Lista corta:** 34 para vender y 2 de uso propio, unos 464 $ al año.
+- **Lista corta:** 39 para vender y 2 de uso propio, unos 528 $ al año.
 - Comprar todos los de prioridad A costaría unos 2.434 $ al año.
 - Comprados: 0.
 
@@ -42,8 +42,13 @@ Prioridad:
 | **bombadecalor.si** | Energía y movilidad | vender | Instaladores de aerotermia, gracias a las ayudas |
 | **neumaticos.si** | Motor y taller | vender | Tiendas online de neumáticos, mucho gasto en anuncios |
 | **recambios.si** | Motor y taller | vender | Tiendas online de recambios |
+| **licenciavtc.si** | Motor y taller | vender | Las licencias se compran y venden por decenas de miles de euros, con intermediarios |
 | **implantes.si** | Salud y estética | vender | Clínicas dentales |
 | **injertos.si** | Salud y estética | vender | Injerto capilar, más corto que injertocapilar.si |
+| **agenteinmobiliario.si** | Agentes e IA para pymes | vender | Doble sentido: el agente de siempre y el agente de IA. Inmobiliarias y startups de IA inmobiliaria |
+| **agentedeventas.si** | Agentes e IA para pymes | vender | Doble sentido: el agente de siempre y el agente de IA. Es lo que en inglés llaman "AI SDR", producto muy de moda |
+| **recepcionistavirtual.si** | Agentes e IA para pymes | vender | Agentes de voz que contestan el teléfono en clínicas y negocios |
+| **robotdecocina.si** | Robots y drones | vender | Robots de cocina, categoría enorme en España |
 | **juegapadel.si** | Pádel, tenis y raqueta | vender | "Juega pádel, sí" |
 | **clasesdepadel.si** | Pádel, tenis y raqueta | vender | Escuelas y monitores |
 | **juegapickleball.si** | Pádel, tenis y raqueta | vender | Deporte en crecimiento en España: entras antes |
