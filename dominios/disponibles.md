@@ -5,9 +5,9 @@
 
 ## Resumen
 
-- **643 dominios disponibles**: 189 de prioridad A, 449 de prioridad B y 5 de prioridad C.
+- **680 dominios disponibles**: 200 de prioridad A, 474 de prioridad B y 6 de prioridad C.
 - **Lista corta:** 39 para vender y 2 de uso propio, unos 528 $ al año.
-- Comprar todos los de prioridad A costaría unos 2.434 $ al año.
+- Comprar todos los de prioridad A costaría unos 2.576 $ al año.
 - Comprados: 0.
 
 Prioridad:
@@ -95,7 +95,7 @@ Prioridad:
 | [Aficiones y ocio](#aficiones-y-ocio) | 5 | 0 | 5 | 0 |
 | [Alimentación](#alimentación) | 9 | 1 | 8 | 0 |
 | [Comercio y web](#comercio-y-web) | 5 | 0 | 5 | 0 |
-| [Perfumería](#perfumería) | 3 | 2 | 1 | 0 |
+| [Perfumería](#perfumería) | 40 | 13 | 26 | 1 |
 | [Finanzas e inversión](#finanzas-e-inversión) | 6 | 1 | 5 | 0 |
 | [Frases](#frases) | 3 | 0 | 1 | 2 |
 | [Catalán](#catalán) | 92 | 23 | 69 | 0 |
@@ -795,13 +795,50 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 
 ## Perfumería
 
-Uso propio para Orienfragance.
+Sobre todo para uso propio en Orienfragance. Incluye nombres en castellano, catalán y francés.
 
 | Dominio | Prioridad | Nota |
 |---|---|---|
 | decants.si | A | Las muestras de perfume (decants) tienen mucha demanda |
 | esencias.si | A |  |
+| perfumesarabes.si | A | Uso propio para Orienfragance. La búsqueda principal de tu sector |
+| perfumeriaarabe.si | A | Uso propio para Orienfragance |
+| perfumesalpormayor.si | A | Uso propio para Orienfragance. Para la parte de venta al por mayor |
+| mayoristaperfumesarabes.si | A | Uso propio para Orienfragance. Describe exactamente tu negocio |
+| distribuidorperfumesarabes.si | A | Uso propio para Orienfragance. Describe exactamente tu negocio |
+| perfumesdubai.si | A | Mucha gente busca "perfumes de Dubái" |
+| perfumesorientales.si | A |  |
+| perfumesdenicho.si | A | Perfumes de nicho, segmento en crecimiento |
+| muestrasperfumes.si | A | Complementa a decants.si |
+| parfumsarabes.si | A | Francés. Francia es un gran mercado de perfumes árabes |
+| perfumsarabs.si | A | Catalán |
 | extractos.si | B | Ambiguo: también "extracto bancario" |
+| mayoristaperfumes.si | B | Uso propio para Orienfragance |
+| distribuidorperfumes.si | B | Uso propio para Orienfragance |
+| perfumesarabesalpormayor.si | B | Largo, pero es exactamente lo que buscan las tiendas |
+| perfumeriadubai.si | B |  |
+| perfumesoriginales.si | B | Solo si vendes producto original con factura: promete autenticidad |
+| perfumerianicho.si | B | Duplica a perfumesdenicho.si |
+| comprarperfumes.si | B |  |
+| tiendadeperfumes.si | B |  |
+| lotesperfumes.si | B | Puede sonar a producto de saldo |
+| stockperfumes.si | B | Puede sonar a producto de saldo |
+| decantsperfumes.si | B | Duplica a decants.si |
+| importadorperfumes.si | B |  |
+| distribuidoroficial.si | B | Genérico: vendible a cualquier distribuidor oficial de cualquier sector |
+| parfumeriearabe.si | B | Francés |
+| parfumsdubai.si | B | Francés |
+| grossisteparfum.si | B | Francés: mayorista de perfumes |
+| parfumsdegros.si | B | Francés |
+| grossisteparfums.si | B | Francés. Duplica a grossisteparfum.si |
+| perfumeriaaraba.si | B | Catalán |
+| perfumsengros.si | B | Catalán: perfumes al por mayor |
+| majoristaperfums.si | B | Catalán |
+| outletperfumes.si | B |  |
+| ofertasperfumes.si | B |  |
+| perfumesexclusivos.si | B |  |
+| perfumesdelujo.si | B | En lo que pegaste no salía el precio: compruébalo en el carrito |
+| perfumesbaratos.si | C | Para un distribuidor oficial puede dañar la imagen de marca |
 
 ## Finanzas e inversión
 

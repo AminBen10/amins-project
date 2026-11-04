@@ -55,7 +55,7 @@ ORDEN_SECTORES = [
 ]
 
 DESCRIPCION = {
-    "Perfumería": "Uso propio para Orienfragance.",
+    "Perfumería": "Sobre todo para uso propio en Orienfragance. Incluye nombres en castellano, catalán y francés.",
     "Empresas y cumplimiento": "Obligaciones legales de las empresas. Los vendedores de software y "
                                "las consultoras compiten mucho por estos clientes.",
     "Alquiler turístico": "Ojo: las normas cambian según el ayuntamiento y la comunidad.",
