@@ -45,6 +45,19 @@ const L_ = LANDMARKS;
 const NECKLINE = L_.NUEZ + 1.5 * DEDO_MM * MM;
 const mm = (v) => v * MM;
 
+// The measured beard zone stops just under the nose; the moustache (from under the nose wings
+// down to the line of the upper lip, out to the mouth corners) joins it here. Signed, + inside.
+const SN = P_.subnasale[1], LU = P_.lip_upper[1], MC = P_.mouth_corner;
+function moustacheEdge(x, y, z) {
+  const u = Math.min(Math.abs(x) / MC[0], 1.3);
+  const lipTop = LU + (MC[1] - LU) * u * u + 0.012;
+  // the top follows the nose wings and falls towards the nasolabial fold
+  return Math.min(SN - 0.012 - 0.07 * u * u - y, y - lipTop, MC[0] + 0.05 - Math.abs(x), z - (MC[2] - 0.12));
+}
+function beardEdge(eb, x, y, z) {
+  return Math.min(Math.max(eb, moustacheEdge(x, y, z)), y - NECKLINE);
+}
+
 // ------------------------------------------------------------------ looks
 // A look returns [length (head units), comb x, y, z (head frame, projected onto the scalp
 // afterwards), lift 0..1]. c: { top 0 sides..1 top, front 0..1 towards the fringe, n noise,
@@ -119,12 +132,11 @@ export function hairUniforms({ tier = 'high' } = {}) {
     uLayers: { value: 26 },
     uDensity: { value: tier === 'low' ? 55 : 70 },
     uClump: { value: tier === 'low' ? 0 : 1 },
-    uRagged: { value: 0.3 },
+    uRagged: { value: 0.15 },
     uGrey: { value: 0 },
-    // dark brown with warmer, lighter tips: the depth between roots and tips is what lets
-    // the strands read against the plaster
+    // dark brown, tips a little warmer and lighter
     uRoot: { value: new THREE.Color('#2a1b12') },
-    uTip: { value: new THREE.Color('#5c3f2b') },
+    uTip: { value: new THREE.Color('#3b291d') },
     uBeard: { value: new THREE.Color('#33231a') },
     // brief rig: cool overhead key, warm window fill, dim warm ambient (world dirs, linear colour)
     uKeyDir: { value: new THREE.Vector3(0.1, 0.9, 0.45).normalize() },
@@ -179,6 +191,56 @@ function flow(out, x, y, z) {
   out[2] = z / l;
 }
 
+// The shell subset: skin vertices inside the hair zone or the (moustache-completed) beard zone.
+// Edges are signed (+ inside): the hairline as measured, the beard edge with the moustache and
+// closed by the legacy neckline. Falls back to the worker's subset on old data.
+function shellSubset(data) {
+  const old = data.hair;
+  if (!data.edge || !data.indices) {
+    const m = old.keep.length;
+    const edge = new Float32Array(m * 2);
+    for (let k = 0; k < m; k++) {
+      edge[k * 2] = old.edge ? old.edge[k * 2] : old.mask[k * 2] * 0.1 - 0.02;
+      edge[k * 2 + 1] = old.edge ? old.edge[k * 2 + 1] : old.mask[k * 2 + 1] * 0.06 - 0.015;
+    }
+    return { ...old, edge };
+  }
+  const P = data.positions, N = data.normals, E = data.edge, M = data.mask;
+  const nv = P.length / 3;
+  const map = new Int32Array(nv).fill(-1);
+  const keep = [];
+  const eb = new Float32Array(nv);
+  for (let i = 0; i < nv; i++) {
+    eb[i] = beardEdge(E[i * 2 + 1], P[i * 3], P[i * 3 + 1], P[i * 3 + 2]);
+    if (data.eye && data.eye[i] > 0.5) continue;
+    if (M[i * 2] > 0.02 || smooth(-0.015, 0.03, eb[i]) > 0.02) {
+      map[i] = keep.length;
+      keep.push(i);
+    }
+  }
+  const m = keep.length;
+  const positions = new Float32Array(m * 3), normals = new Float32Array(m * 3);
+  const mask = new Float32Array(m * 2), edge = new Float32Array(m * 2);
+  for (let k = 0; k < m; k++) {
+    const i = keep[k];
+    for (let c = 0; c < 3; c++) {
+      positions[k * 3 + c] = P[i * 3 + c];
+      normals[k * 3 + c] = N[i * 3 + c];
+    }
+    edge[k * 2] = E[i * 2];
+    edge[k * 2 + 1] = eb[i];
+    mask[k * 2] = M[i * 2];
+    mask[k * 2 + 1] = Math.max(M[i * 2 + 1], smooth(-0.015, 0.03, eb[i]));
+  }
+  const I = data.indices, tris = [];
+  for (let t = 0; t < I.length; t += 3) {
+    const a = map[I[t]], b = map[I[t + 1]], c = map[I[t + 2]];
+    if (a >= 0 && b >= 0 && c >= 0) tris.push(a, b, c);
+  }
+  const indices = m > 65535 ? Uint32Array.from(tris) : Uint16Array.from(tris);
+  return { positions, normals, indices, mask, edge, keep: Uint32Array.from(keep) };
+}
+
 // rotate tangent a towards b around normal n by fraction t (shortest arc), into out[o..o+2]
 function slerpTangent(a, b, n, t, out, o) {
   const cx = a[1] * b[2] - a[2] * b[1], cy = a[2] * b[0] - a[0] * b[2], cz = a[0] * b[1] - a[1] * b[0];
@@ -197,7 +259,7 @@ export class Hair {
   // keep = skin vertex index).
   constructor(headGeometry, { layers = 28, data, tier = 'high' } = {}) {
     const total = headGeometry.attributes.position.count;
-    const src = data.hair;
+    const src = shellSubset(data);
     const n = src.keep.length;
     this.count = n;
     this.keepIdx = src.keep;
@@ -205,16 +267,10 @@ export class Hair {
     this.nrm = src.normals;
     this.hm = new Float32Array(n);
     this.bm = new Float32Array(n);
-    // edges used by the looks: the hairline as measured, the beard edge also closed by
-    // the legacy neckline (both signed, + inside)
-    this.edge = new Float32Array(n * 2);
+    this.edge = src.edge;
     for (let k = 0; k < n; k++) {
       this.hm[k] = src.mask[k * 2];
       this.bm[k] = src.mask[k * 2 + 1];
-      const y = this.pos[k * 3 + 1];
-      this.edge[k * 2] = src.edge ? src.edge[k * 2] : this.hm[k] * 0.1 - 0.02;
-      const eb = src.edge ? src.edge[k * 2 + 1] : this.bm[k] * 0.06 - 0.015;
-      this.edge[k * 2 + 1] = Math.min(eb, y - NECKLINE);
     }
 
     // anatomy per vertex: top of the head vs sides (from the surface normal, so the weight
@@ -265,10 +321,15 @@ export class Hair {
     if (data.edge) {
       for (let i = 0; i < total; i++) {
         cut[i * 2] = data.edge[i * 2];
-        cut[i * 2 + 1] = Math.min(data.edge[i * 2 + 1], hp[i * 3 + 1] - NECKLINE);
+        cut[i * 2 + 1] = beardEdge(data.edge[i * 2 + 1], hp[i * 3], hp[i * 3 + 1], hp[i * 3 + 2]);
       }
     }
     headGeometry.setAttribute('aCut', new THREE.BufferAttribute(cut, 2));
+    const skinMask = headGeometry.getAttribute('aMask');
+    if (skinMask) {
+      for (let i = 0; i < total; i++) skinMask.array[i * 2 + 1] = Math.max(skinMask.array[i * 2 + 1], smooth(-0.015, 0.03, cut[i * 2 + 1]));
+      skinMask.needsUpdate = true;
+    }
 
     this.uniforms = hairUniforms({ tier });
     const cell = 7 / this.uniforms.uDensity.value;
@@ -368,7 +429,7 @@ export class Hair {
       const nx0 = this.nrm[k * 3], ny0 = this.nrm[k * 3 + 1], nz0 = this.nrm[k * 3 + 2];
       flow(ctx.crown, x - C[0], y - C[1] + 0.06, z - C[2] - 0.14);
       // swept back: away from a point above the forehead, turning down where it faces back
-      flow(ctx.back, x, y - 1.6, z - 1.4);
+      flow(ctx.back, x, y - 0.3, z - 3.0);
       const dw = smooth(0.2, 0.75, -nz0) * (1 - smooth(0.55, 0.85, ny0));
       ctx.back[0] *= 1 - dw; ctx.back[1] = mix(ctx.back[1], -1, dw); ctx.back[2] *= 1 - dw;
       flow(ctx.down, 0, -1, -0.35);

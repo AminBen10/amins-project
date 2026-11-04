@@ -28,7 +28,7 @@ export const NOISE_GLSL = /* glsl */ `
   // 2*SLAB = 0.7 roots per cell^2. Returns the strand coverage; rid = that strand's randoms.
   #define SLAB 0.35
   float rootField(vec3 c, vec3 n, vec3 dir, float elong, float r0, float hf, float ragged,
-                  float lenK, float edgeT, float aa, out vec3 rid) {
+                  float lenK, float edgeT, float aa, float taper, out vec3 rid) {
     vec3 b = floor(c - 0.5);
     float best = 0.0;
     rid = vec3(0.5);
@@ -49,7 +49,7 @@ export const NOISE_GLSL = /* glsl */ `
       float perp2 = max(dot(dt, dt) - a * a, 0.0);
       float ax = max(abs(a) - elong, 0.0);
       float d = sqrt(perp2 + ax * ax);
-      float r = r0 * pow(t, 0.6);
+      float r = r0 * pow(t, taper);
       float cov = 1.0 - smoothstep(r - aa, r + aa, d);
       if (cov > best) { best = cov; rid = rn; }
     }
@@ -107,10 +107,10 @@ export const HAIR_VERT = /* glsl */ `
     vec3 comb = a * cos(ang) + cross(normal, a) * sin(ang);
 
     float f = aLayer;
-    float bend = uBend * mix(0.8, 1.0, aTop) * (1.0 - 0.45 * lift);
+    float bend = uBend * mix(0.8, 1.0, aTop);
     // volume is decoupled from length: long hair lies down along the comb and follows
     // the curve of the skull (lie); lift turns gravity into volume
-    float thick = min(len, 0.016 + 0.24 * len) * (1.0 + 0.9 * lift);
+    float thick = min(len, 0.016 + 0.24 * len) * (1.0 + 1.4 * lift);
     float s = len * bend * f * f;
     float ds = 2.0 * len * bend * f;
     float lie = uCurv * (1.0 - lift);
@@ -199,42 +199,57 @@ export const HAIR_FRAG = /* glsl */ `
     // locks: the lookup moves away from the lock centre with height, so the strands
     // gather towards it at the tips (longer hair only)
     float k = uClump * smoothstep(0.04, 0.14, vLen) * hf;
-    vec3 q = vRest - vClump.xyz * (k * 0.55);
+    vec3 q = vRest - vClump.xyz * (k * 0.35);
     c = q * uDensity;
 
     vec3 dir = normalize(vComb);
     float stepC = vStep * uDensity;                // slide between shells, in cells
-    float elong = clamp(stepC * 0.5, 0.0, 0.11);
+    float elong = clamp(stepC * 0.5, 0.0, 0.24);
     float aa = clamp(px * 0.6, 1e-3, 0.08);
     float r0 = min(0.2, 0.357 - elong - aa);
     r0 *= mix(0.45, 1.0, edgeT);
     float lenK = mix(0.5, 1.0, edgeT);
 
-    // pixel / slide LOD: discs fade into their analytic coverage when they get smaller
-    // than a pixel, or when consecutive shells would draw a lying strand as dots
-    float lod = max(smoothstep(0.55, 0.95, px), smoothstep(0.35, 0.8, stepC));
-    vec3 rid = vec3(0.5);
-    float strand = 0.0;
-    if (lod < 0.999) strand = rootField(c, n, dir, elong, r0, hf, uRagged, lenK, edgeT, aa, rid);
-    float cover = 0.0;
-    if (lod > 0.001) {
+    // LOD: single strands, then bundles of ~9 strands (same coverage, a third of the
+    // frequency), then the analytic average. A level fades out when its discs get smaller
+    // than a pixel, or when consecutive shells would draw a lying strand as dots.
+    // groomed (longer) hair keeps its width to the tip; short hair tapers to a point
+    float groomed = smoothstep(0.06, 0.2, vLen);
+    float taper = mix(0.4, 0.12, groomed);
+    float lod0 = max(smoothstep(0.55, 0.95, px), smoothstep(0.35, 0.8, stepC));
+    float lod1 = max(smoothstep(0.55, 0.95, px / 3.0), smoothstep(0.35, 0.8, stepC / 3.0));
+    float lod = lod0;
+    vec3 rid = vec3(0.5), rid1 = vec3(0.5);
+    float a0 = 0.0, a1 = 0.0, cover = 0.0;
+    if (lod0 < 0.999) a0 = rootField(c, n, dir, elong, r0, hf, uRagged, lenK, edgeT, aa, taper, rid);
+    if (lod0 > 0.001 && lod1 < 0.999) {
+      float el1 = clamp(stepC / 6.0, 0.0, 0.24);
+      float aa1 = clamp(px * 0.2, 1e-3, 0.08);
+      float r1 = min(0.2, 0.357 - el1 - aa1) * mix(0.45, 1.0, edgeT);
+      a1 = rootField(c / 3.0 + 7.31, n, dir, el1, r1, hf, uRagged, lenK, edgeT, aa1, taper, rid1);
+    }
+    if (lod1 > 0.001) {
       float tm = max(1.0 - hf / ((1.0 - 0.5 * uRagged) * lenK), 0.0);
-      float rm = r0 * pow(tm, 0.6);
-      cover = 0.7 * 3.14159 * (rm + elong * 0.6) * rm * 1.6 * clamp(edgeT / 0.9, 0.0, 1.0);
-      // lying hair seen as a sheet: streaks along the comb carry the strand texture
-      vec3 sq = q * uDensity * 0.6;
+      float rm = 0.2 * mix(0.45, 1.0, edgeT) * pow(tm, taper);
+      cover = 0.7 * 3.14159 * rm * rm * 1.6 * clamp(edgeT / 0.9, 0.0, 1.0);
+      // a sheet seen from afar: streaks along the comb carry the texture
+      vec3 sq = q * uDensity * 0.3;
       sq -= dir * dot(sq, dir) * 0.86;
-      float st = vnoise(sq + vClump.w * 13.0);
-      cover *= mix(0.3 + 1.4 * st, 0.2 + 1.6 * st, smoothstep(0.2, 0.8, stepC));
+      cover *= 0.3 + 1.4 * vnoise(sq + vClump.w * 13.0);
       cover = min(cover, 0.95);
     }
-    float alpha = mix(strand, cover, lod) * razor * shortK;
+    float strand = mix(a0, mix(a1, cover, lod1), lod0);
+    rid = lod0 < 0.5 ? rid : rid1;
+    // long hair is a dense mass: its lower shells are nearly opaque, so lifted hair keeps
+    // its volume in silhouette
+    float mass = groomed * (1.0 - 0.6 * hf);
+    float alpha = min(strand * (1.0 + 3.0 * mass), 1.0) * razor * shortK;
 
     vec3 N = normalize(vNormalW);
     vec3 V = normalize(cameraPosition - vPosW);
     float nv = abs(dot(N, V));
     // only the outermost tips thin out at the outline: clean silhouette, no fuzzy halo
-    alpha *= mix(1.0, smoothstep(0.08, 0.35, nv), hf * hf);
+    alpha *= mix(1.0, smoothstep(0.04, 0.25, nv), smoothstep(0.6, 1.0, hf));
     if (alpha < 0.02) discard;
 
     // ---- shading: wrapped Kajiya diffuse, neutral R lobe, warm TRT lobe, self-shadow
@@ -248,7 +263,7 @@ export const HAIR_FRAG = /* glsl */ `
     float eT = 40.0 / (1.0 + 40.0 * tv * tv);
     float nR = sqrt(eR / eR0), nT = sqrt(eT / 40.0);
 
-    vec3 rnd = mix(rid, vec3(fract(vClump.w * 7.13), fract(vClump.w * 3.71), fract(vClump.w * 5.37)), lod);
+    vec3 rnd = mix(rid, vec3(fract(vClump.w * 7.13), fract(vClump.w * 3.71), fract(vClump.w * 5.37)), lod1);
     vec3 lockR = vec3(fract(vClump.w * 11.7), fract(vClump.w * 17.3), fract(vClump.w * 23.9));
     vec3 T = normalize(Tw + (rnd.zxy - 0.5) * 0.12 + (lockR - 0.5) * 0.18 * k);
 
@@ -258,7 +273,7 @@ export const HAIR_FRAG = /* glsl */ `
     float val = 1.0 + 0.1 * (rnd.z * 2.0 - 1.0) + 0.12 * (lockR.x - 0.5) * smoothstep(0.0, 0.3, k);
     vec3 albedo = mix(root, tip, hf) * val * vec3(1.0 + hue, 1.0, 1.0 - hue);
     // a few white strands in a full beard
-    if (beardW > 0.5 && rnd.x > 1.0 - uGrey) albedo = mix(albedo, vec3(0.32, 0.30, 0.28), 0.7 * (1.0 - lod));
+    if (beardW > 0.5 && rnd.x > 1.0 - uGrey) albedo = mix(albedo, vec3(0.32, 0.30, 0.28), 0.7 * (1.0 - lod1));
 
     // light reaches into a thin coat, not into a thick one
     float depth = clamp(vThick / 0.035, 0.25, 1.0) * mix(0.35, 1.0, edgeT);
@@ -281,9 +296,11 @@ export const HAIR_FRAG = /* glsl */ `
       float vis = smoothstep(-0.15, 0.25, nl);
       // R: white, untinted (a cool key never turns dark hair blue: it uses the light's luminance)
       float lum = dot(lc, vec3(0.2126, 0.7152, 0.0722));
-      vec3 spec = vec3(1.0, 0.98, 0.95) * lum * lobe(T, N, H, 0.07, eR) * 0.2 * nR;
+      vec3 spec = vec3(1.0, 0.98, 0.95) * lum * lobe(T, N, H, 0.07, eR) * 0.12 * nR;
       #ifndef HAIR_LOW
-        spec += lc * albedo * 1.6 / max(dot(albedo, vec3(0.333)), 1e-3) * 0.12 * lobe(T, N, H, -0.12, eT) * 0.5 * nT * sparkle;
+        // TRT: the light comes back through the fibre, tinted by it (kept close to neutral)
+        vec3 tint = mix(vec3(1.0), albedo / max(dot(albedo, vec3(0.333)), 1e-3), 0.3);
+        spec += lc * tint * dot(albedo, vec3(0.333)) * 1.6 * lobe(T, N, H, -0.12, eT) * 0.4 * nT * sparkle;
       #endif
       col += lc * albedo * kaj * wrap * shadow + spec * vis * mix(0.35, 1.0, shadow) * shortK;
     }
@@ -326,11 +343,16 @@ export const SHAVED_GLSL = /* glsl */ `
     // natural hairline: soft and irregular; beard lines: razor crisp
     float zh = smoothstep(-0.004, 0.05, cut.x + 0.014 * (vnoiseS(rest * 26.0) - 0.5));
     float aa = max(fwidth(cut.y), 1e-5);
-    float zb = smoothstep(-aa, aa, cut.y);
+    // stubble has no line: the razor edge only appears once there is a beard to line up
+    float zb = mix(smoothstep(-0.008, 0.045, cut.y + 0.014 * (vnoiseS(rest * 23.0) - 0.5)),
+                   smoothstep(-aa, aa, cut.y), smoothstep(1.6 * mm, 3.0 * mm, len));
     float zone = mix(zh, zb, beardW);
     // how much of the skin the hair hides: ~1/3 at 1 mm, ~2/3 at 3 mm, almost all from 6 mm
-    float d = (1.0 - exp(-len / (2.6 * mm))) * zone;
-    vec3 col = mix(skin, root * 1.25, d * 0.94);
+    float d = (1.0 - exp(-len / (2.2 * mm))) * zone;
+    // the pile is never perfectly even: a soft mottling a few mm across
+    d *= 0.82 + 0.36 * vnoiseS(rest * 85.0);
+    // a shaved pile shows its colour; under longer hair the scalp is in the hair's shadow
+    vec3 col = mix(skin, root * mix(1.25, 0.6, smoothstep(2.0 * mm, 6.0 * mm, len)), d * 0.94);
     float px;
     float fol = follicles(rest, n, px) * smoothstep(0.05 * mm, 0.8 * mm, len) * zone * (1.0 - d);
     return mix(col, mix(col, root, 0.5), fol);
