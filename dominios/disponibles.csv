@@ -355,7 +355,7 @@ facturaelectronica.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namech
 facturacionelectronica.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a facturaelectronica.si
 efactura.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,
 verifactu.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Nombre del sistema de Hacienda: podría parecer oficial. Las fechas se han retrasado
-canaldenuncias.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
+canaldenuncias.si,Empresas y cumplimiento,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
 planigualdad.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Obligatorio en empresas de más de 50 trabajadores
 planesdeigualdad.si,Empresas y cumplimiento,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a planigualdad.si
 registrojornada.si,Empresas y cumplimiento,es,A,,disponible,2026-11-04,Namecheap,12.88,Registro de jornada obligatorio; software de fichaje
@@ -368,19 +368,19 @@ mediacion.si,Abogados y reclamaciones,es,A,,disponible,2026-11-04,Namecheap,12.8
 mediador.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
 mediadores.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
 conciliacion.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
-irph.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Miles de demandas por el índice IRPH de las hipotecas
+irph.si,Reclamaciones bancarias y de viajes,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Miles de demandas por el índice IRPH de las hipotecas
 tarjetarevolving.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Mercado de reclamaciones muy grande
 usura.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,
-plusvalia.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Reclamación de la plusvalía municipal
+plusvalia.si,Reclamaciones bancarias y de viajes,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Reclamación de la plusvalía municipal
 plusvalias.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a plusvalia.si
-retrasovuelo.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho
+retrasovuelo.si,Reclamaciones bancarias y de viajes,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho
 vuelocancelado.si,Reclamaciones bancarias y de viajes,es,A,,disponible,2026-11-04,Namecheap,12.88,Igual
 equipajeperdido.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,
 maletaperdida.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,
 cartelcoches.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de coches
 cartelcamiones.si,Reclamaciones bancarias y de viajes,es,B,,disponible,2026-11-04,Namecheap,12.88,Reclamación por el cártel de camiones
 arraigosocial.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
-arraigosociolaboral.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
+arraigosociolaboral.si,Extranjería e inmigración,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
 arraigosocioformativo.si,Extranjería e inmigración,es,B,,disponible,2026-11-04,Namecheap,12.88,Nuevo arraigo del reglamento de 2025
 arraigofamiliar.si,Extranjería e inmigración,es,A,,disponible,2026-11-04,Namecheap,12.88,Tipo de arraigo
 examennacionalidad.si,Extranjería e inmigración,es,B,,disponible,2026-11-04,Namecheap,12.88,Academias que preparan los exámenes
@@ -448,9 +448,9 @@ cursoia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica 
 cursosia.si,Tecnología e IA,es,A,,disponible,2026-11-04,Namecheap,12.88,"Cursos de IA, mucho gasto en anuncios"
 formacionia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
 consultoriaia.si,Tecnología e IA,es,B,,disponible,2026-11-04,Namecheap,12.88,
-cerrajeria.si,Hogar y reformas,es,A,,disponible,2026-11-04,Namecheap,12.88,"Cerrajeros de urgencia, de los que más pagan por clic"
+cerrajeria.si,Hogar y reformas,es,A,vender,disponible,2026-11-04,Namecheap,12.88,"Cerrajeros de urgencia, de los que más pagan por clic"
 fontaneria.si,Hogar y reformas,es,A,,disponible,2026-11-04,Namecheap,12.88,Fontaneros de urgencia
-desatascos.si,Hogar y reformas,es,A,,disponible,2026-11-04,Namecheap,12.88,"Urgencias, mucho gasto en anuncios"
+desatascos.si,Hogar y reformas,es,A,vender,disponible,2026-11-04,Namecheap,12.88,"Urgencias, mucho gasto en anuncios"
 desinfeccion.si,Hogar y reformas,es,B,,disponible,2026-11-04,Namecheap,12.88,
 aislamientos.si,Hogar y reformas,es,A,,disponible,2026-11-04,Namecheap,12.88,"Aislamiento térmico, con ayudas públicas"
 tejados.si,Hogar y reformas,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a tejado.si
@@ -488,7 +488,7 @@ suministros.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,
 graneles.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 depositos.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 bobinas.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
-finiquito.si,Abogados y reclamaciones,es,A,,disponible,2026-11-04,Namecheap,12.88,Millones de búsquedas para calcular o reclamar el finiquito
+finiquito.si,Abogados y reclamaciones,es,A,vender,disponible,2026-11-04,Namecheap,12.88,Millones de búsquedas para calcular o reclamar el finiquito
 despidos.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a despido.si
 liquidaciones.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
 quiebras.si,Abogados y reclamaciones,es,B,,disponible,2026-11-04,Namecheap,12.88,
@@ -545,3 +545,4 @@ tanatorios.si,Mayores y decesos,es,B,,disponible,2026-11-04,Namecheap,12.88,Dupl
 desinfecciones.si,Hogar y reformas,es,B,,disponible,2026-11-04,Namecheap,12.88,Duplica a desinfeccion.si
 caldereria.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,
 mecanizado.si,"Industria, logística y maquinaria",es,B,,disponible,2026-11-04,Namecheap,12.88,En lo que pegaste no salía el precio: compruébalo en el carrito
+fillrate.si,"Industria, logística y maquinaria",en,B,,disponible,2026-11-04,Namecheap,12.88,Término en inglés: porcentaje de pedidos servidos (logística) o de anuncios servidos (publicidad online). Compradores: software de logística y de publicidad

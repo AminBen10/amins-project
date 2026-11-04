@@ -5,8 +5,8 @@
 
 ## Resumen
 
-- **546 dominios disponibles**: 155 de prioridad A, 386 de prioridad B y 5 de prioridad C.
-- **Lista corta:** 26 para vender y 2 de uso propio, unos 361 $ al año.
+- **547 dominios disponibles**: 155 de prioridad A, 387 de prioridad B y 5 de prioridad C.
+- **Lista corta:** 34 para vender y 2 de uso propio, unos 464 $ al año.
 - Comprar todos los de prioridad A costaría unos 1.996 $ al año.
 - Comprados: 0.
 
@@ -24,11 +24,19 @@ Prioridad:
 | **segundaoportunidad.si** | Abogados y reclamaciones | vender | Ley de Segunda Oportunidad, sector con mucha publicidad |
 | **divorcios.si** | Abogados y reclamaciones | vender | Abogados de familia |
 | **siniestros.si** | Abogados y reclamaciones | vender | Abogados y peritos de seguros |
+| **finiquito.si** | Abogados y reclamaciones | vender | Millones de búsquedas para calcular o reclamar el finiquito |
+| **irph.si** | Reclamaciones bancarias y de viajes | vender | Miles de demandas por el índice IRPH de las hipotecas |
+| **plusvalia.si** | Reclamaciones bancarias y de viajes | vender | Reclamación de la plusvalía municipal |
+| **retrasovuelo.si** | Reclamaciones bancarias y de viajes | vender | Reclamaciones de vuelos (reglamento europeo); empresas que gastan mucho |
 | **extranjeria.si** | Extranjería e inmigración | vender |  |
 | **arraigo.si** | Extranjería e inmigración | vender | Abogados de extranjería, de los que más se anuncian |
+| **arraigosociolaboral.si** | Extranjería e inmigración | vender | Nuevo arraigo del reglamento de 2025 |
+| **canaldenuncias.si** | Empresas y cumplimiento | vender | Obligatorio en empresas de más de 50 trabajadores |
 | **dijeque.si** | Bodas | vender | "Dije que sí", el mejor del bloque |
 | **pedida.si** | Bodas | vender | Pedidas de mano |
 | **alianzas.si** | Bodas | vender | Joyerías |
+| **cerrajeria.si** | Hogar y reformas | vender | Cerrajeros de urgencia, de los que más pagan por clic |
+| **desatascos.si** | Hogar y reformas | vender | Urgencias, mucho gasto en anuncios |
 | **tarifaluz.si** | Energía y movilidad | vender | Los comparadores de luz pagan mucho por cliente |
 | **placassolares.si** | Energía y movilidad | vender | Instaladores con mucha publicidad |
 | **bombadecalor.si** | Energía y movilidad | vender | Instaladores de aerotermia, gracias a las ayudas |
@@ -65,7 +73,7 @@ Prioridad:
 | [Mayores y decesos](#mayores-y-decesos) | 13 | 5 | 8 | 0 |
 | [Energía y movilidad](#energía-y-movilidad) | 13 | 7 | 6 | 0 |
 | [Motor y taller](#motor-y-taller) | 5 | 4 | 1 | 0 |
-| [Industria, logística y maquinaria](#industria-logística-y-maquinaria) | 33 | 1 | 32 | 0 |
+| [Industria, logística y maquinaria](#industria-logística-y-maquinaria) | 34 | 1 | 33 | 0 |
 | [Agro y medio ambiente](#agro-y-medio-ambiente) | 6 | 0 | 6 | 0 |
 | [Salud y estética](#salud-y-estética) | 24 | 6 | 16 | 2 |
 | [Mascotas](#mascotas) | 4 | 2 | 2 | 0 |
@@ -403,6 +411,7 @@ Ojo: las normas cambian según el ayuntamiento y la comunidad.
 | ensayos.si | B |  |
 | caldereria.si | B |  |
 | mecanizado.si | B | En lo que pegaste no salía el precio: compruébalo en el carrito |
+| fillrate.si | B | Término en inglés: porcentaje de pedidos servidos (logística) o de anuncios servidos (publicidad online). Compradores: software de logística y de publicidad |
 
 ## Agro y medio ambiente
 

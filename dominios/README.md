@@ -35,7 +35,7 @@ El script avisa si hay un dominio repetido, mal escrito o con una prioridad o un
 |---|---|
 | `dominio` | En minúsculas, terminado en `.si` |
 | `sector` | Uno de los sectores de `ORDEN_SECTORES` en `generar.py` |
-| `idioma` | `es` (castellano) o `ca` (catalán) |
+| `idioma` | `es` (castellano), `ca` (catalán) o `en` (inglés) |
 | `prioridad` | `A` comprar ya, `B` solo con comprador o uso propio, `C` descartar |
 | `lista_corta` | `vender`, `uso propio` o vacío |
 | `estado` | `disponible` o `comprado` |
