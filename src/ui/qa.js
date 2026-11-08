@@ -7,7 +7,7 @@
 //   setView('frente'|'perfil'|'nuca'|null), setMirror(deg)
 //   poster(name)            hero|maquina-bandas|maquina-difuminado|nuca|carta (+ html.poster-capture)
 //   plate(cutId) → PNG data URL from stage.renderPlate
-//   film (getter): the Carta film, for timing runs
+//   film (getter): the Carta film, for timing runs; carta, handMirror: the UI modules
 import * as client from '../config.js';
 import { compose, mixOf } from '../cuts/compose.js';
 
@@ -19,7 +19,7 @@ const POSTERS = {
   carta: ['carta', 1],
 };
 
-export function initQA({ stageReady, getStage, getFilm, scroll, tier }) {
+export function initQA({ stageReady, getStage, getFilm, scroll, tier, carta = null, getHandMirror = () => null }) {
   const root = document.documentElement;
   let n = 0;
   const raf = () => new Promise((r) => requestAnimationFrame(() => r()));
@@ -115,6 +115,11 @@ export function initQA({ stageReady, getStage, getFilm, scroll, tier }) {
     /** The Carta film (createFilm) once the stage is ready, for perf scripts. */
     get film() {
       return getFilm();
+    },
+    /** The Carta (carta.js) and the hand mirror input (handmirror.js), for flow scripts. */
+    carta,
+    get handMirror() {
+      return getHandMirror();
     },
     ready: stageReady.then((stage) => ({ stage: !!stage, tier })),
     scrollToBeat: (name, p = 0) => run((s, f) => toBeat(s, f, name, p)),

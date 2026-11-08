@@ -3,15 +3,13 @@
 // the stage is imported after the first paint, only when the tier allows it.
 import './styles.css';
 import * as client from './config.js';
-import { compose, mixOf } from './cuts/compose.js';
-import { renderRecipe, programParts } from './cuts/recipe.js';
-import { serviceFor } from './cuts/ficha.js';
 import { detectTier, qualityProfile } from './three/quality.js';
 import { initBooking } from './ui/booking.js';
 import { initStatus } from './ui/status.js';
 import { initThumbbar } from './ui/thumbbar.js';
 import { initScroll } from './ui/scroll.js';
 import { initCallouts } from './ui/callouts.js';
+import { initCarta } from './ui/carta.js';
 
 const root = document.documentElement;
 root.classList.replace('no-js', 'js');
@@ -44,40 +42,26 @@ document.getElementById('pitch-close')?.addEventListener('click', () => {
   document.getElementById('pitch').hidden = true;
 });
 
-// Interim Carta (until carta.js, M5): the chosen plate's recipe card, so 'Pedir hora con este
-// corte' works, and a plain player on the stage's film.
+// La Carta, its player and 'Compón tu corte' (the card works without 3D; the film joins on ready).
+const carta = initCarta({ client, booking, thumbbar, reducedMotion });
+const later = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
+// 'Compón tu corte' is its own chunk, fetched when the page is idle (or on the first tap).
+let composer = null;
+let composerP = null;
+const loadComposer = () =>
+  (composerP ||= import('./ui/composer.js').then(({ initComposer }) => (composer = initComposer({ client, carta }))));
+document.getElementById('composer-open')?.addEventListener(
+  'click',
+  async () => {
+    if (composer) return; // its own listener has it
+    await loadComposer();
+    composer.open(!carta.current);
+  },
+  { once: true },
+);
+later(() => loadComposer().catch((err) => console.error(err)));
+let handMirror = null; // the hand-mirror input rides in with the stage
 const cartaForm = document.getElementById('carta-form');
-const recipeEl = document.getElementById('recipe');
-let shown = null;
-let film = null;
-function showRecipe() {
-  if (!cartaForm || !recipeEl) return;
-  const cut = cartaForm.elements.corte?.value || null;
-  const beard = cartaForm.elements.barba?.value;
-  const program = compose(mixOf(cut, beard && beard !== 'none' ? beard : null, client), client);
-  shown = program?.steps?.length ? program : null;
-  recipeEl.innerHTML = shown ? renderRecipe(shown, client) : '';
-  if (film && shown) loadShown();
-}
-cartaForm?.addEventListener('change', showRecipe);
-
-// Any recipe card's booking link presets the book with that cut.
-document.addEventListener('click', (e) => {
-  const a = e.target.closest?.('a.recipe__book');
-  if (!a) return;
-  const d = a.dataset;
-  const all = [...client.CUTS, ...client.BEARDS];
-  const program = (shown && shown.id === d.program ? shown : null) || all.find((p) => p.id === d.program) || null;
-  const parts = programParts(program);
-  booking.preset({
-    serviceId: d.service || serviceFor(program, client)?.id,
-    cutId: d.cut || parts.cut,
-    beardId: d.beard || parts.beard,
-    cutLabel: d.cutLabel || parts.cutLabel,
-    beardLabel: d.beardLabel || parts.beardLabel,
-    ficha: program?.ficha || null,
-  });
-});
 
 // Las sillas: 'Ver su …' picks that cut on the Carta and that barber in the book.
 document.addEventListener('click', (e) => {
@@ -92,57 +76,8 @@ document.addEventListener('click', (e) => {
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
   if (btn.dataset.barber) booking.preset({ barberId: btn.dataset.barber });
-  const carta = document.getElementById('carta');
-  carta?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
+  document.getElementById('carta')?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
 });
-
-// ---------------------------------------------------------------- interim player (M5 replaces it)
-
-const player = document.getElementById('carta-player');
-const titleEl = document.getElementById('film-title');
-const captionEl = document.getElementById('film-caption');
-const btn = (name) => player?.querySelector(`[data-film="${name}"]`);
-let loadTimer = 0;
-function loadShown() {
-  clearTimeout(loadTimer);
-  // 400 ms selection debounce, as carta.js will have it
-  loadTimer = setTimeout(() => film.load(shown, { autoplay: false }), 400);
-}
-function wirePlayer() {
-  if (!player || !film) return;
-  film.on('title', ({ program }) => {
-    titleEl.textContent = program.n ? `Nº ${program.n} · ${program.name}` : program.name || '';
-  });
-  film.on('step', ({ step }) => {
-    captionEl.textContent = step.caption || step.label || '';
-  });
-  film.on('end', ({ program }) => {
-    captionEl.textContent = `Terminado. Así queda: ${program.name}.`;
-  });
-  film.on('state', ({ state }) => {
-    btn('play').hidden = state === 'playing' || state === 'paused';
-    btn('pause').hidden = state !== 'playing';
-    btn('resume').hidden = state !== 'paused';
-  });
-  player.addEventListener('click', (e) => {
-    const b = e.target.closest('button');
-    if (!b) return;
-    const f = b.dataset.film;
-    if (f === 'play') {
-      if (!film.program && shown) film.load(shown);
-      else film.play();
-    } else if (f === 'pause') film.pause();
-    else if (f === 'resume') film.resume();
-    else if (f === 'repeat') film.repeat();
-    else if (f === 'finish') film.finish();
-    else if (f === 'back') film.stop();
-    else if (b.dataset.view) {
-      for (const v of player.querySelectorAll('[data-view]')) v.setAttribute('aria-pressed', String(v === b));
-      film.view(b.dataset.view);
-    }
-  });
-  if (shown) loadShown();
-}
 
 // ---------------------------------------------------------------- the pole's motion button
 
@@ -179,6 +114,7 @@ function motionButton(stage) {
 // ---------------------------------------------------------------- the 3D stage
 
 let stage = null;
+let film = null;
 let resolveStage;
 const stageReady = new Promise((r) => (resolveStage = r));
 const { tier } = detectTier({ search: location.search, reducedMotion });
@@ -204,7 +140,12 @@ function hidePosters() {
 async function boot() {
   try {
     // the film timeline only matters with a stage: it rides in with it
-    const [{ createStage }, { createFilm }] = await Promise.all([import('./three/stage.js'), import('./ui/film.js')]);
+    const [{ createStage }, { createFilm }, { initHandMirror }] = await Promise.all([
+      import('./three/stage.js'),
+      import('./ui/film.js'),
+      import('./ui/handmirror.js'),
+    ]);
+    handMirror = initHandMirror({ reducedMotion });
     const data = { THEME: client.THEME, CLAIMS: client.CLAIMS, GUARDS: client.GUARDS, STORY: client.STORY };
     const profile = qualityProfile(tier);
     stage = await createStage(canvas, { reducedMotion, tier, profile, data });
@@ -216,12 +157,14 @@ async function boot() {
     stage.onLost = ({ fatal } = {}) => {
       film?.pause();
       noWebgl('lost');
+      handMirror?.setStage(null);
       if (fatal) resolveStage(null);
     };
     stage.onRestored = () => {
       root.classList.remove('no-webgl');
       root.dataset.stage = 'ready';
       callouts.setStage(stage);
+      handMirror?.setStage(stage);
       scroll.measure();
     };
     stage.onReady = () => {
@@ -231,7 +174,8 @@ async function boot() {
       scroll.setStage(stage);
       callouts.setStage(stage);
       film = createFilm(stage, { reducedMotion, section: document.getElementById('carta') });
-      wirePlayer();
+      handMirror.setStage(stage);
+      carta.setFilm(film, stage);
       motionButton(stage);
       resolveStage(stage);
     };
@@ -251,7 +195,6 @@ if (!canvas || tier === 'poster') {
 } else {
   root.dataset.stage = 'loading';
   // after the first paint, when the main thread is free (1.5 s at most)
-  const later = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
   requestAnimationFrame(() => later(boot));
 }
 
@@ -259,7 +202,7 @@ if (!canvas || tier === 'poster') {
 
 if (params.get('qa') === '1') {
   import('./ui/qa.js').then(({ initQA }) => {
-    const qa = initQA({ stageReady, getStage: () => stage, getFilm: () => film, scroll, tier });
+    const qa = initQA({ stageReady, getStage: () => stage, getFilm: () => film, scroll, tier, carta, getHandMirror: () => handMirror });
     const poster = params.get('poster');
     if (poster) {
       root.classList.add('poster-capture');
