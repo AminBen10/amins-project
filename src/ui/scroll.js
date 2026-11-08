@@ -38,6 +38,7 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
     m.carta = box(els.carta);
     m.turn = box(els.turn);
     measureFrame();
+    measureShop();
     schedule();
   }
 
@@ -106,6 +107,31 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
       lastFrame = k;
       stage.setFrame(f);
     }
+  }
+
+  // The shopfront grid at rest (scroll 0), in viewport fractions with y up: the stage puts its
+  // facade openings behind the panes and the pole in the pier (stage.setShopfront).
+  let lastShop = '';
+  function measureShop() {
+    if (!stage?.setShopfront) return;
+    const glass = document.querySelector('.shop__glass');
+    const pier = document.querySelector('.shop__pole');
+    const door = document.querySelector('.shop__door');
+    if (!glass || !pier) return;
+    const W = innerWidth, H = m.vh, y = scrollY;
+    const fr = (el) => {
+      const r = el.getBoundingClientRect();
+      return [r.left / W, 1 - (r.bottom + y) / H, r.right / W, 1 - (r.top + y) / H];
+    };
+    const g = fr(glass);
+    const p = fr(pier);
+    // on phones the door is only the card sign hanging inside the window: no opening of its own
+    const d = door && getComputedStyle(door).gridArea.startsWith('door') ? fr(door) : null;
+    const L = { window: g, door: d, pole: [(p[0] + p[2]) / 2, (g[1] + g[3]) / 2 - 0.03], poleW: p[2] - p[0] };
+    const k = JSON.stringify(L, (_, v) => (typeof v === 'number' ? Math.round(v * 1000) / 1000 : v));
+    if (k === lastShop) return;
+    lastShop = k;
+    stage.setShopfront(L);
   }
 
   addEventListener('scroll', schedule, { passive: true });
@@ -177,6 +203,7 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
       stage = s;
       lastRunning = null;
       lastFrame = '';
+      lastShop = '';
       measure();
     },
   };

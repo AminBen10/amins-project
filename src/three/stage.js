@@ -8,7 +8,7 @@ import { detectTier, qualityProfile, createGovernor } from './quality.js';
 import { createRuntime } from './runtime.js';
 import { createEnvironment } from './env.js';
 import { createRoom, createFacade } from './room.js';
-import { createPole, BLOOM_LAYER } from './pole.js';
+import { createPole, BLOOM_LAYER, POLE } from './pole.js';
 import { meshHead, createHead } from './head.js';
 import { createTools } from './tools.js';
 import { createCape } from './cape.js';
@@ -365,6 +365,9 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
     narrow: { window: [-0.2, 0.36, 0.66, 0.86], door: null, pole: [0.83, 0.47], scale: 0.66 },
   };
   const POLE_YAW = -0.75;
+  // The page's own shopfront grid, when it gives one (setShopfront): the 3D openings and the pole
+  // then sit exactly behind the DOM panes and in the pier between them.
+  let domShop = null;
   const restCam = new THREE.PerspectiveCamera();
   const look3 = new THREE.Vector3();
   const ray = new THREE.Ray();
@@ -386,12 +389,18 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
     camera.updateProjectionMatrix();
   }
   function shopLayout() {
-    const L = wide ? SHOPFRONT.wide : SHOPFRONT.narrow;
     shopCamera();
     restCam.copy(camera);
     restCam.position.set(0, 0.15, 9.5);
     restCam.lookAt(0, 0, 0);
     restCam.updateMatrixWorld();
+    let L = wide ? SHOPFRONT.wide : SHOPFRONT.narrow;
+    if (domShop) {
+      // pole scale from the pier's width: its enamel tube fills ~78% of it (z = 0 plane)
+      const unitPx = height / (2 * restCam.position.z * Math.tan(THREE.MathUtils.degToRad(restCam.fov / 2)));
+      const scale = clamp((domShop.poleW * width * 0.78) / (2 * POLE.radius * unitPx), 0.4, 1.2);
+      L = { window: domShop.window, door: domShop.door, pole: domShop.pole, scale };
+    }
     pole.group.scale.setScalar(L.scale);
     pole.group.rotation.y = POLE_YAW;
     wallZ = pole.wallZ * L.scale * Math.cos(POLE_YAW);
@@ -814,6 +823,16 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
     setFrame(rect) {
       frameRect = rect ? { x: rect.x, y: rect.y, w: rect.w, h: rect.h } : null;
       rig.setFrame(frameRect, width, height);
+      runtime.invalidate();
+    },
+    /**
+     * setShopfront({window:[x0,y0,x1,y1], door:[..]|null, pole:[x,y], poleW}|null): the DOM
+     * shopfront at rest in viewport fractions (x right, y up; poleW = pier width / viewport width).
+     */
+    setShopfront(L) {
+      domShop = L && L.window && L.pole ? { window: L.window, door: L.door || null, pole: L.pole, poleW: L.poleW || 0.05 } : null;
+      shopLayout();
+      if (openings.length) windowToScreen();
       runtime.invalidate();
     },
     setOpen(on) {

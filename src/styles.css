@@ -558,7 +558,7 @@ html.poster-capture body > :not(#stage) {
 .shop__front {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr clamp(44px, 3.6vw, 60px) clamp(220px, 21vw, 300px);
+  grid-template-columns: 1fr clamp(84px, 8vw, 128px) clamp(220px, 19vw, 280px);
   grid-template-areas: 'glass pole door';
   gap: var(--pad);
   padding: var(--pad) clamp(16px, 2.6vw, 40px);
@@ -851,10 +851,18 @@ html[data-open='closed'] .shop__front:has(.shutter) .shop__window {
   border-top: 1px solid var(--frame-edge);
 }
 
-/* With the 3D running, the panes are glass onto the canvas. */
+/* With the 3D running, the canvas paints the front (boards, reveals, the window onto the room and
+   the pole in the pier, laid out from this grid by scroll.js): the DOM keeps only the lettering,
+   the door panel and its sign. */
+html[data-stage='ready'] .shopfront,
+html[data-stage='ready'] .shop__fascia,
+html[data-stage='ready'] .shop__front,
+html[data-stage='ready'] .shop__riser,
 html[data-stage='ready'] .shop__glass,
 html[data-stage='ready'] .shop__pole {
   background: transparent;
+  border-color: transparent;
+  outline-color: transparent;
 }
 
 html[data-stage='ready'] .shop__interior,
@@ -1039,6 +1047,14 @@ html[data-mirror='mask'] .hand-mirror__mask {
   width: min(30vw, 300px);
   color: var(--chrome);
   pointer-events: none;
+}
+
+/* On a phone the head fills the glass under the beat's own lines: the oval would only cut
+   through them, so the nape view stands on its own there. */
+@media (max-width: 899px) {
+  html[data-mirror='mask'] .hand-mirror__mask {
+    display: none;
+  }
 }
 
 @media (pointer: coarse) {
@@ -1507,6 +1523,17 @@ html[data-stage='ready'] #carta-player [data-film='back'] {
   top: 0;
   right: 0;
   padding-top: 0;
+}
+
+/* Narrow desktops (900–1279px): the transport keeps to one line under the caption. */
+@media (min-width: 900px) and (max-width: 1279px) {
+  #carta-player .player__controls {
+    column-gap: 14px;
+  }
+
+  #carta-player .player__controls .textbtn {
+    font-size: 0.9375rem;
+  }
 }
 
 /* 'Receta' and 'Cambiar' exist for the phone player only. */
@@ -2738,8 +2765,10 @@ html.no-js .beat {
   html.player-open #carta-player .player__title {
     grid-area: mirror;
     align-self: start;
-    padding: calc(14px + env(safe-area-inset-top, 0px)) 108px 0 16px;
-    font-size: 1.5rem;
+    /* clear of 'Volver a la carta' (about 140px wide at the top right) */
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 156px 0 16px;
+    font-size: 1.375rem;
+    text-wrap: balance;
   }
 
   html.player-open #carta-player [data-film='back'] {
@@ -2963,7 +2992,7 @@ html.no-js .beat {
   }
 
   .shop__front {
-    grid-template-columns: 1fr 30px;
+    grid-template-columns: 1fr 56px;
     grid-template-areas: 'glass pole';
     padding: 10px 12px;
   }
