@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Hair } from './hair.js';
+import { SHAVED_GLSL } from './hairShaders.js';
 import { HEAD_CAGE } from './headAsset.js';
 import { ANCHORS, ANCHOR_NAMES, EYES, HEAD_BOUNDS, HEAD_POINTS, MM } from './hairField.js';
 import { base64Bytes, buildHead, transferList } from './headWorker.js';
@@ -21,6 +22,73 @@ function levelsFor(opts) {
   return 2;
 }
 
+// The head worker as a persistent service: it meshes the head, then computes every cut
+// program the page prepares (hair.prepare). If it cannot start, errors or stalls, it is
+// dropped for good and the callers run the same code on the main thread.
+let service = null;
+export function headService() {
+  if (service) return service;
+  let worker = null;
+  let seq = 0;
+  const pending = new Map();
+  const svc = {
+    alive: false,
+    generation: 0,
+    run(type, payload = {}, transfer = [], { timeout = 8000, onProgress } = {}) {
+      if (!svc.alive) return Promise.reject(new Error('head worker unavailable'));
+      return new Promise((resolve, reject) => {
+        const id = ++seq;
+        const timer = setTimeout(() => {
+          pending.delete(id);
+          reject(new Error('head worker timeout'));
+          kill();
+        }, timeout);
+        pending.set(id, { resolve, reject, timer, onProgress });
+        try {
+          worker.postMessage({ type, id, ...payload }, transfer);
+        } catch (err) {
+          clearTimeout(timer);
+          pending.delete(id);
+          reject(err);
+        }
+      });
+    },
+  };
+  const kill = () => {
+    svc.alive = false;
+    if (worker) worker.terminate();
+    worker = null;
+    for (const p of pending.values()) {
+      clearTimeout(p.timer);
+      p.reject(new Error('head worker stopped'));
+    }
+    pending.clear();
+  };
+  try {
+    worker = new HeadWorker();
+    svc.alive = true;
+    svc.generation = 1;
+    worker.onmessage = (e) => {
+      const msg = e.data || {};
+      const p = pending.get(msg.id);
+      if (!p) return;
+      if (msg.type === 'progress') {
+        p.onProgress?.(msg.p);
+        return;
+      }
+      clearTimeout(p.timer);
+      pending.delete(msg.id);
+      if (msg.type === 'done') p.resolve(msg.data);
+      else p.reject(new Error(msg.message || 'head worker error'));
+    };
+    worker.onerror = kill;
+  } catch {
+    kill();
+  }
+  service = svc;
+  return svc;
+}
+
 /**
  * meshHead({tier|skinStep|levels}, onProgress?) → Promise<HeadData>
  * HeadData: positions, normals, indices, bake [ao, cavity, thickness], edge [hair, beard]
@@ -28,42 +96,14 @@ function levelsFor(opts) {
  */
 export function meshHead(opts = {}, onProgress) {
   const levels = levelsFor(opts);
-  return new Promise((resolve) => {
-    let done = false;
-    let worker = null;
-    let timer = 0;
-    const finish = (data) => {
-      if (done) return;
-      done = true;
-      clearTimeout(timer);
-      if (worker) worker.terminate();
-      resolve(data);
-    };
-    const fallback = () => {
-      if (worker) worker.terminate();
-      worker = null;
-      clearTimeout(timer);
-      setTimeout(() => {
-        if (!done) finish(buildHead(cage(), { levels, onProgress }));
-      }, 0);
-    };
-    try {
-      worker = new HeadWorker();
-    } catch {
-      fallback();
-      return;
-    }
-    timer = setTimeout(fallback, 6000);
-    worker.onmessage = (e) => {
-      const msg = e.data || {};
-      if (msg.type === 'progress') onProgress?.(msg.p);
-      else if (msg.type === 'mesh') finish(msg.data);
-      else fallback();
-    };
-    worker.onerror = fallback;
-    const bytes = cage().slice();
-    worker.postMessage({ type: 'mesh', levels, cage: bytes.buffer }, [bytes.buffer]);
-  });
+  const local = () =>
+    new Promise((resolve) => {
+      setTimeout(() => resolve(buildHead(cage(), { levels, onProgress })), 0);
+    });
+  const svc = headService();
+  if (!svc.alive) return local();
+  const bytes = cage().slice();
+  return svc.run('mesh', { levels, cage: bytes.buffer }, [bytes.buffer], { timeout: 6000, onProgress }).catch(local);
 }
 
 export { transferList };
@@ -109,8 +149,13 @@ function plasterMaterial(hair, { tier }) {
   const uniforms = {
     uProg: hair.uniforms.uProg,
     uWidth: hair.uniforms.uWidth,
+    uLegacy: hair.uniforms.uLegacy,
+    uFront: hair.uniforms.uFront,
+    uStepW: hair.uniforms.uStepW,
+    uFoamIn: hair.uniforms.uFoamIn,
     uGrow: hair.uniforms.uGrow,
-    uShaved: { value: 6 * MM }, // hair length (head units) at which the shaved tint is full
+    uMM: { value: MM }, // head units per millimetre (shaved tint ramps)
+    uHairRoot: hair.uniforms.uRoot,
     uAO: { value: 1 },
     uCavity: { value: 0.55 },
     uMicro: { value: 0.02 },
@@ -132,27 +177,48 @@ function plasterMaterial(hair, { tier }) {
         attribute vec3 aBake;
         attribute vec2 aMask;
         attribute float aEye;
-        attribute float aFrom;
-        attribute float aTo;
-        attribute vec3 aZone;
-        attribute vec3 aSweep;
+        attribute vec4 aFrom;   // hair state before the step: length, lift, foam, line-up
+        attribute vec4 aTo;     // and after it
+        attribute float aSweep; // where the tool front reaches this vertex (0..1)
+        attribute vec2 aCut;
+        attribute vec3 aZoneL;  // legacy looks
+        attribute vec3 aSweepL;
         uniform vec3 uProg;
         uniform float uWidth;
+        uniform float uLegacy;
+        uniform float uFront;
+        uniform float uStepW;
+        uniform float uFoamIn;
         uniform float uGrow;
+        varying float vFoam;
+        varying float vLine;
         varying vec3 vBake;
         varying vec2 vMaskP;
         varying float vEye;
         varying float vHairLen;
+        varying vec2 vCut;
         varying vec3 vRestPos;
         varying vec3 vRestN;`,
       )
       .replace(
         '#include <begin_vertex>',
         `#include <begin_vertex>
-        vec3 tzH = clamp((uProg * (1.0 + uWidth) - aSweep) / uWidth, 0.0, 1.0);
-        vHairLen = mix(aFrom, aTo, dot(aZone, tzH)) * uGrow;
+        float tvH;
+        if (uLegacy > 0.5) {
+          vec3 tzH = clamp((uProg * (1.0 + uWidth) - aSweepL) / uWidth, 0.0, 1.0);
+          tvH = dot(aZoneL, tzH);
+        } else {
+          tvH = clamp((uFront - aSweep) / uStepW + 0.5, 0.0, 1.0);
+        }
+        vec4 stH = mix(aFrom * vec4(1.0, 1.0, uFoamIn, 1.0), aTo, tvH);
+        vHairLen = stH.x * uGrow;
+        vFoam = stH.z;
+        vLine = stH.w;
+        // lather stands a few millimetres off the skin
+        transformed += objectNormal * (0.042 * smoothstep(0.0, 0.6, vFoam));
         vRestPos = position;
         vRestN = normal;
+        vCut = aCut;
         vBake = aBake;
         vMaskP = aMask;
         vEye = aEye;`,
@@ -162,7 +228,8 @@ function plasterMaterial(hair, { tier }) {
         '#include <common>',
         `#include <common>
         uniform mat3 normalMatrix;
-        uniform float uShaved;
+        uniform float uMM;
+        uniform vec3 uHairRoot;
         uniform float uAO;
         uniform float uCavity;
         uniform float uMicro;
@@ -175,9 +242,13 @@ function plasterMaterial(hair, { tier }) {
         varying vec2 vMaskP;
         varying float vEye;
         varying float vHairLen;
+        varying float vFoam;
+        varying float vLine;
+        varying vec2 vCut;
         varying vec3 vRestPos;
         varying vec3 vRestN;
-        ${PLASTER_GLSL}`,
+        ${PLASTER_GLSL}
+        ${SHAVED_GLSL}`,
       )
       .replace(
         '#include <lights_physical_pars_fragment>',
@@ -220,12 +291,20 @@ function plasterMaterial(hair, { tier }) {
           float pupil = 1.0 - smoothstep(0.10 - aw, 0.14 + aw, a);
           diffuseColor.rgb *= 1.0 - uIris.x * ring - uIris.y * pupil;
         }
-        // shaved skin under very short hair (0..6 mm) reads as a cool grey tint, never as
-        // painted dots; longer hair adds a contact shade at the scalp
+        // hair shorter than the shells: shaved shadow, follicles, root colour under dense hair
         float zoneM = max(vMaskP.x, vMaskP.y);
-        float shaved = smoothstep(0.0, uShaved, vHairLen) * zoneM;
-        diffuseColor.rgb *= mix(vec3(1.0), vec3(0.62, 0.64, 0.66), shaved);
-        diffuseColor.rgb *= 1.0 - 0.45 * smoothstep(0.0, 0.03, vHairLen) * zoneM;`,
+        diffuseColor.rgb = shavedSkin(diffuseColor.rgb, vRestPos, normalize(vRestN), vHairLen, vMaskP, vCut, uHairRoot, uMM, vLine);
+        diffuseColor.rgb *= 1.0 - 0.35 * smoothstep(0.02, 0.08, vHairLen) * zoneM;
+        // lather: off-white, a soft cellular pile with a ragged edge where the brush stopped
+        float foamK = 0.0;
+        if (vFoam > 0.002) {
+          float fn = vnoiseD(vRestPos * 34.0).x;
+          foamK = smoothstep(0.25, 0.55, vFoam + 0.3 * (fn - 0.5));
+          // bubbles: a cellular pile, darker in the gaps between them
+          float cells = vnoiseD(vRestPos * 150.0 + 3.1).x * 0.6 + vnoiseD(vRestPos * 330.0).x * 0.4;
+          vec3 lather = vec3(0.62, 0.61, 0.585) * (0.78 + 0.3 * smoothstep(0.25, 0.75, cells));
+          diffuseColor.rgb = mix(diffuseColor.rgb, lather, foamK);
+        }`,
       )
       .replace(
         '#include <normal_fragment_maps>',
@@ -237,9 +316,11 @@ function plasterMaterial(hair, { tier }) {
           #if PLASTER_HQ == 1
             g += vnoiseD(vRestPos * 150.0 + 7.1).yzw * 0.45;
           #endif
+          float foamN = smoothstep(0.2, 0.6, vFoam);
+          g += vnoiseD(vRestPos * 120.0 + 1.7).yzw * 0.5 * foamN;
           vec3 gv = normalize(normalMatrix * g + 1e-6);
           gv -= normal * dot(gv, normal);
-          normal = normalize(normal - gv * uMicro * (1.0 - uPlate));
+          normal = normalize(normal - gv * (uMicro + 0.06 * foamN) * (1.0 - uPlate));
         }`,
       )
       .replace(
@@ -275,7 +356,7 @@ export function createHead(data, { layers = 26, tier = 'high' } = {}) {
   geometry.setIndex(new THREE.BufferAttribute(data.indices, 1));
   geometry.computeBoundingSphere();
 
-  const hair = new Hair(geometry, { layers, data });
+  const hair = new Hair(geometry, { layers, data, tier, service: headService() });
   const material = plasterMaterial(hair, { tier });
   const skin = new THREE.Mesh(geometry, material);
   // three applies scene.environmentIntensity to materials without their own envMap; binding the
@@ -308,8 +389,8 @@ export function createHead(data, { layers = 26, tier = 'high' } = {}) {
       const u = hair.uniforms;
       if (keyDir) u.uKeyDir.value.copy(keyDir).normalize();
       if (keyColor) u.uKeyCol.value.copy(keyColor);
-      if (fillDir) u.uRimDir.value.copy(fillDir).normalize();
-      if (fillColor) u.uRimCol.value.copy(fillColor);
+      if (fillDir) u.uFillDir.value.copy(fillDir).normalize();
+      if (fillColor) u.uFillCol.value.copy(fillColor);
       if (ambient) u.uAmb.value.copy(ambient);
     },
     setLayers(n) {

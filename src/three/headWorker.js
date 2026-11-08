@@ -2,6 +2,9 @@
 // scripts/head/README.md), runs Catmull-Clark subdivision and interpolates the baked attributes
 // (AO, cavity, thickness, hair/beard edges, eye flag) with the same rule. It runs in a worker;
 // head.js imports buildHead() for the main-thread fallback. Plain JS, no three.js.
+// The worker stays alive afterwards and runs the cut-step engine (hairField.computeProgram).
+
+import { computeProgram, engineGeometry } from './hairField.js';
 
 // ------------------------------------------------------------------ inflate (raw deflate)
 
@@ -430,19 +433,37 @@ export function transferList(data) {
   return list.map((a) => a.buffer);
 }
 
-// Worker entry (inert when this module is imported on the main thread or in node).
+// Worker entry (inert when this module is imported on the main thread or in node). A
+// persistent service: meshing first, then the cut-step engine for every program the page
+// prepares. Messages {type, id, ...}; replies {id, type: 'progress' | 'done' | 'error'}.
 if (typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
+  let hairGeo = null;
   self.onmessage = (event) => {
     const msg = event.data || {};
-    if (msg.type !== 'mesh') return;
+    const id = msg.id;
     try {
-      const data = buildHead(new Uint8Array(msg.cage), {
-        levels: msg.levels,
-        onProgress: (p) => self.postMessage({ type: 'progress', p }),
-      });
-      self.postMessage({ type: 'mesh', data }, transferList(data));
+      if (msg.type === 'mesh') {
+        const data = buildHead(new Uint8Array(msg.cage), {
+          levels: msg.levels,
+          onProgress: (p) => self.postMessage({ id, type: 'progress', p }),
+        });
+        self.postMessage({ id, type: 'done', data }, transferList(data));
+      } else if (msg.type === 'hairSetup') {
+        hairGeo = engineGeometry(msg.input);
+        self.postMessage({ id, type: 'done', data: { n: hairGeo.n } });
+      } else if (msg.type === 'program') {
+        if (!hairGeo) throw new Error('hair engine: no setup');
+        const res = computeProgram(hairGeo, msg.program, msg.opts);
+        const bufs = new Set();
+        for (const s of res.states) bufs.add(s.a.buffer).add(s.c.buffer);
+        for (const i of res.info) {
+          bufs.add(i.sweep.buffer);
+          if (i.pend) bufs.add(i.pend.buffer);
+        }
+        self.postMessage({ id, type: 'done', data: res }, [...bufs]);
+      }
     } catch (err) {
-      self.postMessage({ type: 'error', message: String(err && err.message ? err.message : err) });
+      self.postMessage({ id, type: 'error', message: String(err && err.message ? err.message : err) });
     }
   };
 }
