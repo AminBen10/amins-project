@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { toolMaterials } from './env.js';
-import { MM, surfaceAt, LANDMARKS } from './hairField.js';
+import { MM, surfaceAt, toolPath, front, visMM, ANCHORS, AXIS_Z } from './hairField.js';
 
 // The barber's tools as real objects, modelled in millimetres and scaled by hairField.MM
 // (head units per mm), so they sit at true size against the head.
@@ -577,14 +577,76 @@ export function poseTool(obj, pos, normal, up) {
   obj.position.copy(pos);
 }
 
-const v3 = (a) => new THREE.Vector3(a[0], a[1], a[2]);
+
+// ---------------------------------------------------------------- choreography (C8)
+
+// Which tools a step puts in the barber's hands: the main tool and the one in the other hand.
+function toolsOf(step) {
+  if (!step) return null;
+  switch (step.op) {
+    case 'clipper':
+    case 'blend':
+    case 'otherSide':
+      return { main: 'clipper' };
+    case 'clipperOverComb':
+      return { main: 'clipper', helper: 'comb' };
+    case 'scissorOverComb':
+      return { main: 'scissors', helper: 'comb' };
+    case 'scissor':
+    case 'pointCut':
+    case 'thinning':
+      return { main: 'scissors' };
+    case 'comb':
+      return { main: 'comb' };
+    case 'trimmer':
+    case 'part':
+      return { main: 'trimmer' };
+    case 'lather':
+      return { main: 'brush' };
+    case 'razor':
+      return { main: 'razor' };
+    case 'neckBrush':
+    case 'talc':
+      return { main: 'neckBrush' };
+    default:
+      return null; // hold, towel, dryer, product, mirror: nothing on the head
+  }
+}
+
+const LEVER = { open: 1, half: 0.5, closed: 0 };
+// scissor over comb: the comb's spine at the hair surface, teeth slanted into the hair to the scalp
+const COMB_UP = 0.13;
+const COMB_TILT = 0.5;
+function rowAlpha(path, s) {
+  const K = path.K;
+  const k = Math.min(K - 1, Math.max(0, Math.floor(Math.min(1, Math.max(0, s)) * K)));
+  return path.aA + ((path.aB - path.aA) * (k + 0.5)) / K;
+}
+const ENTER_S = 0.3; // tool in: 300 ms ease-out
+const EXIT_S = 0.2; // tool out: 200 ms ease-in
+const AWAY = 0.55; // how far off the head (head units) a tool comes from / leaves to
+const SWAP_S = 0.12; // guard swap
+const sm = (a, b, x) => {
+  const k = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return k * k * (3 - 2 * k);
+};
+// one curve for both ways: fast start/slow end going in, slow start/fast end going out, no overshoot
+const easeAmt = (e) => 1 - (1 - e) * (1 - e);
+const lenOf = (step) => {
+  const l = step.lengthMM;
+  if (l == null && step.part === 'barba') return 6;
+  if (Array.isArray(l)) return (l[0] + l[1]) / 2;
+  return typeof l === 'number' ? l : 40;
+};
 
 /**
  * createTools({ tier, reducedMotion, guards }) → Tools
  * Tools{ group, tools:{clipper,trimmer,scissors,comb,razor,brush,neckBrush} (Groups, head-local
  *   true scale), setGuard(id|null) → mm (number decal redrawn), setLED(on), setLever(0..1),
- *   setScissors(rad), setLather(on), hideAll(), showAll() (warm-up), update(dt, time, activity)
- *   (interim choreography for the legacy hair activity), dispose() }
+ *   setScissors(rad), setLather(on), hideAll(), showAll() (warm-up),
+ *   perform({handle, step, t, next, still, dt, time, hair}) → {moving, tip, normal, main} (C8: the pose
+ *   of every tool for a handle step at progress t, from hairField.toolPath only), reset(),
+ *   blob (low-tier contact shadow), dispose() }
  * guards: GUARDS mm table (id → mm).
  */
 export function createTools({ tier = 'high', reducedMotion = false, guards = {} } = {}) {
@@ -619,19 +681,282 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
     return guardMM;
   };
 
-  // interim choreography state
-  const vis = { clipper: 0, scissors: 0, comb: 0, razor: 0 };
-  const P = new THREE.Vector3(), N = new THREE.Vector3(), U = new THREE.Vector3(), Q = new THREE.Vector3();
-  const surf = (phi, y, outP, outN) => {
-    const s = surfaceAt(phi, y);
-    outP.set(s.pos[0], s.pos[1], s.pos[2]);
-    outN.set(s.normal[0], s.normal[1], s.normal[2]);
-  };
+  // Low tier has no shadow map: a soft contact blob under the working tool.
+  let blob = null;
+  if (tier !== 'high') {
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const g = c.getContext('2d');
+    const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grd.addColorStop(0, 'rgba(0,0,0,1)');
+    grd.addColorStop(0.5, 'rgba(0,0,0,0.45)');
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = grd;
+    g.fillRect(0, 0, 64, 64);
+    const tex = new THREE.CanvasTexture(c);
+    blob = new THREE.Mesh(
+      new THREE.CircleGeometry(1, 24),
+      new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, toneMapped: false }),
+    );
+    blob.visible = false;
+    blob.renderOrder = 2;
+    group.add(blob);
+  }
+
+  // per tool: linear enter progress e (shown as easeAmt(e)) and the last base pose
+  const st = {};
+  for (const k in tools) st[k] = { e: 0, pos: new THREE.Vector3(), quat: new THREE.Quaternion(), away: new THREE.Vector3(0, 0, 1) };
+  let swap = 0, swapTo = null, swapped = true, lastGuard = null, prevIndex = -1, prevHandle = null;
+  const P = new THREE.Vector3(), N = new THREE.Vector3(), T = new THREE.Vector3(), B = new THREE.Vector3(), Q = new THREE.Vector3(), Y = new THREE.Vector3();
+  const out = { moving: false, tip: new THREE.Vector3(), normal: new THREE.Vector3(), main: null, touching: false };
+
+  function setFrame(tp) {
+    P.fromArray(tp.pos);
+    N.fromArray(tp.normal);
+    T.fromArray(tp.tangent);
+    B.crossVectors(T, N);
+  }
+  function save(k) {
+    const o = tools[k];
+    st[k].pos.copy(o.position);
+    st[k].quat.copy(o.quaternion);
+    st[k].away.copy(N);
+  }
+
+  function perform({ handle = null, step = null, t = 0, next = null, still = false, dt = 0, time = 0, hair = null } = {}) {
+    const rm = reducedMotion || still;
+    let use = toolsOf(step);
+    t = Math.min(1, Math.max(0, t));
+    // after the step (story gap, film tail): keep the tool hovering if the next step uses it
+    let hover = false;
+    if (use && t >= 0.999 && !still) {
+      const nu = toolsOf(next);
+      if (nu && nu.main === use.main) hover = true;
+      else use = null;
+    }
+    // A rows path whose current row centre lies below the forehead (alpha < 0) is not on the top
+    // of the head: the engine's measured extents can include wrapped crown vertices. Pen up there.
+    // stills: the middle of the step, or of its first side when it works both sides
+    const sAt = rm ? (step?.path?.sides === 2 ? 0.25 : 0.5) : front(Math.min(t, 1));
+    if (use && step.path?.kind === 'rows' && rowAlpha(step.path, sAt) < 0.05) use = null;
+
+    const want = {};
+    if (use) {
+      want[use.main] = 1;
+      if (use.helper && !hover) want[use.helper] = 1;
+    }
+    // guard swaps animate going forward; scrubbing back snaps
+    const forward = prevHandle !== handle || (step && (step.index ?? 0) >= prevIndex);
+    if (step) {
+      prevIndex = step.index ?? 0;
+      prevHandle = handle;
+    }
+
+    let moving = false;
+    for (const k in tools) {
+      const s = st[k];
+      const target = want[k] ? 1 : 0;
+      if (reducedMotion) s.e = target;
+      else if (s.e < target) s.e = Math.min(target, s.e + dt / ENTER_S);
+      else if (s.e > target) s.e = Math.max(target, s.e - dt / EXIT_S);
+      if (s.e !== target) moving = true;
+      tools[k].visible = s.e > 0.001;
+    }
+    out.main = use ? use.main : null;
+    out.touching = false;
+    let lift = null, contact = null;
+
+    if (use) {
+      const op = step.op;
+      const main = use.main;
+      const amt = easeAmt(st[main].e);
+      let sT = 0.5;
+      if (main === 'neckBrush') {
+        // no path on the head for a brush-off: short sweeps across the anchor
+        const a = ANCHORS[step.anchor] || ANCHORS.nuca;
+        const phi0 = Math.atan2(a[0], a[2] - AXIS_Z);
+        const phi = phi0 + (rm ? 0 : 0.42 * Math.sin(t * Math.PI * 2 * 2.5));
+        const sf = surfaceAt(phi, a[1]);
+        const sf2 = surfaceAt(phi + 0.01, a[1]);
+        setFrame({ pos: sf.pos, normal: sf.normal, tangent: [sf2.pos[0] - sf.pos[0], sf2.pos[1] - sf.pos[1], sf2.pos[2] - sf.pos[2]] });
+        T.addScaledVector(N, -T.dot(N)).normalize();
+        B.crossVectors(T, N);
+      } else {
+        const tp = toolPath(step, sAt);
+        if (!tp) return out;
+        setFrame(tp);
+        if (!rm) sT = tp.strokeT;
+      }
+      out.tip.copy(P);
+      out.normal.copy(N);
+
+      if (main === 'clipper') {
+        // guard: the step's, the next step's while hovering in the gap, the last one on the other side
+        let id = hover ? (next.guard ?? null) : step.guard ?? (op === 'otherSide' ? lastGuard : null);
+        if (!hover && step.guard) lastGuard = step.guard;
+        if (id !== guardId && !(swap > 0 && id === swapTo)) {
+          if (!rm && forward && st.clipper.e > 0.5) {
+            swap = SWAP_S;
+            swapTo = id;
+            swapped = false;
+          } else {
+            swap = 0;
+            swapTo = null;
+            setGuard(id);
+          }
+        }
+        let swapLift = 0;
+        if (swap > 0) {
+          swap = Math.max(0, swap - dt);
+          const k = 1 - swap / SWAP_S;
+          swapLift = Math.sin(Math.PI * k) * 0.09;
+          if (k >= 0.5 && !swapped) {
+            setGuard(swapTo);
+            swapped = true;
+          }
+          if (swap === 0) swapTo = null;
+          moving = true;
+        }
+        const mm = guardMM;
+        const off = mm * MM + 0.004;
+        const flick = rm ? 0 : sm(0.8, 1, sT);
+        const reenter = rm ? 0 : 1 - sm(0, 0.07, sT);
+        const up = flick * 0.11 + reenter * 0.05 + swapLift;
+        Q.copy(P).addScaledVector(N, off + up);
+        if (!rm && amt > 0.5) {
+          // motor buzz: a few px
+          Q.addScaledVector(T, Math.sin(time * 397) * 0.0035).addScaledVector(B, Math.sin(time * 331 + 1.7) * 0.0035);
+          moving = true;
+        }
+        poseTool(tools.clipper, Q, N, T);
+        // body tilted off the scalp; the flick rocks the blade out of the hair
+        // (downward beard strokes: the body stands further off the face)
+        const down = step.path?.kind === 'strokes' && step.path.up === false;
+        tools.clipper.rotateX(-((down ? 0.62 : 0.34) + 0.6 * flick));
+        tools.clipper.userData.setLever(LEVER[step.lever] ?? (op === 'blend' ? 0.5 : 0));
+        save('clipper');
+        out.tip.addScaledVector(N, off);
+        out.touching = up < 0.03 && amt > 0.9 && !hover;
+        if (mm > 0 && out.touching) contact = Q.clone().addScaledVector(N, -off * 0.5);
+        if (use.helper === 'comb') {
+          // clipper over comb: comb against the scalp, the clipper runs along its back
+          poseTool(tools.comb, Y.copy(P).addScaledVector(N, 0.19), T, N);
+          save('comb');
+        }
+      } else if (main === 'scissors') {
+        const h = visMM(lenOf(step)) * MM;
+        if (op === 'thinning' || op === 'pointCut') {
+          // blades pointing into the hair
+          const depth = op === 'thinning' ? 0.05 : h * 0.8;
+          Q.copy(P).addScaledVector(N, 0.69 + depth);
+          poseTool(tools.scissors, Q, Y.crossVectors(T, N), T);
+          tools.scissors.userData.setOpen(rm ? 0.12 : 0.02 + 0.16 * (0.5 + 0.5 * Math.sin(time * Math.PI * 2 * 2)));
+        } else {
+          // along the section: over the comb's back, or just above the hair
+          const above = use.helper === 'comb' ? COMB_UP + 0.07 : h + 0.02;
+          // along a row the blades follow the section; on a stroke (moustache, beard edge) they
+          // lie across it, cutting the line the stroke ends at
+          const across = step.path?.kind === 'strokes';
+          const ax = across ? Y.copy(B) : Y.copy(T);
+          Q.copy(P).addScaledVector(N, above).addScaledVector(ax, -0.38);
+          poseTool(tools.scissors, Q, ax.cross(N), N);
+          tools.scissors.userData.setOpen(rm ? 0.2 : 0.05 + 0.32 * (0.5 + 0.5 * Math.sin(time * Math.PI * 2 * 3)));
+          if (use.helper === 'comb') {
+            poseTool(tools.comb, Y.copy(P).addScaledVector(N, COMB_UP), B, N);
+            tools.comb.rotateX(COMB_TILT);
+            save('comb');
+            // the comb lifts the section just ahead of the blades
+            lift = { c: P.clone().addScaledVector(T, 0.06), n: N.clone() };
+            contact = null;
+          }
+        }
+        if (!rm) moving = true;
+        save('scissors');
+        out.touching = amt > 0.9;
+      } else if (main === 'comb') {
+        Q.copy(P).addScaledVector(N, 0.185);
+        poseTool(tools.comb, Q, T, N);
+        save('comb');
+        contact = P.clone();
+        out.touching = amt > 0.9;
+      } else if (main === 'trimmer') {
+        // T-blade along the outline, teeth towards the hair
+        Y.crossVectors(N, T);
+        if (Y.y < 0) Y.negate();
+        Q.copy(P).addScaledVector(N, 0.004);
+        if (!rm && amt > 0.5) {
+          Q.addScaledVector(T, Math.sin(time * 431) * 0.0025);
+          moving = true;
+        }
+        poseTool(tools.trimmer, Q, N, Y);
+        tools.trimmer.rotateX(-0.5);
+        save('trimmer');
+        out.touching = amt > 0.9;
+      } else if (main === 'razor') {
+        // short strokes along the contour, edge leading, spine lifted ~25°
+        const sub = rm ? 0.5 : (sT * 14) % 1;
+        const up = rm ? 0 : sm(0.72, 1, sub) * 0.03;
+        Q.copy(P).addScaledVector(N, 0.003 + up);
+        poseTool(tools.razor, Q, N, Y.copy(T).negate());
+        tools.razor.rotateX(0.45);
+        save('razor');
+        out.touching = amt > 0.9 && up < 0.01;
+      } else if (main === 'brush') {
+        const a = rm ? 0 : time * 9;
+        Q.copy(P).addScaledVector(N, 0.006).addScaledVector(T, Math.sin(a) * 0.02).addScaledVector(B, Math.cos(a) * 0.02);
+        poseTool(tools.brush, Q, T, Y.copy(N).negate());
+        tools.brush.rotateX(-0.45);
+        tools.brush.userData.setLather(true);
+        if (!rm) moving = true;
+        save('brush');
+        out.touching = amt > 0.9;
+      } else if (main === 'neckBrush') {
+        Q.copy(P).addScaledVector(N, 0.01);
+        poseTool(tools.neckBrush, Q, T, Y.copy(N).negate());
+        tools.neckBrush.rotateX(-0.4);
+        save('neckBrush');
+        out.touching = amt > 0.9;
+      }
+    }
+
+    // enter / exit: every tool slides in from (and out to) AWAY off the head along its normal
+    for (const k in tools) {
+      const o = tools[k];
+      if (!o.visible) continue;
+      const s = st[k];
+      if (!want[k]) {
+        o.position.copy(s.pos);
+        o.quaternion.copy(s.quat);
+      }
+      o.position.addScaledVector(s.away, (1 - easeAmt(s.e)) * AWAY);
+    }
+    if (!want.brush) tools.brush.userData.setLather(false);
+
+    if (hair) {
+      if (lift && !rm) hair.setLift(lift.c, 0.3, easeAmt(st.scissors.e), lift.n);
+      else hair.setLift(null);
+      hair.setContact(contact && easeAmt(st[out.main]?.e ?? 0) > 0.9 ? contact : null, 0.12);
+    }
+
+    if (blob) {
+      const k = out.main ? easeAmt(st[out.main].e) : 0;
+      blob.visible = k > 0.01 && out.touching;
+      if (blob.visible) {
+        blob.position.copy(out.tip).addScaledVector(out.normal, 0.003);
+        blob.quaternion.setFromUnitVectors(Z_AXIS, out.normal);
+        blob.scale.setScalar(out.main === 'clipper' ? 0.2 : 0.14);
+        blob.material.opacity = 0.32 * k;
+      }
+    }
+    out.moving = moving;
+    return out;
+  }
 
   return {
     group,
     tools,
     setGuard,
+    perform,
     get guardMM() {
       return guardMM;
     },
@@ -647,6 +972,16 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
     setLather(on) {
       tools.brush.userData.setLather(on);
     },
+    // everything off the head at once (film swap, context restore)
+    reset() {
+      for (const k in tools) {
+        st[k].e = 0;
+        tools[k].visible = false;
+      }
+      swap = 0;
+      swapTo = null;
+      if (blob) blob.visible = false;
+    },
     hideAll() {
       for (const k in tools) tools[k].visible = false;
     },
@@ -656,69 +991,6 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
       setGuard('3');
     },
     setPixelRatio() {},
-    // Interim: the legacy hair activity {sides, top, beard, zones}. The toolPath-driven
-    // choreography (C8) replaces this.
-    update(dt, time, activity) {
-      const buzz = reducedMotion ? 0 : 1;
-      const [zs, zt, zb] = activity.zones;
-      const run = {
-        clipper: zs && activity.sides > 0.001 && activity.sides < 0.999,
-        scissors: zt && activity.top > 0.001 && activity.top < 0.999,
-        razor: zb && activity.beard > 0.001 && activity.beard < 0.999,
-      };
-      run.comb = run.scissors;
-      for (const k in vis) {
-        vis[k] = reducedMotion ? (run[k] ? 1 : 0) : THREE.MathUtils.damp(vis[k], run[k] ? 1 : 0, 10, dt);
-        tools[k].visible = vis[k] > 0.01;
-      }
-      // clipper: upward strokes on the +X side, sideburn to nape, flicking out at the corner
-      if (tools.clipper.visible) {
-        const p = activity.sides;
-        const ids = ['3', '2', '1', '0,5'];
-        const mm = setGuard(ids[Math.min(3, Math.floor(p * 4))]);
-        const k = p * 7;
-        const col = Math.min(6, Math.floor(k));
-        const u = reducedMotion ? 0.5 : k - col;
-        const phi = THREE.MathUtils.lerp(1.15, 2.45, col / 6);
-        const y = THREE.MathUtils.lerp(LANDMARKS.NUCA + 0.1, LANDMARKS.ESQUINA - 0.05, u);
-        surf(phi, y, P, N);
-        surf(phi, y + 0.03, Q, U);
-        U.copy(Q).sub(P);
-        const flick = THREE.MathUtils.smoothstep(u, 0.8, 1) * 0.12;
-        P.addScaledVector(N, mm * MM + 0.004 + flick + (1 - vis.clipper) * 0.6);
-        P.x += Math.sin(time * 95) * 0.0012 * buzz;
-        U.addScaledVector(N, flick * 0.8);
-        poseTool(tools.clipper, P, N, U);
-        this.setLever(0);
-      }
-      // scissor over comb across the top: the comb lifts, the scissors cut above it
-      if (tools.scissors.visible) {
-        const p = activity.top;
-        const phi = THREE.MathUtils.lerp(0.35, 2.5, p);
-        surf(phi, LANDMARKS.ESQUINA + 0.22, P, N);
-        U.set(Math.cos(phi), 0, -Math.sin(phi)); // across the stroke
-        const lift = (1 - vis.scissors) * 0.6;
-        Q.copy(P).addScaledVector(N, 0.09 + lift);
-        poseTool(tools.comb, Q, U.clone().cross(N).negate(), N);
-        tools.comb.rotateX(-Math.PI / 2);
-        Q.copy(P).addScaledVector(N, 0.24 + lift);
-        poseTool(tools.scissors, Q, N, U);
-        tools.scissors.rotateZ(-Math.PI / 2);
-        tools.scissors.translateX(-0.4);
-        this.setScissors(reducedMotion ? 0.2 : 0.06 + 0.26 * (0.5 + 0.5 * Math.sin(time * 18.8)));
-      }
-      // razor along the beard line, edge on the skin at a shallow angle
-      if (tools.razor.visible) {
-        const p = activity.beard;
-        const phi = THREE.MathUtils.lerp(1.25, 0.25, p);
-        const y = THREE.MathUtils.lerp(LANDMARKS.PATILLA, -0.8, p);
-        surf(phi, y, P, N);
-        P.addScaledVector(N, 0.004 + (1 - vis.razor) * 0.6);
-        // blade nearly flat on the skin, spine lifted ~30°, edge leading the downward stroke
-        poseTool(tools.razor, P, N, v3([0, 1, 0]));
-        tools.razor.rotateX(0.5);
-      }
-    },
     dispose() {
       tools.clipper.userData.dispose();
       decal.texture.dispose();
@@ -726,6 +998,12 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
         if (o.isMesh) o.geometry.dispose();
       });
       for (const k in m) m[k].dispose();
+      if (blob) {
+        blob.material.map.dispose();
+        blob.material.dispose();
+      }
     },
   };
 }
+
+const Z_AXIS = new THREE.Vector3(0, 0, 1);

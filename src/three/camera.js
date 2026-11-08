@@ -43,7 +43,8 @@ export function shotPose(name, { aspect = 1, phone = false, out } = {}) {
   // fit `size` vertically, and 0.8·size horizontally on narrow frames
   const half = THREE.MathUtils.degToRad(fov / 2);
   const needH = size / 2;
-  const needW = (size * 0.8) / 2 / Math.max(aspect, 0.01);
+  // profiles are deeper than the face is wide: narrow frames (phones) fit more width
+  const needW = (size * (aspect < 0.9 ? 0.92 : 0.8)) / 2 / Math.max(aspect, 0.01);
   pose.az = s.az;
   pose.el = s.el;
   pose.fov = fov;

@@ -193,6 +193,18 @@ export function createCape(bounds, { tier = 'high', seg } = {}) {
   const cape = new THREE.Mesh(geo, mat);
   cape.frustumCulled = false;
   cape.receiveShadow = true;
+  // shadow pass (high tier): the drape is computed in the vertex shader, so the depth material
+  // has to run the same code, or the shadow would be the flat plane
+  const depth = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, side: THREE.DoubleSide });
+  depth.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, uniforms);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', `#include <common>\n${DRAPE_GLSL}`)
+      .replace('#include <begin_vertex>', 'vec3 capeP, capeN;\n capeEval(uv, capeP, capeN);\n vec3 transformed = capeP;');
+  };
+  depth.customProgramCacheKey = () => 'capeDepth1';
+  cape.customDepthMaterial = depth;
+  cape.castShadow = tier === 'high';
   cape.name = 'cape';
 
   // Paper neck strip: a band wrapped on the neck just above the collar; peels from one end.
@@ -238,6 +250,7 @@ export function createCape(bounds, { tier = 'high', seg } = {}) {
     dispose() {
       geo.dispose();
       mat.dispose();
+      depth.dispose();
       strip.dispose();
     },
   };

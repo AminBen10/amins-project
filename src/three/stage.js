@@ -12,12 +12,18 @@ import { createPole, BLOOM_LAYER } from './pole.js';
 import { meshHead, createHead } from './head.js';
 import { createTools } from './tools.js';
 import { createCape } from './cape.js';
-import { createCameraRig } from './camera.js';
+import { createCameraRig, shotPose } from './camera.js';
+import { createClippings } from './clippings.js';
+import { ANCHORS, HEAD_POINTS, AXIS_Z } from './hairField.js';
 
 // Stage: the shopfront with the pole as the hero object in front of the room shader, then the
-// station with the head, cape and tools. Runtime, tiers and the selective globe bloom (C2), cape
-// (C6), tools (C7) and camera shots (C10) are in; the full stage API, story/film mapping and
-// toolPath choreography (C8, C11) land on top of this.
+// station with the head, cape and tools. The page drives it two ways (C11):
+//  - story: setInput({enter, consult, clipper, scissors, razor, mirror, carta, turn}) beats map onto
+//    the STORY program's steps (step.beat, step.at) → hair.show(handle, i, t), tools from toolPath,
+//    camera eased between the steps' shots;
+//  - film: setFilm(FilmState) plays any prepared program with the shared timing
+//    (step total (0.3 + dur + 0.2)/speed, hair t = clamp((local·speed − 0.3)/dur, 0, 1)).
+// anchors (CSS px) are projected after every rendered frame for the page's notes.
 
 const { smoothstep, lerp, damp, clamp } = THREE.MathUtils;
 
@@ -27,31 +33,6 @@ export const LIGHTS = {
   fill: { color: '#FFB874', intensity: 0.35, position: [-4, 1.5, 3] },
   ambient: { sky: '#3A3A3A', ground: '#121212', intensity: 0.35 },
 };
-
-// Interim story shots for the legacy ritual timeline (0…4: consult, sides, top, beard):
-// [t, shot A, shot B, blend]. C11 replaces this with the STORY program's beats.
-const RITUAL_SHOTS = [
-  [0, 'frente'],
-  [0.6, 'tresCuartos'],
-  [1.05, 'perfil'],
-  [1.65, 'perfil'],
-  [1.85, 'tresCuartosAtras'],
-  [2.15, 'arriba'],
-  [2.85, 'arriba'],
-  [3.15, 'detalle-barba'],
-  [3.85, 'detalle-barba'],
-  [4.0, 'frente'],
-];
-function ritualShot(t) {
-  for (let i = 1; i < RITUAL_SHOTS.length; i++) {
-    const [t1, b] = RITUAL_SHOTS[i];
-    if (t <= t1) {
-      const [t0, a] = RITUAL_SHOTS[i - 1];
-      return [a, b, THREE.MathUtils.smootherstep(t, t0, t1)];
-    }
-  }
-  return ['frente', 'frente', 0];
-}
 
 const ENTER_CUT = 0.7; // hard match cut from the pole to the station
 
@@ -127,8 +108,56 @@ function createPost(renderer, scene, camera, profile) {
   };
 }
 
-export function createStage(canvas, { reducedMotion = false, look, tier, profile, data = {} } = {}) {
-  tier = tier || detectTier({ reducedMotion }).tier;
+// Story beats in scroll order; a step's place in the story is beatIndex + at.
+const BEATS = ['enter', 'consult', 'clipper', 'scissors', 'razor', 'mirror'];
+const INPUTS = ['hero', 'enter', 'consult', 'clipper', 'scissors', 'razor', 'mirror', 'carta', 'turn'];
+const VIEW_SHOT = { frente: 'frente', perfil: 'perfil', nuca: 'nuca' };
+const MIRROR_RISE = [0.28, 0.45]; // mirror beat range over which the hand mirror comes up
+const DIP_S = 0.2; // setFilm(null): back to the story through a 200 ms dip
+const smoother = (x) => x * x * x * (x * (x * 6 - 15) + 10);
+const ease = (x) => 1 - (1 - x) * (1 - x);
+const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+
+/**
+ * Story map for a prepared STORY handle: every step's [g0, g1] on the story axis (beat index + at)
+ * and the camera keys (a step's shot holds from 30 % into the step to its end; quiet runs keep
+ * the first quiet step's shot).
+ */
+function storyMap(handle) {
+  const steps = handle.steps.map((s, i) => {
+    const b = Math.max(0, BEATS.indexOf(s.beat));
+    const at = s.at || [0, 1];
+    return { i, g0: b + at[0], g1: b + at[1] };
+  });
+  const keys = [];
+  let quietRun = false;
+  handle.steps.forEach((s, i) => {
+    const { g0, g1 } = steps[i];
+    if (s.quiet && s.op !== 'mirror') {
+      if (quietRun) {
+        keys[keys.length - 1].gb = g1;
+        return;
+      }
+      quietRun = true;
+    } else quietRun = false;
+    keys.push({ ga: g0 + 0.3 * (g1 - g0), gb: g1, shot: s.shot || 'frente', mirror: s.op === 'mirror' });
+  });
+  return { handle, steps, keys };
+}
+
+/**
+ * createStage(canvas, { reducedMotion, tier, profile, data:{THEME, CLAIMS, GUARDS, STORY} }) → Promise<Stage>
+ * Stage per the scene contract (see the interface in plan-scene.json). Resolves as soon as the
+ * renderer runs; `ready`/onReady when the head, the story program and every shader are in.
+ */
+export async function createStage(canvas, { reducedMotion = false, tier, profile, data } = {}) {
+  if (!data || !data.STORY) {
+    // older callers pass no data: read the active client's
+    const cfg = await import('../config.js');
+    data = { THEME: cfg.THEME, CLAIMS: cfg.CLAIMS, GUARDS: cfg.GUARDS, STORY: cfg.STORY, ...(data || {}) };
+  }
+  const GUARDS = data.GUARDS || {};
+  tier = tier || profile?.tier || detectTier({ reducedMotion }).tier;
   profile = profile || qualityProfile(tier);
   const hi = profile.tier === 'high';
   const usePost = !!profile.composer;
@@ -156,6 +185,14 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
   fill.position.set(...LIGHTS.fill.position);
   const hemi = new THREE.HemisphereLight(LIGHTS.ambient.sky, LIGHTS.ambient.ground, LIGHTS.ambient.intensity);
   scene.add(key, fill, hemi);
+  for (const l of [key, fill, hemi]) l.layers.enable(1); // the hand mirror's camera sees layer 1
+  const sc = key.shadow.camera;
+  function shadowFit(station) {
+    // shop: the pole and facade; station: tight round head and shoulders for a sharper jaw shadow
+    if (station) Object.assign(sc, { left: -3, right: 3, top: 3, bottom: -3.4, near: 2, far: 12 });
+    else Object.assign(sc, { left: -6, right: 6, top: 5, bottom: -5, near: 1, far: 20 });
+    sc.updateProjectionMatrix();
+  }
   if (profile.shadows) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -163,9 +200,9 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
     key.shadow.mapSize.setScalar(profile.shadows.size || 1024);
     key.shadow.normalBias = 0.02;
     key.shadow.radius = 4;
-    const sc = key.shadow.camera;
-    sc.left = -6; sc.right = 6; sc.top = 5; sc.bottom = -5; sc.near = 1; sc.far = 20;
+    shadowFit(false);
   }
+  let shadowStation = false;
 
   // Shopfront: the pole beside the door, bracketed to the facade.
   const shop = new THREE.Group();
@@ -187,22 +224,44 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
   scene.add(station);
   const headRig = new THREE.Group();
   station.add(headRig);
-  const tools = createTools({ tier: profile.tier, reducedMotion, guards: data.GUARDS || {} });
+  const tools = createTools({ tier: profile.tier, reducedMotion, guards: GUARDS });
   headRig.add(tools.group);
   let cape = null;
+  let clippings = null;
 
   const rig = createCameraRig(camera, { rig: headRig, reducedMotion });
   let frameRect = null; // CSS px rect of the DOM mirror, from setFrame()
 
+  // the dip to black between film shots (and back from a film): one quad over the whole canvas
+  const dip = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2),
+    new THREE.ShaderMaterial({
+      uniforms: { uA: { value: 0 } },
+      vertexShader: 'void main() { gl_Position = vec4(position.xy, 0.0, 1.0); }',
+      fragmentShader: 'uniform float uA; void main() { gl_FragColor = vec4(0.0, 0.0, 0.0, uA); }',
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+    }),
+  );
+  dip.frustumCulled = false;
+  dip.renderOrder = 1000;
+  dip.visible = false;
+  scene.add(dip);
+
   const post = usePost ? createPost(renderer, scene, camera, profile) : null;
 
   let head = null;
-  let currentLook = { ...look };
+  let story = null;
   let ready = false;
   let onReady = null;
+  let onProgress = null;
   let onLost = null;
   let onRestored = null;
+  let onMirrorMode = null;
   const frameSubs = new Set();
+  let resolveHead;
+  const headReady = new Promise((r) => (resolveHead = r));
 
   function lightHead() {
     const keyDir = key.position.clone().normalize();
@@ -233,7 +292,10 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
     [shop.visible, station.visible] = vis;
   }
 
-  meshHead({ tier: profile.tier, skinStep: profile.hair.skinStep }).then(async (d) => {
+  const onLayer1 = (o) => o.traverse((c) => c.layers.enable(1));
+
+  (async () => {
+    const d = await meshHead({ tier: profile.tier, skinStep: profile.hair.skinStep, hairStep: profile.hair.hairStep }, (p) => onProgress?.(p * 0.8));
     head = createHead(d, { layers: governor.state.layers, tier: profile.tier });
     lightHead();
     headRig.add(head.group);
@@ -245,18 +307,35 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
     });
     cape = createCape(head.bounds, { tier: profile.tier, seg: profile.cape?.seg });
     headRig.add(cape.group);
-    head.hair?.ritual?.(currentLook, 0, 0, 0);
+    clippings = createClippings({ tier: profile.tier, reducedMotion, counts: profile.particles, talc: data.CLAIMS?.talc === 'talco', cape });
+    headRig.add(clippings.group);
+    for (const g of [head.group, cape.group, tools.group, clippings.group]) onLayer1(g);
+    resolveHead();
+    onProgress?.(0.85);
+    if (data.STORY?.steps?.length) {
+      try {
+        story = storyMap(await head.hair.prepare(data.STORY, { guards: GUARDS, base: 'overgrown' }));
+        head.hair.show(story.handle, -1, 0);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    onProgress?.(0.95);
     await warmUp();
     ready = true;
     room.setReady();
     // in-world loading cue: the clipper's LED lights once everything is ready
     tools.setLED(true);
+    onProgress?.(1);
     onReady?.();
     runtime.invalidate();
+  })().catch((err) => {
+    console.error(err);
+    onLost?.({ fatal: true, reason: 'error', error: err });
   });
 
   // scroll-driven targets (written by the page) and their smoothed values
-  const input = { hero: 0, enter: 0, morph: 0, consult: 0, sides: 0, top: 0, beard: 0, studio: 0, after: 0, turn: 0 };
+  const input = Object.fromEntries(INPUTS.map((k) => [k, 0]));
   const cur = { ...input };
   let width = 1, height = 1, wide = true;
 
@@ -275,6 +354,7 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
   }
   function resize() {
     setSizes(canvas.clientWidth || innerWidth, canvas.clientHeight || innerHeight);
+    runtime?.invalidate();
   }
 
   // Shop framing, in viewport fractions (x right, y up) at rest: the window
@@ -346,7 +426,7 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
       } else if (c.type === 'shadows') {
         key.castShadow = !!c.value && !!profile.shadows;
       } else if (c.type === 'mirror') {
-        quality.mirror = c.value; // read by the hand mirror (C12)
+        quality.mirror = c.value;
       }
       quality.level = governor.level;
     },
@@ -364,68 +444,288 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
     onRestored?.();
   }
 
+  // ------------------------------------------------------------ hand mirror (C12)
+  let hm = null;
+  let hmLoading = false;
+  let mirrorAngle = 0;
+  let mirrorFrame = 0;
+  const mirror = { mode: 'off', rect: null };
+  const wantsRT = () => profile.mirror?.mode === 'rt' && quality.mirror !== 'mask';
+  function loadMirror() {
+    if (hm || hmLoading || !wantsRT()) return;
+    hmLoading = true;
+    import('./handmirror.js')
+      .then(({ createHandMirror }) => {
+        hm = createHandMirror(renderer, { tier: profile.tier, size: { w: profile.mirror.w, h: profile.mirror.h } });
+        hm.setAngle(mirrorAngle);
+        scene.add(hm.group);
+        runtime.invalidate();
+      })
+      .catch((err) => console.warn(err))
+      .finally(() => (hmLoading = false));
+  }
+  function setMirrorMode(mode) {
+    if (mirror.mode === mode) return;
+    mirror.mode = mode;
+    onMirrorMode?.(mode);
+  }
+
+  // ------------------------------------------------------------ anchors (CSS px, every frame)
+  const anchors = {};
+  for (const k of Object.keys(ANCHORS)) anchors[k] = { x: 0, y: 0, visible: false };
+  anchors.face = { x: 0, y: 0, w: 0, h: 0 };
+  anchors.head = { x: 0, y: 0, w: 0, h: 0 };
+  const anchorPts = Object.fromEntries(Object.entries(ANCHORS).map(([k, a]) => [k, new THREE.Vector3(a[0], a[1], a[2])]));
+  const HP = HEAD_POINTS;
+  const facePts = [ANCHORS.flequillo, HP.glabella, HP.nose_tip, HP.pogonion, HP.mouth_corner, [-HP.mouth_corner[0], HP.mouth_corner[1], HP.mouth_corner[2]], [HP.ear_front[0] * 0.86, HP.ear_front[1], HP.ear_front[2] + 0.25], [-HP.ear_front[0] * 0.86, HP.ear_front[1], HP.ear_front[2] + 0.25]].map((a) => new THREE.Vector3(...a));
+  const headPts = [];
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2;
+    for (const y of [-1.0, -0.4, 0.3, 0.85]) headPts.push(new THREE.Vector3(Math.sin(a) * 0.82, y, AXIS_Z + Math.cos(a) * 0.95));
+  }
+  headPts.push(new THREE.Vector3(0, 1.12, AXIS_Z));
+  const camLocal = new THREE.Vector3();
+  const inv = new THREE.Matrix4();
+  const P = new THREE.Vector3(), Nn = new THREE.Vector3(), centre = new THREE.Vector3(0, 0.05, AXIS_Z);
+  function rectOf(pts, out) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const p of pts) {
+      rig.project(p, P);
+      x0 = Math.min(x0, P.x);
+      y0 = Math.min(y0, P.y);
+      x1 = Math.max(x1, P.x);
+      y1 = Math.max(y1, P.y);
+    }
+    out.x = x0;
+    out.y = y0;
+    out.w = x1 - x0;
+    out.h = y1 - y0;
+  }
+  function updateAnchors(on) {
+    if (!on || !head) {
+      for (const k in anchorPts) anchors[k].visible = false;
+      return;
+    }
+    headRig.updateWorldMatrix(true, false);
+    inv.copy(headRig.matrixWorld).invert();
+    camLocal.copy(camera.position).applyMatrix4(inv);
+    for (const k in anchorPts) {
+      const a = anchorPts[k];
+      rig.project(a, P);
+      const o = anchors[k];
+      o.x = P.x;
+      o.y = P.y;
+      // facing the camera (normal from the head's centre), in front of it and on the canvas
+      Nn.copy(a).sub(centre).normalize();
+      const facing = Nn.dot(tmp.copy(camLocal).sub(a).normalize()) > 0.12;
+      o.visible = facing && P.z < 1 && P.x >= 0 && P.y >= 0 && P.x <= width && P.y <= height;
+    }
+    rectOf(facePts, anchors.face);
+    rectOf(headPts, anchors.head);
+    // additive: is the face towards the camera (false on the nape views)
+    anchors.face.visible = tmp.set(0, 0, 1).dot(camLocal.clone().sub(centre).normalize()) > 0.2;
+  }
+
+  // ------------------------------------------------------------ film state
+  let film = null;
+  let filmShot = null;
+  let filmView = null;
+  let filmHandle = null;
+  let backDip = 0; // s left of the dip back to the story
+
   let open = true;
   let motionOn = !reducedMotion;
   let time = 0;
+  let frameNo = 0;
+  let mirrorK = 0;
+
+  // story position: beat index + p of the latest beat that has started
+  function storyG() {
+    for (let b = BEATS.length - 1; b >= 0; b--) {
+      const v = cur[BEATS[b]];
+      if (v > 0) return b + v;
+    }
+    return 0;
+  }
+  function storyStep(g) {
+    let i = -1;
+    for (const s of story.steps) if (g >= s.g0) i = s.i;
+    if (i < 0) return { i: -1, t: 0 };
+    const s = story.steps[i];
+    return { i, t: clamp01((g - s.g0) / Math.max(1e-6, s.g1 - s.g0)) };
+  }
+  function storyCamera(g, maskView) {
+    const keys = story.keys;
+    const shotOf = (k) => (k.mirror ? (maskView ? 'nuca' : 'frente') : k.shot);
+    if (!keys.length) return ['frente', 'frente', 0];
+    if (g <= keys[0].ga) return [shotOf(keys[0]), shotOf(keys[0]), 0];
+    for (let j = 0; j < keys.length; j++) {
+      const k = keys[j];
+      if (g <= k.gb) return [shotOf(k), shotOf(k), 0];
+      const n = keys[j + 1];
+      if (n && g < n.ga) return [shotOf(k), shotOf(n), smoother(clamp01((g - k.gb) / Math.max(1e-6, n.ga - k.gb)))];
+    }
+    const l = keys[keys.length - 1];
+    return [shotOf(l), shotOf(l), 0];
+  }
 
   function frame(dt) {
     time += dt;
+    frameNo++;
     let moving = false;
     const rate = reducedMotion ? 20 : 7;
     for (const k in input) {
-      cur[k] = THREE.MathUtils.damp(cur[k], input[k], rate, dt);
+      cur[k] = damp(cur[k], input[k], rate, dt);
       if (Math.abs(cur[k] - input[k]) < 0.0015) cur[k] = input[k];
       else moving = true;
     }
-    // `morph` is the old main.js scroll key for the same beat; drop it once motion sends `enter`
-    const enter = Math.max(cur.enter, cur.morph);
-    const inShop = enter < ENTER_CUT;
+    const enter = cur.enter;
+    const inShop = !film && enter < ENTER_CUT;
     shop.visible = inShop;
     station.visible = !inShop;
     room.setMode(inShop ? 0 : 1);
+    if (profile.shadows && shadowStation !== !inShop) {
+      shadowStation = !inShop;
+      shadowFit(shadowStation);
+    }
 
     if (pole.update(dt)) moving = true;
     room.setPoleSpin(pole.spin);
 
+    const maskView = !wantsRT();
+    let dipA = 0;
     if (inShop) {
       // Enter: the camera dollies to brush past the pole until its stripes fill the frame.
       shopCamera();
-      const P = pole.group.position;
+      const P0 = pole.group.position;
       const e = smoothstep(enter, 0, ENTER_CUT);
       const ee = e * e * (3 - 2 * e);
-      camera.position.set(lerp(0, P.x - 0.3, ee), lerp(0.15, P.y + 0.1, ee), lerp(9.5, P.z + 1.2, ee));
-      look3.set(lerp(0, P.x, ee), lerp(0, P.y + 0.1, ee), lerp(0, P.z, ee));
+      camera.position.set(lerp(0, P0.x - 0.3, ee), lerp(0.15, P0.y + 0.1, ee), lerp(9.5, P0.z + 1.2, ee));
+      look3.set(lerp(0, P0.x, ee), lerp(0, P0.y + 0.1, ee), lerp(0, P0.z, ee));
       camera.lookAt(look3);
       camera.updateMatrixWorld();
       windowToScreen();
       room.setBlur(0.018);
       room.setView(0, 0, 1);
+      mirrorK = 0;
+      tools.perform({ dt, time });
     } else {
-      const ritualT = cur.consult + cur.sides + cur.top + cur.beard;
-      const [a, b, k] = ritualShot(ritualT);
-      rig.blend(a, b, cur.studio > 0.5 ? 0 : k);
-      if (cur.studio > 0.5) rig.blend('tresCuartos', 'tresCuartos', 0);
-      if (rig.update(dt)) moving = true;
-      rig.apply();
       room.setBlur(0.016);
       room.setView(0, 0, 1);
-      room.setRoom(clamp(cur.turn, 0, 1));
+      room.setRoom(film ? 0 : clamp01(cur.turn));
+      const capeOff = film ? 0 : smoothstep(cur.turn, 0.2, 0.8);
       if (cape) {
-        cape.setSnap(smoothstep(enter, SNAP[0], SNAP[1]));
-        cape.setOff(smoothstep(cur.turn, 0.2, 0.8));
+        cape.setSnap(film ? 1 : smoothstep(enter, SNAP[0], SNAP[1]));
+        cape.setOff(capeOff);
       }
-      if (head) {
-        if (cur.studio > 0.5) head.hair.settle?.(currentLook);
-        else head.hair.ritual?.(currentLook, cur.sides, cur.top, cur.beard);
-        head.hair.update?.(dt);
-        if (head.hair.activity) tools.update(dt, time, head.hair.activity);
+      let handle = null, step = -1, t = 0, still = false;
+      if (film && film.handle && head) {
+        // ---------------- film
+        handle = film.handle;
+        const n = handle.steps.length;
+        step = film.step < 0 ? -1 : film.step >= n ? n : Math.floor(film.step);
+        const s = handle.steps[step];
+        const speed = film.speed || 1;
+        if (s) t = clamp01(((film.local || 0) * speed - 0.3) / Math.max(0.01, s.dur || 3));
+        else t = step >= n ? 1 : 0;
+        still = !!film.still;
+        if (filmHandle !== handle) {
+          filmHandle = handle;
+          tools.reset();
+          clippings?.reset();
+        }
+        mirrorK = clamp01(film.mirror || 0);
+        const view = film.view && VIEW_SHOT[film.view];
+        if (view) {
+          if (filmView !== view) {
+            filmView = view;
+            rig.to(view);
+          }
+          rig.setYaw(film.yaw || 0);
+          rig.setPush(0);
+          filmShot = null;
+        } else {
+          filmView = null;
+          let shot = s ? s.shot || 'frente' : 'frente';
+          if (mirrorK > 0.5 && maskView) shot = 'nuca';
+          if (shot !== filmShot) {
+            filmShot = shot;
+            rig.cut(shot);
+          }
+          rig.setYaw(0);
+          // films push in 2–4 % over a step
+          rig.setPush(still || reducedMotion || !s ? 0 : 0.03 * t);
+        }
+        dipA = clamp01(film.dip || 0);
+        if (rig.update(dt)) moving = true;
+      } else if (story && head) {
+        // ---------------- story
+        handle = story.handle;
+        const g = storyG();
+        ({ i: step, t } = storyStep(g));
+        // the hand mirror comes up over the mirror beat and goes down as the Carta comes in
+        const kc = smoothstep(cur.carta, 0.55, 0.95);
+        mirrorK = ease(clamp01((cur.mirror - MIRROR_RISE[0]) / (MIRROR_RISE[1] - MIRROR_RISE[0]))) * (1 - kc);
+        cape?.setPeel(clamp01(cur.mirror / 0.2));
+        const [a, b, k] = storyCamera(g, maskView);
+        if (kc > 0) rig.blend(k > 0.5 ? b : a, 'frente', kc);
+        else rig.blend(a, b, k);
+        rig.setYaw(0);
+        rig.setPush(0);
+        filmShot = filmView = null;
+      }
+      if (backDip > 0) {
+        backDip = Math.max(0, backDip - dt);
+        const k = 1 - backDip / DIP_S;
+        dipA = Math.max(dipA, 1 - Math.abs(1 - 2 * k));
+        moving = true;
+      }
+      rig.apply();
+
+      if (head && handle) {
+        const hair = head.hair;
+        hair.show(handle, step, t);
+        const n = handle.steps.length;
+        const s = step >= 0 && step < n ? handle.steps[step] : null;
+        const res = tools.perform({ handle, step: s, t, next: handle.steps[step + 1] || null, still, dt, time, hair });
+        if (res.moving) moving = true;
+        if (clippings?.update({ hair, handle, step, t, tool: res, off: capeOff, dt })) moving = true;
+      } else {
+        tools.perform({ dt, time });
       }
     }
+
+    // ---------------- hand mirror: rt (3D mirror, second camera) or mask (camera on the nape + DOM oval)
+    if (mirrorK > 0.001) {
+      if (wantsRT()) loadMirror();
+      setMirrorMode(wantsRT() && hm ? 'rt' : 'mask');
+    } else setMirrorMode('off');
+    if (hm) {
+      if (hm.update(dt, reducedMotion)) moving = true;
+      const show = mirror.mode === 'rt';
+      hm.place(camera, rig.frame, show ? mirrorK : 0, { phone: rig.phone, headDist: rig.pose.dist });
+      if (show) {
+        const cad = quality.mirror === 'half' ? 2 : 1;
+        const frozen = quality.mirror === 'freeze' && hm.rendered;
+        if (!frozen && (frameNo % cad === 0 || !hm.rendered)) hm.render(scene, headRig, { hair: head?.hair, layers: profile.mirror?.layers ?? 10 });
+        hm.group.updateMatrixWorld();
+        mirror.rect = hm.glassRect(camera, rig.frame);
+      }
+    }
+    if (mirror.mode === 'mask') {
+      const h = anchors.head;
+      const H = h.h * 1.12;
+      mirror.rect = { x: h.x + h.w / 2 - H / 2.6, y: h.y + h.h / 2 - H / 2, w: H / 1.3, h: H };
+    } else if (mirror.mode === 'off') mirror.rect = null;
+
+    dip.visible = dipA > 0.001;
+    dip.material.uniforms.uA.value = dipA;
 
     if (room.render(dt)) moving = true;
     if (post) post.render(inShop && open);
     else renderer.render(scene, camera);
-    for (const fn of frameSubs) fn();
+    updateAnchors(!inShop);
+    for (const fn of frameSubs) fn(anchors);
     return moving;
   }
 
@@ -442,6 +742,37 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
   resize();
   runtime.start();
 
+  // ------------------------------------------------------------ plate mode (C13)
+  async function renderPlate(program, { size = 320 } = {}) {
+    await headReady;
+    const hair = head.hair;
+    const [{ engrave }, handle] = await Promise.all([import('./plate.js'), hair.prepare(program, { guards: GUARDS, base: 'overgrown' })]);
+    const hidden = [shop, room.backdrop, cape.group, tools.group, clippings.group, dip, hm?.group].filter(Boolean);
+    const was = hidden.map((o) => o.visible);
+    const stationWas = station.visible;
+    hidden.forEach((o) => (o.visible = false));
+    station.visible = true;
+    head.setPlate(true);
+    hair.setLift(null);
+    hair.setContact(null);
+    hair.show(handle, handle.steps.length, 1);
+    const cam = new THREE.PerspectiveCamera(24, 1, 0.1, 60);
+    const pose = shotPose('tresCuartos', { aspect: 1 });
+    const az = 0.95, el = 0.1, d = pose.dist * 0.98;
+    headRig.updateWorldMatrix(true, false);
+    cam.position.set(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el)).multiplyScalar(d).add(pose.target).applyMatrix4(headRig.matrixWorld);
+    cam.lookAt(pose.target.clone().applyMatrix4(headRig.matrixWorld));
+    cam.updateMatrixWorld();
+    try {
+      return engrave(renderer, scene, cam, size);
+    } finally {
+      hidden.forEach((o, i) => (o.visible = was[i]));
+      station.visible = stationWas;
+      head.setPlate(false);
+      runtime.invalidate();
+    }
+  }
+
   return {
     quality,
     profile,
@@ -451,7 +782,10 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
     },
     set onReady(fn) {
       onReady = fn;
-      if (ready) fn();
+      if (ready) fn?.();
+    },
+    set onProgress(fn) {
+      onProgress = fn;
     },
     set onLost(fn) {
       onLost = fn;
@@ -459,12 +793,17 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
     set onRestored(fn) {
       onRestored = fn;
     },
+    set onMirrorMode(fn) {
+      onMirrorMode = fn;
+    },
+    anchors,
+    mirror,
     onFrame(cb) {
       frameSubs.add(cb);
       return () => frameSubs.delete(cb);
     },
     setInput(next) {
-      Object.assign(input, next);
+      for (const k of INPUTS) if (typeof next[k] === 'number') input[k] = clamp01(next[k]);
       runtime.invalidate();
     },
     snap() {
@@ -481,32 +820,60 @@ export function createStage(canvas, { reducedMotion = false, look, tier, profile
       open = !!on;
       pole.setOpen(open);
       room.setOpen(open);
+      runtime.invalidate();
     },
     setMotion(on) {
       motionOn = !!on;
       pole.setMotion(motionOn);
+      runtime.invalidate();
     },
-    setLook(look2, { animate = true } = {}) {
-      currentLook = { ...look2 };
-      if (head && head.hair.mode === 'studio') {
-        if (animate && !reducedMotion) head.hair.change(currentLook);
-        else head.hair.change(currentLook, { duration: 0.01 });
+    setMirrorAngle(deg) {
+      mirrorAngle = clamp(+deg || 0, -35, 35);
+      hm?.setAngle(mirrorAngle);
+      runtime.invalidate();
+    },
+    /** Compute a program on the head (worker). base 'overgrown' | 'current'; resetParts grown back first. */
+    async prepare(program, { base = 'overgrown', resetParts = null } = {}) {
+      await headReady;
+      return head.hair.prepare(program, { guards: GUARDS, base, resetParts });
+    },
+    /** FilmState or null (back to the story through a 200 ms dip). */
+    setFilm(state) {
+      if (!state || !state.handle) {
+        if (film) {
+          backDip = reducedMotion ? 0 : DIP_S;
+          tools.reset();
+          clippings?.reset();
+          head?.hair.setLift(null);
+          head?.hair.setContact(null);
+        }
+        film = null;
+        filmHandle = null;
+      } else {
+        film = state;
       }
+      runtime.invalidate();
     },
+    renderPlate,
     setRunning(on) {
       runtime.setRunning(on);
     },
     resize,
-    // internals for the next scene tasks (C8/C11/C12) and QA pages
-    _internals: { scene, camera, rig, tools, get cape() { return cape; }, get head() { return head; }, headRig, runtime, governor },
+    // internals for QA pages
+    _internals: { scene, camera, rig, tools, get cape() { return cape; }, get head() { return head; }, get story() { return story; }, get hm() { return hm; }, cur, headRig, runtime, governor },
     dispose() {
       runtime.dispose();
       tools.dispose();
       cape?.dispose();
+      clippings?.dispose();
+      hm?.dispose();
       post?.dispose();
       pole.dispose();
       room.dispose();
       env.dispose();
+      dip.geometry.dispose();
+      dip.material.dispose();
+      head?.dispose();
       renderer.dispose();
     },
   };
