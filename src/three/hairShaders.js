@@ -59,7 +59,7 @@ export const NOISE_GLSL = /* glsl */ `
 
 // ------------------------------------------------------------ shell vertex
 export const HAIR_VERT = /* glsl */ `
-  attribute float aLayer;
+  attribute vec2 aLayer;     // per instance: height of this shell (0..1], 1 / shells in its LOD bucket
   attribute vec4 aFrom;      // state before the step: length, lift, foam, line-up
   attribute vec4 aTo;        // state after the step
   attribute float aSweep;    // where the tool front reaches this vertex (0..1)
@@ -133,11 +133,12 @@ export const HAIR_VERT = /* glsl */ `
       lift = max(lift, fl);
     }
 
-    float f = aLayer;
+    float f = aLayer.x;
     float bend = uBend * mix(0.8, 1.0, aTop);
     // volume is decoupled from length: long hair lies down along the comb and follows
     // the curve of the skull (lie); lift turns gravity into volume
-    float thick = min(len, 0.016 + 0.24 * len) * (1.0 + 1.4 * lift);
+    // lifted (blow-dried, combed up) hair stands more upright: its coat is a larger part of its length
+    float thick = mix(min(len, 0.016 + 0.24 * len), 0.5 * len, lift);
     // a guard or comb resting on the hair presses it down
     if (uContact.w > 0.0) thick *= 1.0 - 0.6 * (1.0 - smoothstep(0.6 * uContact.w, uContact.w, distance(position, uContact.xyz)));
     float s = len * bend * f * f;
@@ -159,7 +160,7 @@ export const HAIR_VERT = /* glsl */ `
     vLen = len;
     vThick = thick;
     vF = f;
-    vStep = ds / max(uLayers, 1.0);
+    vStep = ds * aLayer.y;
     vLift = lift;
     vec4 wp = modelMatrix * vec4(p, 1.0);
     vPosW = wp.xyz;
@@ -227,6 +228,9 @@ export const HAIR_FRAG = /* glsl */ `
     // natural hairline: feathered over ~1 cm, an untrimmed beard over a few mm; once lined up
     // (trimmer, razor: vLine) both are one crisp edge
     float featherH = smoothstep(0.0, 0.10, vEdge.x + 0.014 * (vnoise(vRest * 26.0) - 0.5));
+    // a fringe combed forward falls over the front hairline at full length and density
+    float fringeK = smoothstep(0.45, 0.8, dot(normalize(vComb), vec3(0.0, -0.45, 0.89))) * smoothstep(0.25, 0.45, vRest.z) * smoothstep(0.45, 0.6, vRest.y);
+    featherH = mix(featherH, smoothstep(-0.004, 0.02, vEdge.x + 0.01 * (vnoise(vRest * 26.0) - 0.5)), fringeK);
     float featherB = smoothstep(0.0, 0.035, vEdge.y + 0.01 * (vnoise(vRest * 31.0) - 0.5));
     float edgeT = mix(mix(featherH, 1.0, vLine), mix(featherB, 1.0, vLine), beardW);
     float razor = mix(mix(1.0, smoothstep(-aaH, aaH, vEdge.x), vLine), mix(1.0, smoothstep(-aaB, aaB, vEdge.y), vLine), beardW);
@@ -239,6 +243,8 @@ export const HAIR_FRAG = /* glsl */ `
     vec3 q = vRest - vClump.xyz * (k * 0.35);
     c = q * uDensity;
 
+    // a beard is trimmed to an even surface: less length scatter at its tips
+    float ragged = mix(uRagged, 0.07, beardW);
     vec3 dir = normalize(vComb);
     float stepC = vStep * uDensity;                // slide between shells, in cells
     float elong = clamp(stepC * 0.5, 0.0, 0.24);
@@ -258,15 +264,15 @@ export const HAIR_FRAG = /* glsl */ `
     float lod = lod0;
     vec3 rid = vec3(0.5), rid1 = vec3(0.5);
     float a0 = 0.0, a1 = 0.0, cover = 0.0;
-    if (lod0 < 0.999) a0 = rootField(c, n, dir, elong, r0, hf, uRagged, lenK, edgeT, aa, taper, rid);
+    if (lod0 < 0.999) a0 = rootField(c, n, dir, elong, r0, hf, ragged, lenK, edgeT, aa, taper, rid);
     if (lod0 > 0.001 && lod1 < 0.999) {
       float el1 = clamp(stepC / 6.0, 0.0, 0.24);
       float aa1 = clamp(px * 0.2, 1e-3, 0.08);
       float r1 = min(0.2, 0.357 - el1 - aa1) * mix(0.45, 1.0, edgeT);
-      a1 = rootField(c / 3.0 + 7.31, n, dir, el1, r1, hf, uRagged, lenK, edgeT, aa1, taper, rid1);
+      a1 = rootField(c / 3.0 + 7.31, n, dir, el1, r1, hf, ragged, lenK, edgeT, aa1, taper, rid1);
     }
     if (lod1 > 0.001) {
-      float tm = max(1.0 - hf / ((1.0 - 0.5 * uRagged) * lenK), 0.0);
+      float tm = max(1.0 - hf / ((1.0 - 0.5 * ragged) * lenK), 0.0);
       float rm = 0.2 * mix(0.45, 1.0, edgeT) * pow(tm, taper);
       cover = 0.7 * 3.14159 * rm * rm * 1.6 * clamp(edgeT / 0.9, 0.0, 1.0);
       // a sheet seen from afar: streaks along the comb carry the texture
@@ -308,7 +314,7 @@ export const HAIR_FRAG = /* glsl */ `
 
     vec3 root = mix(uRoot, uBeard, beardW);
     vec3 tip = mix(uTip, uBeard * 1.15, beardW);
-    float hue = 0.03 * (rnd.y * 2.0 - 1.0);
+    float hue = 0.02 * (rnd.y * 2.0 - 1.0);
     float val = 1.0 + 0.1 * (rnd.z * 2.0 - 1.0) + 0.12 * (lockR.x - 0.5) * smoothstep(0.0, 0.3, k);
     vec3 albedo = mix(root, tip, hf) * val * vec3(1.0 + hue, 1.0, 1.0 - hue);
     // a few white strands in a full beard
@@ -316,19 +322,24 @@ export const HAIR_FRAG = /* glsl */ `
 
     // light reaches into a thin coat, not into a thick one
     float depth = clamp(vThick / 0.035, 0.25, 1.0) * mix(0.35, 1.0, edgeT);
-    float shadow = exp(-(1.0 - hf) * 2.0 * depth);
+    // a beard is a looser, coarser coat than the scalp: light gets further into it
+    float shadow = exp(-(1.0 - hf) * mix(1.6, 1.2, beardW) * depth);
 
     float sparkle = 1.0;
     #ifndef HAIR_LOW
       sparkle = mix(0.6, 1.0, rnd.z);
     #endif
 
-    vec3 col = albedo * uAmb * mix(0.4, 1.0, hf);
+    vec3 col = albedo * uAmb * mix(0.4, 1.0, hf) * (1.0 + 0.8 * beardW);
+    // shells seen edge-on show their slices: keep the highlight off them
+    float grazeS = mix(0.3, 1.0, smoothstep(0.08, 0.35, nv));
     for (int i = 0; i < 2; i++) {
       vec3 Ld = i == 0 ? uKeyDir : uFillDir;
       vec3 lc = i == 0 ? uKeyCol : uFillCol;
       float nl = dot(N, Ld);
-      float wrap = clamp((nl + 0.3) / 1.3, 0.0, 1.0);
+      // the beard faces down and away from an overhead key: wrap it further round
+      float wk = mix(0.3, 0.55, beardW);
+      float wrap = clamp((nl + wk) / (1.0 + wk), 0.0, 1.0);
       float tl = dot(T, Ld);
       float kaj = sqrt(max(1.0 - tl * tl, 0.0));
       vec3 H = normalize(Ld + V);
@@ -337,13 +348,14 @@ export const HAIR_FRAG = /* glsl */ `
       float lum = dot(lc, vec3(0.2126, 0.7152, 0.0722));
       // pomade / oil: a stronger, slightly tighter fibre highlight
       float shine = mix(uShine, uBShine, beardW);
-      vec3 spec = vec3(1.0, 0.98, 0.95) * lum * lobe(T, N, H, 0.07, eR * (1.0 + shine)) * 0.12 * nR * (1.0 + 2.2 * shine);
+      vec3 spec = mix(vec3(1.0, 0.97, 0.93), albedo / max(dot(albedo, vec3(0.333)), 1e-3), 0.25) * lum * lobe(T, N, H, 0.07, eR * (1.0 + shine)) * 0.1 * nR * (1.0 + 0.9 * shine);
       #ifndef HAIR_LOW
         // TRT: the light comes back through the fibre, tinted by it (kept close to neutral)
-        vec3 tint = mix(vec3(1.0), albedo / max(dot(albedo, vec3(0.333)), 1e-3), 0.3);
-        spec += lc * tint * dot(albedo, vec3(0.333)) * 1.6 * lobe(T, N, H, -0.12, eT) * 0.4 * nT * sparkle;
+        // (luminance of the light, so a warm window never prints orange flecks on dark hair)
+        vec3 tint = mix(vec3(1.0), albedo / max(dot(albedo, vec3(0.333)), 1e-3), 0.15);
+        spec += lum * tint * dot(albedo, vec3(0.333)) * 1.6 * lobe(T, N, H, -0.12, eT) * 0.3 * nT * sparkle;
       #endif
-      col += lc * albedo * kaj * wrap * shadow + spec * vis * mix(0.35, 1.0, shadow) * shortK;
+      col += lc * albedo * kaj * wrap * shadow + min(spec, vec3(0.22)) * grazeS * vis * mix(0.35, 1.0, shadow) * shortK;
     }
     gl_FragColor = vec4(min(col, vec3(1.0)), alpha);
   }

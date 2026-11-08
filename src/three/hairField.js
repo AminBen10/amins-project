@@ -770,7 +770,9 @@ export function computeProgram(Gin, program, { guards = {}, start = null, resetP
               const w = zw ? zw[k] : 0;
               if (w <= 1e-3) continue;
               A[k * CH + 1] = A0[k * CH + 1] * (1 - w);
-              A[k * CH] = A0[k * CH] * (1 - w * sm(0.3, 0.8, G.bm[k]));
+              // the sideburn stops where the shader starts to treat the strip as beard (crisp
+              // beard line): left there it would print as thin dashes under the sideburn
+              A[k * CH] = A0[k * CH] * (1 - w * Math.max(sm(0.3, 0.8, G.bm[k]), sm(0.25, 0.4, G.bm[k] / (G.bm[k] + G.hm[k] + 1e-3))));
               A[k * CH + 3] = A0[k * CH + 3] * (1 - w);
               A[k * CH + 4] = lerp(A0[k * CH + 4], 1, w);
             }
@@ -781,7 +783,10 @@ export function computeProgram(Gin, program, { guards = {}, start = null, resetP
             for (let k = 0; k < n; k++) {
               if (G.bm[k] <= 0.02) continue;
               const y = G.pos[k * 3 + 1];
-              let cut = 1 - sm(neckY - 0.008, neckY + 0.008, y);
+              // the neckline runs from above the Adam's apple back up to behind the jaw angle,
+              // under the earlobe (a level line would leave a block of beard down the neck)
+              const lim = neckY + Math.min(0.5, Math.max(0, 1.4 * (0.24 - G.pos[k * 3 + 2])));
+              let cut = 1 - sm(lim - 0.008, lim + 0.008, y);
               // the cheek line only, not where the beard meets the sideburn
               if (cheekClean && y > -0.72 && y < LANDMARKS.PATILLA - 0.5 * DEDO && G.hm[k] < 0.01) {
                 cut = Math.max(cut, (1 - sm(0.024, 0.034, G.edge[k * 2 + 1])) * (1 - Z.moustache[k] / Math.max(Z.beard[k], 1e-3)));
@@ -1026,8 +1031,16 @@ export function gpuOf(G, s, pend = null) {
   for (let k = 0; k < n; k++) {
     const H = s.a[k * CH], B = s.a[k * CH + 1];
     const eH = G.edge[k * 2], eB = G.edge[k * 2 + 1];
-    const lh = G.hm[k] > 0.02 && H > 0 ? visMM(H) * MM * lerp(0.45, 1, sm(0, 0.09, eH)) * sm(-0.03, -0.005, eH) : 0;
-    const lb = G.bm[k] > 0.02 && B > 0 ? visMM(B) * MM * sm(-0.004, 0.004, eB) : 0;
+    // hair blown up and set (tupé, pompadour) keeps more of its real length: it stands, it does not lie
+    const lift = s.a[k * CH + 2];
+    // a fringe combed forward over the front hairline keeps its length to the edge
+    const fwd = s.c[k * 3 + 1] * -0.45 + s.c[k * 3 + 2] * 0.89;
+    const fringe = sm(0.45, 0.8, fwd) * sm(0.25, 0.45, G.pos[k * 3 + 2]) * sm(0.45, 0.6, G.pos[k * 3 + 1]);
+    const lh = G.hm[k] > 0.02 && H > 0 ? lerp(visMM(H), Math.max(visMM(H), 0.36 * H), sm(0.3, 0.9, lift)) * MM * lerp(lerp(0.45, 1, sm(0, 0.09, eH)), 1, fringe) * sm(-0.03, -0.005, eH) : 0;
+    // beard edges (cheek line, neckline) carry shorter, finer hair: no block of full-length
+    // strands hanging over the line; a lined-up beard keeps a little more length at its edge
+    const eTaper = lerp(lerp(0.3, 0.5, s.a[k * CH + 4]), 1, sm(0, 0.07, eB));
+    const lb = G.bm[k] > 0.02 && B > 0 ? visMM(B) * MM * sm(-0.004, 0.004, eB) * (B > 4 ? eTaper : 1) : 0;
     out[k * 4] = Math.max(lh, lb);
     out[k * 4 + 1] = lh >= lb ? s.a[k * CH + 2] : 0;
     out[k * 4 + 2] = pend ? Math.max(s.a[k * CH + 3], pend[k]) : s.a[k * CH + 3];

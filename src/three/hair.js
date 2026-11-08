@@ -60,7 +60,9 @@ function moustacheEdge(x, y, z) {
   const u = Math.min(Math.abs(x) / MC[0], 1.3);
   const lipTop = LU + (MC[1] - LU) * u * u + 0.012;
   // the top follows the nose wings and falls towards the nasolabial fold
-  return Math.min(SN - 0.012 - 0.07 * u * u - y, y - lipTop, MC[0] + 0.05 - Math.abs(x), z - (MC[2] - 0.12));
+  // the top is never a ruled line: it wanders a millimetre or two along the lip
+  const wob = 0.008 * (noise3(x * 38, y * 38, z * 38) - 0.5) + 0.006 * (noise3(x * 90 + 3.1, y * 90, z * 90) - 0.5);
+  return Math.min(SN - 0.016 - 0.06 * u * u - 0.03 * u * u * u * u + wob - y, y - lipTop, MC[0] + 0.05 - Math.abs(x), z - (MC[2] - 0.12));
 }
 function beardEdge(eb, x, y, z) {
   return Math.min(Math.max(eb, moustacheEdge(x, y, z)), y - NECKLINE);
@@ -157,8 +159,8 @@ export function hairUniforms({ tier = 'high' } = {}) {
     uGrey: { value: 0 },
     // dark brown, tips a little warmer and lighter
     uRoot: { value: new THREE.Color('#2a1b12') },
-    uTip: { value: new THREE.Color('#3b291d') },
-    uBeard: { value: new THREE.Color('#33231a') },
+    uTip: { value: new THREE.Color('#3b2d24') },
+    uBeard: { value: new THREE.Color('#463427') },
     // brief rig: cool overhead key, warm window fill, dim warm ambient (world dirs, linear colour)
     uKeyDir: { value: new THREE.Vector3(0.1, 0.9, 0.45).normalize() },
     uKeyCol: { value: new THREE.Color('#EEF2F5').multiplyScalar(1.4) },
@@ -288,6 +290,11 @@ function flowsAt(x, y, z, nx, ny, nz, out, o) {
   out[o + 6] = t[0]; out[o + 7] = t[1]; out[o + 8] = t[2];
 }
 
+// Shell LOD: bucket sizes (shell counts) and the target spacing between shells (head units).
+const LOD_NEED = [4, 7, 11, 16, 22, 32];
+const LOD_SPACING = 0.0035;
+const MAX_LAYERS = 32;
+
 const PARTS = ['consulta', 'laterales', 'arriba', 'barba', 'acabado'];
 const SIDE_ZONES = new Set(['sides', 'nape', 'sidesNape', 'contour']);
 const TOP_ZONES = new Set(['top', 'fringe', 'crown']);
@@ -321,7 +328,7 @@ export class Hair {
     // anatomy per vertex: top of the head vs sides (from the surface normal, so the weight
     // line follows the skull, not a fixed height), fringe, noise, comb flows
     this.top = new Float32Array(n);
-    this.front = new Float32Array(n);
+    this.fwd = new Float32Array(n); // 0..1 towards the fringe (hair.front is the tool-front function)
     this.noise = new Float32Array(n);
     this.flows = new Float32Array(n * 9);
     // legacy looks: which tool owns each vertex, and where along that tool's pass it sits
@@ -333,7 +340,7 @@ export class Hair {
       const nx = this.nrm[k * 3], ny = this.nrm[k * 3 + 1], nz = this.nrm[k * 3 + 2];
       const top = smooth(0.3, 0.72, ny + 0.25 * smooth(L_.SIEN, L_.FLEQUILLO, y) * smooth(0.1, 0.6, z));
       this.top[k] = top;
-      this.front[k] = smooth(-0.2, 0.75, z);
+      this.fwd[k] = smooth(-0.2, 0.75, z);
       this.noise[k] = noise3(x * 7, y * 7, z * 7);
       flowsAt(x, y, z, nx, ny, nz, this.flows, k * 9);
       const wb = smooth(-0.15, 0.15, this.bm[k] - this.hm[k]);
@@ -349,7 +356,7 @@ export class Hair {
     // engine inputs (hairField.computeProgram): sent to the worker once
     this.engineInput = {
       pos: this.pos, nrm: this.nrm, hm: this.hm, bm: this.bm, edge: this.edge,
-      top: this.top, front: this.front, noise: this.noise, flows: this.flows,
+      top: this.top, front: this.fwd, noise: this.noise, flows: this.flows,
     };
     this.G = null; // engineGeometry on the main thread (fallback only)
 
@@ -424,10 +431,38 @@ export class Hair {
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -2,
     });
+
+    // Shell LOD: triangles are sorted by how many shells their hair needs (thickness / 0.35 mm),
+    // into one shared index buffer; each bucket is its own draw over a range of it, with its own
+    // instance count and per-instance layer heights. Triangles with only sub-shell hair (fades,
+    // shaved skin, the head shader paints them) are not drawn at all. All buckets share the
+    // vertex attributes and the material: no extra uploads, no extra programs.
+    this.tris = src.indices;
+    this.triCount = src.indices.length / 3;
+    this.lodIndex = new THREE.BufferAttribute(src.indices.slice(), 1);
+    this.lodIndex.setUsage(THREE.DynamicDrawUsage);
+    this.triNeed = new Uint8Array(this.triCount);
+    this.vNeed = new Float32Array(n);
+    this.mesh = new THREE.Group();
+    this.mesh.name = 'hair';
+    this.buckets = LOD_NEED.map((need) => {
+      const g = new THREE.InstancedBufferGeometry();
+      g.setIndex(this.lodIndex);
+      for (const [name, attr] of Object.entries(geo.attributes)) g.setAttribute(name, attr);
+      const aLayer = new THREE.InstancedBufferAttribute(new Float32Array(64), 2);
+      g.setAttribute('aLayer', aLayer);
+      g.setDrawRange(0, 0);
+      g.instanceCount = 0;
+      const m = new THREE.Mesh(g, this.material);
+      m.frustumCulled = false;
+      m.renderOrder = 1;
+      m.visible = false;
+      this.mesh.add(m);
+      return { need, geometry: g, aLayer, mesh: m, layers: 0 };
+    });
+    this.liftBoost = false;
+    this.layers = 0;
     this.setLayers(layers);
-    this.mesh = new THREE.Mesh(geo, this.material);
-    this.mesh.frustumCulled = false;
-    this.mesh.renderOrder = 1;
 
     this.cache = new Map();
     this.pairKey = '';
@@ -452,25 +487,81 @@ export class Hair {
     return { root: u.uRoot.value, tip: u.uTip.value, beard: u.uBeard.value };
   }
 
-  // Shell count at runtime (governor / mirror pass): rewrites the per-instance layer values in
-  // place (no new program, no new geometry) and sets instanceCount. Shell i sits at (i+1)/n of
-  // the strand: the scalp under the hair is painted by the head shader.
+  // Shell count at runtime (governor / mirror pass): only instance counts and the per-instance
+  // layer heights change (no new program, no new geometry). Shell i of a bucket with k shells
+  // sits at (i+1)/k of the strand: the scalp under the hair is painted by the head shader.
   setLayers(layers) {
-    const n = Math.max(2, Math.round(layers));
+    const n = Math.max(2, Math.min(MAX_LAYERS, Math.round(layers)));
     if (this.layers === n) return;
     this.layers = n;
-    let attr = this.geometry.getAttribute('aLayer');
-    if (!attr || attr.count < n) {
-      attr = new THREE.InstancedBufferAttribute(new Float32Array(Math.max(n, 32)), 1);
-      this.geometry.setAttribute('aLayer', attr);
-    }
-    for (let i = 0; i < n; i++) attr.array[i] = (i + 1) / n;
-    attr.needsUpdate = true;
-    this.geometry.instanceCount = n;
     this.uniforms.uLayers.value = n;
+    this.applyLayers();
+  }
+
+  applyLayers() {
+    const L = this.layers;
+    for (const b of this.buckets) {
+      const k = Math.max(2, Math.min(L, b.need));
+      b.geometry.instanceCount = k;
+      if (b.layers === k) continue;
+      b.layers = k;
+      const a = b.aLayer.array;
+      for (let i = 0; i < k; i++) {
+        a[i * 2] = (i + 1) / k;
+        a[i * 2 + 1] = 1 / k;
+      }
+      b.aLayer.needsUpdate = true;
+    }
+  }
+
+  // Re-sorts the shell triangles into the LOD buckets for the pair of states on the GPU
+  // (A, B: vec4 per vertex, length and lift first). Called when the step or look changes.
+  rebucket(A, B) {
+    const n = this.count, vn = this.vNeed, boost = this.liftBoost;
+    for (let k = 0; k < n; k++) {
+      const len = Math.max(A[k * 4], B[k * 4]);
+      if (len < 0.016) {
+        vn[k] = -1;
+        continue;
+      }
+      const lift = boost && len > 0.03 && this.hm[k] > 0.3 ? 1 : Math.max(A[k * 4 + 1], B[k * 4 + 1]);
+      vn[k] = mix(Math.min(len, 0.016 + 0.24 * len), 0.5 * len, lift) / LOD_SPACING;
+    }
+    const T = this.tris, tn = this.triNeed, nb = this.buckets.length;
+    const counts = new Uint32Array(nb + 1);
+    for (let t = 0; t < this.triCount; t++) {
+      const v = Math.max(vn[T[t * 3]], vn[T[t * 3 + 1]], vn[T[t * 3 + 2]]);
+      let bi = nb; // skipped
+      if (v >= 0) {
+        // one layer of hysteresis: a triangle gets the bucket above its exact need
+        const need = v + 1;
+        bi = 0;
+        while (bi < nb - 1 && this.buckets[bi].need < need) bi++;
+      }
+      tn[t] = bi;
+      counts[bi]++;
+    }
+    const start = new Uint32Array(nb + 1);
+    for (let i = 1; i <= nb; i++) start[i] = start[i - 1] + counts[i - 1];
+    const out = this.lodIndex.array, fill = start.slice();
+    for (let t = 0; t < this.triCount; t++) {
+      const bi = tn[t];
+      if (bi === nb) continue;
+      const o = fill[bi]++ * 3;
+      out[o] = T[t * 3];
+      out[o + 1] = T[t * 3 + 1];
+      out[o + 2] = T[t * 3 + 2];
+    }
+    this.lodIndex.needsUpdate = true;
+    this.buckets.forEach((b, i) => {
+      b.geometry.setDrawRange(start[i] * 3, counts[i] * 3);
+      b.mesh.visible = counts[i] > 0;
+    });
+    this.lodStats = Array.from(counts);
   }
 
   dispose() {
+    for (const b of this.buckets) b.geometry.dispose();
     this.geometry.dispose();
     this.material.dispose();
     this.handles.clear();
@@ -595,6 +686,7 @@ export class Hair {
     }
     this.headFrom.needsUpdate = this.headTo.needsUpdate = this.headSweep.needsUpdate = true;
     this.pairKey = `h${handle.id}:${i}`;
+    this.rebucket(this.from.array, this.to.array);
   }
 
   /**
@@ -660,8 +752,10 @@ export class Hair {
     const u = this.uniforms;
     if (!centre) {
       u.uLiftAmt.value = 0;
+      this.setBoost(false);
       return;
     }
+    this.setBoost(amount > 0);
     const c = Array.isArray(centre) ? centre : [centre.x, centre.y, centre.z];
     u.uLift.value.set(c[0], c[1], c[2], radius);
     u.uLiftAmt.value = clamp(amount, 0, 1);
@@ -669,6 +763,13 @@ export class Hair {
       const d = Array.isArray(dir) ? dir : [dir.x, dir.y, dir.z];
       u.uLiftDir.value.set(d[0], d[1], d[2]).normalize();
     }
+  }
+
+  // lifted hair stands up to 2.4x thicker: give the long hair its full shells while a lift is on
+  setBoost(on) {
+    if (this.liftBoost === on) return;
+    this.liftBoost = on;
+    this.rebucket(this.from.array, this.to.array);
   }
 
   /** A tool resting on the hair (guard, comb): hair within radius of centre is pressed flat. */
@@ -696,7 +797,7 @@ export class Hair {
     for (let k = 0; k < n; k++) {
       const x = this.pos[k * 3], y = this.pos[k * 3 + 1], z = this.pos[k * 3 + 2];
       ctx.top = this.top[k];
-      ctx.front = this.front[k];
+      ctx.front = this.fwd[k];
       ctx.n = this.noise[k];
       ctx.side = clamp(x * 4, -1, 1);
       ctx.chin = smooth(P_.lip_lower[1], P_.pogonion[1], y) * smooth(0.15, 0.5, z);
@@ -765,6 +866,7 @@ export class Hair {
     }
     this.headFrom.needsUpdate = this.headTo.needsUpdate = true;
     this.pairKey = key;
+    this.rebucket(A, B);
     this.uniforms.uLegacy.value = 1;
     this.shown = null;
   }
