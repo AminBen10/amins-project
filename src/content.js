@@ -4,15 +4,6 @@ import { priceLabel } from './price.js';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
-const CROWN = `
-        <svg class="brand__mark" viewBox="0 0 34 24" aria-hidden="true">
-          <path d="M4 19h26l2.6-12.5-8.2 5.6L17 3l-7.4 9.1-8.2-5.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-          <path d="M5 22.2h24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-          <circle cx="17" cy="3" r="1.6" fill="currentColor" />
-          <circle cx="1.6" cy="6.4" r="1.4" fill="currentColor" />
-          <circle cx="32.4" cy="6.4" r="1.4" fill="currentColor" />
-        </svg>`;
-
 const POLE = `
         <svg class="brand__mark brand__mark--pole" viewBox="0 0 14 30" aria-hidden="true">
           <defs><clipPath id="pole-clip"><rect x="3" y="5" width="8" height="20" rx="1" /></clipPath></defs>
@@ -27,8 +18,8 @@ const POLE = `
           <path d="M5 26h4l-2 3.4z" fill="currentColor" />
         </svg>`;
 
-export function brandMark(c) {
-  return c.BRAND.mark === 'pole' ? POLE : CROWN;
+export function brandMark() {
+  return POLE;
 }
 
 export function navLinks(c) {
@@ -49,7 +40,7 @@ export function servicesBoard(c) {
           <div class="board__line">
             <h3 class="board__name">${esc(s.name)}</h3>
             <span class="board__dots" aria-hidden="true"></span>
-            <span class="board__price">${priceLabel(s.price, c.PRICES_FROM)}</span>
+            <span class="board__price">${priceLabel(s.price, s.from)}</span>
           </div>
           <p class="board__desc">${esc(s.desc)} <span class="board__time">${s.minutes} min</span></p>
         </li>`,
@@ -93,7 +84,7 @@ export function teamSection(c) {
               <span class="barber__mono" aria-hidden="true">${esc(b.name[0])}</span>
               <div>
                 <h3 class="barber__name">${esc(b.name)}</h3>
-                <p class="barber__spec">${esc(b.specialty)}</p>
+                <p class="barber__spec">${esc(b.chair)} · ${esc(b.days)} · ${esc(b.knownFor)}</p>
               </div>
             </li>`,
   ).join('');
@@ -101,7 +92,7 @@ export function teamSection(c) {
       <section id="equipo" class="team" aria-labelledby="team-title">
         <div class="wrap">
           <p class="eyebrow">Equipo</p>
-          <h2 id="team-title" class="h2">${esc(c.COPY.teamTitle)}</h2>
+          <h2 id="team-title" class="h2">Las sillas</h2>
           <ul class="team__list">${cards}
           </ul>
         </div>
@@ -138,7 +129,7 @@ export function bookingServices(c) {
               <input type="radio" name="service" id="service-${s.id}" value="${s.id}"${s.id === lookService ? ' checked' : ''}>
               <span class="option__body">
                 <span class="option__name">${esc(s.name)}</span>
-                <span class="option__meta">${s.minutes} min · ${priceLabel(s.price, c.PRICES_FROM)}</span>
+                <span class="option__meta">${s.minutes} min · ${priceLabel(s.price, s.from)}</span>
               </span>
             </label>`,
   ).join('');
@@ -157,11 +148,17 @@ export function bookingBarberStep(c) {
 
 export function pitchBadge(c) {
   if (!c.PITCH) return '';
-  return `<aside class="pitch" id="pitch" aria-label="Aviso"><b>${esc(c.PITCH.label)}</b><span>${esc(c.PITCH.note)}</span><button type="button" class="pitch__close" id="pitch-close" aria-label="Ocultar aviso">×</button></aside>`;
+  return `<aside class="pitch" id="pitch" aria-label="Aviso"><span>${esc(c.PITCH.strip)}</span><button type="button" class="pitch__close" id="pitch-close">${esc(c.PITCH.close)}</button></aside>`;
 }
 
+// Footer line: the proposal notice (BK) or the example-shop notice (CR).
 export function pitchFooter(c) {
-  return c.PITCH ? `<p class="foot__pitch">${esc(c.PITCH.label)}. ${esc(c.PITCH.note)}</p>` : '';
+  const line = c.PITCH ? c.PITCH.door : c.EXAMPLE_NOTICE;
+  return line ? `<p class="foot__pitch">${esc(line)}</p>` : '';
+}
+
+export function heroFacts(c) {
+  return c.COPY.facts.map(esc).join('<br />');
 }
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -181,7 +178,7 @@ export function jsonLd(c) {
       addressCountry: 'ES',
     },
     openingHoursSpecification: Object.entries(c.OPENING)
-      .filter(([, h]) => h)
+      .filter(([, h]) => Array.isArray(h))
       .map(([d, [opens, closes]]) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: `https://schema.org/${WEEKDAYS[d]}`, opens, closes })),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -194,6 +191,8 @@ export function jsonLd(c) {
     },
   };
   if (c.BRAND.url) data.url = c.BRAND.url;
+  const sameAs = [c.BRAND.treatwell].filter(Boolean);
+  if (sameAs.length) data.sameAs = sameAs;
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 }
 
@@ -213,6 +212,7 @@ export function renderPage(html, c) {
     bookingBarberStep,
     pitch: pitchBadge,
     pitchFooter,
+    heroFacts,
     jsonld: jsonLd,
   };
   let out = html.replace(/<!--@(\w+)-->/g, (m, name) => (blocks[name] ? blocks[name](c) : m));
