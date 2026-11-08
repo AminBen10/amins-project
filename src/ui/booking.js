@@ -256,6 +256,15 @@ export function initBooking({ onCut } = {}) {
 
   // ---------------------------------------------------------------- events
 
+  // Guided advance on phones: bring the next field into view (never focus it: no keyboard pop-up).
+  const phone = matchMedia('(max-width: 699px), (pointer: coarse)');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  function guide(el) {
+    if (!el || !phone.matches) return;
+    const behavior = still.matches || document.documentElement.dataset.motion === 'off' ? 'instant' : 'smooth';
+    requestAnimationFrame(() => el.scrollIntoView({ behavior, block: 'nearest' }));
+  }
+
   daysEl.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-day]');
     if (!btn || btn.disabled) return;
@@ -264,6 +273,7 @@ export function initBooking({ onCut } = {}) {
     state.dayKey = '';
     renderDays();
     daysEl.querySelector(`[data-day="${state.day}"]`)?.focus();
+    guide(slotsEl);
   });
 
   slotsEl.addEventListener('click', (e) => {
@@ -272,6 +282,7 @@ export function initBooking({ onCut } = {}) {
     state.time = btn.dataset.time;
     renderSlots();
     slotsEl.querySelector(`[data-time="${state.time}"]`)?.focus();
+    guide(nameIn);
   });
 
   form.addEventListener('change', (e) => {
