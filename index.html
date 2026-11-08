@@ -80,6 +80,7 @@
             </form>
           </div>
           <div id="recipe" class="carta__recipe"></div>
+          <!--@cartaEmpty-->
           <div id="carta-player" class="player">
             <p id="film-title" class="player__title"></p>
             <p id="film-caption" class="player__caption" aria-live="polite">Toca un corte para ver cómo se hace.</p>
@@ -97,6 +98,10 @@
               <button type="button" class="textbtn" data-view="frente" aria-pressed="true">De frente</button>
               <button type="button" class="textbtn" data-view="perfil" aria-pressed="false">De perfil</button>
               <button type="button" class="textbtn" data-view="nuca" aria-pressed="false">La nuca</button>
+            </div>
+            <div class="player__more">
+              <button type="button" class="textbtn" data-player-sheet="recipe" aria-expanded="false" aria-controls="recipe">Receta</button>
+              <button type="button" class="textbtn" data-player-sheet="composer" aria-expanded="false" aria-controls="composer" hidden>Cambiar</button>
             </div>
           </div>
           <noscript>

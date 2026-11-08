@@ -143,6 +143,8 @@
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   --wide: 1240px;
   --edge: max(var(--gutter), calc((100vw - var(--wide)) / 2));
+  /* Desktop: everything left of --split is paper and notes; the head is framed right of it. */
+  --split: clamp(420px, 48vw, 760px);
 }
 
 /* BK: aluminium shopfront and a galvanised shutter; felt board for the tarifa. */
@@ -428,10 +430,10 @@ html.no-js #mirror-frame {
 /* Where the head is framed: the right of the glass on desktop, the top on phones. */
 #mirror-window {
   position: fixed;
-  top: calc(var(--nav-h) + 24px);
+  top: calc(var(--nav-h) + 112px);
   right: 24px;
-  bottom: 24px;
-  left: 42%;
+  bottom: 192px;
+  left: calc(var(--split) + 24px);
   pointer-events: none;
   visibility: hidden;
 }
@@ -1145,12 +1147,19 @@ html.js:not(.no-webgl) .carta {
   font-size: clamp(2rem, 3.6vw, 3.25rem);
 }
 
+.carta {
+  --cx: calc(clamp(10px, 2vw, 24px) + clamp(20px, 5vw, 96px));
+}
+
+/* The sheet ends at --split, so the head (framed right of it) is never under paper. */
 .carta__grid {
   display: grid;
-  grid-template-columns: minmax(0, 640px) minmax(0, 1fr);
-  grid-template-areas: 'sheet side';
+  grid-template-columns: minmax(0, calc(var(--split) - var(--cx) - 24px)) minmax(0, 1fr);
+  grid-template-areas: 'sheet side' 'recipe side';
+  grid-template-rows: auto 1fr;
   align-items: start;
-  gap: clamp(28px, 4vw, 72px);
+  column-gap: 48px;
+  row-gap: 32px;
 }
 
 .carta__sheet {
@@ -1423,39 +1432,66 @@ html.js:not(.no-webgl) .carta {
 }
 
 html.js:not(.no-webgl) .carta__recipe {
-  grid-area: sheet;
+  grid-area: recipe;
 }
 
-/* With the 3D the recipe takes the sheet's place while a cut is open. */
-html.js:not(.no-webgl) .carta__grid:has(.carta__recipe:not(:empty)) .carta__sheet {
+/* With the 3D the recipe takes the sheet's place while a cut is open; with the
+   composer open the sheet stays and the recipe card follows it. */
+html.js:not(.no-webgl) .carta__grid:has(.carta__recipe:not(:empty)):not(:has(#composer:not([hidden]))) .carta__sheet {
   display: none;
 }
 
 html[data-stage='ready'] #carta-player {
+  grid-row: 1 / span 2;
+}
+
+/* The player is grease pencil on the mirror around the head: the title card and
+   the views above it, the caption and the transport under it. It stays in view
+   while the sheet scrolls, and its middle row is the head's (#mirror-window). */
+html[data-stage='ready'] #carta-player {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
   display: grid;
-  align-content: space-between;
-  min-height: min(76vh, 760px);
-  gap: 20px;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  grid-template-areas: 'title' 'views' 'head' 'caption' 'controls';
+  height: calc(100vh - var(--nav-h) - 48px);
+  max-height: 900px;
   color: var(--note);
 }
 
 .player__title {
+  grid-area: title;
+  min-height: 1.05em;
+  padding-right: 9rem;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  font-size: clamp(1.75rem, 2.4vw, 2.375rem);
   line-height: 1.05;
 }
 
 .player__caption {
+  grid-area: caption;
   font-family: var(--font-pencil);
   font-weight: 500;
-  font-size: clamp(1.375rem, 2vw, 1.875rem);
+  font-size: clamp(1.375rem, 1.8vw, 1.75rem);
   line-height: 1.15;
-  max-width: 28ch;
+  max-width: 30ch;
+  min-height: 2.3em;
+  display: flex;
+  align-items: flex-end;
+}
+
+.player__controls {
+  grid-area: controls;
+}
+
+.player__views {
+  grid-area: views;
 }
 
 .player__controls,
-.player__views {
+.player__views,
+.player__more {
   display: flex;
   flex-wrap: wrap;
   column-gap: 22px;
@@ -1465,8 +1501,63 @@ html[data-stage='ready'] #carta-player {
   text-decoration-thickness: 3px;
 }
 
+/* Back to the chart sits with the title card, top right. */
+html[data-stage='ready'] #carta-player [data-film='back'] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-top: 0;
+}
+
+/* 'Receta' and 'Cambiar' exist for the phone player only. */
+.player__more {
+  display: none;
+}
+
+/* Nothing to play yet: the caption says so, the transport waits. */
+.carta__grid:has(.carta__recipe:empty) .player__controls,
+.carta__grid:has(.carta__recipe:empty) .player__views {
+  visibility: hidden;
+}
+
 .carta__templates {
   display: none;
+}
+
+/* Empty state without the 3D: the tools on the glass and one line. */
+.carta__empty {
+  grid-area: side;
+  display: none;
+  justify-items: start;
+  gap: 18px;
+  position: sticky;
+  top: calc(var(--nav-h) + 48px);
+  padding-top: clamp(24px, 4vw, 64px);
+  color: var(--chrome);
+}
+
+html.js.no-webgl .carta__grid:has(.carta__recipe:empty) .carta__empty {
+  display: grid;
+}
+
+.carta__empty-tools {
+  display: grid;
+  gap: 10px;
+  width: min(300px, 70%);
+}
+
+.carta__empty-tools .drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.carta__empty-line {
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.15;
+  color: var(--note);
 }
 
 /* --- The recipe card (renderRecipe): printed on the same paper. --- */
@@ -1579,12 +1670,38 @@ html[data-stage='ready'] #carta-player {
 }
 
 .recipe__tarifa {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
   margin-top: 22px;
-  font-size: 1.125rem;
+  padding: 10px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
 
 .recipe__tarifa .recipe__v {
   font-weight: 500;
+  font-size: 1.125rem;
+}
+
+/* The recipe is taped to the glass like the sheet it replaces. */
+.carta__recipe .recipe {
+  position: relative;
+}
+
+.carta__recipe .recipe::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 104px;
+  height: 28px;
+  margin-left: -52px;
+  background: rgba(226, 219, 201, 0.78);
+  border-left: 1px dashed rgba(0, 0, 0, 0.08);
+  border-right: 1px dashed rgba(0, 0, 0, 0.08);
+  transform: rotate(-1.5deg);
 }
 
 .recipe__guia {
@@ -2256,22 +2373,27 @@ html.no-js .book__live {
   display: none;
 }
 
-/* --- The cream appointment card. --- */
+/* --- The cream appointment card: torn from the book's pad (perforated top
+   edge), the shop's printed header, the rows filled in by hand; under a
+   perforation, the back, 'Para el barbero', for the chair. --- */
 .card {
   margin-top: 40px;
   display: grid;
-  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
-  gap: 40px;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
 
 .card__front {
-  padding: 30px 30px 24px;
+  --perf: radial-gradient(circle 4px at 8px 0, transparent 96%, #000) -8px 0 / 16px 100% repeat-x;
+  position: relative;
+  padding: 30px 30px 0;
   background: var(--paper);
   color: var(--ink);
-  /* Perforated top edge. */
-  -webkit-mask: radial-gradient(circle 5px at 9px 0, transparent 98%, #000) -9px 0 / 18px 100% repeat-x;
-  mask: radial-gradient(circle 5px at 9px 0, transparent 98%, #000) -9px 0 / 18px 100% repeat-x;
+  -webkit-mask: var(--perf);
+  mask: var(--perf);
+  transform: rotate(-1deg);
+  transform-origin: 30% 0;
 }
 
 .card__header {
@@ -2286,30 +2408,73 @@ html.no-js .book__live {
 
 .card__row {
   display: grid;
-  grid-template-columns: 6rem minmax(0, 1fr);
-  padding: 8px 0;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: baseline;
+  padding: 7px 0 5px;
   border-bottom: 1px solid var(--rule-paper);
 }
 
 .card__row dt {
   font-family: var(--font-pencil);
   font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Filled in with the pencil voice. */
+.card__row dd {
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: 1.3125rem;
+  line-height: 1.2;
 }
 
 .card__back {
-  margin-top: 16px;
-  font-size: 0.9375rem;
+  position: relative;
+  margin: 22px -30px 0;
+  padding: 26px 30px 26px;
+  border-top: 2px dotted #a99c82;
+  background: #e8dfcc;
+  font-size: 1rem;
+  line-height: 1.45;
 }
 
+/* Notches at both ends of the tear line. */
+.card__back::before,
+.card__back::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--counter);
+}
+
+.card__back::before { left: -7px; }
+.card__back::after { right: -7px; }
+
 .card__k {
-  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card__text {
+  padding-top: 18px;
+  max-width: 36rem;
 }
 
 .card__title {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
-  line-height: 1.1;
+  font-size: clamp(1.625rem, 2.2vw, 2rem);
+  line-height: 1.12;
 }
 
 .card__body,
@@ -2319,11 +2484,16 @@ html.no-js .book__live {
   color: #d9d6cf;
 }
 
+.card__demo {
+  padding-left: 14px;
+  border-left: 2px solid var(--chrome-line);
+}
+
 .card__actions {
-  margin-top: 16px;
+  margin-top: 18px;
   display: flex;
   flex-wrap: wrap;
-  column-gap: 24px;
+  column-gap: 26px;
 }
 
 /* ==========================================================================
@@ -2522,26 +2692,231 @@ html.no-js .beat {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Phone player: the top of the screen is the mirror, the controls sit below. */
+  /* On phones the player exists only while it is open (motion: html.player-open). */
+  html[data-stage='ready'] #carta-player {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Phone player (html.player-open, < 900px): the whole screen is the station.
+   Top 58% is the mirror (the canvas shows through), the bottom panel is the
+   cape: a large caption and the transport, every target 44px or more.
+   ========================================================================== */
+@media (max-width: 899px) {
+  html.player-open {
+    overflow: hidden;
+  }
+
+  html.player-open body > :not(#stage) {
+    visibility: hidden;
+  }
+
+  html.player-open #mirror-window {
+    top: calc(56px + env(safe-area-inset-top, 0px));
+    left: 0;
+    right: 0;
+    bottom: auto;
+    height: calc(58svh - 56px);
+  }
+
   html.player-open #carta-player {
+    visibility: visible;
     position: fixed;
     inset: 0;
     z-index: 40;
     display: grid;
-    grid-template-rows: 58svh auto;
-    align-content: stretch;
+    grid-template-rows: 58svh minmax(0, 1fr);
+    grid-template-areas: 'mirror' 'panel';
+    height: auto;
+    max-height: none;
+    padding: 0;
+    color: var(--note);
+  }
+
+  /* The title card is pencil on the glass, top left; 'Volver' top right. */
+  html.player-open #carta-player .player__title {
+    grid-area: mirror;
+    align-self: start;
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 108px 0 16px;
+    font-size: 1.5rem;
+  }
+
+  html.player-open #carta-player [data-film='back'] {
+    position: fixed;
+    top: calc(4px + env(safe-area-inset-top, 0px));
+    right: 16px;
+    z-index: 41;
+  }
+
+  /* The views sit on the glass, just above the panel. */
+  html.player-open #carta-player .player__views {
+    grid-area: mirror;
+    align-self: end;
+    justify-content: center;
+    column-gap: 26px;
+    padding: 0 16px 2px;
+  }
+
+  html.player-open #carta-player .player__caption,
+  html.player-open #carta-player .player__controls,
+  html.player-open #carta-player .player__more {
+    grid-area: panel;
+    background: var(--cape);
+  }
+
+  html.player-open #carta-player::after {
+    content: '';
+    grid-area: panel;
+    border-top: 1px solid var(--chrome-line);
+    background: var(--cape);
+    z-index: -1;
+  }
+
+  html.player-open #carta-player .player__caption {
+    align-self: start;
+    align-items: flex-start;
     min-height: 0;
+    max-width: none;
+    padding: 14px 16px 0;
+    font-size: clamp(1.375rem, 6vw, 1.625rem);
+    line-height: 1.15;
+    background: none;
+  }
+
+  /* Transport: step back · play/pause/resume · step on, then repeat and the result. */
+  html.player-open #carta-player .player__controls {
+    align-self: end;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-areas:
+      'prev prev play play next next'
+      'repeat repeat repeat finish finish finish';
+    margin-bottom: 52px;
+    padding: 0 8px;
+    column-gap: 0;
+    background: none;
+  }
+
+  html.player-open #carta-player .player__controls .textbtn {
+    min-height: 48px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  html.player-open #carta-player [data-film='prev'] { grid-area: prev; text-align: left !important; }
+  html.player-open #carta-player [data-film='next'] { grid-area: next; text-align: right !important; }
+  html.player-open #carta-player [data-film='play'],
+  html.player-open #carta-player [data-film='pause'],
+  html.player-open #carta-player [data-film='resume'] { grid-area: play; font-size: 1.375rem; }
+  html.player-open #carta-player [data-film='repeat'] { grid-area: repeat; }
+  html.player-open #carta-player [data-film='finish'] { grid-area: finish; }
+
+  html.player-open #carta-player .player__more {
+    align-self: end;
+    display: flex;
+    justify-content: center;
+    column-gap: 40px;
+    padding: 0 16px env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid var(--chrome-line);
+    background: none;
+  }
+
+  html.player-open #carta-player .player__more .textbtn {
+    min-height: 52px;
+  }
+
+  html.player-open #carta-player .player__more [aria-expanded='true'] {
+    text-decoration-thickness: 3px;
+  }
+
+  /* 'Receta' / 'Cambiar' (motion sets html[data-player-sheet]): the card or the
+     composer slides over the panel and the lower mirror; the toggles stay put. */
+  html.player-open[data-player-sheet='recipe'] #recipe,
+  html.player-open[data-player-sheet='composer'] #composer {
+    visibility: visible;
+    position: fixed;
+    top: 34svh;
+    left: 0;
+    right: 0;
+    bottom: calc(53px + env(safe-area-inset-bottom, 0px));
+    z-index: 42;
+    display: block;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin: 0;
+    padding: 20px 16px 28px;
+    background: var(--paper);
+    color: var(--ink);
+    border-top: 1px solid var(--ink);
+  }
+
+  html.player-open[data-player-sheet='recipe'] #recipe .recipe {
     padding: 0;
   }
 
-  html.player-open #carta-player > * {
-    background: var(--cape);
-    padding: 0 16px;
+  html.player-open[data-player-sheet='recipe'] #recipe *,
+  html.player-open[data-player-sheet='composer'] #composer * {
+    visibility: visible;
+  }
+
+  html.player-open #carta-player .player__more {
+    position: relative;
+    z-index: 43;
+  }
+}
+
+/* Phone held sideways: mirror left, panel right. */
+@media (max-width: 899px) and (orientation: landscape) and (max-height: 500px) {
+  html.player-open #mirror-window {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: 56vw;
+    height: auto;
+  }
+
+  html.player-open #carta-player {
+    grid-template-rows: none;
+    grid-template-columns: 56vw minmax(0, 1fr);
+    grid-template-areas: 'mirror panel';
+  }
+
+  html.player-open #carta-player::after {
+    border-top: 0;
+    border-left: 1px solid var(--chrome-line);
   }
 
   html.player-open #carta-player .player__title {
-    background: transparent;
-    padding-top: calc(var(--nav-h) + 16px);
+    padding-right: 16px;
+    font-size: 1.25rem;
+  }
+
+  html.player-open #carta-player [data-film='back'] {
+    top: 0;
+    right: auto;
+    left: calc(56vw + 16px);
+  }
+
+  html.player-open #carta-player .player__caption {
+    padding-top: 52px;
+    font-size: 1.25rem;
+  }
+
+  html.player-open #carta-player .player__controls {
+    margin-bottom: 52px;
+  }
+
+  html.player-open #carta-player .player__controls .textbtn {
+    min-height: 44px;
+    padding: 10px 6px;
+  }
+
+  html.player-open[data-player-sheet='recipe'] #recipe,
+  html.player-open[data-player-sheet='composer'] #composer {
+    top: 0;
+    left: 56vw;
   }
 }
 
@@ -2689,8 +3064,12 @@ html.no-js .beat {
   }
 
   .family__plates {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+
+  .plate__name {
+    font-size: 1.0625rem;
   }
 
   .plate__alias,
@@ -2849,4 +3228,23 @@ html[data-motion='off'] *::before,
 html[data-motion='off'] *::after {
   transition-duration: 0s !important;
   animation-duration: 0s !important;
+}
+
+@media (max-width: 899px) {
+  html.player-open .carta__recipe .recipe::before {
+    display: none;
+  }
+}
+
+@media (max-width: 359px) {
+  .family__plates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Without JS the right page of the book is a blank ruled page under the links. */
+html.no-js .book__page--right {
+  background:
+    linear-gradient(90deg, #e4dac6 0 10px, transparent 10px),
+    repeating-linear-gradient(to bottom, transparent 0 45px, var(--rule-paper) 45px 46px) 0 260px / 100% calc(100% - 300px) no-repeat;
 }

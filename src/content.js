@@ -340,6 +340,15 @@ export function cartaPlates(c) {
   return out.join('');
 }
 
+// Without the 3D, before a cut is chosen: the scissors and comb on the glass
+// and the line that says what to do (copy deck carta.empty).
+export function cartaEmpty() {
+  return `<div class="carta__empty" aria-hidden="true">
+            <span class="carta__empty-tools">${DRAWINGS.scissors}${DRAWINGS.comb}</span>
+            <p class="carta__empty-line">Toca un corte para ver cómo se hace.</p>
+          </div>`;
+}
+
 /** 'Compón tu corte': ruled radio rows per ingredient, from the client's INGREDIENTS. */
 export function composerFieldsets(c) {
   return (c.INGREDIENTS || [])
@@ -603,7 +612,7 @@ export function bookingCard(c) {
               <p class="card__header">PRÓXIMA CITA · ${esc(c.BRAND.name.toUpperCase())}</p>
               <dl class="card__rows">${rows}</dl>
               <div class="card__back">
-                <p class="card__ficha"><span class="card__k">Para el barbero:</span> <span id="card-ficha"></span></p>
+                <p class="card__ficha"><span class="card__k">Para el barbero</span> <span id="card-ficha"></span></p>
               </div>
             </div>
             <div class="card__text">
@@ -740,6 +749,7 @@ export function renderPage(html, c) {
     story: storyBeats,
     cartaPlates,
     composer: composerFieldsets,
+    cartaEmpty,
     recipes: recipeTemplates,
     recipeList,
     tarifa: tarifaBoard,
