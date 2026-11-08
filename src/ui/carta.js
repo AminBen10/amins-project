@@ -127,6 +127,16 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
     for (const fn of subs) fn(full, from);
     if (!full) return;
     if (phoneQ.matches && root.dataset.stage === 'ready') openPlayer(from === 'carta' ? lastPlate?.value || full.id : full.id);
+    // desktop: a pick (plate or composer) brings the player to its sticky place, so the title
+    // card sits over the glass and the transport is on screen, not over the head mid-page
+    else if (player && root.dataset.stage === 'ready') {
+      requestAnimationFrame(() => {
+        const r = player.getBoundingClientRect();
+        const stick = parseFloat(getComputedStyle(player).top) || 80;
+        const down = Math.max(r.bottom - innerHeight + 16, r.top - stick - 8);
+        if (down > 0) scrollBy({ top: Math.min(down, Math.max(0, r.top - stick)), behavior: reducedMotion ? 'instant' : 'smooth' });
+      });
+    }
     if (!film) return;
     // which parts to grow back and cut again
     let reset = opts.parts ? [...opts.parts] : changedParts(onHead, full);
@@ -354,6 +364,19 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
         $('reservar')?.scrollIntoView({ behavior: 'instant', block: 'start' });
         history.pushState(null, '', '#reservar');
         $('reservar')?.focus?.({ preventScroll: true });
+      } else {
+        // A far jump is instant (scroll.js); the Carta may shrink just after it (card and sheet
+        // swap back), which would leave the page a screen or more below the book: land again.
+        const book = $('reservar');
+        if (book && Math.abs(book.getBoundingClientRect().top) > 2.5 * innerHeight) {
+          const land = () => {
+            const top = book.getBoundingClientRect().top;
+            const want = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+            if (Math.abs(top - want) > 24) book.scrollIntoView({ behavior: 'instant', block: 'start' });
+          };
+          requestAnimationFrame(() => requestAnimationFrame(land));
+          setTimeout(land, 350);
+        }
       }
     },
     true,
