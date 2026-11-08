@@ -189,8 +189,9 @@ const mirror = (shot = 'nuca') => ({ part: 'acabado', op: 'mirror', zone: 'nape'
 
 // Fills tool, shot, anchor, stamp and caption. For a guard pass the caption is the
 // stamp plus where it goes ('Peine del 2 · 6 mm · un dedo más abajo'), so the
-// decal and the caption always say the same number.
-function normalizeStep(raw, guards) {
+// decal and the caption always say the same number. compose.js builds its steps
+// through the same function.
+export function normalizeStep(raw, guards = STANDARD_GUARDS) {
   const s = { ...raw };
   if (!('tool' in s)) s.tool = DEFAULT_TOOL[s.op] ?? null;
   if (!s.shot) s.shot = DEFAULT_SHOT[s.zone] || 'tresCuartos';
@@ -1114,6 +1115,8 @@ export const CUTS = DEFAULT.CUTS;
 export const BEARDS = DEFAULT.BEARDS;
 export const STORY = DEFAULT.STORY;
 export const INGREDIENTS = DEFAULT.INGREDIENTS;
+/** Every composer option before any shop filter (compose.js and ficha.js read option data here). */
+export const ALL_INGREDIENTS = buildIngredients({ claims: null, services: null });
 
 export const programById = (id, list = [...CUTS, ...BEARDS]) => list.find((p) => p.id === id) || null;
 
@@ -1126,6 +1129,8 @@ export const filmSeconds = (program) => program.steps.reduce((t, s) => t + s.dur
 // steps climb in the right order; the real ones come from the head (hairField).
 const NOMINAL = { NUCA: 0, OREJA: 45, SIEN: 75, ESQUINA: 110, CORONILLA: 150, PATILLA: 55, FLEQUILLO: 140, NUEZ: -60 };
 const nominal = (h) => NOMINAL[h.lm] + (h.dedos || 0) * 15;
+/** Nominal height of a Height in mm above the nape (ordering only; see NOMINAL). */
+export const nominalMM = nominal;
 
 function checkHeight(h, where, errors) {
   if (!h || typeof h !== 'object' || !LANDMARK_NAMES.includes(h.lm)) errors.push(`${where}: bad height ${JSON.stringify(h)}`);

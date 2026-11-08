@@ -1,6 +1,7 @@
 // HTML rendered from the active client file at build time (see vite.config.js),
 // so prices, team, reviews and hours are in the page source for search engines.
 import { priceLabel } from './price.js';
+import { renderRecipe } from './cuts/recipe.js';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -196,6 +197,30 @@ export function jsonLd(c) {
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 }
 
+// The Carta's programs, in chart order (CARTA lists what this shop does).
+function cartaPrograms(c) {
+  const all = [...c.CUTS, ...c.BEARDS];
+  return [...(c.CARTA?.cuts || []), ...(c.CARTA?.beards || [])].map((id) => all.find((p) => p.id === id)).filter(Boolean);
+}
+
+// One recipe card per Carta program, as <template data-recipe="{id}">: the Carta
+// and the player clone them, so the card in the page source and the one built at
+// runtime (src/cuts/recipe.js) are the same HTML.
+export function recipeTemplates(c) {
+  return cartaPrograms(c)
+    .map((p) => `<template data-recipe="${esc(p.id)}">${renderRecipe(p, c)}</template>`)
+    .join('\n');
+}
+
+// The same cards, visible, for the page without JS: only the looks that are ready,
+// and without the per-card id (several cards share the page).
+export function recipeList(c) {
+  return cartaPrograms(c)
+    .filter((p) => p.ready)
+    .map((p) => renderRecipe(p, c, { idPrefix: 'receta-lista', bookId: null }))
+    .join('\n');
+}
+
 // Replaces <!--@name--> markers and {{brand.*}} / {{copy.*}} tokens in index.html.
 export function renderPage(html, c) {
   const blocks = {
@@ -214,6 +239,8 @@ export function renderPage(html, c) {
     pitchFooter,
     heroFacts,
     jsonld: jsonLd,
+    recipes: recipeTemplates,
+    recipeList,
   };
   let out = html.replace(/<!--@(\w+)-->/g, (m, name) => (blocks[name] ? blocks[name](c) : m));
   out = out.replace(/\{\{(brand|copy)\.(\w+)\}\}/g, (m, group, k) => {
