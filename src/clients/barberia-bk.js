@@ -200,24 +200,3 @@ export const PITCH = {
   door: 'Propuesta de diseño para Barbería BK. No es su web oficial.',
 };
 export const EXAMPLE_NOTICE = null;
-
-// ---------------------------------------------------------------------------
-// LEGACY: read by the current UI (src/ui/looks.js, booking.js, studio.js and
-// main.js) until the motion stream's Carta, composer and booking replace it.
-// Delete this block then.
-export const PRICES_FROM = true; // fuente: Treatwell (precios "desde")
-export const CHAIRS = 2; // fuente: no publicado; confirmar (solo lo usa la reserva antigua)
-export const HAIR_LOOKS = [
-  { id: 'fade', name: 'Degradado', alias: 'Skin fade', desc: 'Laterales a piel que suben en degradado y textura corta arriba.', service: 'corte', upkeep: 'Repaso cada 2–3 semanas' },
-  { id: 'quiff', name: 'Tupé', alias: 'Quiff', desc: 'Laterales cortos y volumen delantero peinado hacia arriba y atrás.', service: 'corte', upkeep: 'Repaso cada 3–4 semanas' },
-  { id: 'crew', name: 'Crew cut', alias: 'Militar', desc: 'Corto y limpio: algo más de largo arriba y laterales a máquina.', service: 'corte', upkeep: 'Repaso cada 3 semanas' },
-  { id: 'buzz', name: 'Rapado', alias: 'Buzz cut', desc: 'Todo a la misma altura con máquina, contornos marcados.', service: 'corte', upkeep: 'Repaso cada 2 semanas' },
-];
-export const BEARD_LOOKS = [
-  { id: 'none', name: 'Sin barba' },
-  { id: 'stubble', name: 'Tres días' },
-  { id: 'short', name: 'Corta' },
-  { id: 'full', name: 'Completa' },
-];
-export const DEFAULT_LOOK = { hair: 'fade', beard: 'short' };
-export const BEARD_SERVICE = 'corte-barba';
