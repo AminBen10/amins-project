@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { HEAD_POINTS, LANDMARKS, MM, DEDO_MM } from './hairField.js';
+import { HEAD_POINTS, LANDMARKS, MM, DEDO_MM, computeProgram, engineGeometry, front, gpuOf, isCutOp, stateAt } from './hairField.js';
 import { HAIR_VERT, HAIR_FRAG } from './hairShaders.js';
 
 // Hair and beard are drawn as "fur shells": the scalp and jaw of the head mesh
@@ -9,6 +9,12 @@ import { HAIR_VERT, HAIR_FRAG } from './hairShaders.js';
 // per-vertex attributes, so switching haircut is just interpolating between two
 // fields, which is what the clipper, scissors and razor animations ride on.
 // Hair shorter than ~2 mm is painted on the plaster by head.js (shaved tint).
+//
+// Two drivers share the shells:
+//  - the cut-step engine (prepare/show): a Program from src/cuts/catalog.js is computed
+//    step by step (hairField.computeProgram, in the head worker); show(handle, step, t)
+//    uploads the state before and after that step and the shader moves the tool front;
+//  - the legacy looks (ritual/change/settle), kept for the old stage until it moves over.
 
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 const smooth = (a, b, x) => {
@@ -41,8 +47,10 @@ function noise3(x, y, z) {
 
 const P_ = HEAD_POINTS;
 const L_ = LANDMARKS;
-// legacy looks keep the beard tidy: a neckline a finger and a half above the Adam's apple
-const NECKLINE = L_.NUEZ + 1.5 * DEDO_MM * MM;
+// The shells reach down the neck to where an untrimmed beard stops (half a finger above the
+// Adam's apple); the legacy looks keep it tidy a finger and a half above it.
+const NECKLINE = L_.NUEZ + 0.5 * DEDO_MM * MM;
+const NECKLINE_TIDY = L_.NUEZ + 1.5 * DEDO_MM * MM;
 const mm = (v) => v * MM;
 
 // The measured beard zone stops just under the nose; the moustache (from under the nose wings
@@ -124,8 +132,21 @@ export function hairUniforms({ tier = 'high' } = {}) {
   const fill = { value: new THREE.Vector3(-0.8, 0.25, 0.55).normalize() };
   const fillCol = { value: new THREE.Color('#F0E6D6').multiplyScalar(0.6) };
   return {
+    // legacy looks: three zone progresses (sides, top, beard) and their soft front
     uProg: { value: new THREE.Vector3(1, 1, 1) },
     uWidth: { value: 0.18 },
+    uLegacy: { value: 1 },
+    // cut-step engine: the tool front along the step's sweep, its width, pending foam
+    uFront: { value: 1.03 },
+    uStepW: { value: 0.06 },
+    uFoamIn: { value: 1 },
+    uShine: { value: 0 },
+    uBShine: { value: 0 },
+    // comb lifting a section (scissor over comb) and a tool pressing the hair (guard, comb)
+    uLift: { value: new THREE.Vector4(0, 0, 0, 0) },
+    uLiftDir: { value: new THREE.Vector3(0, 1, 0) },
+    uLiftAmt: { value: 0 },
+    uContact: { value: new THREE.Vector4(0, 0, 0, 0) },
     uGrow: { value: 1 },
     uBend: { value: 0.9 },
     uCurv: { value: 0.9 },
@@ -253,11 +274,33 @@ function slerpTangent(a, b, n, t, out, o) {
 
 // ------------------------------------------------------------- the system
 
+// comb flows used by the looks and the engine: crown whorl, swept back, down the slope
+function flowsAt(x, y, z, nx, ny, nz, out, o) {
+  const C = L_.CORONILLA;
+  const t = [0, 0, 0];
+  flow(t, x - C[0], y - C[1] + 0.06, z - C[2] - 0.14);
+  out[o] = t[0]; out[o + 1] = t[1]; out[o + 2] = t[2];
+  // swept back: away from a point above the forehead, turning down where it faces back
+  flow(t, x, y - 0.3, z - 3.0);
+  const dw = smooth(0.2, 0.75, -nz) * (1 - smooth(0.55, 0.85, ny));
+  out[o + 3] = t[0] * (1 - dw); out[o + 4] = mix(t[1], -1, dw); out[o + 5] = t[2] * (1 - dw);
+  flow(t, 0, -1, -0.35);
+  out[o + 6] = t[0]; out[o + 7] = t[1]; out[o + 8] = t[2];
+}
+
+const PARTS = ['consulta', 'laterales', 'arriba', 'barba', 'acabado'];
+const SIDE_ZONES = new Set(['sides', 'nape', 'sidesNape', 'contour']);
+const TOP_ZONES = new Set(['top', 'fringe', 'crown']);
+const BEARD_ZONES = new Set(['neck', 'cheeks', 'chin', 'moustache', 'beard']);
+
+// Plain, cloneable copy of a program for the worker.
+const plainProgram = (p) => ({ id: p.id, kind: p.kind, spec: p.spec ? JSON.parse(JSON.stringify(p.spec)) : null, steps: p.steps.map((s) => JSON.parse(JSON.stringify(s))) });
+
 export class Hair {
   // data: HeadData from meshHead(); data.hair is the subset of skin vertices inside the hair
   // or beard zone (positions, normals, indices, mask [hair, beard], edge [hair, beard],
-  // keep = skin vertex index).
-  constructor(headGeometry, { layers = 28, data, tier = 'high' } = {}) {
+  // keep = skin vertex index). service: the head worker (head.js) for computeProgram.
+  constructor(headGeometry, { layers = 28, data, tier = 'high', service = null } = {}) {
     const total = headGeometry.attributes.position.count;
     const src = shellSubset(data);
     const n = src.keep.length;
@@ -272,49 +315,63 @@ export class Hair {
       this.hm[k] = src.mask[k * 2];
       this.bm[k] = src.mask[k * 2 + 1];
     }
+    this.service = service;
+    this.tier = tier;
 
     // anatomy per vertex: top of the head vs sides (from the surface normal, so the weight
-    // line follows the skull, not a fixed height), fringe, noise
+    // line follows the skull, not a fixed height), fringe, noise, comb flows
     this.top = new Float32Array(n);
     this.front = new Float32Array(n);
     this.noise = new Float32Array(n);
-    // which tool owns each vertex, and where along that tool's pass it sits
+    this.flows = new Float32Array(n * 9);
+    // legacy looks: which tool owns each vertex, and where along that tool's pass it sits
     this.zone = new Float32Array(n * 3);
-    this.sweep = new Float32Array(n * 3);
+    this.sweepL = new Float32Array(n * 3);
+    this.lineL = new Float32Array(n);
     for (let k = 0; k < n; k++) {
       const x = this.pos[k * 3], y = this.pos[k * 3 + 1], z = this.pos[k * 3 + 2];
-      const ny = this.nrm[k * 3 + 1];
+      const nx = this.nrm[k * 3], ny = this.nrm[k * 3 + 1], nz = this.nrm[k * 3 + 2];
       const top = smooth(0.3, 0.72, ny + 0.25 * smooth(L_.SIEN, L_.FLEQUILLO, y) * smooth(0.1, 0.6, z));
       this.top[k] = top;
       this.front[k] = smooth(-0.2, 0.75, z);
       this.noise[k] = noise3(x * 7, y * 7, z * 7);
+      flowsAt(x, y, z, nx, ny, nz, this.flows, k * 9);
       const wb = smooth(-0.15, 0.15, this.bm[k] - this.hm[k]);
       const wt = (1 - wb) * top;
       this.zone[k * 3] = 1 - wb - wt;
       this.zone[k * 3 + 1] = wt;
       this.zone[k * 3 + 2] = wb;
-      this.sweep[k * 3] = smooth(-0.7, 0.75, y);
-      this.sweep[k * 3 + 1] = 1 - smooth(-0.85, 0.75, z);
-      this.sweep[k * 3 + 2] = clamp((Math.atan2(x, z) + 1.55) / 3.1, 0, 1);
+      this.sweepL[k * 3] = smooth(-0.7, 0.75, y);
+      this.sweepL[k * 3 + 1] = 1 - smooth(-0.85, 0.75, z);
+      this.sweepL[k * 3 + 2] = clamp((Math.atan2(x, z) + 1.55) / 3.1, 0, 1);
+      this.lineL[k] = wb > 0.5 ? 1 : 0;
     }
+    // engine inputs (hairField.computeProgram): sent to the worker once
+    this.engineInput = {
+      pos: this.pos, nrm: this.nrm, hm: this.hm, bm: this.bm, edge: this.edge,
+      top: this.top, front: this.front, noise: this.noise, flows: this.flows,
+    };
+    this.G = null; // engineGeometry on the main thread (fallback only)
 
-    // The head mesh gets the length fields so very short hair (fades, stubble) is painted
-    // straight onto the plaster with the head's own lighting.
-    this.headFrom = new THREE.BufferAttribute(new Float32Array(total), 1);
-    this.headTo = new THREE.BufferAttribute(new Float32Array(total), 1);
+    // The head mesh gets the same state so very short hair (fades, stubble) is painted
+    // straight onto the plaster with the head's own lighting, and lather sits on the skin.
+    this.headFrom = new THREE.BufferAttribute(new Float32Array(total * 4), 4);
+    this.headTo = new THREE.BufferAttribute(new Float32Array(total * 4), 4);
+    this.headSweep = new THREE.BufferAttribute(new Float32Array(total), 1);
     const headZone = new Float32Array(total * 3);
-    const headSweep = new Float32Array(total * 3);
+    const headSweepL = new Float32Array(total * 3);
     for (let k = 0; k < n; k++) {
       const i = this.keepIdx[k];
       for (let c = 0; c < 3; c++) {
         headZone[i * 3 + c] = this.zone[k * 3 + c];
-        headSweep[i * 3 + c] = this.sweep[k * 3 + c];
+        headSweepL[i * 3 + c] = this.sweepL[k * 3 + c];
       }
     }
     headGeometry.setAttribute('aFrom', this.headFrom);
     headGeometry.setAttribute('aTo', this.headTo);
-    headGeometry.setAttribute('aZone', new THREE.BufferAttribute(headZone, 3));
-    headGeometry.setAttribute('aSweep', new THREE.BufferAttribute(headSweep, 3));
+    headGeometry.setAttribute('aSweep', this.headSweep);
+    headGeometry.setAttribute('aZoneL', new THREE.BufferAttribute(headZone, 3));
+    headGeometry.setAttribute('aSweepL', new THREE.BufferAttribute(headSweepL, 3));
     // the same edges on the skin (beard edge closed by the neckline)
     const cut = new Float32Array(total * 2).fill(-0.5);
     const hp = headGeometry.attributes.position.array;
@@ -342,14 +399,16 @@ export class Hair {
     geo.setAttribute('aEdge', new THREE.BufferAttribute(this.edge, 2));
     geo.setAttribute('aTop', new THREE.BufferAttribute(this.top, 1));
     geo.setAttribute('aClump', new THREE.BufferAttribute(clumpField(this.pos, this.nrm, n, cell), 4));
-    geo.setAttribute('aZone', new THREE.BufferAttribute(this.zone, 3));
-    geo.setAttribute('aSweep', new THREE.BufferAttribute(this.sweep, 3));
-    this.from = new THREE.BufferAttribute(new Float32Array(n * 2), 2);
-    this.to = new THREE.BufferAttribute(new Float32Array(n * 2), 2);
+    geo.setAttribute('aZoneL', new THREE.BufferAttribute(this.zone, 3));
+    geo.setAttribute('aSweepL', new THREE.BufferAttribute(this.sweepL, 3));
+    this.from = new THREE.BufferAttribute(new Float32Array(n * 4), 4);
+    this.to = new THREE.BufferAttribute(new Float32Array(n * 4), 4);
+    this.sweep = new THREE.BufferAttribute(new Float32Array(n), 1);
     this.combFrom = new THREE.BufferAttribute(new Float32Array(n * 3), 3);
     this.combTo = new THREE.BufferAttribute(new Float32Array(n * 3), 3);
     geo.setAttribute('aFrom', this.from);
     geo.setAttribute('aTo', this.to);
+    geo.setAttribute('aSweep', this.sweep);
     geo.setAttribute('aCombFrom', this.combFrom);
     geo.setAttribute('aCombTo', this.combTo);
     this.geometry = geo;
@@ -375,7 +434,16 @@ export class Hair {
     this.mode = 'ritual';
     this.look = null;
     this.anim = null;
-    this.activity = { sides: 0, top: 0, beard: 0, zones: [false, false, false] };
+    // engine: handles by key (LRU of 3 for the overgrown base), what is on the GPU
+    this.handles = new Map();
+    this.seq = 0;
+    this.shown = null; // {handle, i, step, t}
+    this.setupSent = null;
+    // activity: the contract fields, plus the legacy ones the old tools read
+    this.activity = {
+      handle: null, step: -1, t: 0, op: null, zone: null, cutting: false, cutFraction: 0,
+      sides: 0, top: 0, beard: 0, zones: [false, false, false],
+    };
   }
 
   /** Hair colours (linear THREE.Color, live uniforms). */
@@ -405,7 +473,216 @@ export class Hair {
   dispose() {
     this.geometry.dispose();
     this.material.dispose();
+    this.handles.clear();
   }
+
+  // ================================================================ cut-step engine
+
+  /** Tool front for step progress t: t*(1+0.06)-0.03 (hairField.front). */
+  front(t) {
+    return front(t);
+  }
+
+  /**
+   * Computes a program (in the head worker; on the main thread if it is unavailable).
+   * base 'overgrown' starts from long hair; 'current' from what is on screen now, with
+   * resetParts (Part[]) grown back first. → Handle {id, steps, parts: {part: [first, end)}}
+   * steps[i] is the program step plus .path (pass it to hairField.toolPath) and .changes.
+   */
+  async prepare(program, { guards = {}, base = 'overgrown', resetParts = null } = {}) {
+    const start = base === 'current' ? this.currentState() : null;
+    const key = start ? null : `${program.id}|${JSON.stringify(guards)}|${JSON.stringify(program.steps.map((s) => [s.op, s.zone, s.guard, s.upTo, s.from, s.lengthMM]))}`;
+    if (key && this.handles.has(key)) {
+      const h = this.handles.get(key);
+      this.handles.delete(key);
+      this.handles.set(key, h);
+      return h;
+    }
+    const opts = { guards: { ...guards }, start, resetParts: start ? resetParts : null };
+    const res = await this.compute(plainProgram(program), opts);
+    const parts = {};
+    program.steps.forEach((s, i) => {
+      if (!PARTS.includes(s.part)) return;
+      if (!parts[s.part]) parts[s.part] = [i, i + 1];
+      else parts[s.part][1] = i + 1;
+    });
+    const handle = {
+      id: ++this.seq,
+      program,
+      steps: program.steps.map((s, i) => ({ ...s, index: i, path: res.info[i].path, changes: res.info[i].changed > 0 })),
+      parts,
+      _res: res,
+      _gpu: new Map(),
+    };
+    if (key) {
+      this.handles.set(key, handle);
+      while (this.handles.size > 3) this.handles.delete(this.handles.keys().next().value);
+    }
+    return handle;
+  }
+
+  async compute(program, opts) {
+    const svc = this.service;
+    if (svc && svc.alive) {
+      try {
+        if (this.setupSent !== svc.generation) {
+          await svc.run('hairSetup', { input: this.engineInput });
+          this.setupSent = svc.generation;
+        }
+        const transfer = opts.start ? [opts.start.a.buffer, opts.start.c.buffer] : [];
+        return await svc.run('program', { program, opts }, transfer, { timeout: 15000 });
+      } catch {
+        // fall through to the main thread (the start state was transferred: rebuild it)
+        if (opts.start) opts.start = this.currentState();
+      }
+    }
+    if (!this.G) this.G = engineGeometry(this.engineInput);
+    return computeProgram(this.G, program, opts);
+  }
+
+  // Internal state on screen now (null when the legacy looks or nothing is showing).
+  currentState() {
+    const sh = this.shown;
+    if (!sh || this.uniforms.uLegacy.value > 0.5) return null;
+    const { states, info } = sh.handle._res;
+    const n = info.length;
+    if (sh.i < 0) return copyState(states[0]);
+    if (sh.i >= n) return copyState(states[n]);
+    return stateAt(this.engineInput, states[sh.i], states[sh.i + 1], info[sh.i], front(sh.t));
+  }
+
+  gpuState(handle, j, pend) {
+    const key = pend ? `p${j}` : j;
+    let g = handle._gpu.get(key);
+    if (!g) {
+      g = gpuOf(this.engineInput, handle._res.states[j], pend);
+      handle._gpu.set(key, g);
+    }
+    return g;
+  }
+
+  upload(handle, i) {
+    const { states, info } = handle._res;
+    const n = info.length;
+    let from, to, combA, combB, sweep = null;
+    if (i < 0 || i >= n) {
+      const j = i < 0 ? 0 : n;
+      from = to = this.gpuState(handle, j);
+      combA = combB = states[j].c;
+    } else {
+      from = this.gpuState(handle, i, info[i].pend);
+      to = this.gpuState(handle, i + 1);
+      combA = states[i].c;
+      combB = states[i + 1].c;
+      sweep = info[i].sweep;
+    }
+    this.from.array.set(from);
+    this.to.array.set(to);
+    if (sweep) this.sweep.array.set(sweep);
+    else this.sweep.array.fill(0);
+    this.combFrom.array.set(combA);
+    this.combTo.array.set(combB);
+    for (const a of [this.from, this.to, this.sweep, this.combFrom, this.combTo]) a.needsUpdate = true;
+    const hf = this.headFrom.array, ht = this.headTo.array, hs = this.headSweep.array;
+    const keep = this.keepIdx;
+    for (let k = 0; k < this.count; k++) {
+      const v = keep[k];
+      for (let c = 0; c < 4; c++) {
+        hf[v * 4 + c] = from[k * 4 + c];
+        ht[v * 4 + c] = to[k * 4 + c];
+      }
+      hs[v] = sweep ? sweep[k] : 0;
+    }
+    this.headFrom.needsUpdate = this.headTo.needsUpdate = this.headSweep.needsUpdate = true;
+    this.pairKey = `h${handle.id}:${i}`;
+  }
+
+  /**
+   * Shows step `step` of a prepared handle at progress t (0..1): −1 is the start state,
+   * ≥ steps.length the finished cut. Cheap to call every frame: buffers are uploaded only
+   * when the handle or the step changes.
+   */
+  show(handle, step, t = 0) {
+    const n = handle.steps.length;
+    const i = step < 0 ? -1 : step >= n ? n : Math.floor(step);
+    const tt = clamp(t, 0, 1);
+    const u = this.uniforms;
+    if (!this.shown || this.shown.handle !== handle || this.shown.i !== i || u.uLegacy.value > 0.5) this.upload(handle, i);
+    this.mode = 'engine';
+    this.anim = null;
+    this.shown = { handle, i, t: tt };
+    u.uLegacy.value = 0;
+    const inf = i >= 0 && i < n ? handle._res.info[i] : null;
+    const f = inf ? front(tt) : 1.03;
+    u.uFront.value = f;
+    u.uStepW.value = inf ? inf.path.w || 0.06 : 0.06;
+    u.uFoamIn.value = inf && inf.foamIn ? smooth(0, 0.12, tt) : 1;
+    const st = handle._res.states;
+    const s0 = st[Math.max(0, Math.min(i, n))];
+    const s1 = st[Math.max(0, Math.min(i + 1, n))];
+    const k = inf ? smooth(0, 1, tt) : 0;
+    u.uShine.value = mix(s0.shine, s1.shine, k);
+    u.uBShine.value = mix(s0.bshine, s1.bshine, k);
+
+    // activity
+    const a = this.activity;
+    const s = inf ? handle.steps[i] : null;
+    a.handle = handle;
+    a.step = step;
+    a.t = tt;
+    a.op = s ? s.op : null;
+    a.zone = s ? s.zone : null;
+    let cf = i >= n ? 1 : 0;
+    if (inf) {
+      const x = clamp(f, 0, 1) * 32;
+      const b = Math.min(31, Math.floor(x));
+      cf = inf.changed ? mix(inf.cdf[b], inf.cdf[b + 1], x - b) : tt;
+    }
+    a.cutFraction = clamp(cf, 0, 1);
+    a.cutting = !!s && isCutOp(s.op) && inf.changed > 0 && tt > 0 && tt < 1;
+    // legacy view for the old tools: one zone at a time
+    const active = !!s && inf.changed > 0 && tt > 0 && tt < 1;
+    const zs = s && (SIDE_ZONES.has(s.zone) && s.part !== 'barba');
+    const zt = s && TOP_ZONES.has(s.zone) && s.part !== 'barba';
+    const zb = s && (BEARD_ZONES.has(s.zone) || s.part === 'barba');
+    a.zones = [active && !!zs, active && !!zt, active && !!zb];
+    a.sides = a.zones[0] ? tt : 1;
+    a.top = a.zones[1] ? tt : 1;
+    a.beard = a.zones[2] ? tt : 1;
+  }
+
+  /**
+   * The comb lifting a section while the scissors cut over it: hair within `radius` of
+   * centre (head-local Vector3 or [x,y,z]) stands up towards dir by `amount` (0..1).
+   * centre null turns it off.
+   */
+  setLift(centre, radius = 0.25, amount = 1, dir = null) {
+    const u = this.uniforms;
+    if (!centre) {
+      u.uLiftAmt.value = 0;
+      return;
+    }
+    const c = Array.isArray(centre) ? centre : [centre.x, centre.y, centre.z];
+    u.uLift.value.set(c[0], c[1], c[2], radius);
+    u.uLiftAmt.value = clamp(amount, 0, 1);
+    if (dir) {
+      const d = Array.isArray(dir) ? dir : [dir.x, dir.y, dir.z];
+      u.uLiftDir.value.set(d[0], d[1], d[2]).normalize();
+    }
+  }
+
+  /** A tool resting on the hair (guard, comb): hair within radius of centre is pressed flat. */
+  setContact(centre, radius = 0.12) {
+    const u = this.uniforms;
+    if (!centre) {
+      u.uContact.value.w = 0;
+      return;
+    }
+    const c = Array.isArray(centre) ? centre : [centre.x, centre.y, centre.z];
+    u.uContact.value.set(c[0], c[1], c[2], radius);
+  }
+
+  // ================================================================ legacy looks
 
   // Length, lift and comb fields for one hair + beard combination, cached.
   field(hair, beard) {
@@ -416,7 +693,6 @@ export class Hair {
     const comb = new Float32Array(n * 3);
     const hairFn = HAIR[hair] || HAIR.before, beardFn = BEARD[beard] || BEARD.none;
     const ctx = { top: 0, front: 0, n: 0, side: 1, chin: 0, stache: 0, crown: [0, 0, 0], back: [0, 0, 0], down: [0, 0, 0] };
-    const C = L_.CORONILLA;
     for (let k = 0; k < n; k++) {
       const x = this.pos[k * 3], y = this.pos[k * 3 + 1], z = this.pos[k * 3 + 2];
       ctx.top = this.top[k];
@@ -426,21 +702,20 @@ export class Hair {
       ctx.chin = smooth(P_.lip_lower[1], P_.pogonion[1], y) * smooth(0.15, 0.5, z);
       ctx.stache = smooth(P_.stomion[1] + 0.02, P_.stomion[1] + 0.07, y) * smooth(0.6, 0.7, z) *
         (1 - smooth(P_.mouth_corner[0] - 0.03, P_.mouth_corner[0] + 0.05, Math.abs(x)));
-      const nx0 = this.nrm[k * 3], ny0 = this.nrm[k * 3 + 1], nz0 = this.nrm[k * 3 + 2];
-      flow(ctx.crown, x - C[0], y - C[1] + 0.06, z - C[2] - 0.14);
-      // swept back: away from a point above the forehead, turning down where it faces back
-      flow(ctx.back, x, y - 0.3, z - 3.0);
-      const dw = smooth(0.2, 0.75, -nz0) * (1 - smooth(0.55, 0.85, ny0));
-      ctx.back[0] *= 1 - dw; ctx.back[1] = mix(ctx.back[1], -1, dw); ctx.back[2] *= 1 - dw;
-      flow(ctx.down, 0, -1, -0.35);
+      const F = this.flows;
+      for (let c = 0; c < 3; c++) {
+        ctx.crown[c] = F[k * 9 + c];
+        ctx.back[c] = F[k * 9 + 3 + c];
+        ctx.down[c] = F[k * 9 + 6 + c];
+      }
       const h = hairFn(x, y, z, ctx);
       const b = beardFn(x, y, z, ctx);
       // natural hairline: hair keeps its length up to ~1 cm inside the edge, then the
       // edge strands are finer and shorter (the shader thins them out one by one)
       const eH = this.edge[k * 2], eB = this.edge[k * 2 + 1];
       const lh = this.hm[k] > 0.02 ? h[0] * mix(0.45, 1, smooth(0, 0.09, eH)) * smooth(-0.03, -0.005, eH) : 0;
-      // beard lines are razor lines: full length right up to the edge
-      const lb = b[0] * smooth(-0.004, 0.004, eB) * (this.bm[k] > 0.02 ? 1 : 0);
+      // beard lines are razor lines: full length right up to the edge (tidy neckline)
+      const lb = b[0] * smooth(-0.004, 0.004, Math.min(eB, y - NECKLINE_TIDY)) * (this.bm[k] > 0.02 ? 1 : 0);
       const src = lh >= lb ? h : b;
       len[k * 2] = Math.max(lh, lb);
       len[k * 2 + 1] = src[4] || 0;
@@ -465,19 +740,33 @@ export class Hair {
   }
 
   setPair(from, to, key) {
-    this.from.array.set(from.len);
-    this.to.array.set(to.len);
+    const A = this.from.array, B = this.to.array, L = this.lineL;
+    for (let k = 0; k < this.count; k++) {
+      A[k * 4] = from.len[k * 2];
+      A[k * 4 + 1] = from.len[k * 2 + 1];
+      B[k * 4] = to.len[k * 2];
+      B[k * 4 + 1] = to.len[k * 2 + 1];
+      A[k * 4 + 2] = B[k * 4 + 2] = 0;
+      A[k * 4 + 3] = B[k * 4 + 3] = L[k];
+    }
     this.combFrom.array.set(from.comb);
     this.combTo.array.set(to.comb);
     this.from.needsUpdate = this.to.needsUpdate = true;
     this.combFrom.needsUpdate = this.combTo.needsUpdate = true;
     const hf = this.headFrom.array, ht = this.headTo.array;
     for (let k = 0; k < this.count; k++) {
-      hf[this.keepIdx[k]] = from.len[k * 2];
-      ht[this.keepIdx[k]] = to.len[k * 2];
+      const v = this.keepIdx[k];
+      hf[v * 4] = from.len[k * 2];
+      ht[v * 4] = to.len[k * 2];
+      hf[v * 4 + 1] = from.len[k * 2 + 1];
+      ht[v * 4 + 1] = to.len[k * 2 + 1];
+      hf[v * 4 + 2] = ht[v * 4 + 2] = 0;
+      hf[v * 4 + 3] = ht[v * 4 + 3] = L[k];
     }
     this.headFrom.needsUpdate = this.headTo.needsUpdate = true;
     this.pairKey = key;
+    this.uniforms.uLegacy.value = 1;
+    this.shown = null;
   }
 
   // What is on screen right now, so a new look can start from it.
@@ -490,11 +779,14 @@ export class Hair {
     const comb = new Float32Array(n * 3);
     const A = this.from.array, B = this.to.array, CA = this.combFrom.array, CB = this.combTo.array;
     const a = [0, 0, 0], b = [0, 0, 0], nn = [0, 0, 0];
+    const legacy = this.uniforms.uLegacy.value > 0.5;
+    const f = this.uniforms.uFront.value, sw = this.uniforms.uStepW.value, S = this.sweep.array;
     for (let k = 0; k < n; k++) {
       let t = 0;
-      for (let z = 0; z < 3; z++) t += this.zone[k * 3 + z] * clamp((p[z] * (1 + w) - this.sweep[k * 3 + z]) / w, 0, 1);
-      len[k * 2] = mix(A[k * 2], B[k * 2], t);
-      len[k * 2 + 1] = mix(A[k * 2 + 1], B[k * 2 + 1], t);
+      if (legacy) for (let z = 0; z < 3; z++) t += this.zone[k * 3 + z] * clamp((p[z] * (1 + w) - this.sweepL[k * 3 + z]) / w, 0, 1);
+      else t = clamp((f - S[k]) / sw + 0.5, 0, 1);
+      len[k * 2] = mix(A[k * 4], B[k * 4], t);
+      len[k * 2 + 1] = mix(A[k * 4 + 1], B[k * 4 + 1], t);
       for (let c = 0; c < 3; c++) {
         a[c] = CA[k * 3 + c];
         b[c] = CB[k * 3 + c];
@@ -579,4 +871,8 @@ export class Hair {
       this.activity.zones = [false, false, false];
     }
   }
+}
+
+function copyState(s) {
+  return { a: s.a.slice(), c: s.c.slice(), shine: s.shine, bshine: s.bshine };
 }

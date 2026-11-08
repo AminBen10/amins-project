@@ -60,19 +60,28 @@ export const NOISE_GLSL = /* glsl */ `
 // ------------------------------------------------------------ shell vertex
 export const HAIR_VERT = /* glsl */ `
   attribute float aLayer;
-  attribute vec2 aFrom;      // (length, lift) of the start look
-  attribute vec2 aTo;        // (length, lift) of the target look
+  attribute vec4 aFrom;      // state before the step: length, lift, foam, line-up
+  attribute vec4 aTo;        // state after the step
+  attribute float aSweep;    // where the tool front reaches this vertex (0..1)
   attribute vec3 aCombFrom;  // comb direction, tangent to the scalp
   attribute vec3 aCombTo;
   attribute vec2 aEdge;      // signed edge distance (hair, beard), + inside
   attribute vec2 aMask;
   attribute vec4 aClump;     // xyz: rest-space offset to the lock centre, w: lock random
   attribute float aTop;      // 0 sides/beard .. 1 top of the head
-  attribute vec3 aZone;
-  attribute vec3 aSweep;
+  attribute vec3 aZoneL;     // legacy looks: tool ownership and per-tool sweep
+  attribute vec3 aSweepL;
 
   uniform vec3 uProg;
   uniform float uWidth;
+  uniform float uLegacy;
+  uniform float uFront;
+  uniform float uStepW;
+  uniform float uFoamIn;
+  uniform vec4 uLift;        // xyz centre (head-local), w radius
+  uniform vec3 uLiftDir;
+  uniform float uLiftAmt;
+  uniform vec4 uContact;     // xyz centre, w radius (0 = off)
   uniform float uGrow;
   uniform float uBend;
   uniform float uCurv;
@@ -92,13 +101,23 @@ export const HAIR_VERT = /* glsl */ `
   varying float vF;
   varying float vStep;
   varying float vLift;
+  varying float vFoam;
+  varying float vLine;
 
   void main() {
-    vec3 tz = clamp((uProg * (1.0 + uWidth) - aSweep) / uWidth, 0.0, 1.0);
-    float t = dot(aZone, tz);
-    vec2 L = mix(aFrom, aTo, t);
+    float t;
+    if (uLegacy > 0.5) {
+      vec3 tz = clamp((uProg * (1.0 + uWidth) - aSweepL) / uWidth, 0.0, 1.0);
+      t = dot(aZoneL, tz);
+    } else {
+      // the tool front: vertices behind it are cut, a narrow band is being cut
+      t = clamp((uFront - aSweep) / uStepW + 0.5, 0.0, 1.0);
+    }
+    vec4 L = mix(aFrom * vec4(1.0, 1.0, uFoamIn, 1.0), aTo, t);
     float len = L.x * uGrow;
     float lift = L.y;
+    vFoam = L.z;
+    vLine = L.w;
 
     // comb: shortest arc around the normal between the two looks (never a lerp of
     // opposed vectors, which collapses to zero and flips)
@@ -106,11 +125,21 @@ export const HAIR_VERT = /* glsl */ `
     float ang = atan(dot(cross(a, aCombTo), normal), dot(a, aCombTo)) * t;
     vec3 comb = a * cos(ang) + cross(normal, a) * sin(ang);
 
+    // the cutting comb lifts a section: it stands up towards the comb
+    if (uLiftAmt > 0.0 && uLift.w > 0.0) {
+      float fl = uLiftAmt * (1.0 - smoothstep(0.55 * uLift.w, uLift.w, distance(position, uLift.xyz)));
+      vec3 ld = uLiftDir - normal * dot(uLiftDir, normal);
+      if (dot(ld, ld) > 1e-6) comb = normalize(mix(comb, normalize(ld), 0.6 * fl));
+      lift = max(lift, fl);
+    }
+
     float f = aLayer;
     float bend = uBend * mix(0.8, 1.0, aTop);
     // volume is decoupled from length: long hair lies down along the comb and follows
     // the curve of the skull (lie); lift turns gravity into volume
     float thick = min(len, 0.016 + 0.24 * len) * (1.0 + 1.4 * lift);
+    // a guard or comb resting on the hair presses it down
+    if (uContact.w > 0.0) thick *= 1.0 - 0.6 * (1.0 - smoothstep(0.6 * uContact.w, uContact.w, distance(position, uContact.xyz)));
     float s = len * bend * f * f;
     float ds = 2.0 * len * bend * f;
     float lie = uCurv * (1.0 - lift);
@@ -154,6 +183,8 @@ export const HAIR_FRAG = /* glsl */ `
   uniform float uClump;
   uniform float uRagged;
   uniform float uGrey;
+  uniform float uShine;
+  uniform float uBShine;
 
   varying vec3 vRest;
   varying vec3 vNrm;
@@ -169,6 +200,8 @@ export const HAIR_FRAG = /* glsl */ `
   varying float vF;
   varying float vStep;
   varying float vLift;
+  varying float vFoam;
+  varying float vLine;
 
   ${NOISE_GLSL}
 
@@ -181,6 +214,7 @@ export const HAIR_FRAG = /* glsl */ `
   void main() {
     // derivatives first, outside any branch
     float aaB = max(fwidth(vEdge.y), 1e-5);
+    float aaH = max(fwidth(vEdge.x), 1e-5);
     vec3 c = vRest * uDensity;
     float px = length(fwidth(c));
     vec3 Tw = normalize(vFibreW);
@@ -190,9 +224,12 @@ export const HAIR_FRAG = /* glsl */ `
     float hf = vF;
     vec3 n = normalize(vNrm);
     float beardW = smoothstep(0.35, 0.65, vMask.y / max(vMask.x + vMask.y, 1e-3));
-    // natural hairline: feathered over ~1 cm; beard lines are razor lines, one pixel crisp
-    float edgeT = mix(smoothstep(0.0, 0.10, vEdge.x + 0.014 * (vnoise(vRest * 26.0) - 0.5)), 1.0, beardW);
-    float razor = mix(1.0, smoothstep(-aaB, aaB, vEdge.y), beardW);
+    // natural hairline: feathered over ~1 cm, an untrimmed beard over a few mm; once lined up
+    // (trimmer, razor: vLine) both are one crisp edge
+    float featherH = smoothstep(0.0, 0.10, vEdge.x + 0.014 * (vnoise(vRest * 26.0) - 0.5));
+    float featherB = smoothstep(0.0, 0.035, vEdge.y + 0.01 * (vnoise(vRest * 31.0) - 0.5));
+    float edgeT = mix(mix(featherH, 1.0, vLine), mix(featherB, 1.0, vLine), beardW);
+    float razor = mix(mix(1.0, smoothstep(-aaH, aaH, vEdge.x), vLine), mix(1.0, smoothstep(-aaB, aaB, vEdge.y), vLine), beardW);
     // very short hair is painted on the skin (head.js); the shells take over from ~2 mm
     float shortK = smoothstep(0.016, 0.04, vLen);
 
@@ -244,6 +281,8 @@ export const HAIR_FRAG = /* glsl */ `
     // its volume in silhouette
     float mass = groomed * (1.0 - 0.6 * hf);
     float alpha = min(strand * (1.0 + 3.0 * mass), 1.0) * razor * shortK;
+    // under lather the strands are hidden (the skin shader draws the foam)
+    alpha *= 1.0 - smoothstep(0.2, 0.5, vFoam);
 
     vec3 N = normalize(vNormalW);
     vec3 V = normalize(cameraPosition - vPosW);
@@ -296,7 +335,9 @@ export const HAIR_FRAG = /* glsl */ `
       float vis = smoothstep(-0.15, 0.25, nl);
       // R: white, untinted (a cool key never turns dark hair blue: it uses the light's luminance)
       float lum = dot(lc, vec3(0.2126, 0.7152, 0.0722));
-      vec3 spec = vec3(1.0, 0.98, 0.95) * lum * lobe(T, N, H, 0.07, eR) * 0.12 * nR;
+      // pomade / oil: a stronger, slightly tighter fibre highlight
+      float shine = mix(uShine, uBShine, beardW);
+      vec3 spec = vec3(1.0, 0.98, 0.95) * lum * lobe(T, N, H, 0.07, eR * (1.0 + shine)) * 0.12 * nR * (1.0 + 2.2 * shine);
       #ifndef HAIR_LOW
         // TRT: the light comes back through the fibre, tinted by it (kept close to neutral)
         vec3 tint = mix(vec3(1.0), albedo / max(dot(albedo, vec3(0.333)), 1e-3), 0.3);
@@ -336,13 +377,15 @@ export const SHAVED_GLSL = /* glsl */ `
   }
 
   // skin: plaster albedo; len: hair length (head units); mask: zone masks; cut: signed edges
-  // (hair, beard; + inside); root: hair root colour (linear); mm: head units per millimetre
-  vec3 shavedSkin(vec3 skin, vec3 rest, vec3 n, float len, vec2 mask, vec2 cut, vec3 root, float mm) {
+  // (hair, beard; + inside); root: hair root colour (linear); mm: head units per millimetre;
+  // line: 0 natural hairline, 1 lined up (trimmer / razor)
+  vec3 shavedSkin(vec3 skin, vec3 rest, vec3 n, float len, vec2 mask, vec2 cut, vec3 root, float mm, float line) {
+    float aa = max(fwidth(cut.y), 1e-5);
+    float aaH = max(fwidth(cut.x), 1e-5);
     if (max(mask.x, mask.y) < 0.001 || len < 0.02 * mm) return skin;
     float beardW = smoothstep(0.35, 0.65, mask.y / max(mask.x + mask.y, 1e-3));
-    // natural hairline: soft and irregular; beard lines: razor crisp
-    float zh = smoothstep(-0.004, 0.05, cut.x + 0.014 * (vnoiseS(rest * 26.0) - 0.5));
-    float aa = max(fwidth(cut.y), 1e-5);
+    // natural hairline: soft and irregular; lined up: one crisp edge; beard lines: razor crisp
+    float zh = mix(smoothstep(-0.004, 0.05, cut.x + 0.014 * (vnoiseS(rest * 26.0) - 0.5)), smoothstep(-aaH, aaH, cut.x), line);
     // stubble has no line: the razor edge only appears once there is a beard to line up
     float zb = mix(smoothstep(-0.008, 0.045, cut.y + 0.014 * (vnoiseS(rest * 23.0) - 0.5)),
                    smoothstep(-aa, aa, cut.y), smoothstep(1.6 * mm, 3.0 * mm, len));
