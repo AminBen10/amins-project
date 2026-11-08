@@ -21,9 +21,13 @@ geometría procedural.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # genera dist/ listo para subir a cualquier hosting estático
-npm run preview  # sirve dist/ en local
+npm run dev           # http://localhost:5173
+npm run build         # genera dist/ listo para subir a cualquier hosting estático
+npm run build:bk      # lo mismo para Barbería BK
+npm run build:single  # un único .html autocontenido (dist-corte-real/index.html)
+npm run preview       # sirve dist/ en local
+npm test              # pruebas (node:test, sin dependencias)
+npm run qa            # pruebas + las tres compilaciones
 ```
 
 Para elegir la barbería se usa la variable `CLIENT` (nombre de un archivo de `src/clients/`), y
@@ -94,3 +98,18 @@ src/three/morph.js      partículas poste → cabeza
 - El canvas deja de dibujar cuando se llega a la carta de precios y cuando la pestaña no está visible.
 - Con "reducir movimiento" activado se quitan las animaciones automáticas.
 - Sin WebGL la web sigue funcionando entera (estudio, carta y reservas) sin la parte 3D.
+
+## Calidad gráfica y presupuestos
+
+- `src/three/quality.js` elige el nivel al cargar: `high` (ordenador con GPU), `low` (móvil, pantalla
+  pequeña, ≤4 núcleos o ≤4 GB, o render por software) o `poster` (sin WebGL2 o con ahorro de datos:
+  imágenes fijas, sin 3D). Para probar otro nivel se añade `?q=high`, `?q=low` o `?q=poster` a la URL.
+- Un regulador baja la calidad si la media de 60 fotogramas pasa de 22 ms (densidad de píxeles, capas
+  de pelo, sombras, espejo de mano) y la recupera paso a paso tras 5 s por debajo de 12 ms.
+- `src/three/runtime.js` solo dibuja cuando hace falta, se pausa con la pestaña oculta y, si el
+  navegador pierde el contexto WebGL, lo recupera; si vuelve a perderlo antes de 30 s, quedan las
+  imágenes fijas.
+- Cada compilación imprime una tabla de presupuesto y falla si el JS inicial pasa de 40 KB gz, si el
+  3D (three.js y la escena, que se cargan después) pasa de 230 KB gz, o si el HTML o el CSS cargan algo
+  de otro dominio. `BUDGET=warn npm run build` compila igualmente; `BUDGET=strict` no deja pasar
+  ninguna excepción pendiente. Detalles en `scripts/lib/budget.mjs`.

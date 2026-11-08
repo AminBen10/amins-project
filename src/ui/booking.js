@@ -1,266 +1,394 @@
-import { OPENING, SERVICES, BARBERS, CHAIRS, BOOKING, PRICES_FROM } from '../config.js';
+// Pide hora: the appointment book on the counter.
+// BK (BOOKING.mode 'whatsapp'): the book builds a WhatsApp request to the shop;
+// the link is a plain <a target=_blank> whose href is rebuilt on every change.
+// Treatwell and the phone stay visible. Nothing is reserved until the shop answers.
+// CR (mode 'demo'): 'Apúntame' fills the card, clearly labelled as a demo.
+// No storage, no network. Days and hours come from the shop's clock (shopTime).
+import { BRAND, BOOKING, OPENING, SERVICES, BARBERS, COPY } from '../config.js';
 import { priceLabel } from '../price.js';
-import { toMinutes } from './status.js';
+import { shopNow, buildDays, slotsFor } from './shopTime.js';
+import { buildWhatsAppMessage, buildWhatsAppHref } from './whatsapp.js';
 
-const WEEKDAY_SHORT = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const WEEKDAY_LONG = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const TZ = BRAND.timezone || 'Europe/Madrid';
+const LEAD = BOOKING.leadMinutes ?? 30;
+const STEP = BOOKING.slotMinutes ?? 30;
+const AHEAD = BOOKING.daysAhead ?? 14;
+const WA = BOOKING.mode === 'whatsapp';
+const MSG = {
+  day: 'Elige un día.',
+  time: 'Elige una hora.',
+  name: 'Escribe tu nombre.',
+  phone: 'Escribe un móvil español de 9 cifras.',
+};
 
-const pad = (n) => String(n).padStart(2, '0');
-const isoDay = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const hhmm = (mins) => `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`;
+const $ = (id) => document.getElementById(id);
+// Write text only when it changes (no needless mutations for assistive tech).
+const setText = (el, t) => {
+  if (el && el.textContent !== t) el.textContent = t;
+};
+const fill = (tpl, vars) => String(tpl || '').replace(/\{([^}]+)\}/g, (_, k) => vars[k] ?? '');
 
-function hash(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return (h >>> 0) / 4294967295;
+/** A Spanish mobile: 9 digits starting with 6 or 7, with or without +34. */
+export function spanishMobile(raw) {
+  let d = String(raw || '').replace(/[\s.\-()]/g, '');
+  d = d.replace(/^(\+34|0034)/, '');
+  return /^[67]\d{8}$/.test(d) ? d : null;
 }
 
-// Demo agenda: a stable pseudo-random set of taken slots per barber and day.
-// Swap this for a call to the real booking system.
-function isTaken(barberId, day, mins) {
-  return hash(`${barberId}|${day}|${mins}`) < 0.32;
-}
-
-// With no named barbers the shop is booked by chair.
-const POOL = BARBERS.length ? BARBERS : Array.from({ length: CHAIRS || 1 }, (_, i) => ({ id: `silla-${i + 1}`, name: '' }));
-
-function freeBarbers(day, start, minutes) {
-  const step = BOOKING.slotMinutes;
-  return POOL.filter((b) => {
-    for (let t = start; t < start + minutes; t += step) if (isTaken(b.id, day, t)) return false;
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
     return true;
-  });
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+    document.body.append(ta);
+    ta.select();
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch {
+      ok = false;
+    }
+    ta.remove();
+    return ok;
+  }
 }
 
-export function initBooking() {
-  const form = document.getElementById('book-form');
-  const daysEl = document.getElementById('days');
-  const slotsEl = document.getElementById('slots');
-  const slotsHint = document.getElementById('slots-hint');
-  const hint = document.getElementById('book-hint');
-  const submit = document.getElementById('book-submit');
-  const nameInput = document.getElementById('book-name');
-  const phoneInput = document.getElementById('book-phone');
-  const done = document.getElementById('book-done');
-  const out = {
-    service: document.getElementById('t-service'),
-    barber: document.getElementById('t-barber'),
-    day: document.getElementById('t-day'),
-    time: document.getElementById('t-time'),
-    lookRow: document.getElementById('t-look-row'),
-    look: document.getElementById('t-look'),
-    barberRow: document.getElementById('t-barber-row'),
-    duration: document.getElementById('t-duration'),
-    price: document.getElementById('t-price'),
-  };
+export function initBooking({ onCut } = {}) {
+  const form = $('book-form');
+  if (!form) return { preset() {}, state: {} };
+  const daysEl = $('days');
+  const slotsEl = $('slots');
+  const slotsHint = $('slots-hint');
+  const hint = $('book-hint');
+  const nameIn = $('book-name');
+  const phoneIn = $('book-phone');
+  const wa = $('book-wa');
+  const submit = $('book-submit');
+  const card = $('book-card');
+  const cardTitle = $('card-title');
+  const cutLabelEl = $('book-cut-label');
+  const cutChange = $('book-cut-change');
+  const fichaEl = $('book-cut-ficha');
+  if (cardTitle && !cardTitle.hasAttribute('tabindex')) cardTitle.tabIndex = -1;
 
-  const state = { day: null, time: null, look: null, touched: false };
-  let days = [];
-
-  const service = () => SERVICES.find((s) => s.id === form.elements.service.value) || SERVICES[0];
+  const state = { day: null, time: null, cut: null, days: [], dayKey: '', slotKey: '' };
+  const service = () => SERVICES.find((s) => s.id === form.elements.service?.value) || SERVICES[0];
   const barberId = () => form.elements.barber?.value || 'any';
-  const barberName = (id) => (id === 'any' ? 'Sin preferencia' : BARBERS.find((b) => b.id === id)?.name || '');
+  const barber = () => BARBERS.find((b) => b.id === barberId()) || null;
 
-  function buildDays() {
-    const now = new Date();
-    days = [];
-    for (let i = 0; i < BOOKING.daysAhead; i++) {
-      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
-      days.push({ date: d, iso: isoDay(d), hours: OPENING[d.getDay()], index: i });
+  // ---------------------------------------------------------------- days and hours
+
+  function renderDays() {
+    const now = shopNow(TZ);
+    const svc = service();
+    const b = barber();
+    state.days = buildDays(OPENING, TZ, AHEAD, { now, minutes: svc.minutes, lead: LEAD, step: STEP }).map((d) =>
+      b?.weekdays && !d.disabled && !b.weekdays.includes(d.weekday) ? { ...d, disabled: true } : d,
+    );
+    // Keep the chosen day if it is still bookable, else the first open one.
+    let pick = state.days.find((d) => d.iso === state.day && !d.disabled);
+    if (!pick) {
+      pick = state.days.find((d) => !d.disabled) || null;
+      if (state.day && (!pick || pick.iso !== state.day)) state.time = null;
     }
-    daysEl.textContent = '';
-    for (const d of days) {
-      const label = document.createElement('label');
-      label.className = 'day';
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'day';
-      input.id = `day-${d.iso}`;
-      input.value = d.iso;
-      input.disabled = !d.hours;
-      const span = document.createElement('span');
-      const top = document.createElement('small');
-      top.textContent = d.index === 0 ? 'Hoy' : d.index === 1 ? 'Mañ.' : WEEKDAY_SHORT[d.date.getDay()];
-      const num = document.createElement('b');
-      num.textContent = d.date.getDate();
-      const bottom = document.createElement('small');
-      bottom.textContent = d.hours ? MONTHS[d.date.getMonth()].slice(0, 3) : 'Cerrado';
-      span.append(top, num, bottom);
-      label.title = d.hours ? `${WEEKDAY_LONG[d.date.getDay()]} ${d.date.getDate()} de ${MONTHS[d.date.getMonth()]}` : 'Cerrado';
-      label.append(input, span);
-      daysEl.append(label);
+    state.day = pick?.iso || null;
+    const key = state.days.map((d) => `${d.iso}${d.disabled ? 0 : 1}${d.note || ''}`).join('|') + `>${state.day}`;
+    if (key !== state.dayKey) {
+      state.dayKey = key;
+      const frag = document.createDocumentFragment();
+      for (const d of state.days) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'day';
+        btn.dataset.day = d.iso;
+        btn.setAttribute('aria-pressed', String(d.iso === state.day));
+        btn.setAttribute('aria-label', d.note ? `${d.long}: ${d.note}` : d.long);
+        if (d.disabled) btn.disabled = true;
+        const l = document.createElement('span');
+        l.className = 'day__name';
+        l.textContent = d.label;
+        btn.append(l);
+        if (d.note) {
+          const n = document.createElement('span');
+          n.className = 'day__note';
+          n.textContent = d.note;
+          btn.append(n);
+        }
+        frag.append(btn);
+      }
+      daysEl.replaceChildren(frag);
     }
+    renderSlots(now);
   }
 
-  function slotsFor(day) {
-    if (!day?.hours) return [];
-    const minutes = service().minutes;
-    const open = toMinutes(day.hours[0]);
-    const close = toMinutes(day.hours[1]);
-    const now = new Date();
-    const nowMins = day.index === 0 ? now.getHours() * 60 + now.getMinutes() + 30 : -1;
-    const out = [];
-    for (let t = open; t + minutes <= close; t += BOOKING.slotMinutes) {
-      const id = barberId();
-      const free = id === 'any' ? freeBarbers(day.iso, t, minutes).length > 0 : freeBarbers(day.iso, t, minutes).some((b) => b.id === id);
-      out.push({ mins: t, label: hhmm(t), available: free && t >= nowMins });
+  function currentDay() {
+    return state.days.find((d) => d.iso === state.day) || null;
+  }
+
+  function renderSlots(now = shopNow(TZ)) {
+    const day = currentDay();
+    const svc = service();
+    const slots = day ? slotsFor(day, svc.minutes, LEAD, now, STEP) : [];
+    if (state.time && !slots.some((s) => s.label === state.time)) state.time = null;
+    const key = `${day?.iso}|${slots.map((s) => s.label).join(',')}>${state.time}`;
+    if (key !== state.slotKey) {
+      state.slotKey = key;
+      const frag = document.createDocumentFragment();
+      for (const s of slots) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'slot';
+        btn.dataset.time = s.label;
+        btn.textContent = s.label;
+        btn.setAttribute('aria-pressed', String(s.label === state.time));
+        frag.append(btn);
+      }
+      slotsEl.replaceChildren(frag);
     }
-    return out;
-  }
-
-  function firstDayWithSlots() {
-    return days.find((d) => slotsFor(d).some((s) => s.available)) || days.find((d) => d.hours);
-  }
-
-  function renderSlots() {
-    const day = days.find((d) => d.iso === state.day);
-    const slots = slotsFor(day);
-    slotsEl.textContent = '';
-    for (const s of slots) {
-      const label = document.createElement('label');
-      label.className = 'slot';
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'time';
-      input.id = `time-${s.label.replace(':', '')}`;
-      input.value = s.label;
-      input.disabled = !s.available;
-      input.checked = s.available && state.time === s.label;
-      const span = document.createElement('span');
-      span.textContent = s.label;
-      if (!s.available) label.title = 'Ocupado';
-      label.append(input, span);
-      slotsEl.append(label);
+    // CR: '{n} horas para {servicio} ({min} min).' BK keeps its fixed line.
+    if (COPY.hoursHint?.includes('{')) {
+      setText(slotsHint, day ? fill(COPY.hoursHint, { n: slots.length, servicio: svc.name, min: svc.minutes }) : '');
     }
-    if (state.time && !slots.some((s) => s.available && s.label === state.time)) state.time = null;
-    const free = slots.filter((s) => s.available).length;
-    slotsHint.textContent = !day?.hours
-      ? 'Ese día está cerrado.'
-      : free
-        ? `${free} horas libres para ${service().name.toLowerCase()} (${service().minutes} min).`
-        : 'No quedan horas libres este día. Prueba con otro día u otro barbero.';
+    update();
   }
 
-  function validPhone(v) {
-    return /^(\+?34)?[6789]\d{8}$/.test(v.replace(/[\s.-]/g, ''));
-  }
+  // ---------------------------------------------------------------- validation
 
   function missing() {
-    if (!state.day) return 'Elige un día.';
-    if (!state.time) return 'Elige una hora para continuar.';
-    if (nameInput.value.trim().length < 2) return 'Escribe tu nombre.';
-    if (!validPhone(phoneInput.value)) return 'Escribe un móvil español de 9 cifras.';
-    return '';
+    if (!state.day) return 'day';
+    if (!state.time) return 'time';
+    if (!nameIn.value.trim()) return 'name';
+    if (!WA && phoneIn && !spanishMobile(phoneIn.value)) return 'phone';
+    return null;
   }
 
-  function renderTicket() {
-    const s = service();
-    const day = days.find((d) => d.iso === state.day);
-    out.service.textContent = s.name;
-    out.barberRow.hidden = !BARBERS.length;
-    out.barber.textContent = barberName(barberId());
-    out.day.textContent = day ? `${WEEKDAY_LONG[day.date.getDay()]} ${day.date.getDate()} de ${MONTHS[day.date.getMonth()]}` : '—';
-    out.time.textContent = state.time || '—';
-    out.lookRow.hidden = !state.look;
-    out.look.textContent = state.look || '';
-    out.duration.textContent = `${s.minutes} min`;
-    out.price.textContent = priceLabel(s.price, PRICES_FROM);
-    const why = missing();
-    submit.setAttribute('aria-disabled', why ? 'true' : 'false');
-    hint.textContent = state.touched ? why : why && !state.time ? why : '';
+  function focusFor(what) {
+    if (what === 'day') daysEl.querySelector('button:not(:disabled)')?.focus();
+    else if (what === 'time') (slotsEl.querySelector('button') || daysEl.querySelector('[aria-pressed=true]'))?.focus();
+    else if (what === 'name') nameIn.focus();
+    else if (what === 'phone') phoneIn?.focus();
+  }
+
+  function details() {
+    const day = currentDay();
+    const svc = service();
+    const cut = state.cut;
+    return {
+      nombre: nameIn.value.trim().replace(/\s+/g, ' '),
+      diaLargo: day?.long || '',
+      hora: state.time || '',
+      servicio: svc.name,
+      corte: cut?.cutLabel || null,
+      barba: cut?.beardLabel || null,
+      ficha: cut?.ficha || null,
+      svc,
+      day,
+    };
+  }
+
+  function message() {
+    return buildWhatsAppMessage(details());
   }
 
   function update() {
-    renderSlots();
-    renderTicket();
+    if (WA && wa) {
+      const lack = missing();
+      const href = buildWhatsAppHref(BOOKING.whatsapp || BRAND.whatsapp, lack ? '' : message());
+      if (wa.getAttribute('href') !== href) wa.setAttribute('href', href);
+      if (lack) wa.setAttribute('aria-disabled', 'true');
+      else wa.removeAttribute('aria-disabled');
+      if (!lack) setText(hint, '');
+    }
   }
 
+  // Re-check against the clock at the moment of acting: a tab left open can go stale.
+  function revalidate() {
+    renderDays();
+    return missing();
+  }
+
+  // ---------------------------------------------------------------- the card
+
+  // 'Degradado medio, con barba corta' (the book's and the card's cut line).
+  const cutLine = (c) =>
+    c ? [c.cutLabel, c.beardLabel && (c.cutLabel ? c.beardLabel.charAt(0).toLocaleLowerCase('es') + c.beardLabel.slice(1) : c.beardLabel)].filter(Boolean).join(', con ') : '';
+
+  function fillCard() {
+    const d = details();
+    setText($('card-day'), d.day ? d.day.long.charAt(0).toUpperCase() + d.day.long.slice(1) : '');
+    setText($('card-time'), d.hora);
+    setText($('card-service'), `${d.svc.name} · ${d.svc.minutes} min · ${priceLabel(d.svc.price, d.svc.from)}`);
+    const cut = cutLine(state.cut);
+    setText($('card-cut'), cut);
+    $('card-cut')?.closest('.card__row')?.toggleAttribute('hidden', !cut);
+    const b = barber();
+    setText($('card-with'), b ? b.name : '');
+    $('card-with')?.closest('.card__row')?.toggleAttribute('hidden', !b);
+    setText($('card-name'), d.nombre);
+    setText($('card-ficha'), state.cut?.ficha || '');
+    $('card-ficha')?.closest('.card__back')?.toggleAttribute('hidden', !state.cut?.ficha);
+    if (!WA) {
+      const tpl = b ? COPY.doneTitle : COPY.doneTitleAny || COPY.doneTitle;
+      setText(cardTitle, fill(tpl, { nombre: d.nombre, 'día': d.day?.long || '', hora: d.hora, barbero: b?.name || '' }));
+      setText(
+        $('card-body'),
+        fill(COPY.doneBody, { servicio: d.svc.name, min: d.svc.minutes, precio: priceLabel(d.svc.price, d.svc.from) }),
+      );
+    }
+  }
+
+  function showCard() {
+    fillCard();
+    form.hidden = true;
+    card.hidden = false;
+    cardTitle?.focus({ preventScroll: false });
+  }
+
+  function hideCard(focusEl) {
+    card.hidden = true;
+    form.hidden = false;
+    focusEl?.focus();
+  }
+
+  // ---------------------------------------------------------------- events
+
+  // Guided advance on phones: bring the next field into view (never focus it: no keyboard pop-up).
+  const phone = matchMedia('(max-width: 699px), (pointer: coarse)');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  function guide(el) {
+    if (!el || !phone.matches) return;
+    const behavior = still.matches || document.documentElement.dataset.motion === 'off' ? 'instant' : 'smooth';
+    requestAnimationFrame(() => el.scrollIntoView({ behavior, block: 'nearest' }));
+  }
+
+  daysEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-day]');
+    if (!btn || btn.disabled) return;
+    state.day = btn.dataset.day;
+    state.time = null;
+    state.dayKey = '';
+    renderDays();
+    daysEl.querySelector(`[data-day="${state.day}"]`)?.focus();
+    guide(slotsEl);
+  });
+
+  slotsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-time]');
+    if (!btn) return;
+    state.time = btn.dataset.time;
+    renderSlots();
+    slotsEl.querySelector(`[data-time="${state.time}"]`)?.focus();
+    guide(nameIn);
+  });
+
   form.addEventListener('change', (e) => {
-    const t = e.target;
-    if (t.name === 'day') {
-      state.day = t.value;
-      state.time = null;
-      renderSlots();
-    } else if (t.name === 'time') {
-      state.time = t.value;
-    } else if (t.name === 'service' || t.name === 'barber') {
-      renderSlots();
-    }
-    renderTicket();
+    if (e.target.name === 'service' || e.target.name === 'barber') renderDays();
+    else update();
   });
-  form.addEventListener('input', (e) => {
-    if (e.target === nameInput || e.target === phoneInput) {
-      e.target.removeAttribute('aria-invalid');
-      renderTicket();
-    }
-  });
+  form.addEventListener('input', update);
+
+  if (WA && wa) {
+    wa.addEventListener('click', (e) => {
+      const lack = revalidate();
+      if (lack) {
+        e.preventDefault();
+        setText(hint, MSG[lack]);
+        focusFor(lack);
+        return;
+      }
+      update(); // href is current; let the link open WhatsApp natively
+      setText(hint, '');
+      setTimeout(showCard, 0);
+    });
+    const copyBtn = $('card-copy');
+    let copyTimer = 0;
+    copyBtn?.addEventListener('click', async () => {
+      const ok = await copyText(message());
+      if (!ok) return;
+      setText(copyBtn, 'Copiado');
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(() => setText(copyBtn, 'Copiar mensaje'), 2500);
+    });
+    $('card-change')?.addEventListener('click', () => hideCard(wa));
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    state.touched = true;
-    const why = missing();
-    if (why) {
-      renderTicket();
-      if (nameInput.value.trim().length < 2) nameInput.setAttribute('aria-invalid', 'true');
-      if (!validPhone(phoneInput.value)) phoneInput.setAttribute('aria-invalid', 'true');
-      (!state.time ? slotsEl.querySelector('input:not(:disabled)') : nameInput.value.trim().length < 2 ? nameInput : phoneInput)?.focus();
+    if (WA) return;
+    const lack = revalidate();
+    if (lack) {
+      setText(hint, MSG[lack]);
+      focusFor(lack);
       return;
     }
-    const s = service();
-    const day = days.find((d) => d.iso === state.day);
-    let barber = barberName(barberId());
-    if (barberId() === 'any') {
-      const free = freeBarbers(day.iso, toMinutes(state.time), s.minutes);
-      barber = free[0]?.name || '';
-    }
-    const withWho = barber ? ` con ${barber}` : '';
-    const cost =
-      s.price == null
-        ? `Son unos ${s.minutes} minutos; el precio te lo confirman en la barbería.`
-        : `Son ${s.minutes} minutos y ${priceLabel(s.price, PRICES_FROM)}, se paga en la barbería.`;
-    const first = nameInput.value.trim().split(/\s+/)[0];
-    document.getElementById('done-title').textContent = `Listo, ${first}.`;
-    document.getElementById('done-text').textContent =
-      `${s.name}${withWho} el ${WEEKDAY_LONG[day.date.getDay()]} ${day.date.getDate()} de ${MONTHS[day.date.getMonth()]} a las ${state.time}. ${cost}`;
-    document.getElementById('done-note').textContent =
-      BOOKING.mode === 'demo'
-        ? 'Modo demostración: esta web todavía no está conectada a la agenda de la barbería, así que no se ha guardado ninguna cita.'
-        : 'Te llegará un SMS de confirmación al móvil que has indicado.';
-    form.hidden = true;
-    done.hidden = false;
-    done.focus();
+    setText(hint, '');
+    showCard();
   });
-
-  document.getElementById('book-again').addEventListener('click', () => {
-    done.hidden = true;
-    form.hidden = false;
+  $('card-again')?.addEventListener('click', () => {
     state.time = null;
-    state.touched = false;
-    update();
+    renderDays();
+    hideCard(daysEl.querySelector('[aria-pressed=true]') || nameIn);
   });
 
-  buildDays();
-  const first = firstDayWithSlots();
-  if (first) {
-    state.day = first.iso;
-    const input = document.getElementById(`day-${first.iso}`);
-    if (input) input.checked = true;
-  }
-  update();
-
-  return {
-    // called from the style studio: pick the matching service and remember the look
-    preset({ serviceId, look }) {
-      const input = document.getElementById(`service-${serviceId}`);
-      if (input) input.checked = true;
-      state.look = look;
-      done.hidden = true;
-      form.hidden = false;
-      update();
-    },
+  // The calendar follows the shop's clock: on return to the tab and every minute.
+  let lastIso = shopNow(TZ).iso;
+  const tick = () => {
+    const iso = shopNow(TZ).iso;
+    if (iso !== lastIso || currentDay()?.today) {
+      lastIso = iso;
+      renderDays();
+    }
   };
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) renderDays();
+  });
+  setInterval(tick, 60_000);
+
+  // ---------------------------------------------------------------- the cut
+
+  function setCut(cut) {
+    state.cut = cut && (cut.cutLabel || cut.beardLabel) ? cut : null;
+    const label = cutLine(state.cut) || 'Sin elegir';
+    setText(cutLabelEl, label);
+    setText(cutChange, state.cut ? 'Cambiar' : 'Elegir en la carta');
+    if (fichaEl) {
+      setText(fichaEl, state.cut?.ficha || '');
+      fichaEl.hidden = !state.cut?.ficha;
+    }
+    onCut?.(state.cut);
+    update();
+  }
+
+  /**
+   * Fill the book from the Carta, the composer or a chair:
+   * {serviceId, cutId, beardId, ficha, cutLabel, beardLabel, barberId}. Any field may be omitted.
+   */
+  function preset(p = {}) {
+    if (p.serviceId) {
+      const r = form.querySelector(`input[name=service][value="${CSS.escape(p.serviceId)}"]`);
+      if (r) r.checked = true;
+    }
+    if (p.barberId) {
+      const r = form.querySelector(`input[name=barber][value="${CSS.escape(p.barberId)}"]`);
+      if (r) r.checked = true;
+    }
+    if ('cutLabel' in p || 'beardLabel' in p || 'cutId' in p || 'beardId' in p) {
+      setCut({ cutId: p.cutId || null, beardId: p.beardId || null, cutLabel: p.cutLabel || null, beardLabel: p.beardLabel || null, ficha: p.ficha || null });
+    }
+    if (!card.hidden) hideCard();
+    renderDays();
+  }
+
+  // First service preselected; the first open day is picked by renderDays.
+  if (form.elements.service && !form.querySelector('input[name=service]:checked')) {
+    const first = form.querySelector('input[name=service]');
+    if (first) first.checked = true;
+  }
+  renderDays();
+
+  return { preset, state, message, get cut() { return state.cut; } };
 }
