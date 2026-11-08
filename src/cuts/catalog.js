@@ -1065,7 +1065,8 @@ const INGREDIENT_DEFS = [
 ];
 
 // Option readiness follows the gated looks named in the plan (burst, pompadour,
-// rizos, mullet, candado); the others render in v1.
+// rizos, mullet, candado) and the Carta: an option whose preset look is not READY
+// (crop n7, hacia atrás n10, raya n11) stays off the composer too.
 const GATED_OPTIONS = new Set(['burst', 'pompadour', 'rizos', 'mullet', 'candado']);
 
 function buildIngredients({ claims, services } = {}) {
@@ -1079,7 +1080,7 @@ function buildIngredients({ claims, services } = {}) {
     ...set,
     fields: set.fields.map((f) => ({
       ...f,
-      options: f.options.filter((o) => keep(o, f.id)).map((o) => ({ ...o, ready: !GATED_OPTIONS.has(o.id) })),
+      options: f.options.filter((o) => keep(o, f.id)).map((o) => ({ ...o, ready: !GATED_OPTIONS.has(o.id) && (!o.preset || READY.has(o.preset)) })),
     })),
   }));
 }
