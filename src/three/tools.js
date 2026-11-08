@@ -617,11 +617,6 @@ const LEVER = { open: 1, half: 0.5, closed: 0 };
 // scissor over comb: the comb's spine at the hair surface, teeth slanted into the hair to the scalp
 const COMB_UP = 0.13;
 const COMB_TILT = 0.5;
-function rowAlpha(path, s) {
-  const K = path.K;
-  const k = Math.min(K - 1, Math.max(0, Math.floor(Math.min(1, Math.max(0, s)) * K)));
-  return path.aA + ((path.aB - path.aA) * (k + 0.5)) / K;
-}
 const ENTER_S = 0.3; // tool in: 300 ms ease-out
 const EXIT_S = 0.2; // tool out: 200 ms ease-in
 const AWAY = 0.55; // how far off the head (head units) a tool comes from / leaves to
@@ -734,11 +729,8 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
       if (nu && nu.main === use.main) hover = true;
       else use = null;
     }
-    // A rows path whose current row centre lies below the forehead (alpha < 0) is not on the top
-    // of the head: the engine's measured extents can include wrapped crown vertices. Pen up there.
     // stills: the middle of the step, or of its first side when it works both sides
     const sAt = rm ? (step?.path?.sides === 2 ? 0.25 : 0.5) : front(Math.min(t, 1));
-    if (use && step.path?.kind === 'rows' && rowAlpha(step.path, sAt) < 0.05) use = null;
 
     const want = {};
     if (use) {

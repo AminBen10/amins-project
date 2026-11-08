@@ -144,9 +144,14 @@ export const isCutOp = (op) => CUT_OPS.has(op);
 
 const isBeardStep = (step) => step.part === 'barba' || BEARD_ZONES.includes(step.zone) && step.part !== 'acabado';
 const phiOf = (x, z) => Math.atan2(x, z - AXIS_Z);
-// meridian frame for the top: alpha 0 at the forehead, pi/2 on top, pi at the back; beta across
+// meridian frame for the top: alpha 0 at the forehead, pi/2 on top, pi at the back; beta across.
+// Unwrapped to (-pi/2, 3pi/2] so the back of the head below the meridian continues past pi
+// instead of jumping to -pi (row extents measured from it would otherwise start under the chin).
 const MERID_Y = 0.25;
-const alphaOf = (y, z) => Math.atan2(y - MERID_Y, z - AXIS_Z);
+const alphaOf = (y, z) => {
+  const a = Math.atan2(y - MERID_Y, z - AXIS_Z);
+  return a <= -0.5 * PI ? a + 2 * PI : a;
+};
 const betaOf = (x, y, z) => Math.asin(cl(x / (Math.hypot(x, y - MERID_Y, z - AXIS_Z) || 1), -1, 1));
 
 // ------------------------------------------------------------------ surface helpers
