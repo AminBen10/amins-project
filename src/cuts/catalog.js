@@ -87,7 +87,11 @@ export const TOOL_NAMES = {
 
 // v1: the looks the hair engine renders credibly. The others join when the
 // subject stream reports they pass the quality gate (tech notes §8).
-const READY = new Set(['n1', 'n2', 'n3', 'n4', 'n5', 'n7', 'n8', 'n12', 'n13', 'b16', 'b17', 'b18', 'b19', 'b20']);
+const READY = new Set(['n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n8', 'n12', 'n13', 'b16', 'b17', 'b18', 'b19', 'b20']);
+
+// On screen a film is 1.4 s (dip + title card) plus dur + 0.5 s per step (src/ui/film.js).
+export const FILM_MAX_S = 35;
+export const filmOnScreen = (steps) => 1.4 + steps.reduce((t, s) => t + s.dur + 0.5, 0);
 
 const OTHER_SIDE = 'Igual en el otro lado';
 const END = 'Así queda por detrás';
@@ -229,7 +233,7 @@ function makeProgram(raw, guards) {
     desc: raw.desc,
     family: raw.family,
     spec: raw.spec,
-    steps: raw.steps.map((s) => normalizeStep(s, guards)),
+    steps: fitFilm(raw.steps.map((s) => normalizeStep(s, guards))),
     recipe: raw.recipe,
     ficha: raw.ficha,
     serviceId: null,
@@ -1120,6 +1124,21 @@ export const ALL_INGREDIENTS = buildIngredients({ claims: null, services: null }
 
 export const programById = (id, list = [...CUTS, ...BEARDS]) => list.find((p) => p.id === id) || null;
 
+
+/**
+ * fitFilm(steps) → steps: shortens the working steps of a long program (in place, never under
+ * 2.5 s; otherSide and the mirror keep their beat) so the film stays within FILM_MAX_S.
+ */
+export function fitFilm(steps, max = FILM_MAX_S - 0.5) {
+  const over = filmOnScreen(steps) - max;
+  if (over <= 0) return steps;
+  const flex = steps.filter((s) => s.op !== 'otherSide' && s.op !== 'mirror' && s.op !== 'hold' && s.dur > 2.5);
+  const room = flex.reduce((t, s) => t + s.dur - 2.5, 0);
+  const k = room > 0 ? Math.min(1, over / room) : 0;
+  for (const s of flex) s.dur = Math.max(2.5, Math.floor((s.dur - (s.dur - 2.5) * k) * 10) / 10);
+  return steps;
+}
+
 /** Seconds of working time in a program (sum of dur). */
 export const filmSeconds = (program) => program.steps.reduce((t, s) => t + s.dur, 0);
 
@@ -1219,6 +1238,7 @@ export function validateProgram(p, { guards = STANDARD_GUARDS } = {}) {
   if (p.kind === 'cut' || p.kind === 'beard') {
     const t = filmSeconds(p);
     if (t < 12 || t > 35) e.push(`${id}: film ${t} s outside 12–35 s`);
+    if (filmOnScreen(p.steps) > FILM_MAX_S + 1e-9) e.push(`${id}: film runs ${filmOnScreen(p.steps).toFixed(1)} s on screen (max ${FILM_MAX_S})`);
     if (p.steps.at(-1).op !== 'mirror') e.push(`${id}: a film ends in the hand mirror`);
     if (p.steps.filter((s) => s.op === 'mirror').length !== 1) e.push(`${id}: one mirror step`);
   }
