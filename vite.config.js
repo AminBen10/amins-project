@@ -20,7 +20,13 @@ export default defineConfig(async () => {
     base: './',
     // Per-worktree dep cache: node_modules may be a symlink shared by several checkouts.
     cacheDir: '.vite',
-    resolve: { alias: { '@client': clientPath } },
+    resolve: {
+      alias: {
+        '@client': clientPath,
+        // How the head worker starts: inlined blob (SINGLE) or the shared 'head' chunk.
+        '@headworker': `${root}/src/three/${single ? 'headWorkerInline' : 'headWorkerShared'}.js`,
+      },
+    },
     plugins: [
       {
         name: 'barbershop-content',
@@ -39,7 +45,14 @@ export default defineConfig(async () => {
         : {
             output: {
               // three.js changes far less often than the stage: keep it in its own chunk.
-              manualChunks: (id) => (id.includes('/node_modules/three/') ? 'three' : undefined),
+              // The head asset, mesher and cut engine (no three.js) form the 'head' chunk, which the
+              // head worker imports as is (src/three/headWorkerShared.js).
+              manualChunks: (id) =>
+                id.includes('/node_modules/three/')
+                  ? 'three'
+                  : /\/src\/three\/(?:headWorker|hairField|headAsset)\.js$/.test(id)
+                    ? 'head'
+                    : undefined,
             },
           },
     },

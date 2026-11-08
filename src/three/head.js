@@ -4,12 +4,12 @@ import { SHAVED_GLSL } from './hairShaders.js';
 import { HEAD_CAGE } from './headAsset.js';
 import { ANCHORS, ANCHOR_NAMES, EYES, HEAD_BOUNDS, HEAD_POINTS, MM } from './hairField.js';
 import { base64Bytes, buildHead, transferList } from './headWorker.js';
-import HeadWorker from './headWorker.js?worker&inline';
+import { createHeadWorker } from '@headworker';
 
 // The practice head: a sculpted plaster bust of a neutral adult man, built from the MakeHuman
 // CC0 base mesh (scripts/head/). The asset is a quad cage; the worker subdivides it
 // (Catmull-Clark, 2 levels on the high tier, 1 on low) while the pole is already on screen.
-// The worker is inlined so a single-file build still works.
+// The worker is inlined in SINGLE builds and shares the page's head chunk otherwise (@headworker).
 
 let cageBytes = null;
 const cage = () => (cageBytes ||= base64Bytes(HEAD_CAGE));
@@ -65,7 +65,7 @@ export function headService() {
     pending.clear();
   };
   try {
-    worker = new HeadWorker();
+    worker = createHeadWorker();
     svc.alive = true;
     svc.generation = 1;
     worker.onmessage = (e) => {
