@@ -16,7 +16,6 @@
   <body>
     <a class="skip" href="#reservar">Saltar a pedir hora</a>
     <canvas id="stage" aria-hidden="true"></canvas>
-    <div id="mirror-frame" aria-hidden="true"></div>
     <div id="mirror-window" aria-hidden="true"></div>
 
     <header class="nav">
@@ -52,6 +51,7 @@
             <span class="shop__door-glass" aria-hidden="true"></span>
             <span class="shop__door-handle" aria-hidden="true"></span>
             <p class="door-sign" data-door-sign></p>
+            <!--@doorCard-->
           </div>
           <!--@shutter-->
         </div>
@@ -69,7 +69,6 @@
         <div class="carta__grid">
           <div class="carta__sheet">
             <h2 id="carta-title" class="carta__title">Carta de cortes</h2>
-            <p class="carta__sub">Se acabó enseñarle al barbero una foto del móvil.</p>
             <p class="carta__intro">Toca un corte y te lo hacemos aquí, en la cabeza de prácticas: qué peine, a qué altura y cuánto se deja arriba.</p>
             <form id="carta-form" class="chart">
               <!--@cartaPlates-->
@@ -85,13 +84,13 @@
             <p id="film-title" class="player__title"></p>
             <p id="film-caption" class="player__caption" aria-live="polite">Toca un corte para ver cómo se hace.</p>
             <div class="player__controls">
-              <button type="button" class="textbtn" data-film="play">Así se hace</button>
-              <button type="button" class="textbtn" data-film="pause" hidden>Pausa</button>
-              <button type="button" class="textbtn" data-film="resume" hidden>Seguir</button>
-              <button type="button" class="textbtn" data-film="repeat">Repetir</button>
+              <button type="button" class="textbtn" data-film="play" aria-label="Así se hace"><svg class="player__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg><span class="player__label">Así se hace</span></button>
+              <button type="button" class="textbtn" data-film="pause" aria-label="Pausa" hidden><svg class="player__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg><span class="player__label">Pausa</span></button>
+              <button type="button" class="textbtn" data-film="resume" aria-label="Seguir" hidden><svg class="player__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg><span class="player__label">Seguir</span></button>
+              <button type="button" class="textbtn" data-film="repeat" aria-label="Repetir"><svg class="player__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12a7 7 0 1 0 2.05-4.95" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="player__label">Repetir</span></button>
               <button type="button" class="textbtn" data-film="finish">Ver cómo queda</button>
-              <button type="button" class="textbtn" data-film="prev">Corte anterior</button>
-              <button type="button" class="textbtn" data-film="next">Corte siguiente</button>
+              <button type="button" class="textbtn" data-film="prev" aria-label="Corte anterior"><svg class="player__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="player__label">Corte anterior</span></button>
+              <button type="button" class="textbtn" data-film="next" aria-label="Corte siguiente"><span class="player__label">Corte siguiente</span><svg class="player__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <button type="button" class="textbtn" data-film="back">Volver a la carta</button>
             </div>
             <div class="player__views">
@@ -102,6 +101,7 @@
             <div class="player__more">
               <button type="button" class="textbtn" data-player-sheet="recipe" aria-expanded="false" aria-controls="recipe">Receta</button>
               <button type="button" class="textbtn" data-player-sheet="composer" aria-expanded="false" aria-controls="composer" hidden>Cambiar</button>
+              <a class="cta player__book recipe__book" href="#reservar">Pedir hora con este corte</a>
             </div>
           </div>
           <noscript>

@@ -80,6 +80,7 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
         stage.setRunning(running);
       }
     }
+    pinHero(y);
     if (canvas) {
       const o = (1 - clamp01((input.turn - 0.8) / 0.2)).toFixed(3);
       if (o !== lastOpacity) {
@@ -87,6 +88,26 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
         canvas.style.opacity = o;
       }
     }
+  }
+
+  // With the stage painting the front, the canvas does not scroll: the DOM half of the
+  // shopfront (lettering, door, sign) is held in place over it and fades out as one
+  // piece, so the two layers never slide apart. Without the stage it scrolls normally.
+  let lastPin = '';
+  let pinPx = 0;
+  function pinHero(y) {
+    const hero = els.hero;
+    if (!hero) return;
+    const on = !!stage && root.dataset.stage === 'ready';
+    const p = on ? Math.min(Math.max(y, 0), m.hero) : 0;
+    const o = on ? 1 - clamp01(p / (0.45 * m.hero)) : 1;
+    const k = `${Math.round(p)},${o.toFixed(3)}`;
+    if (k === lastPin) return;
+    lastPin = k;
+    pinPx = Math.round(p);
+    hero.style.transform = p ? `translate3d(0, ${Math.round(p)}px, 0)` : '';
+    hero.style.opacity = o < 1 ? o.toFixed(3) : '';
+    hero.style.visibility = o <= 0 ? 'hidden' : '';
   }
 
   let ticking = false;
@@ -118,7 +139,8 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
     const pier = document.querySelector('.shop__pole');
     const door = document.querySelector('.shop__door');
     if (!glass || !pier) return;
-    const W = innerWidth, H = m.vh, y = scrollY;
+    // at rest: undo the hero pin (pinHero) so the layout is measured as at scroll 0
+    const W = innerWidth, H = m.vh, y = scrollY - pinPx;
     const fr = (el) => {
       const r = el.getBoundingClientRect();
       return [r.left / W, 1 - (r.bottom + y) / H, r.right / W, 1 - (r.top + y) / H];

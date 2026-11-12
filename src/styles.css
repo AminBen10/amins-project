@@ -405,28 +405,6 @@ main,
   z-index: 1;
 }
 
-/* The station mirror's thin chrome edge frames the viewport during the visit. */
-#mirror-frame {
-  position: fixed;
-  inset: calc(var(--nav-h) + 10px) 10px 10px;
-  z-index: 2;
-  border: 2px solid var(--chrome);
-  outline: 1px solid var(--chrome-line);
-  border-radius: 6px;
-  pointer-events: none;
-  visibility: hidden;
-  transform: translateX(calc(var(--turn, 0) * -110%));
-}
-
-html[data-scene='mirror'] #mirror-frame {
-  visibility: visible;
-}
-
-html.no-webgl #mirror-frame,
-html.no-js #mirror-frame {
-  display: none;
-}
-
 /* Where the head is framed: the right of the glass on desktop, the top on phones. */
 #mirror-window {
   position: fixed;
@@ -1157,6 +1135,13 @@ html.js:not(.no-webgl) .carta {
   outline-color: transparent;
 }
 
+/* A jump to the Carta lands with its top under the nav and the lead clear of it, so
+   nothing of the mirror beat above (slider, 'Moverlo con el móvil') peeks in. */
+#carta {
+  scroll-margin-top: 0;
+  padding-top: calc(var(--nav-h) + clamp(20px, 3vw, 40px));
+}
+
 .carta__lead {
   max-width: 22ch;
   margin-bottom: clamp(28px, 4vw, 56px);
@@ -1216,15 +1201,8 @@ html.js:not(.no-webgl) .carta {
   line-height: 1;
 }
 
-.carta__sub {
-  margin-top: 10px;
-  font-weight: 500;
-  font-size: 1.1875rem;
-  line-height: 1.35;
-}
-
 .carta__intro {
-  margin-top: 8px;
+  margin-top: 12px;
   max-width: 36rem;
   color: var(--ink-2);
 }
@@ -1358,6 +1336,14 @@ html.js:not(.no-webgl) .carta {
 .composer__open {
   margin-top: 26px;
   color: var(--ink);
+}
+
+/* Desktop with the 3D: the composer open takes the chart's place on the sheet, so
+   the ingredients stay next to the head while each one plays. */
+@media (min-width: 900px) {
+  html[data-stage='ready'] .carta__sheet:has(#composer:not([hidden])) #carta-form {
+    display: none;
+  }
 }
 
 /* 'Compón tu corte': ruled radio rows, label on the line, no chips. */
@@ -1515,6 +1501,12 @@ html[data-stage='ready'] #carta-player {
 
 .player__views [aria-pressed='true'] {
   text-decoration-thickness: 3px;
+}
+
+/* Icons and the station's own booking link belong to the phone station only. */
+.player__icon,
+.player__book {
+  display: none;
 }
 
 /* Back to the chart sits with the title card, top right. */
@@ -1895,67 +1887,38 @@ html[data-board='felt'] .board__row {
   padding: 10px 0;
 }
 
-/* Review pins (BK): small paper notes next to the service they talk about. */
-.pin {
-  position: relative;
-  padding: 18px 18px 14px;
-  background: var(--note);
-  color: var(--ink);
-  font-family: var(--font-read);
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 400;
-  transform: rotate(-0.8deg);
+/* Reviews (BK): copied as written, in one straight column on the paper under the board. */
+.reviews {
+  margin-top: 14px;
+  padding: 0;
+  list-style: none;
 }
 
-.pin::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  margin-left: -6px;
-  border-radius: 50%;
-  background: var(--pole-red);
-  border: 1px solid #7b1418;
+.review {
+  padding: 14px 0 12px;
+  border-top: 1px solid var(--rule-paper, #d6ccb6);
 }
 
-.pin blockquote p {
+.review blockquote p {
   font-size: 1rem;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
-.pin figcaption {
-  margin-top: 8px;
+.review figcaption {
+  margin-top: 6px;
   font-family: var(--font-pencil);
   font-weight: 600;
   font-size: 0.9375rem;
-}
-
-.board__pins {
-  position: absolute;
-  top: 2px;
-  left: calc(100% + clamp(40px, 5vw, 76px));
-  width: min(280px, 24vw);
-  display: grid;
-  gap: 16px;
-}
-
-.board__row + .board__row .pin {
-  transform: rotate(0.7deg);
+  color: var(--ink-2);
 }
 
 .tarifa__foot {
   grid-area: foot;
-  display: grid;
-  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-  align-items: start;
-  gap: 28px;
+  max-width: 640px;
 }
 
 .tarifa__source {
-  padding: 14px 18px;
+  padding: 18px 22px 8px;
   background: var(--paper);
   color: var(--ink);
   font-size: 0.9375rem;
@@ -2001,12 +1964,7 @@ html[data-board='felt'] .includes {
 }
 
 /* BK has pins to the right of the board: the includes card goes under them. */
-html[data-board='felt'] .tarifa__inner {
-  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
-  grid-template-areas:
-    'board .'
-    'foot includes';
-}
+
 
 /* ==========================================================================
    10 · Las sillas: plan of the shop and the ledger
@@ -2294,6 +2252,27 @@ html[data-board='felt'] .tarifa__inner {
   color: var(--ink-2);
   font-weight: 500;
   cursor: default;
+}
+
+/* Desktop: two weeks as two rows of seven, nothing scrolled out of the page. */
+@media (min-width: 900px) {
+  .days {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .days > * {
+    border-bottom: 1px solid var(--rule-paper);
+  }
+
+  .days > :nth-child(7n) {
+    border-right: 0;
+  }
+
+  .days > :nth-child(n + 8) {
+    border-bottom: 0;
+  }
 }
 
 .slots {
@@ -2674,14 +2653,6 @@ html.no-js .beat {
       'includes';
   }
 
-  .board__pins {
-    position: static;
-    width: auto;
-    margin-top: 14px;
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
-    text-transform: none;
-  }
 }
 
 @media (max-width: 899px) {
@@ -2732,6 +2703,7 @@ html.no-js .beat {
    ========================================================================== */
 @media (max-width: 899px) {
   html.player-open {
+    --station-mirror: 66svh;
     overflow: hidden;
   }
 
@@ -2744,7 +2716,7 @@ html.no-js .beat {
     left: 0;
     right: 0;
     bottom: auto;
-    height: calc(58svh - 56px);
+    height: calc(var(--station-mirror) - 56px);
   }
 
   html.player-open #carta-player {
@@ -2753,7 +2725,7 @@ html.no-js .beat {
     inset: 0;
     z-index: 40;
     display: grid;
-    grid-template-rows: 58svh minmax(0, 1fr);
+    grid-template-rows: var(--station-mirror) minmax(0, 1fr);
     grid-template-areas: 'mirror' 'panel';
     height: auto;
     max-height: none;
@@ -2813,46 +2785,73 @@ html.no-js .beat {
     background: none;
   }
 
-  /* Transport: step back · play/pause/resume · step on, then repeat and the result. */
+  /* Transport, one row right under the caption (three lines kept for it): step back,
+     pause/play and repeat as icons, the result in words, step on. */
   html.player-open #carta-player .player__controls {
-    align-self: end;
+    align-self: start;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    grid-template-areas:
-      'prev prev play play next next'
-      'repeat repeat repeat finish finish finish';
-    margin-bottom: 52px;
+    grid-template-columns: 48px 52px 52px minmax(0, 1fr) 48px;
+    grid-template-areas: 'prev play repeat finish next';
+    align-items: center;
+    margin-top: calc(14px + 3 * 1.15 * clamp(1.375rem, 6vw, 1.625rem) + 6px);
     padding: 0 8px;
-    column-gap: 0;
+    column-gap: 4px;
     background: none;
   }
 
   html.player-open #carta-player .player__controls .textbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 48px;
-    padding: 12px 8px;
-    text-align: center;
+    padding: 0;
   }
 
-  html.player-open #carta-player [data-film='prev'] { grid-area: prev; text-align: left !important; }
-  html.player-open #carta-player [data-film='next'] { grid-area: next; text-align: right !important; }
+  html.player-open #carta-player .player__icon {
+    display: block;
+    width: 26px;
+    height: 26px;
+  }
+
+  html.player-open #carta-player .player__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  html.player-open #carta-player [data-film='prev'] { grid-area: prev; }
+  html.player-open #carta-player [data-film='next'] { grid-area: next; }
   html.player-open #carta-player [data-film='play'],
   html.player-open #carta-player [data-film='pause'],
-  html.player-open #carta-player [data-film='resume'] { grid-area: play; font-size: 1.375rem; }
+  html.player-open #carta-player [data-film='resume'] { grid-area: play; }
   html.player-open #carta-player [data-film='repeat'] { grid-area: repeat; }
-  html.player-open #carta-player [data-film='finish'] { grid-area: finish; }
+  html.player-open #carta-player [data-film='finish'] { grid-area: finish; justify-self: center; font-size: 1.125rem; }
 
+  /* The sticky foot: the card, the composer and the booking for the cut on screen. */
   html.player-open #carta-player .player__more {
     align-self: end;
     display: flex;
-    justify-content: center;
-    column-gap: 40px;
-    padding: 0 16px env(safe-area-inset-bottom, 0px);
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 20px;
+    padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px)) 16px;
     border-top: 1px solid var(--chrome-line);
     background: none;
   }
 
   html.player-open #carta-player .player__more .textbtn {
-    min-height: 52px;
+    min-height: 48px;
+  }
+
+  html.player-open #carta-player .player__book {
+    display: inline-flex;
+    margin: 0 0 0 auto;
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 1.0625rem;
   }
 
   html.player-open #carta-player .player__more [aria-expanded='true'] {
@@ -2868,7 +2867,7 @@ html.no-js .beat {
     top: 34svh;
     left: 0;
     right: 0;
-    bottom: calc(53px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(57px + env(safe-area-inset-bottom, 0px));
     z-index: 42;
     display: block;
     overflow-y: auto;
@@ -2934,12 +2933,11 @@ html.no-js .beat {
   }
 
   html.player-open #carta-player .player__controls {
-    margin-bottom: 52px;
+    margin-top: calc(52px + 3 * 1.15 * 1.25rem + 6px);
   }
 
   html.player-open #carta-player .player__controls .textbtn {
     min-height: 44px;
-    padding: 10px 6px;
   }
 
   html.player-open[data-player-sheet='recipe'] #recipe,
@@ -3121,9 +3119,6 @@ html.no-js .beat {
   .board__row .row__price { grid-area: price; }
   .board__row .row__min { grid-area: min; text-align: left; font-size: 1.0625rem; }
 
-  .tarifa__foot {
-    grid-template-columns: minmax(0, 1fr);
-  }
 
   .ledger__row {
     grid-template-columns: 76px minmax(0, 1fr);
@@ -3165,7 +3160,7 @@ html.no-js .beat {
   .recipe__note,
   .book__ficha,
   .card__back,
-  .pin blockquote p,
+  .review blockquote p,
   .hours__row,
   .includes,
   .pitch {
@@ -3276,4 +3271,81 @@ html.no-js .book__page--right {
   background:
     linear-gradient(90deg, #e4dac6 0 10px, transparent 10px),
     repeating-linear-gradient(to bottom, transparent 0 45px, var(--rule-paper) 45px 46px) 0 260px / 100% calc(100% - 300px) no-repeat;
+}
+
+/* ==========================================================================
+   BK shopfront: a neighbourhood front, not Corte Real's gold leaf. Plain cut-vinyl
+   lettering on the glass, a brushed aluminium door and the printed hours card.
+   ========================================================================== */
+html[data-board='felt'] .sign {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: clamp(3.2rem, 8.4vw, 7.6rem);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  color: #eef0ec;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+html[data-board='felt'] .shop__door {
+  background:
+    linear-gradient(90deg, #6f7478 0, #a9aeb2 18%, #8b9094 46%, #b4b8bb 74%, #7a7f83 100%);
+  border-color: #4c5054;
+}
+
+html[data-board='felt'] .shop__door-glass {
+  inset: 14px 14px 26% 14px;
+  border-color: #2d3134;
+  outline: 0;
+}
+
+html[data-board='felt'] .shop__door-handle {
+  background: linear-gradient(90deg, #5c6064 0 40%, #c9cdd0 40%);
+}
+
+/* The hours card taped inside the door glass (BK). */
+.door-card {
+  position: absolute;
+  left: 50%;
+  top: 168px;
+  transform: translateX(-50%);
+  width: calc(100% - 64px);
+  max-width: 220px;
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px 11px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid #c9bfa9;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.door-card__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid #c9bfa9;
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+
+.door-card__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.door-card__row > span:last-child {
+  text-align: right;
+}
+
+@media (max-width: 899px) {
+  .door-card {
+    display: none;
+  }
 }

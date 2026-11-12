@@ -406,16 +406,18 @@ export function recipeList(c) {
 function serviceRow(s) {
   return (
     `<span class="row__name">${esc(s.name)}</span>` +
-    `<span class="row__min">${s.minutes} min</span>` +
+    (s.estimate ? '' : `<span class="row__min">${s.minutes} min</span>`) +
     `<span class="row__price">${esc(priceLabel(s.price, s.from))}</span>`
   );
 }
 
-function reviewPin(r, cls = '') {
-  return `<figure class="pin${cls}">
-                <blockquote lang="${esc(r.lang || 'es')}"><p>“${esc(r.text)}”</p></blockquote>
-                <figcaption>${esc(r.name)} · ${esc(r.source)}</figcaption>
-              </figure>`;
+function review(r) {
+  return `<li class="review">
+                <figure>
+                  <blockquote lang="${esc(r.lang || 'es')}"><p>“${esc(r.text)}”</p></blockquote>
+                  <figcaption>${esc(r.name)} · ${esc(r.source)}</figcaption>
+                </figure>
+              </li>`;
 }
 
 const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -424,31 +426,27 @@ function longDate(iso) {
   return `${d} de ${MONTHS[m - 1]} de ${y}`;
 }
 
-/** The board: one line per service (name, minutes, price); BK review pins next to the service they mention. */
+/** The board: one line per service (name, minutes when confirmed, price). */
 export function tarifaBoard(c) {
-  const reviews = c.REVIEWS || [];
-  const rows = c.SERVICES.map((s) => {
-    const pins = reviews.filter((r) => r.about === s.id).map((r) => reviewPin(r)).join('');
-    return `
-            <li class="board__row" data-service="${esc(s.id)}">${serviceRow(s)}${pins ? `\n              <div class="board__pins">${pins}</div>` : ''}</li>`;
-  }).join('');
-  return rows;
+  return c.SERVICES.map(
+    (s) => `
+            <li class="board__row" data-service="${esc(s.id)}">${serviceRow(s)}</li>`,
+  ).join('');
 }
 
 export function tarifaFoot(c) {
+  // Reviews: one quiet column under the board, in the order of the client file.
   const reviews = c.REVIEWS || [];
-  const loose = reviews.filter((r) => !r.about || !c.SERVICES.some((s) => s.id === r.about));
   const ratings = (c.RATINGS || []).map((r) => `${esc(r.source)} ${esc(r.score)} · ${r.count} reseñas`);
   const line = ratings.length
-    ? `<p class="tarifa__ratings">${ratings.join(' — ')}${c.RATINGS_AS_OF ? ` · consultado el <time datetime="${esc(c.RATINGS_AS_OF)}">${longDate(c.RATINGS_AS_OF)}</time>` : ''}</p>`
+    ? `<p class="tarifa__ratings">${ratings.join(' · ')}${c.RATINGS_AS_OF ? ` · consultado el <time datetime="${esc(c.RATINGS_AS_OF)}">${longDate(c.RATINGS_AS_OF)}</time>` : ''}</p>`
     : '';
   const intro = reviews.length && c.COPY.reviewsIntro ? `<p class="tarifa__reviews-intro">${esc(c.COPY.reviewsIntro)}</p>` : '';
-  const pins = loose.map((r) => reviewPin(r, ' pin--foot')).join('');
-  if (!line && !intro && !pins) return '';
+  const list = reviews.length ? `<ul class="reviews">${reviews.map(review).join('')}</ul>` : '';
+  if (!line && !intro && !list) return '';
   return `
           <div class="tarifa__foot">
-            ${pins}
-            <div class="tarifa__source">${intro}${line}</div>
+            <div class="tarifa__source">${intro}${line}${list}</div>
           </div>`;
 }
 
@@ -486,6 +484,8 @@ function floorPlan(c) {
 
 export function sillasSection(c) {
   if (!c.BARBERS?.length) return '';
+  // A signature link only to a program the Carta shows (ready).
+  const shown = (id) => cartaPrograms(c).some((p) => p.id === id && p.ready !== false);
   const rows = c.BARBERS.map(
     (b) => `
             <li class="ledger__row">
@@ -494,7 +494,7 @@ export function sillasSection(c) {
               <p class="ledger__name">${esc(b.name)}</p>
               <p class="ledger__days">${esc(b.days)}</p>
               <p class="ledger__known">${esc(b.knownFor)}</p>
-              <button type="button" class="textbtn ledger__see" data-cut="${esc(b.signatureCut)}" data-barber="${esc(b.id)}">${esc(b.signatureLabel)}</button>
+              ${shown(b.signatureCut) ? `<button type="button" class="textbtn ledger__see" data-cut="${esc(b.signatureCut)}" data-barber="${esc(b.id)}">${esc(b.signatureLabel)}</button>` : ''}
             </li>`,
   ).join('');
   return `
@@ -609,7 +609,7 @@ export function bookingCard(c) {
   return `
           <div class="card" id="book-card" hidden tabindex="-1" aria-labelledby="card-title">
             <div class="card__front">
-              <p class="card__header">PRÓXIMA CITA · ${esc(c.BRAND.name.toUpperCase())}</p>
+              <p class="card__header">${c.BOOKING?.mode === 'whatsapp' ? 'PETICIÓN DE HORA' : 'PRÓXIMA CITA'} · ${esc(c.BRAND.name.toUpperCase())}</p>
               <dl class="card__rows">${rows}</dl>
               <div class="card__back">
                 <p class="card__ficha"><span class="card__k">Para el barbero</span> <span id="card-ficha"></span></p>
@@ -660,6 +660,13 @@ export function doorBlock(c) {
           <a class="cta cta--call" href="${esc(B.phoneHref)}">Llamar <span class="cta__sub">${esc(localPhone(c))}</span></a>
           ${notice ? `<p class="door__notice">${esc(notice)}</p>` : ''}
         </div>`;
+}
+
+// BK: the printed hours card taped inside the door glass, from HOURS_TABLE.
+export function doorCard(c) {
+  if (!c.COPY.doorCardTitle) return '';
+  const rows = c.HOURS_TABLE.map(([d, h]) => `<span class="door-card__row"><span>${esc(d)}</span> <span>${esc(h)}</span></span>`).join('');
+  return `<p class="door-card"><span class="door-card__title">${esc(c.COPY.doorCardTitle)}</span>${rows}</p>`;
 }
 
 export function hoursRows(c) {
@@ -764,6 +771,7 @@ export function renderPage(html, c) {
     bookingCard,
     hours: hoursRows,
     door: doorBlock,
+    doorCard,
   };
   const S = site(c);
   let out = html.replace(/<!--@(\w+)-->/g, (m, name) => (blocks[name] ? blocks[name](c) : m));

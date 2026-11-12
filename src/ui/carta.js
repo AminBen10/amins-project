@@ -340,7 +340,8 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
       const a = e.target.closest?.('a.recipe__book');
       if (!a) return;
       const d = a.dataset;
-      const program = (full && full.id === d.program ? full : null) || byId(d.program);
+      // the phone station's own link carries no program: it books the cut on screen
+      const program = (full && (!d.program || full.id === d.program) ? full : null) || byId(d.program);
       const parts = programParts(program);
       booking.preset({
         serviceId: d.service || serviceFor(program, client)?.id,
@@ -430,6 +431,18 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
       back();
     }
   });
+
+  // Scrolling the page past the Carta with the station open: it closes (paused), so the
+  // fixed station never sits over the tarifa or the book.
+  const cartaSection = $('carta');
+  if (cartaSection && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      const en = entries[entries.length - 1];
+      if (en.isIntersecting || !root.classList.contains('player-open')) return;
+      film?.pause();
+      closePlayer('replace', `${location.pathname}${location.search}`);
+    }).observe(cartaSection);
+  }
 
   // Leaving phone width with the station open: the desktop player takes over.
   phoneQ.addEventListener?.('change', () => {
