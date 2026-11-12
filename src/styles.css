@@ -3288,20 +3288,23 @@ html[data-board='felt'] .sign {
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55);
 }
 
-html[data-board='felt'] .shop__door {
-  background:
-    linear-gradient(90deg, #6f7478 0, #a9aeb2 18%, #8b9094 46%, #b4b8bb 74%, #7a7f83 100%);
-  border-color: #4c5054;
-}
+/* The door panel is its own opening only on desktop (on phones it is the card sign). */
+@media (min-width: 900px) {
+  html[data-board='felt'] .shop__door {
+    background:
+      linear-gradient(90deg, #6f7478 0, #a9aeb2 18%, #8b9094 46%, #b4b8bb 74%, #7a7f83 100%);
+    border-color: #4c5054;
+  }
 
-html[data-board='felt'] .shop__door-glass {
-  inset: 14px 14px 26% 14px;
-  border-color: #2d3134;
-  outline: 0;
-}
+  html[data-board='felt'] .shop__door-glass {
+    inset: 14px 14px 26% 14px;
+    border-color: #2d3134;
+    outline: 0;
+  }
 
-html[data-board='felt'] .shop__door-handle {
-  background: linear-gradient(90deg, #5c6064 0 40%, #c9cdd0 40%);
+  html[data-board='felt'] .shop__door-handle {
+    background: linear-gradient(90deg, #5c6064 0 40%, #c9cdd0 40%);
+  }
 }
 
 /* The hours card taped inside the door glass (BK). */
