@@ -10,6 +10,10 @@
 //   laterales.desde up to the guard the top asks for (bands at landmark heights
 //   for bajo/medio/alto, edge only for taper, an arc for burst, one guard without
 //   a fade), then the top, the beard and the finish, in that order.
+// opts.sidesFrom (the composer, when only the top, beard or finish changed): the
+// arriba the sides on the head were built for. The sides are kept as they are (the
+// same ladder, the same name: 'desde el 0' stays) instead of matching a Carta cut
+// or re-climbing to the new top's guard; rapado and mullet still rebuild them.
 // Minutes and price come from the service the mix books (serviceFor, ficha.js).
 //
 // Steps are grouped by part and the parts never interleave
@@ -133,10 +137,10 @@ function topGuardFor(altura, desde, arriba) {
 
 // ---------------------------------------------------------------- the sides
 
-function buildSides(altura, desde, arriba, C) {
+function buildSides(altura, desde, arriba, C, ladderFor = arriba) {
   const mullet = arriba === 'mullet';
   const zone = mullet ? 'sides' : 'sidesNape';
-  const want = topGuardFor(altura, desde, arriba);
+  const want = topGuardFor(altura, desde, ladderFor);
   const steps = [];
   let bands;
   let info;
@@ -346,11 +350,19 @@ const idOf = (m) =>
  * Composed programs add `base: {cut, beard}` (the Carta programs they reuse) and
  * `labels: {cut, beard}` (names for the booking line '{Servicio}: {corte}, con …').
  */
-export function compose(mix, client) {
+export function compose(mix, client, opts = {}) {
   const C = clientData(client);
   const asked = normalizeMix(mix);
+  const SHAPES_SIDES = (a) => a === 'rapado' || a === 'mullet';
+  const keepSides =
+    opts.sidesFrom !== undefined &&
+    !!asked.laterales?.altura &&
+    !!asked.laterales?.desde &&
+    opts.sidesFrom !== asked.arriba &&
+    !SHAPES_SIDES(opts.sidesFrom) &&
+    !SHAPES_SIDES(asked.arriba);
 
-  const preset = findPreset(asked, C);
+  const preset = keepSides ? null : findPreset(asked, C);
   if (preset) return clone(preset);
 
   // Options the shop does not offer (claims, services) are left out.
@@ -364,7 +376,7 @@ export function compose(mix, client) {
     barba: offered('barba', asked.barba),
     acabado: offered('acabado', asked.acabado),
   };
-  if (!sameAsAsked(asked, m)) {
+  if (!keepSides && !sameAsAsked(asked, m)) {
     const again = findPreset(m, C);
     if (again) return clone(again);
   }
@@ -375,7 +387,7 @@ export function compose(mix, client) {
   const hair = sidesDone || !!m.arriba;
   const beardOpt = m.barba ? optionOf('barba', m.barba) : null;
   const beard = beardOpt?.beard ? C.BEARDS.find((p) => p.id === beardOpt.beard) || null : null;
-  const base = hairBase(m, C);
+  const base = keepSides ? null : hairBase(m, C);
   const complete = sidesDone && !!m.arriba && !!m.barba && !!m.acabado;
 
   const spec = emptySpec();
@@ -411,7 +423,7 @@ export function compose(mix, client) {
   } else {
     const parts = [];
     if (sidesDone) {
-      const sides = buildSides(altura, desde, m.arriba, C);
+      const sides = buildSides(altura, desde, m.arriba, C, keepSides ? opts.sidesFrom : m.arriba);
       lateralSteps = sides.steps;
       spec.sides = sides.spec;
       const { info } = sides;
@@ -550,7 +562,8 @@ export function compose(mix, client) {
   });
 
   const program = {
-    id: idOf(m),
+    // kept sides can differ from the same mix built fresh: their own id
+    id: keepSides ? `${idOf(m)}~${opts.sidesFrom || 'x'}` : idOf(m),
     kind: 'composed',
     name: name ? joinBeard(name, beardOpt, beard?.name ? low(beard.name) : '') : beard?.name || '',
     desc,
