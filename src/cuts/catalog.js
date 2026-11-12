@@ -916,22 +916,29 @@ function storyDef(claims = {}) {
       .filter((s) => s.op !== 'razor' && s.op !== 'mirror')
       .map((s, i, arr) => {
         const span = (0.97 - 0.64) / arr.length;
-        return { ...s, quiet: true, beat: 'scissors', at: [round(0.64 + i * span), round(0.64 + (i + 1) * span)] };
+        const at = [round(0.64 + i * span), round(0.64 + (i + 1) * span)];
+        // The first beard pass is spoken so the trim is shown, not only the razor.
+        if (i === 0) {
+          const line = 'Y la barba: peine del 2 en las mejillas, del 3 en la barbilla.';
+          return { ...s, label: line, caption: line, anchor: 'lineaBarba', beat: 'scissors', at };
+        }
+        return { ...s, quiet: true, beat: 'scissors', at };
       }),
   ];
 
-  // navaja: one beat, notes gated on what the shop has confirmed
+  // navaja: one beat, notes gated on what the shop has confirmed. Order as done at
+  // the chair: towel, a new blade in the razor, lather and razor, then talc.
   const razorNote = 'Espuma y navaja en las patillas, el contorno de la barba y la nuca.';
   const towel = !!claims.hotTowel;
   if (towel) {
     steps.push({ part: 'barba', op: 'towel', zone: 'beard', label: 'Toalla caliente un par de minutos: abre el poro y la navaja no tira.', shot: 'tresCuartos', anchor: 'barbilla', beat: 'razor', at: [0.02, 0.16] });
   }
-  steps.push({ part: 'barba', op: 'lather', zone: 'contour', label: razorNote, shot: 'tresCuartos', anchor: 'patilla', beat: 'razor', at: towel ? [0.18, 0.36] : [0.05, 0.36] });
-  steps.push(
-    claims.newBlade
-      ? { part: 'barba', op: 'razor', zone: 'contour', label: 'Hoja nueva, como con cada cliente.', upTo: H('NUEZ', 2), shot: 'tresCuartos', dur: 4, anchor: 'lineaBarba', beat: 'razor', at: [0.38, 0.74] }
-      : { part: 'barba', op: 'razor', zone: 'contour', label: razorNote, upTo: H('NUEZ', 2), shot: 'tresCuartos', dur: 4, anchor: 'lineaBarba', quiet: true, beat: 'razor', at: [0.38, 0.74] },
-  );
+  if (claims.newBlade) {
+    steps.push({ part: 'barba', op: 'hold', zone: 'contour', label: 'Hoja nueva, como con cada cliente.', tool: 'razor', shot: 'tresCuartos', dur: 2, anchor: 'lineaBarba', beat: 'razor', at: [0.18, 0.28] });
+  }
+  const latherFrom = claims.newBlade ? 0.3 : towel ? 0.18 : 0.05;
+  steps.push({ part: 'barba', op: 'lather', zone: 'contour', label: razorNote, shot: 'tresCuartos', anchor: 'patilla', beat: 'razor', at: [latherFrom, 0.42] });
+  steps.push({ part: 'barba', op: 'razor', zone: 'contour', label: razorNote, upTo: H('NUEZ', 2), shot: 'tresCuartos', dur: 4, anchor: 'lineaBarba', quiet: true, beat: 'razor', at: [0.44, 0.74] });
   if (claims.talc === 'talco') {
     steps.push({ part: 'acabado', op: 'talc', zone: 'nape', label: 'Un poco de talco en la nuca, para que no pique.', shot: 'tresCuartosAtras', anchor: 'nuca', beat: 'razor', at: [0.78, 0.95] });
   } else if (claims.talc === 'bálsamo') {
