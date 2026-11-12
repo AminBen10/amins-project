@@ -31,11 +31,11 @@ export const COPY = {
   description: 'Barbería en Chamberí. Mira cómo se hace cada corte, peine a peine, y pide hora con el tuyo ya apuntado.',
   tag: 'Barbería · Chamberí',
   question: '¿Qué te hacemos hoy?',
-  facts: ['Chamberí · tres sillas · de lunes a viernes, de 10:00 a 20:30 · sábados, de 9:30 a 15:00'],
+  facts: ['Barbería de ejemplo.', 'Chamberí · tres sillas · de lunes a viernes, de 10:00 a 20:30 · sábados, de 9:30 a 15:00'],
   priceNote: 'Precios con IVA. Tarjeta, efectivo o Bizum.',
   bookIntro: 'Elige día, hora y silla.',
   agendaLabel: 'Agenda de ejemplo, sin conectar.',
-  hoursHint: '{n} horas para {servicio} ({min} min).',
+  hoursHint: 'Quedan {n} horarios para {servicio} ({min} min).',
   // additive: the other client-specific deck strings
   posterAlt: 'Escaparate de Corte Real de noche, con el poste de barbero junto a la puerta.',
   doorAddress: 'Calle de Ejemplo, 12 · 28010 Madrid',
@@ -139,7 +139,7 @@ export const STORY_CUT = { hair: 'n2', beard: 'b18' };
 // copy deck sillas.* [CR, datos de ejemplo]. weekdays as Date#getDay().
 export const BARBERS = [
   { id: 'karim', name: 'Karim', chair: 'La silla de la ventana', days: 'de martes a sábado', weekdays: [2, 3, 4, 5, 6], knownFor: 'degradados y diseños a máquina', tool: 'clipper', signatureCut: 'n4', signatureLabel: 'Ver su degradado a piel' },
-  { id: 'dani', name: 'Dani', chair: 'La del medio', days: 'de lunes a viernes', weekdays: [1, 2, 3, 4, 5], knownFor: 'tijera y cortes con largo', tool: 'scissors', signatureCut: 'n11', signatureLabel: 'Ver su raya al lado' },
+  { id: 'dani', name: 'Dani', chair: 'La del medio', days: 'de lunes a viernes', weekdays: [1, 2, 3, 4, 5], knownFor: 'tijera y cortes con largo', tool: 'scissors', signatureCut: 'n5', signatureLabel: 'Ver su taper' },
   { id: 'marco', name: 'Marco', chair: 'La del fondo', days: 'de miércoles a sábado', weekdays: [3, 4, 5, 6], knownFor: 'barba, navaja y afeitado', tool: 'razor', signatureCut: 'b20', signatureLabel: 'Ver su barba completa' },
 ];
 

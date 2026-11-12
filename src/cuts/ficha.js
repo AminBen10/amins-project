@@ -211,6 +211,8 @@ export function serviceFor(x, client) {
 /** 'Degradado · 40 min · 18 €', 'Corte de pelo · 30 min · desde 12 €'. */
 export function tarifaLine(service) {
   if (!service) return '';
+  // Unconfirmed minutes (estimate) are not shown as a fact.
+  if (service.estimate) return `${service.name} · ${priceLabel(service.price, service.from)}`;
   return `${service.name} · ${service.minutes} min · ${priceLabel(service.price, service.from)}`;
 }
 

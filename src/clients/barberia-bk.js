@@ -20,7 +20,9 @@ export const BRAND = {
   instagram: null, // fuente: ninguna cuenta pública encontrada; confirmar si tienen
   whatsapp: '34631023374', // fuente: el teléfono de Google; confirmar que atienden WhatsApp en ese número
   treatwell: TREATWELL, // fuente: Treatwell; confirmar
-  transit: 'L3 Liceu · 6 min a pie', // fuente: Google Maps, a pie desde el metro Liceu (L3); confirmar
+  // fuente: Google Maps, a pie desde el metro Liceu (L3); confirmar. Hidden until the
+  // shop confirms it: 'L3 Liceu · 6 min a pie'.
+  transit: null,
   timezone: 'Europe/Madrid', // fuente: Barcelona
   url: null, // fuente: no tienen web propia conocida
   priceRange: '€', // fuente: tarifa de Treatwell (corte desde 12 €)
@@ -35,14 +37,19 @@ export const COPY = {
   question: '¿Qué te hacemos hoy?',
   facts: [
     'Carrer de Joaquín Costa, 3, en el Raval.', // fuente: Google Maps (dirección)
-    'Te atendemos en español, inglés, francés y árabe.', // fuente: archivo anterior del cliente, sin fuente pública anotada; confirmar
+    // 'Te atendemos en español, inglés, francés y árabe.': fuente: archivo anterior del
+    // cliente, sin fuente pública anotada; hidden until the shop confirms it.
   ],
-  priceNote: 'Precios desde, con IVA. Se paga en la barbería, con tarjeta o en efectivo.', // fuente: Treatwell (precios "desde"); confirmar formas de pago
+  // fuente: Treatwell (precios "desde"). Payment ('con tarjeta o en efectivo') is not
+  // published: hidden until the shop confirms it.
+  priceNote: 'Precios desde, con IVA. Se paga en la barbería.',
   bookIntro: 'Elige día y hora y te dejamos el mensaje preparado para WhatsApp. La cita queda confirmada cuando la barbería te contesta.',
   agendaLabel: 'Agenda sin conectar: lo que mandas es una petición.',
   hoursHint: 'Horario de la barbería: de lunes a jueves, de 10:00 a 23:00; de viernes a domingo, consultar. Te confirman por WhatsApp si la hora está libre.', // fuente: Treatwell (lunes a jueves 10:00–23:00); viernes a domingo sin confirmar (ver OPENING)
   // additive: the other client-specific deck strings
-  posterAlt: 'Fachada de Barbería BK de noche, con el poste de barbero junto a la puerta.',
+  // The 3D front is a drawing, not a photo of the shop: say so.
+  posterAlt: 'Escaparate imaginado de Barbería BK de noche, con el poste de barbero junto a la puerta.',
+  doorCardTitle: 'Horario', // the card in the door glass: rows from HOURS_TABLE
   doorAddress: 'Carrer de Joaquín Costa, 3 · 08001 Barcelona', // fuente: Google Maps (dirección)
   doorHours: 'Lunes a jueves 10:00–23:00 · Viernes a domingo: consultar', // fuente: Treatwell (lunes a jueves); viernes a domingo sin confirmar (ver OPENING)
   doorLinks: 'WhatsApp · Treatwell',
@@ -111,19 +118,21 @@ export const HOURS_TABLE = [
 
 // Services as listed on Treatwell (copy deck: unchanged from the client file).
 // includes[] says what each one covers; from: Treatwell shows the price as "desde".
+// estimate: the minutes are not published. They only size the request's time grid
+// and are never shown as a fact (tarifa, ficha 'Tiempo', card) until confirmed.
 export const SERVICES = [
   // fuente: Treatwell (nombre y precio desde 12 €); 30 min y descripción del archivo anterior, confirmar
-  { id: 'corte', name: 'Corte de pelo', desc: 'Máquina y tijera, en seco.', price: 12, from: true, minutes: 30, includes: ['corte', 'seco'] },
+  { id: 'corte', name: 'Corte de pelo', desc: 'Máquina y tijera, en seco.', price: 12, from: true, minutes: 30, estimate: true, includes: ['corte', 'seco'] },
   // fuente: Treatwell (nombre y precio desde 17 €); 40 min del archivo anterior, confirmar
-  { id: 'corte-lavado', name: 'Corte, lavado y peinado', desc: 'Corte con lavado y peinado con producto.', price: 17, from: true, minutes: 40, includes: ['corte', 'lavado', 'producto'] },
+  { id: 'corte-lavado', name: 'Corte, lavado y peinado', desc: 'Corte con lavado y peinado con producto.', price: 17, from: true, minutes: 40, estimate: true, includes: ['corte', 'lavado', 'producto'] },
   // fuente: Treatwell (nombre y precio desde 24 €); 45 min del archivo anterior, confirmar
-  { id: 'corte-barba', name: 'Corte, lavado y barba', desc: 'Corte con lavado y arreglo de barba con perfilado.', price: 24, from: true, minutes: 45, includes: ['corte', 'lavado', 'barba'] },
+  { id: 'corte-barba', name: 'Corte, lavado y barba', desc: 'Corte con lavado y arreglo de barba con perfilado.', price: 24, from: true, minutes: 45, estimate: true, includes: ['corte', 'lavado', 'barba'] },
   // fuente: fichas de Google y Treatwell (servicio sin precio público); minutos supuestos, confirmar
-  { id: 'barba', name: 'Arreglo de barba', desc: 'Rebaje y perfilado de la barba.', price: null, from: true, minutes: 20, includes: ['barba'] },
+  { id: 'barba', name: 'Arreglo de barba', desc: 'Rebaje y perfilado de la barba.', price: null, from: true, minutes: 20, estimate: true, includes: ['barba'] },
   // fuente: fichas de Google y Treatwell, reseña de Javier D. (servicio sin precio público); minutos supuestos, confirmar
-  { id: 'mechas', name: 'Mechas y color', desc: 'Mechas, reflejos o color, en pelo corto o largo.', price: null, from: true, minutes: 60, includes: ['color'] },
+  { id: 'mechas', name: 'Mechas y color', desc: 'Mechas, reflejos o color, en pelo corto o largo.', price: null, from: true, minutes: 60, estimate: true, includes: ['color'] },
   // fuente: fichas de Google y Treatwell (servicio sin precio público); minutos supuestos, confirmar
-  { id: 'facial', name: 'Facial y depilación', desc: 'Tratamientos faciales y depilación.', price: null, from: true, minutes: 30, includes: ['facial'] },
+  { id: 'facial', name: 'Facial y depilación', desc: 'Tratamientos faciales y depilación.', price: null, from: true, minutes: 30, estimate: true, includes: ['facial'] },
 ];
 
 // Claims the story and the Carta may make only once the shop confirms them:

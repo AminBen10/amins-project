@@ -143,14 +143,15 @@ export function slotsFor(day, minutes = 30, lead = 30, now = null, step = 30) {
  * The door sign: {state: 'open'|'closed'|'unknown', text} from the deck strings.
  * A 'consultar' day is unknown (no sign) while it lasts; a closed spell whose
  * next opening falls after a 'consultar' day says only 'Cerrado', never a
- * guessed time.
+ * guessed time. opts.opens: 'abrimos' (the shop's own voice) or 'abre' (a
+ * proposal for a shop that is not speaking: BK).
  */
-export function openStatus(OPENING, now) {
+export function openStatus(OPENING, now, { opens = 'abrimos' } = {}) {
   const today = hoursFor(OPENING, now.weekday);
   if (today.state === 'consultar') return { state: 'unknown', text: '' };
   if (today.state === 'open') {
     if (now.mins >= today.open && now.mins < today.close) return { state: 'open', text: `Abierto · hasta las ${hhmm(today.close)}` };
-    if (now.mins < today.open) return { state: 'closed', text: `Cerrado · abrimos hoy a las ${hhmm(today.open)}` };
+    if (now.mins < today.open) return { state: 'closed', text: `Cerrado · ${opens} hoy a las ${hhmm(today.open)}` };
   }
   for (let i = 1; i <= 7; i++) {
     const wd = (now.weekday + i) % 7;
@@ -158,7 +159,7 @@ export function openStatus(OPENING, now) {
     if (h.state === 'consultar') return { state: 'closed', text: 'Cerrado' };
     if (h.state === 'open') {
       const when = i === 1 ? 'mañana' : `el ${WEEKDAY_LONG[wd]}`;
-      return { state: 'closed', text: `Cerrado · abrimos ${when} a las ${hhmm(h.open)}` };
+      return { state: 'closed', text: `Cerrado · ${opens} ${when} a las ${hhmm(h.open)}` };
     }
   }
   return { state: 'closed', text: 'Cerrado' };

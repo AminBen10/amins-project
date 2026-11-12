@@ -58,7 +58,7 @@ export function renderRecipe(program, client, opts = {}) {
   const h = opts.heading || 'h3';
   const tid = `${opts.idPrefix || 'receta'}-${p.id}`;
   const service = serviceFor(p, client);
-  const r = { ...(p.recipe || {}), tiempo: service ? `${service.minutes} min` : null };
+  const r = { ...(p.recipe || {}), tiempo: service && !service.estimate ? `${service.minutes} min` : null };
   const parts = programParts(p);
 
   const title =

@@ -6,6 +6,7 @@
 // No storage, no network. Days and hours come from the shop's clock (shopTime).
 import { BRAND, BOOKING, OPENING, SERVICES, BARBERS, COPY } from '../config.js';
 import { priceLabel } from '../price.js';
+import { tarifaLine } from '../cuts/ficha.js';
 import { shopNow, buildDays, slotsFor } from './shopTime.js';
 import { buildWhatsAppMessage, buildWhatsAppHref } from './whatsapp.js';
 
@@ -149,9 +150,10 @@ export function initBooking({ onCut } = {}) {
       }
       slotsEl.replaceChildren(frag);
     }
-    // CR: '{n} horas para {servicio} ({min} min).' BK keeps its fixed line.
+    // CR: 'Quedan {n} horarios para {servicio} ({min} min).' BK keeps its fixed line.
     if (COPY.hoursHint?.includes('{')) {
-      setText(slotsHint, day ? fill(COPY.hoursHint, { n: slots.length, servicio: svc.name, min: svc.minutes }) : '');
+      const hint = slots.length === 1 ? COPY.hoursHint.replace('Quedan', 'Queda').replace('horarios', 'horario') : COPY.hoursHint;
+      setText(slotsHint, day ? fill(hint, { n: slots.length, servicio: svc.name, min: svc.minutes }) : '');
     }
     update();
   }
@@ -221,7 +223,7 @@ export function initBooking({ onCut } = {}) {
     const d = details();
     setText($('card-day'), d.day ? d.day.long.charAt(0).toUpperCase() + d.day.long.slice(1) : '');
     setText($('card-time'), d.hora);
-    setText($('card-service'), `${d.svc.name} · ${d.svc.minutes} min · ${priceLabel(d.svc.price, d.svc.from)}`);
+    setText($('card-service'), tarifaLine(d.svc));
     const cut = cutLine(state.cut);
     setText($('card-cut'), cut);
     $('card-cut')?.closest('.card__row')?.toggleAttribute('hidden', !cut);
