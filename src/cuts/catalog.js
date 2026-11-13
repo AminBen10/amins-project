@@ -87,7 +87,7 @@ export const TOOL_NAMES = {
 
 // v1: the looks the hair engine renders credibly. The others join when the
 // subject stream reports they pass the quality gate (tech notes §8).
-const READY = new Set(['n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n8', 'n12', 'n13', 'b16', 'b17', 'b18', 'b19', 'b20']);
+const READY = new Set(['n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n8', 'n9', 'n10', 'n12', 'n13', 'b16', 'b17', 'b18', 'b19', 'b20']);
 
 // On screen a film is 1.4 s (dip + title card) plus dur + 0.5 s per step (src/ui/film.js).
 export const FILM_MAX_S = 35;
@@ -1074,7 +1074,7 @@ const INGREDIENT_DEFS = [
 // Option readiness follows the gated looks named in the plan (burst, pompadour,
 // rizos, mullet, candado) and the Carta: an option whose preset look is not READY
 // (crop n7, hacia atrás n10, raya n11) stays off the composer too.
-const GATED_OPTIONS = new Set(['burst', 'pompadour', 'rizos', 'mullet', 'candado']);
+const GATED_OPTIONS = new Set(['rizos', 'mullet', 'candado']);
 
 function buildIngredients({ claims, services } = {}) {
   const haircut = services ? services.filter((s) => (s.includes || []).includes('corte')) : null;
