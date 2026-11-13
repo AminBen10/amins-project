@@ -33,13 +33,18 @@ export const SHOTS = Object.freeze({
 
 export const SHOT_NAMES = Object.keys(SHOTS);
 const PHONE_TIGHTEN = 0.9;
+// Wide frames (desktop): the head is the subject, not a small bust against a wall of tiles.
+// Shots fit tighter, and the head sits a little in from the right edge of the frame, towards
+// the middle of the screen.
+const WIDE_TIGHTEN = 0.8;
+const WIDE_SHIFT = 0.12; // of the frame width, towards the left
 
 /** A shot as a plain pose {az, el, dist, target: Vector3, fov} for a frame aspect. */
 export function shotPose(name, { aspect = 1, phone = false, out } = {}) {
   const s = SHOTS[name] || SHOTS.frente;
   const pose = out || { target: new THREE.Vector3() };
   const fov = s.fov;
-  const size = s.size * (phone ? PHONE_TIGHTEN : 1);
+  const size = s.size * (phone ? PHONE_TIGHTEN : aspect > 1.15 ? WIDE_TIGHTEN : 1);
   // fit `size` vertically, and 0.8·size horizontally on narrow frames
   const half = THREE.MathUtils.degToRad(fov / 2);
   const needH = size / 2;
@@ -104,7 +109,8 @@ export function createCameraRig(camera, { rig, reducedMotion = false } = {}) {
     camera.far = d * s + 60;
     // the frustum belongs to the frame rect; the canvas around it shows the room
     camera.aspect = aspect();
-    camera.setViewOffset(frame.w, frame.h, -frame.x, -frame.y, frame.W, frame.H);
+    const dx = !phone && aspect() > 1.15 ? WIDE_SHIFT * frame.w : 0;
+    camera.setViewOffset(frame.w, frame.h, -frame.x + dx, -frame.y, frame.W, frame.H);
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
   }

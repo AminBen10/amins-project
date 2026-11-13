@@ -592,9 +592,10 @@ function toolsOf(step) {
       return { main: 'clipper', helper: 'comb' };
     case 'scissorOverComb':
       return { main: 'scissors', helper: 'comb' };
+    case 'thinning':
+      return { main: 'scissors', helper: 'comb' }; // thinning shears over the comb
     case 'scissor':
     case 'pointCut':
-    case 'thinning':
       return { main: 'scissors' };
     case 'comb':
       return { main: 'comb' };
@@ -658,9 +659,11 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
     brush: brush(m),
     neckBrush: neckBrush(m),
   };
+  // the clipper drawn at 3/4 of its real size: at full size its body hid the side of the head
+  const SCALE = { clipper: 0.76 };
   for (const k in tools) {
     const t = tools[k];
-    t.scale.setScalar(MM);
+    t.scale.setScalar(MM * (SCALE[k] ?? 1));
     t.visible = false;
     t.traverse((o) => {
       if (o.isMesh) o.castShadow = true;
@@ -810,7 +813,8 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
           moving = true;
         }
         const mm = guardMM;
-        const off = mm * MM + 0.004;
+        // (the guard is modelled at true size; the drawn clipper is 3/4 of it)
+        const off = mm * MM * SCALE.clipper + 0.004;
         const flick = rm ? 0 : sm(0.8, 1, sT);
         const reenter = rm ? 0 : 1 - sm(0, 0.07, sT);
         const up = flick * 0.11 + reenter * 0.05 + swapLift;
@@ -820,11 +824,12 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
           Q.addScaledVector(T, Math.sin(time * 397) * 0.0035).addScaledVector(B, Math.sin(time * 331 + 1.7) * 0.0035);
           moving = true;
         }
-        poseTool(tools.clipper, Q, N, T);
-        // body tilted off the scalp; the flick rocks the blade out of the hair
-        // (downward beard strokes: the body stands further off the face)
+        // body tilted off the scalp; the flick rocks the blade out of the hair. Downward beard
+        // strokes pull the clipper down the face: the body hangs below the blade, close to the
+        // jaw, instead of standing straight out of the chin.
         const down = step.path?.kind === 'strokes' && step.path.up === false;
-        tools.clipper.rotateX(-((down ? 0.62 : 0.34) + 0.6 * flick));
+        poseTool(tools.clipper, Q, N, down ? Y.copy(T).negate() : T);
+        tools.clipper.rotateX(-((down ? 0.28 : 0.34) + 0.6 * flick));
         tools.clipper.userData.setLever(LEVER[step.lever] ?? (op === 'blend' ? 0.5 : 0));
         save('clipper');
         out.tip.addScaledVector(N, off);
@@ -837,21 +842,29 @@ export function createTools({ tier = 'high', reducedMotion = false, guards = {} 
         }
       } else if (main === 'scissors') {
         const h = visMM(lenOf(step)) * MM;
-        if (op === 'thinning' || op === 'pointCut') {
-          // blades pointing into the hair
-          const depth = op === 'thinning' ? 0.05 : h * 0.8;
-          Q.copy(P).addScaledVector(N, 0.69 + depth);
-          poseTool(tools.scissors, Q, Y.crossVectors(T, N), T);
+        if (op === 'pointCut') {
+          // point cutting: the tips go into the ends of the hair at a slant (about 40° off the
+          // surface, along the section), never standing upright on the head
+          const dir = Y.copy(N).multiplyScalar(-0.64).addScaledVector(T, 0.77).normalize();
+          Q.copy(P).addScaledVector(N, h * 0.75).addScaledVector(dir, -0.694); // pivot: 76 mm behind the tips
+          const zA = new THREE.Vector3().crossVectors(T, N).normalize();
+          poseTool(tools.scissors, Q, zA, new THREE.Vector3().crossVectors(zA, dir));
           tools.scissors.userData.setOpen(rm ? 0.12 : 0.02 + 0.16 * (0.5 + 0.5 * Math.sin(time * Math.PI * 2 * 2)));
         } else {
-          // along the section: over the comb's back, or just above the hair
-          const above = use.helper === 'comb' ? COMB_UP + 0.07 : h + 0.02;
-          // along a row the blades follow the section; on a stroke (moustache, beard edge) they
-          // lie across it, cutting the line the stroke ends at
+          // along the section, held flat: the blades lie along the comb's back (or just above
+          // the hair held between the fingers), opening parallel to the scalp
+          const above = use.helper === 'comb' ? COMB_UP + 0.035 : h + 0.02;
+          // on a stroke (moustache, beard edge) they lie across it, cutting the line it ends at
           const across = step.path?.kind === 'strokes';
-          const ax = across ? Y.copy(B) : Y.copy(T);
-          Q.copy(P).addScaledVector(N, above).addScaledVector(ax, -0.38);
-          poseTool(tools.scissors, Q, ax.cross(N), N);
+          if (across) {
+            const ax = Y.copy(B);
+            Q.copy(P).addScaledVector(N, above).addScaledVector(ax, -0.38);
+            poseTool(tools.scissors, Q, ax.cross(N), N);
+          } else {
+            // tips along +T: x = y × z with z = N needs y = N × T
+            Q.copy(P).addScaledVector(N, above).addScaledVector(T, -0.38);
+            poseTool(tools.scissors, Q, N, Y.crossVectors(N, T));
+          }
           tools.scissors.userData.setOpen(rm ? 0.2 : 0.05 + 0.32 * (0.5 + 0.5 * Math.sin(time * Math.PI * 2 * 3)));
           if (use.helper === 'comb') {
             poseTool(tools.comb, Y.copy(P).addScaledVector(N, COMB_UP), B, N);

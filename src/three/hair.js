@@ -157,10 +157,10 @@ export function hairUniforms({ tier = 'high' } = {}) {
     uClump: { value: tier === 'low' ? 0 : 1 },
     uRagged: { value: 0.15 },
     uGrey: { value: 0 },
-    // dark brown, tips a little warmer and lighter
-    uRoot: { value: new THREE.Color('#2a1b12') },
-    uTip: { value: new THREE.Color('#3b2d24') },
-    uBeard: { value: new THREE.Color('#463427') },
+    // dark chestnut brown (never near-black: it has to read on a dark wall), tips warmer and lighter
+    uRoot: { value: new THREE.Color('#35251a') },
+    uTip: { value: new THREE.Color('#4f3b2c') },
+    uBeard: { value: new THREE.Color('#544032') },
     // brief rig: cool overhead key, warm window fill, dim warm ambient (world dirs, linear colour)
     uKeyDir: { value: new THREE.Vector3(0.1, 0.9, 0.45).normalize() },
     uKeyCol: { value: new THREE.Color('#EEF2F5').multiplyScalar(1.4) },

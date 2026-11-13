@@ -166,10 +166,19 @@ const ROOM_FRAG = /* glsl */ `
     // building opposite with a few lit windows, all out of focus
     float sy = (p.y - (winC.y - winB.y)) / (2.0 * winB.y);   // 0 sill … 1 head
     vec3 street = uNight * 0.35;
-    street += uWindow * 0.045 * smoothstep(0.35, 0.0, sy);
+    street += uWindow * 0.07 * smoothstep(0.35, 0.0, sy);
     vec2 cell = floor((p - winC) * vec2(9.0, 7.0) + vec2(0.3, 0.6));
-    float lw = step(0.62, hash(cell + 3.1)) * box(fract((p - winC) * vec2(9.0, 7.0) + vec2(0.3, 0.6)), vec2(0.5), vec2(0.22, 0.28), 0.12);
-    street += uWindow * 0.05 * lw * smoothstep(0.45, 0.6, sy);
+    float lw = step(0.55, hash(cell + 3.1)) * box(fract((p - winC) * vec2(9.0, 7.0) + vec2(0.3, 0.6)), vec2(0.5), vec2(0.22, 0.28), 0.12);
+    // lit rooms across the street: warm lamps, the odd cooler one (a screen, a kitchen tube)
+    vec3 room = mix(uWindow, vec3(0.75, 0.72, 0.62), step(0.8, hash(cell + 9.7)));
+    street += room * (0.1 + 0.08 * hash(cell + 5.3)) * lw * smoothstep(0.45, 0.6, sy);
+    // the shop opposite, still open: a lit window at street level under a dark awning
+    float shopO = box(p, vec2(winC.x + 0.05, winC.y - winB.y * 0.5), vec2(0.11, winB.y * 0.2), b + 0.01);
+    float mull = box(vec2(fract((p.x - winC.x) * 18.0), 0.5), vec2(0.5), vec2(0.06, 1.0), 0.05);
+    street += uWindow * 0.16 * shopO * (1.0 - 0.6 * mull);
+    street = mix(street, uNight * 0.2, box(p, vec2(winC.x + 0.05, winC.y - winB.y * 0.5 + winB.y * 0.24), vec2(0.13, 0.018), b + 0.006));
+    // our own tube light, caught in the glass
+    street += uTubeCol * 0.05 * box(p, vec2(winC.x - 0.04, winC.y + winB.y * 0.62), vec2(0.11, 0.005), b + 0.006);
     street = mix(street, uNight * 0.3, box(p, winC, vec2(0.005, winB.y), b));
     // the pole outside, seen from inside: a narrow band at the window's edge
     float px = winC.x - winB.x + 0.07;

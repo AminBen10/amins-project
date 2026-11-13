@@ -138,7 +138,9 @@ export const HAIR_VERT = /* glsl */ `
     // volume is decoupled from length: long hair lies down along the comb and follows
     // the curve of the skull (lie); lift turns gravity into volume
     // lifted (blow-dried, combed up) hair stands more upright: its coat is a larger part of its length
-    float thick = mix(min(len, 0.016 + 0.24 * len), 0.5 * len, lift);
+    // (long hair keeps a coat about a third of its drawn length deep, so a long top reads
+    // long in silhouette; set, blown-up hair stands most of its length)
+    float thick = mix(min(len, 0.016 + 0.24 * len + 0.14 * max(len - 0.1, 0.0)), 0.92 * len, lift);
     // a guard or comb resting on the hair presses it down
     if (uContact.w > 0.0) thick *= 1.0 - 0.6 * (1.0 - smoothstep(0.6 * uContact.w, uContact.w, distance(position, uContact.xyz)));
     float s = len * bend * f * f;
@@ -286,7 +288,17 @@ export const HAIR_FRAG = /* glsl */ `
     // long hair is a dense mass: its lower shells are nearly opaque, so lifted hair keeps
     // its volume in silhouette
     float mass = groomed * (1.0 - 0.6 * hf);
-    float alpha = min(strand * (1.0 + 3.0 * mass), 1.0) * razor * shortK;
+    float alpha = min(strand * (1.0 + 3.0 * mass), 1.0);
+    // groomed long hair is one continuous mass up to most of its coat, broken into streaks
+    // along the comb; only the top of the coat is single strands (so a long top reads long)
+    {
+      vec3 sq2 = q * uDensity * 0.3;
+      sq2 -= dir * dot(sq2, dir) * 0.86;
+      float streak = vnoise(sq2 + vClump.w * 13.0);
+      float sheet = smoothstep(0.08, 0.22, vLen) * (1.0 - smoothstep(0.42, 0.82, hf + 0.35 * (streak - 0.5)));
+      alpha = max(alpha, sheet * edgeT * (0.82 + 0.18 * streak));
+    }
+    alpha *= razor * shortK;
     // under lather the strands are hidden (the skin shader draws the foam)
     alpha *= 1.0 - smoothstep(0.2, 0.5, vFoam);
 

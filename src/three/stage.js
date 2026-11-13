@@ -14,7 +14,7 @@ import { createTools } from './tools.js';
 import { createCape } from './cape.js';
 import { createCameraRig, shotPose } from './camera.js';
 import { createClippings } from './clippings.js';
-import { ANCHORS, HEAD_POINTS, AXIS_Z } from './hairField.js';
+import { ANCHORS, HEAD_POINTS, HEAD_BOUNDS, AXIS_Z } from './hairField.js';
 
 // Stage: the shopfront with the pole as the hero object in front of the room shader, then the
 // station with the head, cape and tools. The page drives it two ways (C11):
@@ -32,6 +32,7 @@ export const LIGHTS = {
   key: { color: '#EEF2F5', intensity: 2.4, position: [0.5, 6, 3] },
   fill: { color: '#FFB874', intensity: 0.35, position: [-4, 1.5, 3] },
   ambient: { sky: '#3A3A3A', ground: '#121212', intensity: 0.35 },
+  nape: { color: '#FFE6CC', intensity: 1.6 },
 };
 
 const ENTER_CUT = 0.7; // hard match cut from the pole to the station
@@ -184,8 +185,12 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
   const fill = new THREE.DirectionalLight(LIGHTS.fill.color, LIGHTS.fill.intensity);
   fill.position.set(...LIGHTS.fill.position);
   const hemi = new THREE.HemisphereLight(LIGHTS.ambient.sky, LIGHTS.ambient.ground, LIGHTS.ambient.intensity);
-  scene.add(key, fill, hemi);
-  for (const l of [key, fill, hemi]) l.layers.enable(1); // the hand mirror's camera sees layer 1
+  // Nape light: nothing in the brief's rig reaches the back of the head, so the nuca shot and the
+  // hand mirror showed a black void. A soft warm light from over the viewer's shoulder, only
+  // while a camera looks at the back (the main camera in the nuca shot, the mirror's camera).
+  const nape = new THREE.DirectionalLight(LIGHTS.nape.color, 0);
+  scene.add(key, fill, hemi, nape, nape.target);
+  for (const l of [key, fill, hemi, nape]) l.layers.enable(1); // the hand mirror's camera sees layer 1
   const sc = key.shadow.camera;
   function shadowFit(station) {
     // shop: the pole and facade; station: tight round head and shoulders for a sharper jaw shadow
@@ -273,6 +278,33 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
       fillColor: new THREE.Color(LIGHTS.fill.color).multiplyScalar(LIGHTS.fill.intensity),
       ambient: new THREE.Color(LIGHTS.ambient.sky).multiplyScalar(LIGHTS.ambient.intensity),
     });
+  }
+
+  // Light the back of the head for a view from `eye` (world), k 0..1: the nape light comes from
+  // over that viewpoint's shoulder, and the hair's fill turns towards it.
+  const _c = new THREE.Vector3(), _d = new THREE.Vector3(), _f = new THREE.Vector3(), _fc = new THREE.Color();
+  function lightBack(eye, k) {
+    nape.intensity = LIGHTS.nape.intensity * k;
+    if (!head) return;
+    _c.set(0, HEAD_BOUNDS.center[1], AXIS_Z).applyMatrix4(headRig.matrixWorld);
+    _d.copy(eye).sub(_c).normalize();
+    _d.y += 0.75;
+    _d.x += 0.35 * Math.sign(_d.z || 1);
+    _d.normalize();
+    nape.position.copy(_c).addScaledVector(_d, 5);
+    nape.target.position.copy(_c);
+    nape.target.updateMatrixWorld();
+    _f.copy(fill.position).normalize().lerp(_d, k).normalize();
+    _fc.set(LIGHTS.fill.color).multiplyScalar(LIGHTS.fill.intensity).lerp(_fc.clone().set(LIGHTS.nape.color).multiplyScalar(LIGHTS.nape.intensity * 0.8), k);
+    head.setLighting?.({ fillDir: _f, fillColor: _fc });
+  }
+  const _eye = new THREE.Vector3(), _fwd = new THREE.Vector3();
+  // how much the main camera looks at the back of the head (0 face .. 1 nape)
+  function backness() {
+    _c.set(0, HEAD_BOUNDS.center[1], AXIS_Z).applyMatrix4(headRig.matrixWorld);
+    _eye.copy(camera.position).sub(_c).normalize();
+    _fwd.set(0, 0, 1).transformDirection(headRig.matrixWorld);
+    return smoothstep(-_eye.dot(_fwd), 0.05, 0.6);
   }
 
   // Compile every program the story will need (tools, guard, cape, both modes) before ready, so
@@ -690,6 +722,8 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
         moving = true;
       }
       rig.apply();
+      headRig.updateWorldMatrix(true, false);
+      lightBack(camera.position, backness());
 
       if (head && handle) {
         const hair = head.hair;
@@ -716,7 +750,11 @@ export async function createStage(canvas, { reducedMotion = false, tier, profile
       if (show) {
         const cad = quality.mirror === 'half' ? 2 : 1;
         const frozen = quality.mirror === 'freeze' && hm.rendered;
-        if (!frozen && (frameNo % cad === 0 || !hm.rendered)) hm.render(scene, headRig, { hair: head?.hair, layers: profile.mirror?.layers ?? 10 });
+        if (!frozen && (frameNo % cad === 0 || !hm.rendered)) {
+          const mainBack = backness();
+          hm.render(scene, headRig, { hair: head?.hair, layers: profile.mirror?.layers ?? 10, onCamera: (cam) => lightBack(cam.position, 1) });
+          lightBack(camera.position, mainBack);
+        }
         hm.group.updateMatrixWorld();
         mirror.rect = hm.glassRect(camera, rig.frame);
       }
