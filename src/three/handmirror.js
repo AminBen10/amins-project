@@ -184,13 +184,15 @@ export function createHandMirror(renderer, { tier = 'high', size = { w: 384, h: 
       return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
     },
     /** Render the back of the head into the glass. rig: the head's parent (head-local → world). */
-    render(scene, rig, { hair = null, layers = 10, clear = '#0d0c0b' } = {}) {
+    render(scene, rig, { hair = null, layers = 10, clear = '#0d0c0b', onCamera = null } = {}) {
       rig.updateWorldMatrix(true, false);
       const a = Math.PI + angle;
       v.set(Math.sin(a) * dist, 0.25, Math.cos(a) * dist).add(C).applyMatrix4(rig.matrixWorld);
       camera.position.copy(v);
       camera.lookAt(v.copy(C).applyMatrix4(rig.matrixWorld));
       camera.updateMatrixWorld();
+      // the caller lights the back of the head for this viewpoint (stage: nape light)
+      onCamera?.(camera);
       const prevLayers = hair?.layers;
       if (hair && prevLayers) hair.setLayers(Math.min(prevLayers, layers));
       const prevTarget = renderer.getRenderTarget();

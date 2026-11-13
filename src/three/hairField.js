@@ -129,10 +129,11 @@ export const front = (t) => t * (1 + 2 * FRONT_PAD) - FRONT_PAD;
 
 // Visual length. Shells draw combed hair as a coat over the scalp; a 7 cm top drawn at 7 cm
 // stands off the head like a helmet and its strands fan out. Up to 8 mm (guards up to the 2,
-// stubble) the drawn length is the real one; beyond it grows with the square root, so the
-// order of every length is kept: 10 mm draws 9.8, 25 mm 13.2, 40 mm 15.1, 75 mm 18.2.
+// stubble) the drawn length is the real one; beyond it the drawn length grows at 0.75 of the
+// real one, and at 0.55 past 4 cm, so a long top still reads long (and a crop short) while
+// the order of every length is kept: 10 mm draws 9.5, 25 mm 20.8, 40 mm 32, 75 mm 51.3.
 export const VIS_KNEE = 8;
-export const visMM = (mm) => (mm <= VIS_KNEE ? mm : VIS_KNEE + 1.25 * Math.sqrt(mm - VIS_KNEE));
+export const visMM = (mm) => (mm <= VIS_KNEE ? mm : mm <= 40 ? VIS_KNEE + 0.75 * (mm - VIS_KNEE) : 32 + 0.55 * (mm - 40));
 
 /** Real lengths (mm) of the overgrown head the films start from. */
 export const OVERGROWN = Object.freeze({ sides: 32, top: 60, front: 75, beard: 14, chin: 19 });
@@ -233,7 +234,8 @@ export function stepPath(step, ctx = {}) {
   }
   // sides, nape, sidesNape: upward clipper passes from the sideburn round to the nape
   const sides = ctx.oneSided ? 1 : 2;
-  const pa = zone === 'nape' ? 0.6 * PI : 0.25 * PI;
+  // (the first pass starts at the sideburn, just in front of the ear, not on the cheek)
+  const pa = zone === 'nape' ? 0.6 * PI : 0.35 * PI;
   const pb = zone === 'sides' ? 0.85 * PI : PI;
   const y0 = step.from ? heightY(step.from) - 0.02 : LANDMARKS.NUCA - 0.1;
   const y1 = (step.upTo ? heightY(step.upTo) : LANDMARKS.ESQUINA + DEDO) + FLICK;
@@ -248,6 +250,7 @@ export function stepPath(step, ctx = {}) {
     const mid = lerp(pa, pb, (k + 0.5) / K);
     let f = Infinity;
     if (mid > earA && mid < earB) f = P.ear_top[1] + 0.03;
+    else if (mid <= earA) f = LANDMARKS.PATILLA; // in front of the ear: from the sideburn's foot, never down the beard
     else {
       for (let j = 0; j <= 4; j++) {
         const ph = lerp(pa, pb, (k + j / 4) / K);

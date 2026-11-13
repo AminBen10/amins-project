@@ -110,8 +110,9 @@ export { transferList };
 
 // ------------------------------------------------------------------ plaster
 
-// Plaster tone: neutral warm grey, no skin tone. Head-owned env intensity.
-export const PLASTER = { color: '#A99D8E', roughness: 0.87, envMapIntensity: 0.35 };
+// Bust tone: a warm neutral stone (between terracotta and limestone), no particular skin tone,
+// lit like a finished bust: soft wrap with a warm subsurface terminator. Head-owned env intensity.
+export const PLASTER = { color: '#B79F8A', roughness: 0.8, envMapIntensity: 0.45 };
 
 const PLASTER_GLSL = /* glsl */ `
   vec3 hash33p(vec3 p) {
@@ -160,7 +161,7 @@ function plasterMaterial(hair, { tier }) {
     uCavity: { value: 0.55 },
     uMicro: { value: 0.02 },
     uPlate: { value: 0 },
-    uIris: { value: new THREE.Vector3(0.0, 0.26, 0.34) }, // incised ring, drilled pupil, iris radius (rad)
+    uIris: { value: new THREE.Vector3(0.42, 0.62, 0.34) }, // incised ring, drilled pupil, iris radius (rad)
     uEyeL: { value: new THREE.Vector3().fromArray(EYES.l) },
     uEyeR: { value: new THREE.Vector3().fromArray(EYES.r) },
     // lip slit: stomion y, drop of the slit at the corners, mouth-corner |x|, stomion z
@@ -256,7 +257,14 @@ function plasterMaterial(hair, { tier }) {
         // (specular keeps the true N.L, or GGX blows up at the terminator)
         THREE.ShaderChunk.lights_physical_pars_fragment.replace(
           'reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );',
-          'reflectedLight.directDiffuse += saturate( ( dot( geometryNormal, directLight.direction ) + 0.25 ) / 1.25 ) * directLight.color * BRDF_Lambert( material.diffuseColor );',
+          `{
+            // per-channel wrap: red light reaches further round the terminator than blue, the
+            // cheap read of light scattering under a waxed, polished surface
+            float ndlW = dot( geometryNormal, directLight.direction );
+            vec3 wrapW = clamp( ( vec3( ndlW ) + vec3( 0.55, 0.38, 0.30 ) ) / vec3( 1.55, 1.38, 1.30 ), 0.0, 1.0 );
+            wrapW = mix( wrapW, wrapW * wrapW * ( 3.0 - 2.0 * wrapW ), 0.35 );
+            reflectedLight.directDiffuse += wrapW * directLight.color * BRDF_Lambert( material.diffuseColor );
+          }`,
         ),
       )
       .replace(
@@ -281,15 +289,23 @@ function plasterMaterial(hair, { tier }) {
           lipOcc = max(lipOcc, inner) * (1.0 - uPlate);
           diffuseColor.rgb *= 1.0 - 0.6 * lipOcc;
         }
-        // sculpted eyes: incised iris line and a shallow drilled pupil
+        // sculpted eyes, as on a classical bust: an incised iris ring, a shaded iris and a
+        // drilled pupil with a small uncarved lobe left as the catchlight, so the gaze reads
+        float eyeOcc = 0.0;
         if (vEye > 0.5) {
           vec3 ec = vRestPos.x > 0.0 ? uEyeL : uEyeR;
-          float ca = dot(normalize(vRestPos - ec), vec3(0.0, -0.06, 0.998));
+          vec3 ed = normalize(vRestPos - ec);
+          float ca = dot(ed, vec3(0.0, -0.06, 0.998));
           float a = acos(clamp(ca, -1.0, 1.0));
           float aw = fwidth(a) + 0.004;
-          float ring = 1.0 - smoothstep(0.0, 0.022 + aw, abs(a - uIris.z));
-          float pupil = 1.0 - smoothstep(0.10 - aw, 0.14 + aw, a);
-          diffuseColor.rgb *= 1.0 - uIris.x * ring - uIris.y * pupil;
+          float ring = 1.0 - smoothstep(0.0, 0.026 + aw, abs(a - uIris.z));
+          float iris = 1.0 - smoothstep(uIris.z - aw, uIris.z + aw, a);
+          float pupil = 1.0 - smoothstep(0.12 - aw, 0.16 + aw, a);
+          // catchlight: a lobe of the pupil, up and towards the key, left standing
+          float cl = 1.0 - smoothstep(0.035, 0.05 + aw, distance(ed.xy, vec2(0.05, -0.01)));
+          pupil *= 1.0 - cl;
+          eyeOcc = max(pupil, 0.6 * ring);
+          diffuseColor.rgb *= 1.0 - uIris.x * ring - 0.16 * iris - uIris.y * pupil;
         }
         // hair shorter than the shells: shaved shadow, follicles, root colour under dense hair
         float zoneM = max(vMaskP.x, vMaskP.y);
@@ -326,7 +342,7 @@ function plasterMaterial(hair, { tier }) {
       .replace(
         '#include <aomap_fragment>',
         `// baked AO: full on indirect light, half on direct
-        float aoP = mix(1.0, vBake.x, uAO) * (1.0 - 0.85 * lipOcc);
+        float aoP = mix(1.0, vBake.x, uAO) * (1.0 - 0.85 * lipOcc) * (1.0 - 0.7 * eyeOcc * (1.0 - uPlate));
         reflectedLight.indirectDiffuse *= aoP;
         reflectedLight.indirectSpecular *= aoP;
         reflectedLight.directDiffuse *= mix(1.0, aoP, 0.5);
@@ -391,7 +407,8 @@ export function createHead(data, { layers = 26, tier = 'high' } = {}) {
       if (keyColor) u.uKeyCol.value.copy(keyColor);
       if (fillDir) u.uFillDir.value.copy(fillDir).normalize();
       if (fillColor) u.uFillCol.value.copy(fillColor);
-      if (ambient) u.uAmb.value.copy(ambient);
+      // the hair's own ambient: a touch brighter than the scene's, so dark hair keeps its colour
+      if (ambient) u.uAmb.value.copy(ambient).multiplyScalar(1.5);
     },
     setLayers(n) {
       hair.setLayers(n);
