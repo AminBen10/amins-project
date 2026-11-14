@@ -5,8 +5,10 @@
 // Every visible string comes from the client file or the copy deck.
 import { priceLabel } from './price.js';
 import { renderRecipe } from './cuts/recipe.js';
-import { guiaSVG, plateSVG } from './cuts/guia.js';
+import { guiaSVG } from './cuts/guia.js';
+import { plateSVG } from './cuts/plate.js';
 import { FAMILIES } from './cuts/catalog.js';
+import { renderSlip, mixLines } from './cuts/slip.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const attr = (name, v) => (v == null || v === '' || v === false ? '' : v === true ? ` ${name}` : ` ${name}="${esc(v)}"`);
@@ -159,14 +161,29 @@ function tilePattern(c, id, scale = 1) {
     : `<pattern id="${id}" width="48" height="48" patternUnits="userSpaceOnUse"${t}><rect width="48" height="48" fill="var(--grout)"/><rect x="1.5" y="1.5" width="45" height="45" fill="var(--tile)" class="tile"/></pattern>`;
 }
 
-/** The tiled wall of the room behind the tarifa (tile at ~40% over the night). */
-export function wall(c) {
-  return `<svg class="wall" aria-hidden="true" focusable="false"><defs>${tilePattern(c, 'wall-tiles', 0.8)}</defs><rect width="100%" height="100%" fill="url(#wall-tiles)"/></svg>`;
+// The wall behind the tarifa, tile by tile: solid glazed tiles in 2 px of grout, each
+// with a 1 px bevel (light along the top and left edge, shade along the bottom and
+// right). CR square cream tiles; BK green-white metro tiles laid in bond.
+function wallTile(x, y, w, h) {
+  const r = (n) => Math.round(n * 10) / 10;
+  return (
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="var(--wall-tile)"/>` +
+    `<path d="M${r(x + 0.5)} ${r(y + h - 0.5)}V${r(y + 0.5)}H${r(x + w - 0.5)}" fill="none" stroke="var(--wall-hi)"/>` +
+    `<path d="M${r(x + w - 0.5)} ${r(y + 1)}V${r(y + h - 0.5)}H${r(x + 1)}" fill="none" stroke="var(--wall-lo)"/>`
+  );
 }
 
-export function slotsHint(c) {
-  const h = c.COPY.hoursHint;
-  return h && !h.includes('{') ? esc(h) : '';
+/** The tiled wall of the room behind the tarifa. */
+export function wall(c) {
+  const pat = c.THEME?.felt
+    ? `<pattern id="wall-tiles" width="64" height="32" patternUnits="userSpaceOnUse"><rect width="64" height="32" fill="var(--grout)"/>${wallTile(1, 1, 62, 14)}${wallTile(-31, 17, 62, 14)}${wallTile(33, 17, 62, 14)}</pattern>`
+    : `<pattern id="wall-tiles" width="48" height="48" patternUnits="userSpaceOnUse"><rect width="48" height="48" fill="var(--grout)"/>${wallTile(1, 1, 46, 46)}</pattern>`;
+  return `<svg class="wall" aria-hidden="true" focusable="false"><defs>${pat}</defs><rect width="100%" height="100%" fill="url(#wall-tiles)"/></svg>`;
+}
+
+// The book says nothing about hours or how many are left: the hours are on the door.
+export function slotsHint() {
+  return '';
 }
 
 export function shopInterior(c) {
@@ -292,52 +309,75 @@ function cartaPrograms(c) {
 
 const TICK = `<svg class="plate__tick" viewBox="0 0 28 22" aria-hidden="true"><path d="M3 12.5C6 14 8.5 16.5 10.5 19.5C14 11 19 5.5 25.5 2.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`;
 
-function plateImage(p) {
+function plateImage(p, c) {
   if (exists(`src/plates/${p.id}.webp`)) {
-    return `<picture class="plate__img"><img src="/src/plates/${p.id}.webp" alt="" width="160" height="160" decoding="async" loading="lazy"></picture>`;
+    return `<picture class="plate__img"><img src="/src/plates/${p.id}.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></picture>`;
   }
-  return `<span class="plate__img">${plateSVG(p.spec)}</span>`;
+  return `<span class="plate__img">${plateSVG(p.spec, { guards: c.GUARDS })}</span>`;
 }
 
-function plate(p, name, checked) {
+function plate(p, name, checked, c) {
   const id = `${name}-${p.id}`;
   return `
-              <label class="plate" for="${id}">
-                <input type="radio" name="${name}" id="${id}" value="${esc(p.id)}"${checked ? ' checked' : ''}>
-                ${plateImage(p)}${TICK}
-                <span class="plate__n">Nº ${p.n}</span>
-                <span class="plate__name">${esc(p.name)}</span>${p.alias ? `\n                <span class="plate__alias" lang="en">${esc(p.alias)}</span>` : ''}
-              </label>`;
+                <label class="plate" for="${id}">
+                  <input type="radio" name="${name}" id="${id}" value="${esc(p.id)}"${checked ? ' checked' : ''}>
+                  ${plateImage(p, c)}${TICK}
+                  <span class="plate__n">Nº ${p.n}</span>
+                  <span class="plate__name">${esc(p.name)}</span>${p.alias ? `\n                  <span class="plate__alias" lang="en">${esc(p.alias)}</span>` : ''}
+                </label>`;
 }
 
-/** The chart: one fieldset of plates per family (name=corte), then the beards (name=barba). */
+const BAND = 6; // plates per printed row of the chart
+
+/**
+ * The chart, printed on one sheet: one fieldset of plates per family (name=corte),
+ * then the beards (name=barba). Families share a printed row of six when they fit,
+ * so the whole chart stands in about one screen.
+ */
 export function cartaPlates(c) {
   const story = c.STORY_CUT || {};
   const progs = cartaPrograms(c).filter((p) => p.ready !== false);
   const cuts = progs.filter((p) => p.kind === 'cut');
   const beards = progs.filter((p) => p.kind === 'beard');
-  const out = [];
+  const fams = [];
   for (const fam of FAMILIES.filter((f) => f.id !== 'barba')) {
     const list = cuts.filter((p) => p.family === fam.id);
     if (!list.length) continue;
-    out.push(`
-            <fieldset class="family family--${fam.id}">
-              <legend class="family__name">${esc(fam.label)}</legend>
-              <div class="family__plates">${list.map((p) => plate(p, 'corte', p.id === story.hair)).join('')}
-              </div>
-            </fieldset>`);
+    fams.push({
+      n: list.length,
+      html: `
+              <fieldset class="family family--${fam.id}" style="--n:${list.length}">
+                <legend class="family__name">${esc(fam.label)}</legend>
+                <div class="family__plates">${list.map((p) => plate(p, 'corte', p.id === story.hair, c)).join('')}
+                </div>
+              </fieldset>`,
+    });
   }
   if (beards.length) {
     const barba = FAMILIES.find((f) => f.id === 'barba');
-    out.push(`
-            <fieldset class="family family--barba">
-              <legend class="family__name">${esc(barba?.label || 'Barba')}</legend>
-              <div class="family__plates">${beards.map((p) => plate(p, 'barba', p.id === story.beard)).join('')}
-              </div>
-              <label class="plate plate--none" for="barba-none"><input type="radio" name="barba" id="barba-none" value="none"><span class="plate__name">Sin barba</span></label>
-            </fieldset>`);
+    fams.push({
+      n: beards.length + 1,
+      html: `
+              <fieldset class="family family--barba" style="--n:${beards.length + 1}">
+                <legend class="family__name">${esc(barba?.label || 'Barba')}</legend>
+                <div class="family__plates">${beards.map((p) => plate(p, 'barba', p.id === story.beard, c)).join('')}
+                <label class="plate plate--none" for="barba-none"><input type="radio" name="barba" id="barba-none" value="none"><span class="plate__img plate__img--none" aria-hidden="true"></span><span class="plate__name">Sin barba</span></label>
+                </div>
+              </fieldset>`,
+    });
   }
-  return out.join('');
+  // Pack families into printed rows of six.
+  const bands = [];
+  for (const f of fams) {
+    const last = bands[bands.length - 1];
+    if (last && last.n + f.n <= BAND) {
+      last.n += f.n;
+      last.html.push(f.html);
+    } else bands.push({ n: f.n, html: [f.html] });
+  }
+  return bands.map((b) => `
+            <div class="chart__band">${b.html.join('')}
+            </div>`).join('');
 }
 
 // Without the 3D, before a cut is chosen: the scissors and comb on the glass
@@ -349,12 +389,15 @@ export function cartaEmpty() {
           </div>`;
 }
 
-/** 'Compón tu corte': ruled radio rows per ingredient, from the client's INGREDIENTS. */
+/**
+ * 'Compón tu corte': one ruled line per ingredient, the label on the left and the
+ * options as printed words; then the ficha the picks are written on.
+ */
 export function composerFieldsets(c) {
-  return (c.INGREDIENTS || [])
+  const sets = (c.INGREDIENTS || [])
     .map((g) => {
       const fields = g.fields
-        .map((f) => {
+        .map((f, i) => {
           const opts = f.options.filter((o) => o.ready !== false);
           if (!opts.length) return '';
           const rows = opts
@@ -363,17 +406,22 @@ export function composerFieldsets(c) {
               return `<label class="rule" for="${id}"><input type="radio" name="${esc(f.key)}" id="${id}" value="${esc(o.id)}"><span>${esc(o.label)}</span></label>`;
             })
             .join('');
-          const sub = g.fields.length > 1 ? `<p class="composer__label">${esc(f.label)}</p>` : '';
-          return `${sub}<div class="composer__rules">${rows}</div>`;
+          const multi = g.fields.length > 1;
+          const k = i === 0 ? esc(g.legend) : '';
+          const sub = multi ? `<span class="mixline__sub">${esc(f.label.toLocaleLowerCase('es'))}</span>` : '';
+          return `<div class="mixline"><p class="mixline__k" aria-hidden="true">${k}${sub}<span class="mixline__lock">—</span></p><div class="composer__rules"${multi ? ` aria-label="${esc(f.label)}" role="group"` : ''}>${rows}</div></div>`;
         })
         .join('');
       return `
               <fieldset class="composer__part" data-part="${esc(g.part)}">
-                <legend>${esc(g.legend)}</legend>
+                <legend class="sr-only">${esc(g.legend)}</legend>
                 ${fields}
               </fieldset>`;
     })
     .join('');
+  const slip = renderSlip({ lines: mixLines({}, c), all: true });
+  return `${sets}
+              <aside class="ficha" id="ficha" aria-live="polite" aria-label="Ficha">${slip}</aside>`;
 }
 
 // One recipe card per Carta program, as <template data-recipe="{id}">: the Carta
@@ -411,13 +459,12 @@ function serviceRow(s) {
   );
 }
 
-function review(r) {
-  return `<li class="review">
-                <figure>
-                  <blockquote lang="${esc(r.lang || 'es')}"><p>“${esc(r.text)}”</p></blockquote>
-                  <figcaption>${esc(r.name)} · ${esc(r.source)}</figcaption>
-                </figure>
-              </li>`;
+// A review pinned to the wall beside its service: a small printed note under a strip of tape.
+function pin(r, i) {
+  return `<figure class="pin pin--${i % 2 ? 'b' : 'a'}">
+                <blockquote lang="${esc(r.lang || 'es')}"><p>“${esc(r.text)}”</p></blockquote>
+                <figcaption>${esc(r.name)} · ${esc(r.source)}</figcaption>
+              </figure>`;
 }
 
 const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -426,58 +473,74 @@ function longDate(iso) {
   return `${d} de ${MONTHS[m - 1]} de ${y}`;
 }
 
-/** The board: one line per service (name, minutes when confirmed, price). */
+/** The board: one line per service (name, minutes when confirmed, price), what it includes under it, its review beside it. */
 export function tarifaBoard(c) {
-  return c.SERVICES.map(
-    (s) => `
-            <li class="board__row" data-service="${esc(s.id)}">${serviceRow(s)}</li>`,
-  ).join('');
+  const reviews = c.REVIEWS || [];
+  return c.SERVICES.map((s) => {
+    const mine = reviews.map((r, i) => [r, i]).filter(([r]) => r.about === s.id);
+    return `
+            <li class="board__row" data-service="${esc(s.id)}">${serviceRow(s)}<span class="row__desc">${esc(s.desc)}</span>${mine.map(([r, i]) => pin(r, i)).join('')}</li>`;
+  }).join('');
 }
 
+/** The board's foot plate: the ratings (BK), and the review that is about the shop as a whole. */
 export function tarifaFoot(c) {
-  // Reviews: one quiet column under the board, in the order of the client file.
   const reviews = c.REVIEWS || [];
   const ratings = (c.RATINGS || []).map((r) => `${esc(r.source)} ${esc(r.score)} · ${r.count} reseñas`);
-  const line = ratings.length
-    ? `<p class="tarifa__ratings">${ratings.join(' · ')}${c.RATINGS_AS_OF ? ` · consultado el <time datetime="${esc(c.RATINGS_AS_OF)}">${longDate(c.RATINGS_AS_OF)}</time>` : ''}</p>`
+  const plate = ratings.length
+    ? `<p class="board__plate">${ratings.join(' · ')}${c.RATINGS_AS_OF ? ` · consultado el <time datetime="${esc(c.RATINGS_AS_OF)}">${longDate(c.RATINGS_AS_OF)}</time>` : ''}</p>`
     : '';
-  const intro = reviews.length && c.COPY.reviewsIntro ? `<p class="tarifa__reviews-intro">${esc(c.COPY.reviewsIntro)}</p>` : '';
-  const list = reviews.length ? `<ul class="reviews">${reviews.map(review).join('')}</ul>` : '';
-  if (!line && !intro && !list) return '';
+  const foot = reviews.map((r, i) => [r, i]).filter(([r]) => !r.about || !c.SERVICES.some((s) => s.id === r.about));
+  const intro = reviews.length && c.COPY.reviewsIntro ? `<p class="sr-only">${esc(c.COPY.reviewsIntro)}</p>` : '';
+  if (!plate && !foot.length) return intro;
   return `
-          <div class="tarifa__foot">
-            <div class="tarifa__source">${intro}${line}${list}</div>
-          </div>`;
+            <div class="board__foot">${intro}${plate}${foot.map(([r, i]) => pin(r, i)).join('')}</div>`;
 }
 
-export function tarifaIncludes(c) {
-  return c.SERVICES.map((s) => `<div class="includes__row"><dt>${esc(s.name)}</dt><dd>${esc(s.desc)}</dd></div>`).join('');
+// What each service includes now reads under its own line on the board.
+export function tarifaIncludes() {
+  return '';
 }
 
 // ---------------------------------------------------------------- las sillas (CR)
 
+// A barber's chair seen from above: the seat, the back, the arms and the footrest.
+function chairTop(x, y) {
+  return `<g transform="translate(${x} ${y})">
+                <rect class="plan__seat" x="-15" y="-14" width="30" height="28" rx="6"/>
+                <path d="M15 -12Q24 0 15 12" />
+                <path d="M-12 -18H12M-12 18H12" />
+                <path d="M-20 -8V8M-25 -6V6" stroke-width="1"/>
+              </g>`;
+}
+
 function floorPlan(c) {
-  const names = c.BARBERS.map((b) => b.name);
+  const B = c.BARBERS;
   // Front of the shop at the bottom (window and door), mirror wall on the left;
   // the first chair is by the window, the last at the back.
-  const ys = [176, 118, 60];
+  const ys = [262, 176, 90];
   const chairs = ys
-    .slice(0, names.length)
+    .slice(0, B.length)
     .map(
       (y, i) =>
-        `<rect x="18" y="${y - 22}" width="5" height="44"/><g transform="translate(52 ${y})"><rect x="-13" y="-13" width="26" height="26" rx="5"/><path d="M13 -13Q22 0 13 13M-9 -16H9M-9 16H9"/></g>` +
-        `<text x="84" y="${y + 5}" stroke="none" fill="currentColor">${esc(names[i])}</text>`,
+        `<g class="plan__chair" data-chair="${esc(B[i].id)}"><rect class="plan__mirror" x="26" y="${y - 30}" width="6" height="60"/>${chairTop(78, y)}` +
+        `<text x="112" y="${y + 6}">${esc(B[i].name)}</text></g>`,
     )
     .join('');
-  return `<svg class="plan" viewBox="0 0 360 250" role="img" aria-label="Plano de la barbería: ${esc(c.BARBERS.map((b) => `${b.chair}, ${b.name}`).join('; '))}">
-            <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <path d="M228 236H350V12H12V236H24" stroke-width="2.5"/>
-              <path d="M24 236H200M24 230H200" stroke-width="1"/><path d="M200 230V236"/>
-              <path d="M260 236V184M260 184A52 52 0 0 1 312 236" stroke-width="1" stroke-dasharray="2 3"/>
-              <path d="M312 236H350" stroke-width="2.5"/>
-              <rect x="318" y="66" width="20" height="104" rx="2" stroke-width="1"/>
-              <rect x="226" y="22" width="104" height="22" rx="2" stroke-width="1"/>
+  return `<svg class="plan" viewBox="0 0 520 380" role="img" aria-label="Plano de la barbería: ${esc(B.map((b) => `${b.chair}, ${b.name}`).join('; '))}">
+            <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M330 346H500V20H20V346H40" stroke-width="3"/>
+              <path d="M40 346H290M40 339H290M290 339V346" stroke-width="1.5"/>
+              <path d="M330 346V284A62 62 0 0 1 392 346" stroke-dasharray="3 4"/>
+              <path d="M392 346H500" stroke-width="3"/>
+              <rect x="452" y="96" width="28" height="160" rx="2"/>
+              <rect x="300" y="36" width="170" height="30" rx="2"/>
               ${chairs}
+            </g>
+            <g class="plan__labels" fill="currentColor" stroke="none">
+              <text x="165" y="370" text-anchor="middle">Escaparate</text>
+              <text x="361" y="370" text-anchor="middle">Puerta</text>
+              <text x="40" y="44">Espejos</text>
             </g>
           </svg>`;
 }
@@ -488,37 +551,56 @@ export function sillasSection(c) {
   const shown = (id) => cartaPrograms(c).some((p) => p.id === id && p.ready !== false);
   const rows = c.BARBERS.map(
     (b) => `
-            <li class="ledger__row">
+            <li class="ledger__row" data-chair="${esc(b.id)}">
               <span class="ledger__tool">${DRAWINGS[b.tool] || ''}</span>
               <p class="ledger__chair">${esc(b.chair)}</p>
               <p class="ledger__name">${esc(b.name)}</p>
-              <p class="ledger__days">${esc(b.days)}</p>
-              <p class="ledger__known">${esc(b.knownFor)}</p>
+              <p class="ledger__days">${esc(b.days)} · ${esc(b.knownFor)}</p>
               ${shown(b.signatureCut) ? `<button type="button" class="textbtn ledger__see" data-cut="${esc(b.signatureCut)}" data-barber="${esc(b.id)}">${esc(b.signatureLabel)}</button>` : ''}
             </li>`,
   ).join('');
+  // Pointing at a chair in the ledger inks that chair on the plan.
+  const on = (b, x) => `.sillas:has(.ledger__row[data-chair="${esc(b.id)}"]:is(:hover,:focus-within)) .plan__chair[data-chair="${esc(b.id)}"] ${x}`;
+  const ink = `${c.BARBERS.map((b) => on(b, '.plan__seat')).join(',')}{fill:currentColor}${c.BARBERS.map((b) => on(b, 'text')).join(',')}{text-decoration:underline}`;
   return `
       <section id="sillas" class="sillas" aria-labelledby="sillas-title">
-        <h2 id="sillas-title" class="title">Las sillas</h2>
+        <style>${ink}</style>
         <div class="sillas__grid">
-          ${floorPlan(c)}
-          <ol class="ledger">${rows}
-          </ol>
+          <figure class="sillas__plan">
+            ${floorPlan(c)}
+          </figure>
+          <div class="sillas__list">
+            <h2 id="sillas-title" class="title">Las sillas</h2>
+            <ol class="ledger">${rows}
+            </ol>
+          </div>
         </div>
       </section>`;
 }
 
 // ---------------------------------------------------------------- pide hora
 
+// The service as one line of the book ('Corte clásico · 30 min · 16 €  cambiar'); the
+// radios fold under it.
 export function bookingServices(c) {
-  return c.SERVICES.map(
+  const first = c.SERVICES[0];
+  const opts = c.SERVICES.map(
     (s) => `
-                <label class="line line--service" for="service-${esc(s.id)}">
-                  <input type="radio" name="service" id="service-${esc(s.id)}" value="${esc(s.id)}">
-                  ${serviceRow(s)}
-                </label>`,
+                  <label class="line line--service" for="service-${esc(s.id)}">
+                    <input type="radio" name="service" id="service-${esc(s.id)}" value="${esc(s.id)}"${s === first ? ' checked' : ''}>
+                    ${serviceRow(s)}
+                  </label>`,
   ).join('');
+  return `
+              <details class="book__fold book__fold--service">
+                <summary class="book__line"><span class="book__k">Servicio</span> <span class="book__v" id="book-service-line">${esc(tarifaLineOf(first))}</span> <span class="book__change">cambiar</span></summary>
+                <fieldset class="book__group book__group--service">
+                  <legend class="sr-only">Servicio</legend>${opts}
+                </fieldset>
+              </details>`;
 }
+
+const tarifaLineOf = (s) => (s ? [s.name, s.estimate ? null : `${s.minutes} min`, priceLabel(s.price, s.from)].filter(Boolean).join(' · ') : '');
 
 export function bookingBarbers(c) {
   if (!c.BARBERS?.length) return '';
@@ -528,12 +610,15 @@ export function bookingBarbers(c) {
       (b) =>
         `<label class="line line--barber" for="barber-${esc(b.id)}"><input type="radio" name="barber" id="barber-${esc(b.id)}" value="${esc(b.id)}"${b.id === 'any' ? ' checked' : ''}><span class="row__name">${esc(b.name)}</span>${b.chair ? `<span class="row__note">${esc(b.chair)}</span>` : ''}</label>`,
     )
-    .join('\n                ');
+    .join('\n                  ');
   return `
-              <fieldset class="book__group book__group--barber">
-                <legend>Con quién</legend>
-                ${opts}
-              </fieldset>`;
+              <details class="book__fold book__fold--barber">
+                <summary class="book__line"><span class="book__k">Con quién</span> <span class="book__v" id="book-barber-line">Me da igual</span> <span class="book__change">cambiar</span></summary>
+                <fieldset class="book__group book__group--barber">
+                  <legend class="sr-only">Con quién</legend>
+                  ${opts}
+                </fieldset>
+              </details>`;
 }
 
 function waBase(c) {
@@ -585,7 +670,11 @@ export function bookingNoScript(c) {
             </noscript>`;
 }
 
-/** The cream appointment card, hidden until the book is sent. */
+/**
+ * The appointment card, torn off the book's pad when it is sent: the shop's printed
+ * header and the rows on the front, the ficha 'Para el barbero' on its back (a tap or
+ * focus turns it over).
+ */
 export function bookingCard(c) {
   const wa = c.BOOKING?.mode === 'whatsapp';
   const tw = c.BOOKING?.treatwell || c.BRAND.treatwell;
@@ -608,11 +697,16 @@ export function bookingCard(c) {
                 <button type="button" class="textbtn" id="card-again">${esc(c.COPY.doneAgain || 'Pedir otra hora')}</button>`;
   return `
           <div class="card" id="book-card" hidden tabindex="-1" aria-labelledby="card-title">
-            <div class="card__front">
-              <p class="card__header">${c.BOOKING?.mode === 'whatsapp' ? 'PETICIÓN DE HORA' : 'PRÓXIMA CITA'} · ${esc(c.BRAND.name.toUpperCase())}</p>
-              <dl class="card__rows">${rows}</dl>
-              <div class="card__back">
-                <p class="card__ficha"><span class="card__k">Para el barbero</span> <span id="card-ficha"></span></p>
+            <div class="card__sheet">
+              <div class="card__front">
+                <p class="card__header">${wa ? 'PETICIÓN DE HORA' : 'PRÓXIMA CITA'} · ${esc(c.BRAND.name.toUpperCase())}</p>
+                <dl class="card__rows">${rows}</dl>
+                <p class="card__turn" aria-hidden="true">Para el barbero</p>
+              </div>
+              <div class="card__back" tabindex="0" role="group" aria-label="Para el barbero">
+                <p class="card__k">Para el barbero</p>
+                <div class="card__slip" id="card-slip"></div>
+                <p class="card__ficha" id="card-ficha"></p>
               </div>
             </div>
             <div class="card__text">
@@ -644,17 +738,20 @@ export function doorBlock(c) {
     : '';
   const notice = c.PITCH ? c.PITCH.door : c.EXAMPLE_NOTICE;
   return `
-        <div class="door__glass">
-          <p class="door__number" aria-hidden="true">${esc(B.number)}</p>
-          <div class="door__vinyl">
-            <h2 class="door__name">${esc(B.name)}</h2>
-            <p class="door__address">${esc(c.COPY.doorAddress)}</p>
-            <p class="door__hours">${esc(c.COPY.doorHours)}</p>
-            ${transit}
-            ${links.length ? `<p class="door__links">${links.join(' · ')}</p>` : ''}
+        <div class="door__leaf">
+          <div class="door__glass">
+            <p class="door__number" aria-hidden="true">${esc(B.number)}</p>
+            <div class="door__vinyl">
+              <h2 class="door__name">${esc(B.name)}</h2>
+              <p class="door__address">${esc(c.COPY.doorAddress)}</p>
+              ${transit}
+              ${links.length ? `<p class="door__links">${links.join(' · ')}</p>` : ''}
+            </div>
+            <p class="door-sign door-sign--door" data-door-sign></p>
+            ${hoursCard(c)}
           </div>
-          <p class="door-sign door-sign--door" data-door-sign></p>
-          <span class="door__handle" aria-hidden="true"></span>
+          <span class="door__bar" aria-hidden="true"></span>
+          <span class="door__kick" aria-hidden="true"></span>
         </div>
         <div class="door__step">
           <a class="cta cta--call" href="${esc(B.phoneHref)}">Llamar <span class="cta__sub">${esc(localPhone(c))}</span></a>
@@ -662,11 +759,16 @@ export function doorBlock(c) {
         </div>`;
 }
 
-// BK: the printed hours card taped inside the door glass, from HOURS_TABLE.
-export function doorCard(c) {
-  if (!c.COPY.doorCardTitle) return '';
-  const rows = c.HOURS_TABLE.map(([d, h]) => `<span class="door-card__row"><span>${esc(d)}</span> <span>${esc(h)}</span></span>`).join('');
-  return `<p class="door-card"><span class="door-card__title">${esc(c.COPY.doorCardTitle)}</span>${rows}</p>`;
+// The printed hours card taped inside the door glass: the only place the hours are written.
+function hoursCard(c) {
+  const rows = (c.HOURS_TABLE || []).map(([d, h]) => `<div class="door-card__row"><dt>${esc(d)}</dt><dd>${esc(h)}</dd></div>`).join('');
+  if (!rows) return '';
+  return `<div class="door-card"><p class="door-card__title">${esc(c.COPY.doorCardTitle || 'Horario')}</p><dl>${rows}</dl></div>`;
+}
+
+// The hero's door panel no longer carries the hours (they are on the street door only).
+export function doorCard() {
+  return '';
 }
 
 export function hoursRows(c) {

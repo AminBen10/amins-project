@@ -1017,7 +1017,7 @@ html[data-stage='ready'] .hand-mirror__slider {
   background: var(--night);
 }
 
-html[data-mirror='mask'] .hand-mirror__mask {
+html[data-mirror='mask']:is([data-in-mirror], [data-film-mirror]) .hand-mirror__mask {
   display: block;
   position: fixed;
   right: 9%;
@@ -1030,7 +1030,7 @@ html[data-mirror='mask'] .hand-mirror__mask {
 /* On a phone the head fills the glass under the beat's own lines: the oval would only cut
    through them, so the nape view stands on its own there. */
 @media (max-width: 899px) {
-  html[data-mirror='mask'] .hand-mirror__mask {
+  html[data-mirror='mask']:is([data-in-mirror], [data-film-mirror]) .hand-mirror__mask {
     display: none;
   }
 }
@@ -1046,12 +1046,6 @@ html[data-mirror='mask'] .hand-mirror__mask {
   }
 }
 
-/* The turn back to the room: scroll space only, for the 3D. */
-.beat--turn {
-  display: block;
-  height: 0;
-  padding: 0;
-}
 
 /* --- With the 3D: beats get their scroll lengths and notes go on the glass. --- */
 html.js:not(.no-webgl) .visit {
@@ -1079,7 +1073,6 @@ html.js:not(.no-webgl) [data-beat='clipper'] { height: 140vh; }
 html.js:not(.no-webgl) [data-beat='scissors'] { height: 50vh; }
 html.js:not(.no-webgl) [data-beat='razor'] { height: 70vh; }
 html.js:not(.no-webgl) [data-beat='mirror'] { height: 80vh; }
-html.js:not(.no-webgl) [data-beat='turn'] { height: 50vh; }
 
 html[data-stage='ready'] .beat__figure {
   display: none;
@@ -1116,12 +1109,170 @@ html.callouts-on .note__stamp {
 }
 
 /* ==========================================================================
-   7 · Carta de cortes: one cream sheet taped to the mirror
+   Below the story: LA FICHA. One narrow printed slip travels from the Carta
+   (where the cut is written on it) into the book (clipped to its page) and ends
+   on the back of the appointment card. Each place has its own material: a
+   printed chart on the mirror, the tiled wall, a plan on paper, the book on
+   the counter, the street door. Type: 56/40, 22/18, 17/16 (desktop/phone),
+   at most three sizes to a screen; tabular figures; no gradients except the
+   book's hard-stop rulings, no shadows, no blur.
+   ========================================================================== */
+:root {
+  --t-xl: 3.5rem;
+  --t-l: 2.5rem;
+  --t-m: 1.375rem;
+  --t-b: 1.0625rem;
+  --rule-ink: #1b1a17;
+  --ink-lock: #67604f; /* locked composer lines: low but readable (5:1 on paper) */
+  --stamp: var(--cta);
+  /* A perforated top edge: 10 px notches along the top, solid below. */
+  --perf:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h2.2a2.8 2.8 0 0 0 5.6 0H10v6H0z'/%3E%3C/svg%3E") 0 0 / 10px 6px repeat-x,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='8'/%3E%3C/svg%3E") 0 6px / 100% calc(100% - 6px) no-repeat;
+}
+
+@media (max-width: 699px) {
+  :root {
+    --t-xl: 2.5rem;
+    --t-l: 2.5rem;
+    --t-m: 1.125rem;
+    --t-b: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------- the slip */
+.slip {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  padding: 22px 18px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule-ink);
+  font-family: var(--font-pencil);
+  font-variant-numeric: tabular-nums;
+  -webkit-mask: var(--perf);
+  mask: var(--perf);
+}
+
+.slip__title {
+  font-weight: 600;
+  font-size: var(--t-b);
+  line-height: 1.2;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-ink);
+}
+
+.slip__lines {
+  display: grid;
+}
+
+.slip__line {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 10px;
+  padding: 7px 0 6px;
+  border-bottom: 1px solid var(--rule-ink);
+  font-size: var(--t-b);
+  line-height: 1.2;
+}
+
+.slip__line dt {
+  font-weight: 600;
+}
+
+.slip__line dd {
+  font-weight: 500;
+}
+
+.slip__line--open dd {
+  color: var(--ink-lock);
+}
+
+.slip__sentence {
+  margin-top: 10px;
+  font-family: var(--font-read);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.slip__total {
+  text-wrap: balance;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 2px solid var(--rule-ink);
+  font-weight: 600;
+  font-size: var(--t-m);
+  line-height: 1.15;
+}
+
+.slip__total:first-child {
+  margin-top: 0;
+}
+
+/* The rubber stamp: square, the shop's own red, set slightly off true as a hand sets it. */
+.slip__stamp {
+  display: inline-block;
+  margin: 14px 0 2px 2px;
+  padding: 4px 8px 3px;
+  border: 2px solid var(--stamp);
+  color: var(--stamp);
+  font-weight: 600;
+  font-size: var(--t-b);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+.slip--landing .slip__stamp {
+  animation: stamp-land 180ms ease-out both;
+}
+
+.slip__stamp + .ficha__book {
+  display: flex;
+}
+
+.slip--landing .ficha__book {
+  animation: slip-in 160ms ease-out 180ms both;
+}
+
+@keyframes stamp-land {
+  from {
+    opacity: 0;
+    transform: rotate(-4deg) scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-4deg) scale(1);
+  }
+}
+
+@keyframes slip-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ficha__book {
+  margin-top: 14px;
+  width: 100%;
+  font-size: var(--t-b);
+}
+
+/* ==========================================================================
+   7 · Carta de cortes: one printed chart taped to the mirror
    ========================================================================== */
 .carta {
+  --cx: calc(clamp(10px, 2vw, 24px) + clamp(16px, 2.2vw, 32px));
   position: relative;
   margin: 0 clamp(10px, 2vw, 24px);
-  padding: clamp(32px, 5vw, 72px) clamp(20px, 5vw, 96px) clamp(48px, 6vw, 96px);
+  padding: clamp(32px, 4vw, 56px) clamp(16px, 2.2vw, 32px) 16px;
   background: var(--mirror-glass);
   border: 2px solid var(--chrome);
   border-top: 0;
@@ -1135,8 +1286,7 @@ html.js:not(.no-webgl) .carta {
   outline-color: transparent;
 }
 
-/* A jump to the Carta lands with its top under the nav and the lead clear of it, so
-   nothing of the mirror beat above (slider, 'Moverlo con el móvil') peeks in. */
+/* A jump to the Carta lands with its top under the nav and the lead clear of it. */
 #carta {
   scroll-margin-top: 0;
   padding-top: calc(var(--nav-h) + clamp(20px, 3vw, 40px));
@@ -1144,88 +1294,139 @@ html.js:not(.no-webgl) .carta {
 
 .carta__lead {
   max-width: 22ch;
-  margin-bottom: clamp(28px, 4vw, 56px);
-  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  margin-bottom: clamp(24px, 3vw, 40px);
+  font-size: var(--t-l);
 }
 
-.carta {
-  --cx: calc(clamp(10px, 2vw, 24px) + clamp(20px, 5vw, 96px));
-}
-
-/* The sheet ends at --split, so the head (framed right of it) is never under paper. */
+/* The sheet stops at --split, so the head (framed right of it) is never under paper. */
 .carta__grid {
   display: grid;
-  grid-template-columns: minmax(0, calc(var(--split) - var(--cx) - 24px)) minmax(0, 1fr);
+  grid-template-columns: minmax(0, calc(var(--split) - var(--cx) - 8px)) minmax(0, 1fr);
   grid-template-areas: 'sheet side' 'recipe side';
   grid-template-rows: auto 1fr;
   align-items: start;
-  column-gap: 48px;
+  column-gap: 32px;
   row-gap: 32px;
 }
 
 .carta__sheet {
   grid-area: sheet;
   position: relative;
-  padding: clamp(28px, 3.4vw, 48px) clamp(20px, 3vw, 44px) clamp(28px, 3vw, 40px);
+  padding: 8px clamp(18px, 2vw, 28px) clamp(20px, 2.4vw, 28px);
   background: var(--paper);
   color: var(--ink);
 }
 
-/* Two strips of tape hold the sheet to the glass. */
+/* Two strips of tape hold the sheet to the glass (solid paper tape, no transparency). */
 .carta__sheet::before,
 .carta__sheet::after {
   content: '';
   position: absolute;
-  top: -14px;
-  width: 92px;
-  height: 28px;
-  background: rgba(226, 219, 201, 0.78);
-  border-left: 1px dashed rgba(0, 0, 0, 0.08);
-  border-right: 1px dashed rgba(0, 0, 0, 0.08);
+  top: -12px;
+  width: 84px;
+  height: 24px;
+  background: #ddd4bf;
+  border-left: 1px dashed #b9ae95;
+  border-right: 1px dashed #b9ae95;
 }
 
 .carta__sheet::before {
   left: 28px;
-  transform: rotate(-3deg);
+  transform: rotate(-2deg);
 }
 
 .carta__sheet::after {
   right: 28px;
-  transform: rotate(2.5deg);
+  transform: rotate(1.6deg);
+}
+
+/* The two tabs printed at the top of the sheet: the chart, and composing your own. */
+.carta__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: 28px;
+  border-bottom: 1px solid var(--rule-ink);
 }
 
 .carta__title {
+  display: flex;
+  font-size: var(--t-m);
+}
+
+.carta__tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  margin-bottom: -1px;
+  padding: 10px 0 6px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--ink-2);
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(2.25rem, 3.6vw, 3.25rem);
-  line-height: 1;
+  font-size: var(--t-m);
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.carta__tab[aria-pressed='true'],
+.carta__tab[aria-expanded='true'] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.carta__tab:hover {
+  color: var(--ink);
+}
+
+/* Before the script runs the chart is the only tab. */
+html.no-js .composer__open {
+  display: none;
 }
 
 .carta__intro {
   margin-top: 12px;
   max-width: 36rem;
+  font-size: var(--t-b);
+  line-height: 1.45;
   color: var(--ink-2);
 }
 
+/* The chart: printed rows of six plates; small families share a row. */
 .chart {
-  margin-top: clamp(24px, 3vw, 36px);
+  margin-top: 18px;
   display: grid;
-  gap: 28px;
+  gap: 18px;
+}
+
+.chart__band {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 10px;
+  align-items: start;
+}
+
+.family {
+  grid-column: span var(--n, 6);
+  display: block;
+  min-width: 0;
 }
 
 .family__name {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: var(--t-b);
   line-height: 1.2;
 }
 
-/* A printed rule runs from the family name to the edge of the sheet. */
+/* A printed rule runs from the family name to the edge of its columns. */
 .family__name::after {
   content: '';
   flex: 1;
@@ -1235,16 +1436,21 @@ html.js:not(.no-webgl) .carta {
 
 .family__plates {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: 22px 18px;
+  grid-template-columns: repeat(var(--n, 6), minmax(0, 1fr));
+  column-gap: 10px;
+  row-gap: 14px;
 }
 
 .plate {
   position: relative;
   display: grid;
   align-content: start;
-  gap: 2px;
+  gap: 0;
+  min-width: 0;
   cursor: pointer;
+  font-family: var(--font-pencil);
+  font-size: var(--t-b);
+  line-height: 1.15;
 }
 
 .plate input {
@@ -1257,10 +1463,10 @@ html.js:not(.no-webgl) .carta {
 .plate__img {
   display: block;
   aspect-ratio: 1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: var(--ink);
   outline: 1px solid transparent;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .plate__img svg,
@@ -1270,34 +1476,31 @@ html.js:not(.no-webgl) .carta {
   height: 100%;
 }
 
+/* 'Sin barba': an empty plate, the frame of the chart's last cell. */
+.plate__img--none {
+  border: 1px dashed var(--rule-paper);
+}
+
 .plate__n {
-  font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 0.9375rem;
-  line-height: 1.1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .plate__name {
-  font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.125rem;
-  line-height: 1.12;
+  overflow-wrap: anywhere;
 }
 
 .plate__alias {
-  font-size: 0.9375rem;
-  line-height: 1.25;
+  font-weight: 500;
   color: var(--ink-2);
 }
 
-/* Selected: a pencil tick and a 1px brass frame. */
+/* Selected: a pencil tick and a 1 px brass frame. */
 .plate__tick {
   position: absolute;
   top: -6px;
-  right: -4px;
-  width: 30px;
+  right: -2px;
+  width: 26px;
   color: #34312b;
   visibility: hidden;
 }
@@ -1319,97 +1522,139 @@ html.js:not(.no-webgl) .carta {
   text-underline-offset: 0.16em;
 }
 
-/* 'Sin barba' is a plain ruled option after the beard plates. */
-.plate--none {
-  align-self: end;
-  margin-top: 14px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--rule-paper);
-  width: max-content;
+.plate--none input:checked ~ .plate__img {
+  outline-color: var(--brass);
+  border-color: var(--ink);
 }
 
-.plate--none input:checked ~ .plate__name {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+/* Composing: the chart steps aside on the sheet; the composer and its ficha take it. */
+.carta__sheet.is-composing #carta-form,
+.carta__sheet.is-composing .carta__intro {
+  display: none;
 }
 
-.composer__open {
-  margin-top: 26px;
-  color: var(--ink);
-}
-
-/* Desktop with the 3D: the composer open takes the chart's place on the sheet, so
-   the ingredients stay next to the head while each one plays. */
-@media (min-width: 900px) {
-  html[data-stage='ready'] .carta__sheet:has(#composer:not([hidden])) #carta-form {
-    display: none;
-  }
-}
-
-/* 'Compón tu corte': ruled radio rows, label on the line, no chips. */
+/* ---------------------------------------------------------------- Compón tu corte */
 .composer {
-  margin-top: 8px;
+  margin-top: 6px;
   display: grid;
-  gap: 22px;
 }
 
-.composer__part legend,
-.composer__label {
+.composer__part {
+  min-width: 0;
+}
+
+.mixline {
+  display: grid;
+  grid-template-columns: 6.25rem minmax(0, 1fr);
+  align-items: start;
+  column-gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--rule-paper);
+}
+
+.mixline__k {
+  padding-top: 11px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.1875rem;
-  margin-bottom: 6px;
+  font-size: var(--t-b);
+  line-height: 1.15;
 }
 
-.composer__label {
-  margin-top: 10px;
+.mixline__sub {
+  display: block;
   font-weight: 500;
   color: var(--ink-2);
+}
+
+.mixline__k:empty {
+  visibility: hidden;
+}
+
+.mixline__lock {
+  display: none;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.composer__part:disabled .mixline__lock {
+  display: inline;
+}
+
+.composer__part:disabled .mixline + .mixline .mixline__lock {
+  display: none;
 }
 
 .composer__rules {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 22px;
+  gap: 0 2px;
 }
 
+/* An option is a printed word; chosen, an ink-filled rectangle with paper letters. */
 .rule {
   position: relative;
   display: inline-flex;
-  align-items: flex-end;
+  align-items: center;
   min-height: 44px;
-  padding: 0 2px 4px;
-  border-bottom: 1px solid var(--rule-paper);
+  padding: 0 7px;
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: var(--t-b);
+  line-height: 1;
   cursor: pointer;
 }
 
 .rule input {
   position: absolute;
   opacity: 0;
+  width: 1px;
+  height: 1px;
 }
 
-.rule input:checked + span {
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
+.rule span {
+  padding: 5px 0 4px;
+  border-bottom: 1px solid transparent;
+}
+
+.rule:hover span {
+  border-bottom-color: var(--ink);
+}
+
+.rule:has(input:checked) {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.rule:has(input:checked) span {
+  border-bottom-color: transparent;
 }
 
 .rule input:focus-visible + span {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 .composer__part:disabled {
-  color: var(--ink-2);
+  color: var(--ink-lock);
 }
 
 .composer__part:disabled .rule {
   cursor: default;
-  border-bottom-style: dashed;
 }
 
-/* The right column: the player over the mirror (3D), or the recipe (no 3D). */
+.composer__part:disabled .rule:hover span {
+  border-bottom-color: transparent;
+}
+
+.ficha {
+  margin-top: 22px;
+}
+
+.ficha .slip {
+  max-width: 320px;
+}
+
+/* ---------------------------------------------------------------- the right column */
 .carta__recipe {
   grid-area: side;
 }
@@ -1438,24 +1683,27 @@ html.js:not(.no-webgl) .carta__recipe {
 }
 
 /* With the 3D the recipe takes the sheet's place while a cut is open; with the
-   composer open the sheet stays and the recipe card follows it. */
+   composer open the sheet stays (its ficha says it all) and the recipe waits. */
 html.js:not(.no-webgl) .carta__grid:has(.carta__recipe:not(:empty)):not(:has(#composer:not([hidden]))) .carta__sheet {
   display: none;
 }
 
-html[data-stage='ready'] #carta-player {
-  grid-row: 1 / span 2;
+@media (min-width: 900px) {
+  .carta__grid:has(.is-composing) .carta__recipe {
+    display: none;
+  }
 }
 
-/* The player is grease pencil on the mirror around the head: the title card and
-   the views above it, the caption and the transport under it. It stays in view
-   while the sheet scrolls, and its middle row is the head's (#mirror-window). */
+/* The player: grease pencil on the mirror around the head. Title and 'Volver' above,
+   the head in the middle (#mirror-window), then the caption, the shot ruler and one
+   row of drawn controls. */
 html[data-stage='ready'] #carta-player {
   position: sticky;
   top: calc(var(--nav-h) + 24px);
+  grid-row: 1 / span 2;
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
-  grid-template-areas: 'title' 'views' 'head' 'caption' 'controls';
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+  grid-template-areas: 'title' 'head' 'caption' 'ruler' 'row';
   height: calc(100vh - var(--nav-h) - 48px);
   max-height: 900px;
   color: var(--note);
@@ -1464,78 +1712,164 @@ html[data-stage='ready'] #carta-player {
 .player__title {
   grid-area: title;
   min-height: 1.05em;
-  padding-right: 9rem;
+  padding-right: 10rem;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(1.75rem, 2.4vw, 2.375rem);
+  font-size: 2rem;
   line-height: 1.05;
+}
+
+html[data-stage='ready'] #carta-player .player__back {
+  position: absolute;
+  top: -6px;
+  right: 0;
+  font-size: var(--t-b);
 }
 
 .player__caption {
   grid-area: caption;
   font-family: var(--font-pencil);
   font-weight: 500;
-  font-size: clamp(1.375rem, 1.8vw, 1.75rem);
-  line-height: 1.15;
+  font-size: var(--t-m);
+  line-height: 1.2;
   max-width: 30ch;
-  min-height: 2.3em;
+  min-height: 2.4em;
   display: flex;
   align-items: flex-end;
 }
 
-.player__controls {
-  grid-area: controls;
-}
-
-.player__views {
-  grid-area: views;
-}
-
-.player__controls,
-.player__views,
-.player__more {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 22px;
-}
-
-.player__views [aria-pressed='true'] {
-  text-decoration-thickness: 3px;
-}
-
-/* Icons and the station's own booking link belong to the phone station only. */
-.player__icon,
-.player__book {
+/* One tick per step of the film; the current one inked and long. */
+.player__ruler {
+  grid-area: ruler;
   display: none;
 }
 
-/* Back to the chart sits with the title card, top right. */
-html[data-stage='ready'] #carta-player [data-film='back'] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding-top: 0;
+html[data-stage='ready'] .player__ruler {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 520px;
+  height: 18px;
+  margin: 12px 0 4px;
+  border-bottom: 1px solid #6b7075;
 }
 
-/* Narrow desktops (900–1279px): the transport keeps to one line under the caption. */
-@media (min-width: 900px) and (max-width: 1279px) {
-  #carta-player .player__controls {
-    column-gap: 14px;
+.player__ruler span {
+  width: 1px;
+  height: 7px;
+  background: #6b7075;
+}
+
+.player__ruler span.is-done {
+  height: 10px;
+  background: var(--note);
+}
+
+.player__ruler span.is-active {
+  width: 2px;
+  height: 18px;
+  background: var(--note);
+}
+
+.player__row {
+  grid-area: row;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 18px;
+}
+
+.player__controls,
+.player__views {
+  display: flex;
+  align-items: center;
+}
+
+.player__views {
+  padding-left: 14px;
+  border-left: 1px solid #6b7075;
+}
+
+/* Drawn controls: a line glyph in a 44 px square; the words are for screen readers. */
+.glyph {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: inherit;
+}
+
+.glyph .player__icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+
+.glyph:hover {
+  border-bottom-color: #6b7075;
+}
+
+.player__views .glyph[aria-pressed='true'] {
+  border-bottom-color: var(--note);
+}
+
+.player__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.player__finish {
+  margin: 0 8px;
+  font-size: var(--t-b);
+}
+
+/* The finished cut: its ficha beside the head, stamped. */
+.player__ficha {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  html[data-stage='ready'] .player__ficha:not([hidden]) {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 132px;
+    width: min(228px, 17vw);
+    animation: slip-in 200ms ease-out both;
   }
 
-  #carta-player .player__controls .textbtn {
-    font-size: 0.9375rem;
+  .player__ficha .slip {
+    padding: 18px 14px 12px;
+  }
+
+  .player__ficha .slip__sentence {
+    display: none;
+  }
+
+  .player__ficha .slip__total {
+    font-size: var(--t-b);
   }
 }
 
 /* 'Receta' and 'Cambiar' exist for the phone player only. */
-.player__more {
+.player__more,
+.player__book {
   display: none;
 }
 
 /* Nothing to play yet: the caption says so, the transport waits. */
-.carta__grid:has(.carta__recipe:empty) .player__controls,
-.carta__grid:has(.carta__recipe:empty) .player__views {
+.carta__grid:has(.carta__recipe:empty) .player__row,
+.carta__grid:has(.carta__recipe:empty) .player__ruler,
+.carta__grid:has(.carta__recipe:empty) .player__back {
   visibility: hidden;
 }
 
@@ -1574,16 +1908,18 @@ html.js.no-webgl .carta__grid:has(.carta__recipe:empty) .carta__empty {
 .carta__empty-line {
   font-family: var(--font-pencil);
   font-weight: 500;
-  font-size: clamp(1.5rem, 2.2vw, 2rem);
-  line-height: 1.15;
+  font-size: var(--t-m);
+  line-height: 1.2;
   color: var(--note);
 }
 
-/* --- The recipe card (renderRecipe): printed on the same paper. --- */
+/* ---------------------------------------------------------------- the recipe card
+   Name, the tarifa line, the guía, the ficha; measurements and steps fold away; the
+   booking sits at the foot of the card while the card is on screen. */
 .recipe {
-  --paper-local: var(--paper);
+  position: relative;
   display: block;
-  padding: clamp(24px, 3vw, 44px);
+  padding: clamp(22px, 2.6vw, 36px) clamp(20px, 2.6vw, 36px) 0;
   background: var(--paper);
   color: var(--ink);
   line-height: 1.45;
@@ -1592,59 +1928,131 @@ html.js.no-webgl .carta__grid:has(.carta__recipe:empty) .carta__empty {
 .recipe__n {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.0625rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: var(--t-b);
 }
 
 .recipe__name {
   margin-top: 2px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-size: var(--t-l);
   line-height: 1.02;
 }
 
 .recipe__alias {
   font-family: var(--font-read);
   font-weight: 400;
-  font-size: 0.5em;
+  font-size: var(--t-b);
   color: var(--ink-2);
   white-space: nowrap;
 }
 
 .recipe__desc {
-  margin-top: 10px;
-  font-size: 1.125rem;
+  margin-top: 8px;
+  font-size: var(--t-b);
   max-width: 34rem;
 }
 
+.recipe__tarifa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 14px;
+  margin-top: 16px;
+  padding: 10px 0 9px;
+  border-top: 2px solid var(--rule-ink);
+  border-bottom: 1px solid var(--rule-ink);
+}
+
+.recipe__tarifa .recipe__v {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-m);
+  line-height: 1.15;
+}
+
+.recipe__k {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-b);
+}
+
+.recipe__guia {
+  margin-top: 18px;
+  color: var(--ink);
+}
+
+.recipe__guia .guia {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+
+.recipe__guia figcaption,
+.recipe__note {
+  margin-top: 6px;
+  font-size: 1rem;
+  color: var(--ink-2);
+}
+
+.recipe__ficha {
+  margin-top: 18px;
+}
+
+.recipe__ficha .slip {
+  margin-top: 8px;
+  max-width: 340px;
+}
+
+.recipe__more {
+  margin-top: 18px;
+  border-top: 1px solid var(--rule-paper);
+}
+
+.recipe__more > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-b);
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.recipe__more > summary::-webkit-details-marker {
+  display: none;
+}
+
 .recipe__spec {
-  margin-top: 22px;
-  border-top: 1px solid var(--ink);
+  border-top: 1px solid var(--rule-ink);
 }
 
 .recipe__row {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
+  grid-template-columns: 6.5rem minmax(0, 1fr);
   gap: 12px;
-  padding: 9px 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--rule-paper);
+  font-size: 1rem;
 }
 
-.recipe__row dt,
-.recipe__k {
+.recipe__row dt {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.0625rem;
+  font-size: var(--t-b);
 }
 
 .recipe__steps {
-  margin-top: 22px;
+  margin-top: 16px;
   display: grid;
 }
 
 .recipe__step {
+  position: relative;
   display: block;
   width: 100%;
   min-height: 40px;
@@ -1655,7 +2063,6 @@ html.js.no-webgl .carta__grid:has(.carta__recipe:empty) .carta__empty {
   text-align: left;
   font-size: 1rem;
   line-height: 1.35;
-  position: relative;
 }
 
 /* A short pencil dash marks each step; the current one gets a stroke, done ones a tick. */
@@ -1688,98 +2095,96 @@ html.js.no-webgl .carta__grid:has(.carta__recipe:empty) .carta__empty {
   transform: rotate(-45deg);
 }
 
-.recipe__tarifa {
-  display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
-  gap: 12px;
-  align-items: baseline;
-  margin-top: 22px;
-  padding: 10px 0;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
+.recipe__more .recipe__note {
+  margin: 12px 0 4px;
 }
 
-.recipe__tarifa .recipe__v {
-  font-weight: 500;
-  font-size: 1.125rem;
-}
-
-/* The recipe is taped to the glass like the sheet it replaces. */
-.carta__recipe .recipe {
-  position: relative;
-}
-
-.carta__recipe .recipe::before {
-  content: '';
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  width: 104px;
-  height: 28px;
-  margin-left: -52px;
-  background: rgba(226, 219, 201, 0.78);
-  border-left: 1px dashed rgba(0, 0, 0, 0.08);
-  border-right: 1px dashed rgba(0, 0, 0, 0.08);
-  transform: rotate(-1.5deg);
-}
-
-.recipe__guia {
-  margin-top: 22px;
-  color: var(--ink);
-}
-
-.recipe__guia .guia {
-  display: block;
-  width: 100%;
-  max-width: 340px;
-  height: auto;
-}
-
-.recipe__guia figcaption,
-.recipe__note {
-  margin-top: 6px;
-  font-size: 0.9375rem;
-  color: var(--ink-2);
-}
-
-.recipe__ficha {
-  margin-top: 22px;
-  padding: 14px 0;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
-  font-size: 1rem;
-}
-
-.recipe__ficha .recipe__k {
-  display: block;
-}
-
-.recipe__note {
-  margin-top: 12px;
+/* The booking stays at the foot of the card while the card is on screen. */
+.recipe__foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: 18px calc(-1 * clamp(20px, 2.6vw, 36px)) 0;
+  padding: 12px clamp(20px, 2.6vw, 36px) calc(12px + env(safe-area-inset-bottom, 0px));
+  background: var(--paper);
+  border-top: 1px solid var(--rule-ink);
 }
 
 .recipe__book {
-  margin-top: 22px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  min-height: 48px;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
   padding: 10px 22px;
   background: var(--cta);
   color: var(--cta-ink);
   border-radius: 2px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.1875rem;
+  font-size: var(--t-m);
   text-decoration: none;
 }
 
+.recipe__book:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* The recipe is taped to the glass like the sheet it replaces. */
+.carta__recipe .recipe::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 96px;
+  height: 24px;
+  margin-left: -48px;
+  background: #ddd4bf;
+  border-left: 1px dashed #b9ae95;
+  border-right: 1px dashed #b9ae95;
+  transform: rotate(-1.5deg);
+}
+
 /* ==========================================================================
-   9 · Tarifa, on the tiled wall of the room
+   8 · The turn: the mirror's chrome edge slides away as the wall comes up
+   ========================================================================== */
+.beat--turn {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html.js:not(.no-webgl) [data-beat='turn'] {
+  height: 96px;
+}
+
+.turn__edge {
+  position: absolute;
+  left: clamp(10px, 2vw, 24px);
+  right: clamp(10px, 2vw, 24px);
+  bottom: 0;
+  height: 1px;
+  background: var(--chrome);
+  transition:
+    transform 600ms ease-out,
+    opacity 600ms linear;
+}
+
+.beat--turn.is-active .turn__edge {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* ==========================================================================
+   9 · Tarifa: the board on the tiled wall
    ========================================================================== */
 .tarifa {
   position: relative;
-  padding: clamp(56px, 8vw, 120px) var(--edge);
-  background: var(--night);
+  padding: clamp(56px, 7vw, 104px) var(--gutter-r) clamp(56px, 7vw, 104px) var(--gutter);
+  background: var(--grout);
   overflow: hidden;
 }
 
@@ -1788,93 +2193,127 @@ html.js.no-webgl .carta__grid:has(.carta__recipe:empty) .carta__empty {
   inset: 0;
   width: 100%;
   height: 100%;
+  transform: translateY(16px);
+  transition: transform 600ms ease-out;
 }
 
-.wall .tile {
-  fill-opacity: 0.26;
+.beat--turn.is-active + .tarifa .wall,
+html.no-webgl .wall,
+html.no-js .wall {
+  transform: none;
 }
 
 .tarifa__inner {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
-  grid-template-areas:
-    'board includes'
-    'foot includes';
-  align-items: start;
-  column-gap: clamp(32px, 6vw, 96px);
-  row-gap: 28px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+html[data-board='felt'] .tarifa__inner {
+  max-width: 820px;
 }
 
 /* Corte Real: black glass board, cream sign-painted letters, four chrome standoffs. */
 .board {
-  grid-area: board;
   position: relative;
-  padding: clamp(28px, 4vw, 56px) clamp(22px, 4vw, 56px);
-  background:
-    radial-gradient(circle at 18px 18px, var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
-    radial-gradient(circle at calc(100% - 18px) 18px, var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
-    radial-gradient(circle at 18px calc(100% - 18px), var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
-    radial-gradient(circle at calc(100% - 18px) calc(100% - 18px), var(--chrome) 0 4px, #6f7377 4px 5px, transparent 5.5px),
-    linear-gradient(115deg, transparent 0 62%, rgba(255, 255, 255, 0.035) 62% 70%, transparent 70%),
-    #09090a;
+  padding: 48px 56px 40px;
+  background: #09090a;
   border: 1px solid #2c2f33;
   color: var(--note);
   font-family: var(--font-pencil);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
+
+.board__screw {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--chrome);
+  border: 2px solid #6f7377;
+}
+
+.board__screw--tl { top: 14px; left: 14px; }
+.board__screw--tr { top: 14px; right: 14px; }
+.board__screw--bl { bottom: 14px; left: 14px; }
+.board__screw--br { bottom: 14px; right: 14px; }
 
 .board__title {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+  font-size: var(--t-l);
   line-height: 1;
   letter-spacing: 0.06em;
-  padding-bottom: 18px;
-  margin-bottom: 8px;
+  text-transform: uppercase;
+  padding-bottom: 14px;
   border-bottom: 2px solid currentColor;
 }
 
 .board__row {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 5.5rem 7.5rem;
+  grid-template-columns: minmax(0, 1fr) 5.5rem 7rem;
+  grid-template-areas: 'name min price' 'desc desc desc' 'pin pin pin';
   align-items: baseline;
-  gap: 12px;
-  padding: 13px 0;
+  column-gap: 12px;
+  padding: 14px 0 12px;
   border-bottom: 1px solid #2c2f33;
-  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  font-size: var(--t-m);
   line-height: 1.15;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
+
+.board__row .row__name { grid-area: name; }
+.board__row .row__min { grid-area: min; }
+.board__row .row__price { grid-area: price; }
 
 .row__min,
 .row__price {
   text-align: right;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .board .row__min {
   color: #c9c6be;
 }
 
+/* What the service includes, under its own line. */
+.row__desc {
+  grid-area: desc;
+  margin-top: 4px;
+  font-family: var(--font-read);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #c9c6be;
+}
+
 .board__note {
   margin-top: 18px;
+  font-family: var(--font-read);
+  font-weight: 400;
   font-size: 1rem;
-  line-height: 1.35;
-  letter-spacing: 0.04em;
+  line-height: 1.4;
   color: #c9c6be;
 }
 
 /* BK: felt letter board, white plastic letters, in a thin aluminium frame. */
 html[data-board='felt'] .board {
-  background:
+  padding: 40px 48px 0;
+  background: var(--felt, #151515)
     repeating-linear-gradient(to bottom, var(--felt, #151515) 0 7px, #1f1f1f 7px 8px);
   border: 10px solid #2b2e30;
   outline: 1px solid #6d7275;
   outline-offset: -10px;
   color: #f4f4f2;
+}
+
+html[data-board='felt'] .board__screw {
+  display: none;
 }
 
 html[data-board='felt'] .board__title {
@@ -1884,114 +2323,158 @@ html[data-board='felt'] .board__title {
 
 html[data-board='felt'] .board__row {
   border-bottom: 0;
-  padding: 10px 0;
+  padding: 12px 0 10px;
 }
 
-/* Reviews (BK): copied as written, in one straight column on the paper under the board. */
-.reviews {
-  margin-top: 14px;
-  padding: 0;
-  list-style: none;
+html[data-board='felt'] .row__desc,
+html[data-board='felt'] .board__note {
+  color: #d4d4d0;
 }
 
-.review {
-  padding: 14px 0 12px;
-  border-top: 1px solid var(--rule-paper, #d6ccb6);
+html[data-board='felt'] .board__note {
+  margin-bottom: 24px;
 }
 
-.review blockquote p {
+/* The foot plate: a strip of aluminium screwed under the felt, with the ratings. */
+.board__foot {
+  position: relative;
+}
+
+.board__plate {
+  margin: 0 -48px;
+  padding: 12px 48px;
+  background: #a9aeb2;
+  border-top: 1px solid #d3d6d8;
+  color: #121314;
+  font-family: var(--font-read);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Reviews (BK): small printed notes taped to the wall beside the service they are
+   about, a hair off true, no shadow; the review about the shop at the board's foot. */
+.pin {
+  position: relative;
+  max-width: 420px;
+  margin: 12px 0 4px;
+  padding: 20px 18px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-read);
+  font-weight: 400;
   font-size: 1rem;
   line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  transform: rotate(0.6deg);
 }
 
-.review figcaption {
+.pin--b {
+  transform: rotate(-0.6deg);
+}
+
+.pin::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 72px;
+  height: 20px;
+  margin-left: -36px;
+  background: #ddd4bf;
+  border-left: 1px dashed #b9ae95;
+  border-right: 1px dashed #b9ae95;
+  transform: rotate(-2deg);
+}
+
+.pin figcaption {
   margin-top: 6px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--ink-2);
 }
 
-.tarifa__foot {
-  grid-area: foot;
-  max-width: 640px;
+.board__row .pin {
+  grid-area: pin;
 }
 
-.tarifa__source {
-  padding: 18px 22px 8px;
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 0.9375rem;
-  line-height: 1.45;
+@media (min-width: 1320px) {
+  .board__row .pin {
+    position: absolute;
+    left: calc(100% + 58px);
+    top: -6px;
+    width: 232px;
+    margin: 0;
+  }
+
+  html[data-board='felt'] .board__row .pin {
+    left: calc(100% + 58px);
+  }
+
+  .board__foot .pin {
+    position: absolute;
+    right: calc(100% + 58px);
+    bottom: 8px;
+    width: 232px;
+    margin: 0;
+  }
 }
-
-.tarifa__ratings {
-  margin-top: 6px;
-  font-weight: 500;
-}
-
-/* Printed card with what each service includes, pinned to the wall. */
-.includes {
-  grid-area: includes;
-  padding: clamp(22px, 3vw, 36px);
-  background: var(--paper);
-  color: var(--ink);
-}
-
-html[data-board='felt'] .includes {
-  margin-top: 0;
-}
-
-.includes__title {
-  font-family: var(--font-pencil);
-  font-weight: 600;
-  font-size: 1.625rem;
-  line-height: 1.1;
-  margin-bottom: 10px;
-}
-
-.includes__row {
-  padding: 10px 0;
-  border-top: 1px solid var(--rule-paper);
-}
-
-.includes__row dt {
-  font-weight: 500;
-}
-
-.includes__row dd {
-  color: var(--ink-2);
-}
-
-/* BK has pins to the right of the board: the includes card goes under them. */
-
 
 /* ==========================================================================
-   10 · Las sillas: plan of the shop and the ledger
+   10 · Las sillas: the plan of the shop on paper, the ledger beside it
    ========================================================================== */
 .sillas {
   position: relative;
-  padding: clamp(56px, 8vw, 112px) var(--edge);
+  padding: clamp(48px, 6vw, 88px) var(--edge);
   background: var(--night);
-  border-top: 1px solid var(--chrome-line);
 }
 
 .sillas__grid {
-  margin-top: clamp(28px, 4vw, 48px);
   display: grid;
-  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
-  gap: clamp(32px, 6vw, 96px);
-  align-items: start;
+  grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+
+.sillas__plan {
+  padding: 18px 18px 12px;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .plan {
   display: block;
   width: 100%;
   height: auto;
-  color: var(--chrome);
+  color: var(--ink);
+}
+
+.plan text {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
+  fill: currentColor;
+  stroke: none;
+}
+
+.plan__labels text {
+  font-weight: 500;
+}
+
+.plan__seat {
+  fill: none;
+  transition: fill 160ms linear;
+}
+
+.plan__chair {
+  color: var(--ink);
+}
+
+.sillas__list .title {
+  font-size: var(--t-l);
+  margin-bottom: 18px;
 }
 
 .ledger {
@@ -2000,16 +2483,20 @@ html[data-board='felt'] .includes {
 
 .ledger__row {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr) auto;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
   grid-template-areas:
     'tool chair see'
     'tool name see'
-    'tool days see'
-    'tool known see';
-  column-gap: 28px;
+    'tool days see';
+  column-gap: 24px;
   align-items: center;
-  padding: 22px 0;
+  padding: 18px 0;
   border-bottom: 1px solid var(--chrome-line);
+}
+
+.ledger__row:hover,
+.ledger__row:focus-within {
+  border-bottom-color: var(--chrome);
 }
 
 .ledger__tool {
@@ -2025,7 +2512,7 @@ html[data-board='felt'] .includes {
 
 .ledger__chair {
   grid-area: chair;
-  font-size: 0.9375rem;
+  font-size: var(--t-b);
   color: var(--text-2);
 }
 
@@ -2033,75 +2520,100 @@ html[data-board='felt'] .includes {
   grid-area: name;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.875rem;
-  line-height: 1.05;
+  font-size: var(--t-m);
+  line-height: 1.1;
 }
 
 .ledger__days {
   grid-area: days;
-}
-
-.ledger__known {
-  grid-area: known;
+  font-size: var(--t-b);
   color: var(--text-2);
 }
 
 .ledger__see {
   grid-area: see;
+  font-size: var(--t-b);
 }
 
 /* ==========================================================================
-   11 · Pide hora: the appointment book on the counter
+   11 · Pide hora: the appointment book open on the counter
    ========================================================================== */
 .reservar {
   position: relative;
-  padding: clamp(56px, 8vw, 112px) var(--edge);
+  padding: 20px var(--edge) clamp(48px, 6vw, 88px);
   background: var(--counter);
   border-top: 1px solid #000;
 }
 
-.reservar__head {
-  display: grid;
-  gap: 14px;
-  max-width: 40rem;
-  margin-bottom: clamp(28px, 4vw, 48px);
-}
-
-.reservar__intro {
-  color: #d9d6cf;
-}
-
-/* Two facing pages; the gutter is a hard fold line. */
 .book {
+  --margin: 64px;
+  --ruling: #ddd3bd;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  background: var(--paper);
-  color: var(--ink);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
   border: 1px solid #000;
+  color: var(--ink);
 }
 
+/* Each page: ruled lines (hard stops), the red margin, paper. */
 .book__page {
   position: relative;
-  padding: clamp(24px, 3.4vw, 52px);
   display: grid;
   align-content: start;
-  gap: 28px;
+  gap: 18px;
+  padding: 26px 28px 28px calc(var(--margin) + 18px);
+  background: var(--paper) repeating-linear-gradient(to bottom, transparent 0 43px, var(--ruling) 43px 44px);
 }
 
+.book__page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--margin);
+  width: 1px;
+  background: #b4574b;
+}
+
+/* The spine: the fold between the pages, stitched. */
 .book__page--left {
-  border-right: 1px solid #b9ab90;
-  background: linear-gradient(90deg, transparent calc(100% - 10px), #e4dac6 calc(100% - 10px));
+  border-right: 7px solid #ddd2bc;
 }
 
 .book__page--right {
-  background: linear-gradient(90deg, #e4dac6 0 10px, transparent 10px);
+  border-left: 7px solid #d6cab1;
+}
+
+.book__page--right::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: -8px;
+  border-left: 2px dashed #8f8371;
+}
+
+.reservar__head {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.reservar__head .title {
+  font-size: var(--t-l);
+  color: var(--ink);
+}
+
+.reservar__intro {
+  font-size: var(--t-b);
+  line-height: 1.45;
+  color: var(--ink-2);
 }
 
 .book__agenda {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.0625rem;
-  padding-bottom: 10px;
+  font-size: var(--t-b);
+  padding-bottom: 8px;
   border-bottom: 2px solid var(--ink);
 }
 
@@ -2109,11 +2621,119 @@ html[data-board='felt'] .includes {
 .book__label,
 .field__label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: var(--t-b);
   line-height: 1.1;
+}
+
+/* The ficha, clipped to the page with a bulldog clip. */
+.book__clip {
+  position: relative;
+  padding-top: 18px;
+}
+
+.book__bulldog {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  z-index: 1;
+  width: 64px;
+  height: 40px;
+  color: #4a4f53;
+}
+
+.book__slip {
+  position: relative;
+  max-width: 380px;
+  padding: 24px 18px 14px;
+  background: var(--paper);
+  border: 1px solid var(--rule-ink);
+  -webkit-mask: var(--perf);
+  mask: var(--perf);
+  transform: rotate(-0.6deg);
+}
+
+.book__cutline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-m);
+  line-height: 1.2;
+}
+
+.book__cutline .textbtn {
+  padding: 4px 0;
+  min-height: 0;
+  font-size: var(--t-b);
+}
+
+.book__lines .slip {
+  max-width: none;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+}
+
+.book__ficha {
+  margin-top: 8px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+/* A choice the page already made reads as one line, with 'cambiar'. */
+.book__fold > summary {
+  list-style: none;
+}
+
+.book__fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.book__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  min-height: 44px;
+  padding: 10px 0 8px;
+  border-bottom: 1px solid var(--rule-ink);
+  cursor: pointer;
+  font-size: var(--t-b);
+}
+
+.book__k {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+}
+
+.book__v {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.book__change {
+  margin-left: auto;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.book__fold[open] .book__change {
+  text-decoration-thickness: 2px;
+}
+
+.book__fold .book__group {
+  padding-top: 4px;
 }
 
 /* A ruled line per option; the radio is a pencil ring. */
@@ -2123,10 +2743,11 @@ html[data-board='felt'] .includes {
   grid-template-columns: 26px minmax(0, 1fr) auto auto;
   align-items: baseline;
   column-gap: 14px;
-  min-height: 46px;
-  padding: 11px 0 9px;
+  min-height: 44px;
+  padding: 10px 0 8px;
   border-bottom: 1px solid var(--rule-paper);
   cursor: pointer;
+  font-size: var(--t-b);
 }
 
 .line input {
@@ -2146,7 +2767,9 @@ html[data-board='felt'] .includes {
 }
 
 .line:has(input:checked)::before {
-  background: radial-gradient(circle, var(--ink) 0 4px, transparent 4.5px);
+  background: var(--ink);
+  outline: 3px solid var(--paper);
+  outline-offset: -5.5px;
 }
 
 .line:has(input:focus-visible) {
@@ -2158,7 +2781,8 @@ html[data-board='felt'] .includes {
   grid-column: 2;
 }
 
-.line .row__min {
+.line .row__min,
+.line .row__note {
   color: var(--ink-2);
 }
 
@@ -2171,144 +2795,157 @@ html[data-board='felt'] .includes {
   grid-template-columns: 26px auto minmax(0, 1fr);
 }
 
-.line .row__note {
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-}
-
-.book__cutline {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 16px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--rule-paper);
-  font-size: 1.125rem;
-}
-
-.book__cutline .textbtn {
-  padding: 4px 0;
-  min-height: 0;
-}
-
-.book__ficha {
-  margin-top: 8px;
-  font-size: 0.9375rem;
-  color: var(--ink-2);
-}
-
-.hours {
+/* One week, seven column heads written by hand; the chosen day inked in. */
+.book__days {
   display: grid;
+  gap: 4px;
 }
 
-.hours__row {
-  display: grid;
-  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-  gap: 12px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--rule-paper);
-  font-size: 1rem;
-}
-
-.hours__row dt {
-  font-weight: 500;
-}
-
-/* Days as columns, hours as ruled lines (filled in by the booking script). */
 .days {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(68px, 1fr);
-  overflow-x: auto;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
-  scrollbar-width: thin;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid var(--rule-ink);
+  border-bottom: 1px solid var(--rule-ink);
 }
 
-.days > * {
+.day {
   display: grid;
   justify-items: center;
-  gap: 2px;
-  min-height: 64px;
-  padding: 10px 6px;
+  align-content: start;
+  gap: 0;
+  min-width: 0;
+  min-height: 74px;
+  padding: 8px 2px 6px;
   border: 0;
   border-right: 1px solid var(--rule-paper);
   background: none;
   color: var(--ink);
   font-family: var(--font-pencil);
-  font-weight: 600;
-  font-size: 1.125rem;
   line-height: 1.1;
 }
 
-.days > [aria-pressed='true'],
-.days > :has(input:checked) {
+.day:last-child {
+  border-right: 0;
+}
+
+.day__name {
+  font-weight: 500;
+  font-size: var(--t-b);
+}
+
+.day__num {
+  font-weight: 600;
+  font-size: var(--t-m);
+  font-variant-numeric: tabular-nums;
+}
+
+.day__note {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.day[aria-pressed='true'] {
   background: var(--ink);
   color: var(--paper);
 }
 
-.days > :disabled,
-.days > [aria-disabled='true'] {
+.day:disabled {
   color: var(--ink-2);
-  font-weight: 500;
   cursor: default;
 }
 
-/* Desktop: two weeks as two rows of seven, nothing scrolled out of the page. */
-@media (min-width: 900px) {
-  .days {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    overflow: visible;
-  }
-
-  .days > * {
-    border-bottom: 1px solid var(--rule-paper);
-  }
-
-  .days > :nth-child(7n) {
-    border-right: 0;
-  }
-
-  .days > :nth-child(n + 8) {
-    border-bottom: 0;
-  }
-}
-
-.slots {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
-  column-gap: 18px;
-}
-
-.slots > * {
-  min-height: 44px;
-  padding: 10px 0 6px;
-  border: 0;
-  border-bottom: 1px solid var(--rule-paper);
-  background: none;
-  color: var(--ink);
-  font-size: 1.0625rem;
-  text-align: left;
-}
-
-.slots > [aria-pressed='true'],
-.slots > :has(input:checked) {
+.day:disabled .day__num {
   font-weight: 500;
-  border-bottom: 2px solid var(--ink);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.day:not(:disabled):hover .day__num {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.days__legend {
+  display: none;
+  font-size: 1rem;
+  color: var(--ink-2);
+}
+
+.days__legend:empty {
+  display: none !important;
+}
+
+.book__fold--week > summary {
+  min-height: 40px;
+  padding: 8px 0 6px;
+  border-bottom: 0;
+}
+
+.book__fold--week > summary .book__k {
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
 
+.days--next {
+  margin-top: 4px;
+}
+
+/* Hours: grouped as the day goes, morning, afternoon, evening. */
+.slots {
+  display: grid;
+  border-top: 1px solid var(--rule-ink);
+}
+
+.slots__group {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  align-items: start;
+  border-bottom: 1px solid var(--rule-paper);
+}
+
+.slots__k {
+  padding-top: 11px;
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-b);
+}
+
+.slots__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.slot {
+  min-width: 4.25rem;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-size: var(--t-b);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.slot:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.slot[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 500;
+}
+
 .slots:empty,
 .days:empty {
-  min-height: 46px;
-  background: repeating-linear-gradient(to bottom, transparent 0 45px, var(--rule-paper) 45px 46px);
+  min-height: 44px;
 }
 
 .book .hint {
   color: var(--ink-2);
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .field {
@@ -2317,13 +2954,13 @@ html[data-board='felt'] .includes {
 
 .field input {
   width: 100%;
-  min-height: 46px;
-  padding: 8px 0;
+  min-height: 44px;
+  padding: 6px 0;
   border: 0;
   border-bottom: 1.5px solid var(--ink);
   border-radius: 0;
   background: transparent;
-  font-size: 1.1875rem;
+  font-size: var(--t-b);
 }
 
 .field input:focus-visible {
@@ -2333,23 +2970,46 @@ html[data-board='felt'] .includes {
 
 .book__you {
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .book__action {
   display: grid;
-  gap: 12px;
+  gap: 10px;
+}
+
+/* The live pencil line: what the page says so far. */
+.book__summary {
+  min-height: 1.3em;
+  padding-top: 6px;
+  border-top: 1px solid var(--rule-ink);
+  font-family: var(--font-pencil);
+  font-weight: 500;
+  font-size: var(--t-m);
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
 }
 
 .cta--book {
   width: 100%;
   min-height: 56px;
-  font-size: 1.375rem;
+  font-size: var(--t-m);
+}
+
+/* Not complete yet: a dashed outline in ink that says what is missing. */
+.cta--book[aria-disabled='true'] {
+  background: transparent;
+  color: var(--ink);
+  border: 1px dashed var(--ink);
+}
+
+.cta--book[aria-disabled='true']:hover {
+  text-decoration: none;
 }
 
 .book__ctanote,
 .book__alt {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--ink-2);
 }
 
@@ -2368,7 +3028,7 @@ html[data-board='felt'] .includes {
 .book__nojs-lead {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.375rem;
+  font-size: var(--t-m);
 }
 
 .book__nojs a:not(.cta) {
@@ -2379,33 +3039,75 @@ html.no-js .book__live {
   display: none;
 }
 
-/* --- The cream appointment card: torn from the book's pad (perforated top
-   edge), the shop's printed header, the rows filled in by hand; under a
-   perforation, the back, 'Para el barbero', for the chair. --- */
+/* ---------------------------------------------------------------- the card
+   Torn off the top of the pad when the book is sent (clip from the top edge, a lift
+   of 24 px, settled, 420 ms, no bounce); the ficha is printed on its back. */
 .card {
-  margin-top: 40px;
   display: grid;
-  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 72px);
   align-items: start;
+  perspective: 1600px;
 }
 
-.card__front {
-  --perf: radial-gradient(circle 4px at 8px 0, transparent 96%, #000) -8px 0 / 16px 100% repeat-x;
+.card__sheet {
   position: relative;
-  padding: 30px 30px 0;
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 520ms ease-out;
+}
+
+.card--ficha .card__sheet {
+  cursor: pointer;
+}
+
+.card__front,
+.card__back {
+  grid-area: 1 / 1;
+  position: relative;
+  padding: 30px 30px 24px;
   background: var(--paper);
   color: var(--ink);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-mask: var(--perf);
   mask: var(--perf);
-  transform: rotate(-1deg);
-  transform-origin: 30% 0;
+}
+
+.card__back {
+  transform: rotateY(180deg);
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.card.is-flipped .card__sheet {
+  transform: rotateY(180deg);
+}
+
+.card.is-torn .card__sheet {
+  animation: card-tear 420ms ease-out both;
+}
+
+@keyframes card-tear {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0);
+  }
+  60% {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(-24px);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
 }
 
 .card__header {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.125rem;
+  font-size: var(--t-b);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding-bottom: 10px;
@@ -2423,52 +3125,60 @@ html.no-js .book__live {
 .card__row dt {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 0.9375rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: var(--t-b);
 }
 
 /* Filled in with the pencil voice. */
 .card__row dd {
   font-family: var(--font-pencil);
   font-weight: 500;
-  font-size: 1.3125rem;
+  font-size: var(--t-m);
   line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 
-.card__back {
-  position: relative;
-  margin: 22px -30px 0;
-  padding: 26px 30px 26px;
-  border-top: 2px dotted #a99c82;
-  background: #e8dfcc;
+/* The cue on the front that the card has a back. */
+.card__turn {
+  display: none;
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--ink-2);
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-b);
+  text-align: right;
+}
+
+.card--ficha .card__turn {
+  display: block;
+}
+
+.card__k {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: var(--t-b);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.card__slip .slip {
+  max-width: none;
+  padding: 0;
+  border: 0;
+  -webkit-mask: none;
+  mask: none;
+}
+
+.card__ficha {
   font-size: 1rem;
   line-height: 1.45;
 }
 
-/* Notches at both ends of the tear line. */
-.card__back::before,
-.card__back::after {
-  content: '';
-  position: absolute;
-  top: -8px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--counter);
-}
-
-.card__back::before { left: -7px; }
-.card__back::after { right: -7px; }
-
-.card__k {
-  display: block;
-  margin-bottom: 4px;
-  font-family: var(--font-pencil);
-  font-weight: 600;
-  font-size: 0.9375rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.card__back:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -6px;
 }
 
 .card__text {
@@ -2479,14 +3189,15 @@ html.no-js .book__live {
 .card__title {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: clamp(1.625rem, 2.2vw, 2rem);
-  line-height: 1.12;
+  font-size: var(--t-m);
+  line-height: 1.15;
 }
 
 .card__body,
 .card__fallback,
 .card__demo {
   margin-top: 12px;
+  font-size: var(--t-b);
   color: #d9d6cf;
 }
 
@@ -2502,60 +3213,120 @@ html.no-js .book__live {
   column-gap: 26px;
 }
 
+.card__actions .textbtn {
+  font-size: var(--t-b);
+}
+
+/* Reduced motion: the card does not turn, the back crossfades in. */
+@media (prefers-reduced-motion: reduce) {
+  .card__sheet {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .card__back {
+    transform: none;
+  }
+
+  .card__front,
+  .card__back {
+    transition: opacity 200ms linear !important;
+    transition-duration: 200ms !important;
+  }
+
+  .card__back,
+  .card.is-flipped .card__front {
+    opacity: 0;
+  }
+
+  .card.is-flipped .card__back {
+    opacity: 1;
+  }
+
+  .card.is-torn .card__sheet {
+    animation: card-fade 200ms linear both !important;
+    animation-duration: 200ms !important;
+  }
+}
+
+@keyframes card-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ==========================================================================
-   12 · The door, seen from the street
+   12 · The door, seen from the street: portrait, its own material
    ========================================================================== */
 .door {
   display: grid;
-  gap: clamp(24px, 3vw, 40px);
-  padding: clamp(48px, 7vw, 96px) var(--edge) clamp(40px, 6vw, 80px);
-  background: #1a1b1d; /* the street wall at night, so the black door frame reads */
+  grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 6vw, 96px);
+  padding: clamp(48px, 6vw, 88px) var(--edge);
+  background: #1a1b1d; /* the street wall at night, so the frame reads */
   border-top: 1px solid #000;
 }
 
-/* The door: painted frame, dark glass, white vinyl, a push bar. */
-.door__glass {
+/* Corte Real: a painted door, black enamel with a chrome edge. */
+.door__leaf {
+  --stile: 28px;
   position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: end;
-  column-gap: clamp(28px, 5vw, 80px);
-  min-height: clamp(420px, 40vw, 560px);
-  padding: clamp(28px, 4vw, 56px) clamp(24px, 4vw, 56px) 120px;
+  aspect-ratio: 560 / 780;
+  background: var(--frame);
+  border: 1px solid var(--frame-edge);
+  outline: 1px solid #000;
+}
+
+/* BK: brushed aluminium, flat. */
+html[data-board='felt'] .door__leaf {
+  background: #9aa0a4;
+  border-color: #6d7275;
+}
+
+.door__glass {
+  position: absolute;
+  inset: var(--stile) var(--stile) 150px var(--stile);
+  padding: 24px;
   background: var(--glass);
-  border: 18px solid var(--frame);
+  border: 2px solid #000;
   outline: 1px solid var(--frame-edge);
-  color: #f4f4f2;
+  color: var(--note);
+  overflow: hidden;
 }
 
 .door__number {
+  margin: -4px 0 24px;
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: min(22vw, 280px);
+  font-size: 260px;
   line-height: 0.78;
   letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: #f4f4f2;
 }
 
+/* The vinyl block: cream cut letters, 18 px. */
 .door__vinyl {
   display: grid;
-  gap: 6px;
-  max-width: 26rem;
-  padding-bottom: 6px;
+  gap: 4px;
+  max-width: 17rem;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  color: var(--note);
 }
 
 .door__name {
   font-family: var(--font-pencil);
   font-weight: 600;
-  font-size: 1.875rem;
+  font-size: var(--t-m);
   line-height: 1.1;
 }
 
-.door__hours {
-  margin-top: 8px;
-}
-
 .door__transit {
-  margin-top: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2577,51 +3348,489 @@ html.no-js .book__live {
 
 .door .door-sign--door {
   left: auto;
-  right: clamp(40px, 6vw, 96px);
-  top: 70px;
+  right: 18px;
+  top: 64px;
+  max-width: 180px;
+  font-size: 1rem;
   transform: none;
 }
 
-.door .door-sign--door::before,
-.door .door-sign--door::after {
-  left: 50%;
+/* An unknown day hangs no sign at all: no card, no strings. */
+[data-door-sign]:empty {
+  display: none !important;
 }
 
-/* Push bar. */
-.door__handle {
+/* The hours card taped inside the glass: the only place the hours are written. */
+.door-card {
   position: absolute;
-  right: 40px;
-  bottom: 50px;
-  width: 38%;
-  height: 10px;
-  background: linear-gradient(to bottom, var(--chrome) 0 55%, #8d9196 55%);
-  border-radius: 5px;
+  left: 24px;
+  bottom: 20px;
+  width: min(250px, calc(100% - 48px));
+  padding: 10px 12px 8px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid #c9bfa9;
+  font-size: 1rem;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.door-card__title {
+  font-family: var(--font-pencil);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+.door-card__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 0;
+}
+
+.door-card__row dt {
+  font-weight: 500;
+}
+
+.door-card__row dd {
+  text-align: right;
+}
+
+/* The vertical push bar, standing off the glass on two brackets. */
+.door__bar {
+  position: absolute;
+  right: 54px;
+  top: 30%;
+  width: 16px;
+  height: 34%;
+  background: var(--chrome);
+  border: 1px solid #f1f3f4;
+  border-right-color: #7d8185;
+  border-radius: 3px;
+}
+
+.door__bar::before,
+.door__bar::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  width: 22px;
+  height: 8px;
+  background: #8d9196;
+  border: 1px solid #5f6367;
+}
+
+.door__bar::before { top: 10%; }
+.door__bar::after { bottom: 10%; }
+
+/* The painted door: a raised moulding line inside the stiles. */
+.door__leaf::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid #34373b;
+  pointer-events: none;
+}
+
+html[data-board='felt'] .door__leaf::before {
+  border-color: #c4c8cb;
+}
+
+/* The kick plate at the foot of the door. */
+.door__kick {
+  position: absolute;
+  left: var(--stile);
+  right: var(--stile);
+  bottom: var(--stile);
+  height: 92px;
+  background: #3a3d40;
+  border: 1px solid #55595d;
+}
+
+html[data-board='felt'] .door__kick {
+  background: #7d8286;
+  border-color: #b3b8bb;
 }
 
 .door__step {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 20px 40px;
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+  padding-bottom: 8px;
 }
 
+/* 'Llamar': a dark outline, never in competition with 'Pedir hora'. */
 .cta--call {
-  min-height: 72px;
-  padding: 14px 40px;
-  font-size: 1.75rem;
+  min-height: 56px;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--note);
+  border: 1px solid var(--chrome);
+  font-size: var(--t-m);
 }
 
 .cta__sub {
   font-family: var(--font-read);
   font-weight: 400;
-  font-size: 1.0625rem;
+  font-size: var(--t-b);
   letter-spacing: 0;
 }
 
 .door__notice {
   max-width: 30rem;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--text-2);
+}
+
+/* ==========================================================================
+   Lower sections on narrow screens
+   ========================================================================== */
+@media (max-width: 1099px) {
+  .door {
+    grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+  }
+
+  .door__number {
+    font-size: 220px;
+  }
+}
+
+@media (max-width: 899px) {
+  .carta__grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'sheet' 'side';
+  }
+
+  .sillas__grid,
+  .door,
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .book {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .book__page--left {
+    border-right: 0;
+    border-bottom: 7px solid #ddd2bc;
+  }
+
+  .book__page--right {
+    border-left: 0;
+    border-top: 7px solid #d6cab1;
+  }
+
+  .book__page--right::after {
+    top: -8px;
+    bottom: auto;
+    left: 14px;
+    right: 14px;
+    border-left: 0;
+    border-top: 2px dashed #8f8371;
+  }
+
+  /* On phones the player exists only while it is open (motion: html.player-open). */
+  html[data-stage='ready'] #carta-player {
+    display: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .carta {
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .carta__sheet {
+    padding-left: 14px;
+    padding-right: 0;
+  }
+
+  .carta__tabs {
+    margin-right: 14px;
+    column-gap: 22px;
+  }
+
+  .carta__intro {
+    padding-right: 14px;
+  }
+
+  /* Each family a strip of plates that scrolls sideways inside the sheet, two and a
+     half to a screen. */
+  .chart__band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 18px;
+  }
+
+  .family {
+    grid-column: 1;
+    display: block;
+  }
+
+  .family__name {
+    padding-right: 14px;
+  }
+
+  .family__plates {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: calc((100% - 14px - 2 * 12px) / 2.5);
+    column-gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0;
+    padding: 4px 14px 6px 2px;
+    scrollbar-width: none;
+  }
+
+  .family__plates::-webkit-scrollbar {
+    display: none;
+  }
+
+  .plate {
+    scroll-snap-align: start;
+  }
+
+  .composer {
+    padding-right: 14px;
+  }
+
+  .mixline {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px 0 6px;
+  }
+
+  .mixline__k {
+    padding-top: 0;
+  }
+
+  .mixline__sub {
+    display: inline;
+    margin-left: 6px;
+  }
+
+  .composer__rules {
+    margin-left: -7px;
+  }
+
+  .ficha .slip,
+  .slip {
+    max-width: none;
+  }
+
+  .recipe__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .tarifa {
+    padding: 48px 12px;
+  }
+
+  .board {
+    padding: 36px 20px 28px;
+  }
+
+  html[data-board='felt'] .board {
+    padding: 28px 18px 0;
+    border-width: 8px;
+    outline-offset: -8px;
+  }
+
+  .board__plate {
+    margin: 0 -18px;
+    padding: 12px 18px;
+  }
+
+  .board__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'name price' 'min min' 'desc desc' 'pin pin';
+    row-gap: 2px;
+  }
+
+  .board .row__min {
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  .pin {
+    margin: 14px 4px 6px;
+  }
+
+  .board__foot .pin {
+    margin: 4px 4px 22px;
+  }
+
+  .sillas {
+    padding: 44px var(--gutter);
+  }
+
+  .ledger__row {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-areas:
+      'tool chair'
+      'tool name'
+      'days days'
+      'see see';
+    column-gap: 16px;
+  }
+
+  .ledger__see {
+    justify-self: start;
+  }
+
+  .reservar {
+    padding: 12px 8px 40px;
+  }
+
+  .book {
+    --margin: 22px;
+  }
+
+  .book__page {
+    gap: 14px;
+    padding: 18px 12px 22px calc(var(--margin) + 12px);
+  }
+
+  .book__bulldog {
+    left: 20px;
+  }
+
+  .line {
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    grid-template-areas: 'mark name price' 'mark min min';
+  }
+
+  .line::before { grid-area: mark; }
+  .line .row__name { grid-area: name; }
+  .line .row__price { grid-area: price; min-width: 0; text-align: right; }
+  .line .row__min { grid-area: min; text-align: left; }
+
+  .line--barber {
+    grid-template-columns: 26px minmax(0, 1fr);
+    grid-template-areas: 'mark name' 'mark note';
+  }
+
+  .line--barber .row__note { grid-area: note; }
+
+  /* Seven narrow columns: the notes go to one line under the week. */
+  .day {
+    min-height: 60px;
+    padding: 6px 0 4px;
+  }
+
+  .day__note {
+    display: none;
+  }
+
+  .days__legend {
+    display: block;
+  }
+
+  .slots__group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .slots__k {
+    padding-top: 8px;
+  }
+
+  .slots__row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .slot {
+    min-width: 0;
+    padding: 0 6px;
+  }
+
+  .card__front,
+  .card__back {
+    padding: 26px 18px 20px;
+  }
+
+  .door {
+    padding: 40px var(--gutter) 32px;
+  }
+
+  .door__leaf {
+    --stile: 14px;
+    aspect-ratio: auto;
+    min-height: 120vw;
+    padding: var(--stile) var(--stile) calc(var(--stile) + 80px);
+  }
+
+  .door__glass {
+    position: relative;
+    inset: auto;
+    min-height: calc(120vw - 2 * var(--stile) - 80px);
+    padding: 18px 18px 168px;
+  }
+
+  .door__number {
+    font-size: 38vw;
+    margin-bottom: 20px;
+  }
+
+  .door .door-sign--door {
+    position: absolute;
+    right: 12px;
+    top: 18px;
+    max-width: 46%;
+  }
+
+  .door-card {
+    left: 18px;
+    bottom: 18px;
+    width: calc(100% - 36px - 30px);
+  }
+
+  .door__bar {
+    right: 34px;
+    top: 30%;
+    width: 12px;
+  }
+
+  .door__bar::before,
+  .door__bar::after {
+    left: 11px;
+    width: 18px;
+  }
+
+  .plan text {
+    font-size: 24px;
+  }
+
+  .door__kick {
+    height: 56px;
+  }
+
+  .cta--call {
+    width: 100%;
+  }
+}
+
+/* Reduced motion and the pole's off switch: the turn edge and the wall just stand. */
+@media (prefers-reduced-motion: reduce) {
+  .wall {
+    transform: none;
+  }
+}
+
+html[data-motion='off'] .wall {
+  transform: none;
 }
 
 /* ==========================================================================
@@ -2643,56 +3852,15 @@ html.no-js .beat {
 /* ==========================================================================
    Narrow screens
    ========================================================================== */
-@media (max-width: 1099px) {
-  .tarifa__inner,
-  html[data-board='felt'] .tarifa__inner {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'board'
-      'foot'
-      'includes';
-  }
 
-}
 
 @media (max-width: 899px) {
-  .carta__grid {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'sheet' 'side';
-  }
-
-  .book,
-  .door,
-  .card,
-  .sillas__grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .book__page--left {
-    border-right: 0;
-    border-bottom: 1px solid #b9ab90;
-    background: none;
-  }
-
-  .book__page--right {
-    background: none;
-  }
-
   #mirror-window {
     top: calc(var(--nav-h) + 10px);
     left: 10px;
     right: 10px;
     bottom: auto;
     height: 58svh;
-  }
-
-  .reservar__head {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  /* On phones the player exists only while it is open (motion: html.player-open). */
-  html[data-stage='ready'] #carta-player {
-    display: none;
   }
 }
 
@@ -2750,13 +3918,25 @@ html.no-js .beat {
     z-index: 41;
   }
 
+  /* The row's two halves take their own places: views on the glass, transport in the panel. */
+  html.player-open #carta-player .player__row {
+    display: contents;
+  }
+
+  html.player-open #carta-player .player__ruler,
+  html.player-open #carta-player .player__ficha {
+    display: none;
+  }
+
   /* The views sit on the glass, just above the panel. */
   html.player-open #carta-player .player__views {
     grid-area: mirror;
     align-self: end;
+    justify-self: center;
     justify-content: center;
-    column-gap: 26px;
+    column-gap: 18px;
     padding: 0 16px 2px;
+    border-left: 0;
   }
 
   html.player-open #carta-player .player__caption,
@@ -2799,7 +3979,8 @@ html.no-js .beat {
     background: none;
   }
 
-  html.player-open #carta-player .player__controls .textbtn {
+  html.player-open #carta-player .player__controls .textbtn,
+  html.player-open #carta-player .player__controls .glyph {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2828,7 +4009,8 @@ html.no-js .beat {
   html.player-open #carta-player [data-film='pause'],
   html.player-open #carta-player [data-film='resume'] { grid-area: play; }
   html.player-open #carta-player [data-film='repeat'] { grid-area: repeat; }
-  html.player-open #carta-player [data-film='finish'] { grid-area: finish; justify-self: center; font-size: 1.125rem; }
+  html.player-open #carta-player [data-film='finish'] { grid-area: finish; justify-self: center; margin: 0; font-size: 1.125rem; }
+  html.player-open #carta-player .player__controls [hidden] { display: none; }
 
   /* The sticky foot: the card, the composer and the booking for the cut on screen. */
   html.player-open #carta-player .player__more {
@@ -3048,8 +4230,7 @@ html.no-js .beat {
     visibility: hidden;
   }
 
-  .visit,
-  .carta {
+  .visit {
     margin-left: 8px;
     margin-right: 8px;
     padding-left: 18px;
@@ -3085,105 +4266,8 @@ html.no-js .beat {
     order: -1;
   }
 
-  .carta__sheet {
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-
-  .family__plates {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px 12px;
-  }
-
-  .plate__name {
-    font-size: 1.0625rem;
-  }
-
-  .plate__alias,
-  .plate__n {
-    font-size: 1rem;
-  }
-
-  .recipe__row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
-  }
-
-  .board__row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'name price' 'min min';
-    row-gap: 2px;
-  }
-
-  .board__row .row__name { grid-area: name; }
-  .board__row .row__price { grid-area: price; }
-  .board__row .row__min { grid-area: min; text-align: left; font-size: 1.0625rem; }
-
-
-  .ledger__row {
-    grid-template-columns: 76px minmax(0, 1fr);
-    grid-template-areas:
-      'tool chair'
-      'tool name'
-      'days days'
-      'known known'
-      'see see';
-    column-gap: 18px;
-  }
-
-  .ledger__see {
-    justify-self: start;
-  }
-
-  .line {
-    grid-template-columns: 26px minmax(0, 1fr) auto;
-    grid-template-areas: 'mark name price' 'mark min min';
-  }
-
-  .line::before { grid-area: mark; }
-  .line .row__name { grid-area: name; }
-  .line .row__price { grid-area: price; min-width: 0; text-align: right; }
-  .line .row__min { grid-area: min; text-align: left; }
-
-  .line--barber {
-    grid-template-columns: 26px minmax(0, 1fr);
-    grid-template-areas: 'mark name' 'mark note';
-  }
-
-  .line--barber .row__note { grid-area: note; }
-
-  .book__ctanote,
-  .book__alt,
-  .tarifa__source,
-  .door__notice,
-  .recipe__guia figcaption,
-  .recipe__note,
-  .book__ficha,
-  .card__back,
-  .review blockquote p,
-  .hours__row,
-  .includes,
   .pitch {
     font-size: 1rem;
-  }
-
-  .door__glass {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
-    border-width: 12px;
-    padding-bottom: 96px;
-  }
-
-  .door .door-sign--door {
-    position: relative;
-    right: auto;
-    top: auto;
-    display: inline-block;
-    margin-top: 72px;
-  }
-
-  .cta--call {
-    width: 100%;
   }
 
   /* Thumb bar: 'Pedir hora' always under the thumb. */
@@ -3228,7 +4312,6 @@ html.no-js .beat {
   html.js:not(.no-webgl) [data-beat='scissors'] { height: 50svh; }
   html.js:not(.no-webgl) [data-beat='razor'] { height: 60svh; }
   html.js:not(.no-webgl) [data-beat='mirror'] { height: 80svh; }
-  html.js:not(.no-webgl) [data-beat='turn'] { height: 50svh; }
 }
 
 /* ==========================================================================
@@ -3260,18 +4343,7 @@ html[data-motion='off'] *::after {
   }
 }
 
-@media (max-width: 359px) {
-  .family__plates {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
 
-/* Without JS the right page of the book is a blank ruled page under the links. */
-html.no-js .book__page--right {
-  background:
-    linear-gradient(90deg, #e4dac6 0 10px, transparent 10px),
-    repeating-linear-gradient(to bottom, transparent 0 45px, var(--rule-paper) 45px 46px) 0 260px / 100% calc(100% - 300px) no-repeat;
-}
 
 /* ==========================================================================
    BK shopfront: a neighbourhood front, not Corte Real's gold leaf. Plain cut-vinyl
@@ -3307,48 +4379,16 @@ html[data-board='felt'] .sign {
   }
 }
 
-/* The hours card taped inside the door glass (BK). */
-.door-card {
-  position: absolute;
-  left: 50%;
-  top: 168px;
-  transform: translateX(-50%);
-  width: calc(100% - 64px);
-  max-width: 220px;
-  display: grid;
-  gap: 4px;
-  padding: 10px 12px 11px;
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid #c9bfa9;
-  font-size: 0.8125rem;
-  line-height: 1.25;
-  font-variant-numeric: tabular-nums;
+
+/* The wall tiles (content.js wall()): solid glaze, lit by the shop's tube. */
+:root {
+  --wall-tile: #9b9586;
+  --wall-hi: #b9b3a4;
+  --wall-lo: #78736a;
 }
 
-.door-card__title {
-  font-family: var(--font-pencil);
-  font-weight: 600;
-  font-size: 0.9375rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-bottom: 1px solid #c9bfa9;
-  padding-bottom: 4px;
-  margin-bottom: 2px;
-}
-
-.door-card__row {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.door-card__row > span:last-child {
-  text-align: right;
-}
-
-@media (max-width: 899px) {
-  .door-card {
-    display: none;
-  }
+html[data-board='felt'] {
+  --wall-tile: #8fa196;
+  --wall-hi: #adbdb3;
+  --wall-lo: #6f7f76;
 }
