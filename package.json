@@ -1,0 +1,23 @@
+{
+  "name": "corte-real-3d",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:bk": "CLIENT=barberia-bk vite build",
+    "build:single": "SINGLE=1 vite build",
+    "build:single:bk": "SINGLE=1 CLIENT=barberia-bk vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/*.test.mjs",
+    "qa": "npm test && npm run build && npm run build:bk && npm run build:single"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.4.4",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}
