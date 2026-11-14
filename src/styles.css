@@ -4392,3 +4392,10 @@ html[data-board='felt'] {
   --wall-hi: #adbdb3;
   --wall-lo: #6f7f76;
 }
+
+/* Nothing on the card yet: the one line of instruction sits up with the title, clear of the head. */
+.carta__grid:has(.carta__recipe:empty) .player__caption {
+  grid-area: title;
+  align-items: flex-start;
+  min-height: 0;
+}
