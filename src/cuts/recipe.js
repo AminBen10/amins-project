@@ -9,6 +9,7 @@
 // labels the WhatsApp line needs.
 import { serviceFor, tarifaLine, formatFicha } from './ficha.js';
 import { guiaSVG } from './guia.js';
+import { renderSlip, mixLines } from './slip.js';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const attr = (name, v) => (v == null || v === '' ? '' : ` ${name}="${esc(v)}"`);
@@ -31,6 +32,7 @@ export const RECIPE_COPY = {
   ficha: 'Para el barbero',
   cta: 'Pedir hora con este corte',
   steps: 'Pasos',
+  more: 'Medidas y pasos',
 };
 
 /** The cut and beard a program stands for (Carta ids, labels for the booking line). */
@@ -92,27 +94,29 @@ export function renderRecipe(program, client, opts = {}) {
       ? `<figure class="recipe__guia">${guiaSVG(spec, { view })}<figcaption>${RECIPE_COPY.guia}</figcaption></figure>`
       : '';
   const fichaText = formatFicha(p);
-  const ficha = fichaText ? `<p class="recipe__ficha"><span class="recipe__k">${RECIPE_COPY.ficha}</span> ${esc(fichaText)}</p>` : '';
+  const ficha = fichaText
+    ? `<div class="recipe__ficha"><p class="recipe__k">${RECIPE_COPY.ficha}</p>${renderSlip({ lines: p.mix ? mixLines(p.mix, client) : [], sentence: fichaText })}</div>`
+    : '';
   const note = `<p class="recipe__note">${RECIPE_COPY.note}</p>`;
+  // The measurements and the steps fold away: the card reads name, price, guía, ficha.
+  const more = dl || ol ? `<details class="recipe__more"><summary>${RECIPE_COPY.more}</summary>${dl}${ol}${note}</details>` : note;
   const book =
-    `<a class="recipe__book"${attr('id', opts.bookId === undefined ? 'carta-book' : opts.bookId)} href="#reservar"` +
+    `<div class="recipe__foot"><a class="recipe__book"${attr('id', opts.bookId === undefined ? 'carta-book' : opts.bookId)} href="#reservar"` +
     attr('data-program', p.id) +
     attr('data-service', service?.id) +
     attr('data-cut', parts.cut) +
     attr('data-beard', parts.beard) +
     attr('data-cut-label', parts.cutLabel) +
     attr('data-beard-label', parts.beardLabel) +
-    `>${RECIPE_COPY.cta}</a>`;
+    `>${RECIPE_COPY.cta}</a></div>`;
 
   return (
     `<article class="recipe" data-program="${esc(p.id)}" aria-labelledby="${esc(tid)}">` +
     head +
-    dl +
-    ol +
     tarifa +
     guia +
     ficha +
-    note +
+    more +
     book +
     `</article>`
   );

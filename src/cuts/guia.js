@@ -2,12 +2,11 @@
 // bands labelled by guard number, the top length, the part line and the beard
 // zones. Stroke-only, in currentColor (ink on the recipe card's paper). Drawn
 // from the Spec alone, at build time and in the browser, with no DOM.
-// plateSVG(spec) is the Carta plate fallback: a monochrome profile silhouette
-// with the cut engraved in paper-coloured lines.
+// The Carta's engraved plates are drawn from the same head in plate.js (build time only).
 import { nominalMM } from './catalog.js';
 import { guardLabel } from './ficha.js';
 
-const r1 = (n) => Math.round(n * 10) / 10;
+export const r1 = (n) => Math.round(n * 10) / 10;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 // Height on the drawing (y, viewBox units) for a Height {lm, dedos}. Landmarks sit
@@ -20,7 +19,7 @@ const Y_AT = [
   [110, 62],
   [150, 24],
 ];
-function yOf(h) {
+export function yOf(h) {
   if (h.lm === 'NUCA') return 147 - 10 * (h.dedos || 0);
   const mm = nominalMM(h);
   for (let i = 1; i < Y_AT.length; i++) {
@@ -30,17 +29,17 @@ function yOf(h) {
   }
   return 155;
 }
-const NAPE_Y = 155;
+export const NAPE_Y = 155;
 
 // Profile, facing left: head and neck; the hair of the side and back, bounded by
 // the hairline (forehead, temple, sideburn, behind the ear, nape), which is also
 // the clip for the bands; the ear, filled with paper so the bands pass behind it.
-const SCALP = 'Q70 24 98 22Q134 22 146 58Q154 90 148 118Q144 140 133 155';
-const HEAD = `M64 200L60 176Q50 172 46 166Q40 160 42 152Q40 147 37 145Q33 142 36 139L35 134Q33 131 38 128L28 123Q26 120 28 118L37 103Q42 98 41 92Q37 68 52 50${SCALP}Q127 164 127 176L129 200`;
-const HAIRLINE = 'L112 151L101 138L95 112L89 84L74 62z';
-const HAIR = `M52 50${SCALP}${HAIRLINE}`;
-const EAR = 'M104 112q15-4 16 14q1 17-12 20q-7 0-7-8q3-13 3-26z';
-const FACE = 'M46 164Q76 166 102 146M45 104q4-2 9 0';
+export const SCALP = 'Q70 24 98 22Q134 22 146 58Q154 90 148 118Q144 140 133 155';
+export const HEAD = `M64 200L60 176Q50 172 46 166Q40 160 42 152Q40 147 37 145Q33 142 36 139L35 134Q33 131 38 128L28 123Q26 120 28 118L37 103Q42 98 41 92Q37 68 52 50${SCALP}Q127 164 127 176L129 200`;
+export const HAIRLINE = 'L112 151L101 138L95 112L89 84L74 62z';
+export const HAIR = `M52 50${SCALP}${HAIRLINE}`;
+export const EAR = 'M104 112q15-4 16 14q1 17-12 20q-7 0-7-8q3-13 3-26z';
+export const FACE = 'M46 164Q76 166 102 146M45 104q4-2 9 0';
 // Back of the head; the hair region's bottom edge follows the nape shape.
 const BACK = 'M56 200L54 168Q44 160 40 146Q26 124 26 92Q26 26 80 24Q134 26 134 92Q134 124 120 146Q116 160 106 168L104 200M27 110q-12-3-13 13q1 17 14 20M133 110q12-3 13 13q-1 17-14 20';
 const BACK_HAIR = 'M40 146Q26 124 26 92Q26 26 80 24Q134 26 134 92Q134 124 120 146';
@@ -53,11 +52,11 @@ const NAPE = {
 
 const mmText = (mm) => (mm >= 10 ? `${String(r1(mm / 10)).replace('.', ',')} cm` : `${String(r1(mm)).replace('.', ',')} mm`);
 const zoneText = (v) => (typeof v === 'number' ? mmText(v) : guardLabel(v));
-const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 // A short id for clip paths, the same for the same drawing (no counters, so the
 // server and the browser agree).
-function hashId(s) {
+export function hashId(s) {
   let h = 5381;
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
   return `g${(h >>> 0).toString(36)}`;
@@ -68,7 +67,7 @@ function text(x, y, s, anchor) {
 }
 
 // Band boundaries (y of each band's top) and label positions, bottom → top.
-function bandLayout(sides) {
+export function bandLayout(sides) {
   const out = [];
   let below = NAPE_Y;
   for (const b of sides.bands || []) {
@@ -81,7 +80,7 @@ function bandLayout(sides) {
 
 // The top: a dashed outline of the hair over the scalp (front → crown) and a
 // dimension line with the length above it.
-function topMarks(top) {
+export function topMarks(top) {
   const f = clamp(top.frontMM * 0.2, 1.5, 22);
   const k = clamp(top.crownMM * 0.2, 1.5, 22);
   const t = (f + k) / 2 + (top.lift || 0) * 4;
@@ -222,32 +221,5 @@ export function guiaSVG(spec, { view = 'both', id } = {}) {
     `<svg class="guia" viewBox="0 -14 ${w} 214" width="${w}" height="214" role="img" aria-label="${esc(describe(s))}">` +
     `<g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">${body.join('')}</g>` +
     `<g fill="currentColor" font-size="10.5" font-family="'Barlow Condensed','Barlow Condensed Fallback',sans-serif">${labels.join('')}</g></svg>`
-  );
-}
-
-/**
- * Plate fallback for the Carta: the head in profile as an ink silhouette (hair
- * volume and long nape included), with the hairline, the bands and the beard line
- * engraved in paper colour. Square, for a 160 px plate.
- */
-export function plateSVG(spec) {
-  const s = spec || {};
-  const fill = [`<path d="${HEAD}L64 200z"/>`];
-  // The hair over the scalp: the top outline, then back along the scalp.
-  if (s.top) fill.push(`<path d="${topMarks(s.top).curve}L146 58Q134 22 98 22Q70 24 52 50z"/>`);
-  if (s.nape?.shape === 'long') {
-    const l = r1(clamp((s.nape.lenMM || 50) * 0.35, 8, 32));
-    fill.push(`<path d="M146 112Q150 ${r1(150 + l * 0.5)} ${r1(141 + l * 0.15)} ${r1(160 + l)}L127 ${r1(166 + l * 0.6)}Q127 162 133 155z"/>`);
-  }
-  const lines = [`<path d="M133 155${HAIRLINE.replace(/z$/, '')}L52 50"/>`, `<path d="${EAR}"/>`];
-  if (s.sides && s.sides.shape !== 'uniform' && s.sides.shape !== 'burst') {
-    const id = hashId(JSON.stringify(s) + 'plate');
-    lines.push(`<clipPath id="${id}"><path d="${HAIR}"/></clipPath><path clip-path="url(#${id})" stroke-dasharray="1 2" d="${bandLayout(s.sides).map((b) => `M40 ${b.y}H150`).join('')}"/>`);
-  }
-  if (s.beard && s.beard.style !== 'none' && s.beard.style !== 'shaved') lines.push(beardMarks({ ...s.beard, zones: {} }).lines);
-  return (
-    `<svg class="plate" viewBox="-12 -8 184 184" width="160" height="160" aria-hidden="true">` +
-    `<g fill="currentColor">${fill.join('')}</g>` +
-    `<g fill="none" style="stroke:var(--paper,#EFE7D6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${lines.join('')}</g></svg>`
   );
 }
