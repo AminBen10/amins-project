@@ -6,8 +6,10 @@
 // No storage, no network. Days and hours come from the shop's clock (shopTime).
 import { BRAND, BOOKING, OPENING, SERVICES, BARBERS, COPY } from '../config.js';
 import { priceLabel } from '../price.js';
+import * as client from '../config.js';
 import { tarifaLine } from '../cuts/ficha.js';
-import { shopNow, buildDays, slotsFor } from './shopTime.js';
+import { mixLines, renderSlip } from '../cuts/slip.js';
+import { shopNow, buildDays, slotsFor, WEEKDAY_SHORT } from './shopTime.js';
 import { buildWhatsAppMessage, buildWhatsAppHref } from './whatsapp.js';
 
 const TZ = BRAND.timezone || 'Europe/Madrid';
@@ -28,6 +30,16 @@ const setText = (el, t) => {
   if (el && el.textContent !== t) el.textContent = t;
 };
 const fill = (tpl, vars) => String(tpl || '').replace(/\{([^}]+)\}/g, (_, k) => vars[k] ?? '');
+const WEEK = 7; // days on the open page; the rest fold under 'Semana siguiente'
+// Slots grouped as the day goes: morning until 14:00, afternoon until 20:00, evening after.
+const PARTS = [
+  ['Mañana', 0, 14 * 60],
+  ['Tarde', 14 * 60, 20 * 60],
+  ['Noche', 20 * 60, 24 * 60],
+];
+const shortDay = (d) => (d ? `${WEEKDAY_SHORT[d.weekday]} ${d.d}` : '');
+const serviceText = (s) => (s ? [s.name, s.estimate ? null : `${s.minutes} min`, priceLabel(s.price, s.from)].filter(Boolean).join(' · ') : '');
+const TEAR_MS = 420;
 
 /** A Spanish mobile: 9 digits starting with 6 or 7, with or without +34. */
 export function spanishMobile(raw) {
@@ -62,6 +74,13 @@ export function initBooking({ onCut } = {}) {
   const form = $('book-form');
   if (!form) return { preset() {}, state: {} };
   const daysEl = $('days');
+  const daysNext = $('days-next');
+  const daysLegend = $('days-legend');
+  const weekFold = daysNext?.closest('details') || null;
+  const summaryEl = $('book-summary');
+  const serviceLine = $('book-service-line');
+  const barberLine = $('book-barber-line');
+  const linesEl = $('book-cut-lines');
   const slotsEl = $('slots');
   const slotsHint = $('slots-hint');
   const hint = $('book-hint');
@@ -74,6 +93,10 @@ export function initBooking({ onCut } = {}) {
   const cutLabelEl = $('book-cut-label');
   const cutChange = $('book-cut-change');
   const fichaEl = $('book-cut-ficha');
+  const cardSheet = card?.querySelector('.card__sheet') || null;
+  const cardBack = card?.querySelector('.card__back') || null;
+  const ctaLabel = (wa || submit)?.textContent || COPY.bookCta || '';
+  const dayButtons = () => [...daysEl.querySelectorAll('button[data-day]'), ...(daysNext?.querySelectorAll('button[data-day]') || [])];
   if (cardTitle && !cardTitle.hasAttribute('tabindex')) cardTitle.tabIndex = -1;
 
   const state = { day: null, time: null, cut: null, days: [], dayKey: '', slotKey: '' };
@@ -100,8 +123,8 @@ export function initBooking({ onCut } = {}) {
     const key = state.days.map((d) => `${d.iso}${d.disabled ? 0 : 1}${d.note || ''}`).join('|') + `>${state.day}`;
     if (key !== state.dayKey) {
       state.dayKey = key;
-      const frag = document.createDocumentFragment();
-      for (const d of state.days) {
+      // One week on the open page, as hand-ruled column heads; the next one folded.
+      const make = (d) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'day';
@@ -111,17 +134,32 @@ export function initBooking({ onCut } = {}) {
         if (d.disabled) btn.disabled = true;
         const l = document.createElement('span');
         l.className = 'day__name';
-        l.textContent = d.label;
-        btn.append(l);
+        l.textContent = d.index < 2 ? d.label : WEEKDAY_SHORT[d.weekday];
+        const n = document.createElement('span');
+        n.className = 'day__num';
+        n.textContent = String(d.d);
+        btn.append(l, n);
         if (d.note) {
-          const n = document.createElement('span');
-          n.className = 'day__note';
-          n.textContent = d.note;
-          btn.append(n);
+          const x = document.createElement('span');
+          x.className = 'day__note';
+          x.textContent = d.note;
+          btn.append(x);
         }
-        frag.append(btn);
+        return btn;
+      };
+      const week = state.days.slice(0, WEEK);
+      const next = state.days.slice(WEEK);
+      daysEl.replaceChildren(...week.map(make));
+      if (daysNext) daysNext.replaceChildren(...next.map(make));
+      else daysEl.append(...next.map(make));
+      // The notes of the open week in one line (the phone's columns are too narrow for them).
+      if (daysLegend) {
+        const by = new Map();
+        for (const d of week) if (d.note) by.set(d.note, [...(by.get(d.note) || []), shortDay(d)]);
+        const and = (a) => (a.length > 1 ? `${a.slice(0, -1).join(', ')} y ${a[a.length - 1]}` : a[0]);
+        setText(daysLegend, [...by].map(([k, v]) => `${k}: ${and(v)}`).join(' · '));
       }
-      daysEl.replaceChildren(frag);
+      if (weekFold && next.some((d) => d.iso === state.day)) weekFold.open = true;
     }
     renderSlots(now);
   }
@@ -139,21 +177,32 @@ export function initBooking({ onCut } = {}) {
     if (key !== state.slotKey) {
       state.slotKey = key;
       const frag = document.createDocumentFragment();
-      for (const s of slots) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'slot';
-        btn.dataset.time = s.label;
-        btn.textContent = s.label;
-        btn.setAttribute('aria-pressed', String(s.label === state.time));
-        frag.append(btn);
+      for (const [label, from, to] of PARTS) {
+        const list = slots.filter((x) => x.mins >= from && x.mins < to);
+        if (!list.length) continue;
+        const g = document.createElement('div');
+        g.className = 'slots__group';
+        g.setAttribute('role', 'group');
+        g.setAttribute('aria-label', label);
+        const k = document.createElement('p');
+        k.className = 'slots__k';
+        k.setAttribute('aria-hidden', 'true');
+        k.textContent = label;
+        const row = document.createElement('div');
+        row.className = 'slots__row';
+        for (const x of list) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'slot';
+          btn.dataset.time = x.label;
+          btn.textContent = x.label;
+          btn.setAttribute('aria-pressed', String(x.label === state.time));
+          row.append(btn);
+        }
+        g.append(k, row);
+        frag.append(g);
       }
       slotsEl.replaceChildren(frag);
-    }
-    // CR: 'Quedan {n} horarios para {servicio} ({min} min).' BK keeps its fixed line.
-    if (COPY.hoursHint?.includes('{')) {
-      const hint = slots.length === 1 ? COPY.hoursHint.replace('Quedan', 'Queda').replace('horarios', 'horario') : COPY.hoursHint;
-      setText(slotsHint, day ? fill(hint, { n: slots.length, servicio: svc.name, min: svc.minutes }) : '');
     }
     update();
   }
@@ -169,8 +218,8 @@ export function initBooking({ onCut } = {}) {
   }
 
   function focusFor(what) {
-    if (what === 'day') daysEl.querySelector('button:not(:disabled)')?.focus();
-    else if (what === 'time') (slotsEl.querySelector('button') || daysEl.querySelector('[aria-pressed=true]'))?.focus();
+    if (what === 'day') dayButtons().find((b) => !b.disabled)?.focus();
+    else if (what === 'time') (slotsEl.querySelector('button') || dayButtons().find((b) => b.getAttribute('aria-pressed') === 'true'))?.focus();
     else if (what === 'name') nameIn.focus();
     else if (what === 'phone') phoneIn?.focus();
   }
@@ -196,15 +245,27 @@ export function initBooking({ onCut } = {}) {
     return buildWhatsAppMessage(details());
   }
 
+  // The pencil line over the action ('sáb 14 · 09:30 · Corte clásico · 16 €') and the
+  // action itself: a dashed outline reading 'Elige hora' until the page is complete.
   function update() {
+    const lack = missing();
+    const svc = service();
+    const day = currentDay();
+    setText(summaryEl, [shortDay(day), state.time, svc.name, priceLabel(svc.price, svc.from)].filter(Boolean).join(' · '));
+    setText(serviceLine, serviceText(svc));
+    if (barberLine) setText(barberLine, barber()?.name || 'Me da igual');
+    const btn = wa || submit;
+    if (btn) {
+      const off = !!lack;
+      setText(btn, lack === 'day' || lack === 'time' ? 'Elige hora' : ctaLabel);
+      if (off) btn.setAttribute('aria-disabled', 'true');
+      else btn.removeAttribute('aria-disabled');
+    }
     if (WA && wa) {
-      const lack = missing();
       const href = buildWhatsAppHref(BOOKING.whatsapp || BRAND.whatsapp, lack ? '' : message());
       if (wa.getAttribute('href') !== href) wa.setAttribute('href', href);
-      if (lack) wa.setAttribute('aria-disabled', 'true');
-      else wa.removeAttribute('aria-disabled');
-      if (!lack) setText(hint, '');
     }
+    if (!lack) setText(hint, '');
   }
 
   // Re-check against the clock at the moment of acting: a tab left open can go stale.
@@ -219,6 +280,8 @@ export function initBooking({ onCut } = {}) {
   const cutLine = (c) =>
     c ? [c.cutLabel, c.beardLabel && (c.cutLabel ? c.beardLabel.charAt(0).toLocaleLowerCase('es') + c.beardLabel.slice(1) : c.beardLabel)].filter(Boolean).join(', con ') : '';
 
+  const lineHTML = (cut) => (cut?.mix ? renderSlip({ lines: mixLines(cut.mix, client) }) : '');
+
   function fillCard() {
     const d = details();
     setText($('card-day'), d.day ? d.day.long.charAt(0).toUpperCase() + d.day.long.slice(1) : '');
@@ -232,7 +295,11 @@ export function initBooking({ onCut } = {}) {
     $('card-with')?.closest('.card__row')?.toggleAttribute('hidden', !b);
     setText($('card-name'), d.nombre);
     setText($('card-ficha'), state.cut?.ficha || '');
-    $('card-ficha')?.closest('.card__back')?.toggleAttribute('hidden', !state.cut?.ficha);
+    const slip = $('card-slip');
+    if (slip) slip.innerHTML = lineHTML(state.cut);
+    // no ficha: a one-sided card (nothing to turn over)
+    card.classList.toggle('card--ficha', !!state.cut?.ficha);
+    cardBack?.toggleAttribute('hidden', !state.cut?.ficha);
     if (!WA) {
       const tpl = b ? COPY.doneTitle : COPY.doneTitleAny || COPY.doneTitle;
       setText(cardTitle, fill(tpl, { nombre: d.nombre, 'día': d.day?.long || '', hora: d.hora, barbero: b?.name || '' }));
@@ -243,18 +310,37 @@ export function initBooking({ onCut } = {}) {
     }
   }
 
+  // The card tears off the top of the pad where the book was (CSS .is-torn, 420 ms).
+  let tearTimer = 0;
   function showCard() {
     fillCard();
     form.hidden = true;
     card.hidden = false;
-    cardTitle?.focus({ preventScroll: false });
+    card.classList.remove('is-torn', 'is-flipped');
+    void card.offsetWidth; // restart the tear
+    card.classList.add('is-torn');
+    clearTimeout(tearTimer);
+    tearTimer = setTimeout(() => card.classList.remove('is-torn'), TEAR_MS + 40);
+    const top = card.getBoundingClientRect().top;
+    const nav = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    if (top < nav || top > innerHeight * 0.6) card.scrollIntoView({ behavior: 'instant', block: 'start' });
+    cardTitle?.focus({ preventScroll: true });
   }
 
   function hideCard(focusEl) {
     card.hidden = true;
+    card.classList.remove('is-torn', 'is-flipped');
     form.hidden = false;
     focusEl?.focus();
   }
+
+  // The back: a tap turns the card over, focus on the back shows it.
+  cardSheet?.addEventListener('click', (e) => {
+    if (!card.classList.contains('card--ficha') || e.target.closest('a, button')) return;
+    card.classList.toggle('is-flipped');
+  });
+  cardBack?.addEventListener('focusin', () => card.classList.add('is-flipped'));
+  cardBack?.addEventListener('focusout', () => card.classList.remove('is-flipped'));
 
   // ---------------------------------------------------------------- events
 
@@ -267,16 +353,18 @@ export function initBooking({ onCut } = {}) {
     requestAnimationFrame(() => el.scrollIntoView({ behavior, block: 'nearest' }));
   }
 
-  daysEl.addEventListener('click', (e) => {
+  const onDay = (e) => {
     const btn = e.target.closest('button[data-day]');
     if (!btn || btn.disabled) return;
     state.day = btn.dataset.day;
     state.time = null;
     state.dayKey = '';
     renderDays();
-    daysEl.querySelector(`[data-day="${state.day}"]`)?.focus();
+    dayButtons().find((b) => b.dataset.day === state.day)?.focus();
     guide(slotsEl);
-  });
+  };
+  daysEl.addEventListener('click', onDay);
+  daysNext?.addEventListener('click', onDay);
 
   slotsEl.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-time]');
@@ -288,8 +376,15 @@ export function initBooking({ onCut } = {}) {
   });
 
   form.addEventListener('change', (e) => {
-    if (e.target.name === 'service' || e.target.name === 'barber') renderDays();
-    else update();
+    if (e.target.name === 'service' || e.target.name === 'barber') {
+      renderDays();
+      // the fold closes on the choice: the page goes back to one line
+      const fold = e.target.closest('details');
+      if (fold) {
+        fold.open = false;
+        fold.querySelector('summary')?.focus();
+      }
+    } else update();
   });
   form.addEventListener('input', update);
 
@@ -333,7 +428,7 @@ export function initBooking({ onCut } = {}) {
   $('card-again')?.addEventListener('click', () => {
     state.time = null;
     renderDays();
-    hideCard(daysEl.querySelector('[aria-pressed=true]') || nameIn);
+    hideCard(dayButtons().find((b) => b.getAttribute('aria-pressed') === 'true') || nameIn);
   });
 
   // The calendar follows the shop's clock: on return to the tab and every minute.
@@ -354,9 +449,11 @@ export function initBooking({ onCut } = {}) {
 
   function setCut(cut) {
     state.cut = cut && (cut.cutLabel || cut.beardLabel) ? cut : null;
-    const label = cutLine(state.cut) || 'Sin elegir';
+    const label = cutLine(state.cut) || 'Sin ficha';
     setText(cutLabelEl, label);
     setText(cutChange, state.cut ? 'Cambiar' : 'Elegir en la carta');
+    if (linesEl) linesEl.innerHTML = lineHTML(state.cut);
+    form.classList.toggle('book--ficha', !!state.cut);
     if (fichaEl) {
       setText(fichaEl, state.cut?.ficha || '');
       fichaEl.hidden = !state.cut?.ficha;
@@ -367,7 +464,7 @@ export function initBooking({ onCut } = {}) {
 
   /**
    * Fill the book from the Carta, the composer or a chair:
-   * {serviceId, cutId, beardId, ficha, cutLabel, beardLabel, barberId}. Any field may be omitted.
+   * {serviceId, cutId, beardId, ficha, mix, cutLabel, beardLabel, barberId}. Any field may be omitted.
    */
   function preset(p = {}) {
     if (p.serviceId) {
@@ -379,7 +476,7 @@ export function initBooking({ onCut } = {}) {
       if (r) r.checked = true;
     }
     if ('cutLabel' in p || 'beardLabel' in p || 'cutId' in p || 'beardId' in p) {
-      setCut({ cutId: p.cutId || null, beardId: p.beardId || null, cutLabel: p.cutLabel || null, beardLabel: p.beardLabel || null, ficha: p.ficha || null });
+      setCut({ cutId: p.cutId || null, beardId: p.beardId || null, cutLabel: p.cutLabel || null, beardLabel: p.beardLabel || null, ficha: p.ficha || null, mix: p.mix || null });
     }
     if (!card.hidden) hideCard();
     renderDays();

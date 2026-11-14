@@ -6,10 +6,11 @@
 // The composer (composer.js) plays its ingredients through the same `show()`.
 // Phone (< 900 px): the player is a full-screen station (html.player-open) with its own history
 // entry (#carta/{id}), a focus trap and the Receta / Cambiar sheets.
-import { compose, mixOf, changedParts } from '../cuts/compose.js';
+import { mixOf } from '../cuts/ficha.js';
 import { renderRecipe, programParts } from '../cuts/recipe.js';
 import { serviceFor } from '../cuts/ficha.js';
 import { TOOL_NAMES } from '../cuts/catalog.js';
+import { programSlip } from '../cuts/slip.js';
 
 const DEBOUNCE_MS = 400;
 const HAIR = ['laterales', 'arriba', 'acabado'];
@@ -30,6 +31,8 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
   const titleEl = $('film-title');
   const captionEl = $('film-caption');
   const composerEl = $('composer');
+  const rulerEl = $('player-ruler');
+  const fichaEl = $('player-ficha');
   const phoneQ = matchMedia('(max-width: 899px)');
   const btn = (name) => player?.querySelector(`[data-film="${name}"]`);
   const sheetBtn = (name) => player?.querySelector(`[data-player-sheet="${name}"]`);
@@ -55,11 +58,17 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
   const subs = new Set();
 
   // What the head shows once the current film ends: `onHead` everywhere except the `dirty` parts.
+  // The cut engine (compose.js) is its own chunk, fetched once the page is idle (or on the
+  // first pick): the chart, the cards in the page source and the book need none of it.
+  let C = null;
+  let composeP = null;
+  const loadCompose = () => (composeP ||= import('../cuts/compose.js').then((m) => (C = m)));
   const storyProgram = () => {
     const s = client.STORY_CUT || {};
-    return compose(mixOf(s.hair || null, s.beard || null, client), client);
+    return C ? C.compose(mixOf(s.hair || null, s.beard || null, client), client) : null;
   };
-  let onHead = storyProgram();
+  let onHead = null;
+  ('requestIdleCallback' in window ? requestIdleCallback : setTimeout)(() => loadCompose().then(() => (onHead ||= storyProgram())), { timeout: 1200 });
   let dirty = new Set();
 
   // ---------------------------------------------------------------- the card
@@ -85,6 +94,30 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
       b.classList.toggle('is-done', !!played && done && i !== curIdx);
     }
   }
+
+  // The shot ruler over the transport: one tick per step of the film, the current one inked.
+  function buildRuler() {
+    if (!rulerEl) return;
+    const n = played ? played.program.steps.length : 0;
+    if (rulerEl.childElementCount !== n) rulerEl.replaceChildren(...Array.from({ length: n }, () => document.createElement('span')));
+    markRuler(-1);
+  }
+  function markRuler(cur) {
+    if (!rulerEl) return;
+    [...rulerEl.children].forEach((t, i) => {
+      t.className = i < cur ? 'is-done' : i === cur ? 'is-active' : '';
+    });
+  }
+  // The finished cut: its ficha beside the head, stamped for the barber.
+  function showFicha(on) {
+    if (!fichaEl) return;
+    if (on && full) fichaEl.innerHTML = programSlip(full, client, { stamp: true });
+    fichaEl.hidden = !on || !full;
+  }
+  const mirrorFlag = (on) => {
+    if (on) root.dataset.filmMirror = '1';
+    else delete root.dataset.filmMirror;
+  };
 
   // ---------------------------------------------------------------- films
 
@@ -117,6 +150,8 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
     const from = opts.from || 'carta';
     full = next && next.steps?.length ? next : null;
     played = null;
+    showFicha(false);
+    mirrorFlag(false);
     renderCard(full);
     titleEl && (titleEl.textContent = full ? titleOf(opts.title || full) : '');
     if (captionEl) captionEl.textContent = full ? '' : 'Toca un corte para ver cómo se hace.';
@@ -139,7 +174,7 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
     }
     if (!film) return;
     // which parts to grow back and cut again
-    let reset = opts.parts ? [...opts.parts] : changedParts(onHead, full);
+    let reset = opts.parts ? [...opts.parts] : C && onHead ? C.changedParts(onHead, full) : [...ALL];
     if (noBeard(full) && !dirty.has('barba')) reset = reset.filter((x) => x !== 'barba'); // 'sin barba' leaves the beard alone
     for (const d of dirty) if (!reset.includes(d)) reset.push(d);
     if (!reset.length) reset = noBeard(full) ? [...HAIR] : [...ALL]; // the same look again: show it whole
@@ -147,6 +182,7 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
     played = cutDown(full, reset, opts.title);
     if (!played.program.steps.length) played = null;
     markSteps(-1);
+    buildRuler();
     if (!played) return;
     onHead = full;
     dirty = new Set(reset);
@@ -178,10 +214,12 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
 
   // A plate was picked: the card for the cut with the chosen beard; the film cuts what changed.
   function fromForm(e) {
-    const { cut, beard } = selected();
     const target = e?.target?.name ? e.target : null;
     if (target) lastPlate = target;
-    const prog = compose(mixOf(cut, beard, client), client);
+    if (!C) return void loadCompose().then(() => fromForm(e));
+    onHead ||= storyProgram();
+    const { cut, beard } = selected();
+    const prog = C.compose(mixOf(cut, beard, client), client);
     const titleP = target?.name === 'barba' && beard ? byId(beard) : cut ? byId(cut) : beard ? byId(beard) : null;
     show(prog, { from: 'carta', title: titleP });
     if (phoneQ.matches && full) history.replaceState(null, '', `#carta/${titleP?.id || full.id}`);
@@ -210,6 +248,9 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
     if (captionEl) captionEl.textContent = t;
     say(t);
     if (played) markSteps(played.map.length);
+    if (played) markRuler(played.map.length);
+    mirrorFlag(false);
+    showFicha(true);
   }
 
   function wire() {
@@ -220,6 +261,9 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
       const tool = TOOL_NAMES[step.tool];
       say(tool ? `${tool}: ${text}` : text);
       markSteps(i);
+      markRuler(i);
+      mirrorFlag(step.op === 'mirror');
+      if (i < played.map.length) showFicha(false);
     });
     film.on('end', ended);
     film.on('state', ({ state }) => {
@@ -253,6 +297,9 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
     full = null;
     played = null;
     renderCard(null);
+    buildRuler();
+    showFicha(false);
+    mirrorFlag(false);
     if (titleEl) titleEl.textContent = '';
     if (captionEl) captionEl.textContent = 'Toca un corte para ver cómo se hace.';
     closePlayer('back');
@@ -350,6 +397,7 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
         cutLabel: d.cutLabel || parts.cutLabel,
         beardLabel: d.beardLabel || parts.beardLabel,
         ficha: program?.ficha || null,
+        mix: program?.mix || null,
       });
       if (root.classList.contains('player-open')) {
         // the station closes; the jump to the book is instant (scroll.js handles the anchor)
@@ -368,7 +416,18 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
       } else {
         // A far jump is instant (scroll.js); the Carta may shrink just after it (card and sheet
         // swap back), which would leave the page a screen or more below the book: land again.
+        // A near one scrolls smoothly: once it ends, the book must be where the jump aimed.
         const book = $('reservar');
+        const want = () => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+        if (book && 'onscrollend' in window) {
+          addEventListener(
+            'scrollend',
+            () => {
+              if (Math.abs(book.getBoundingClientRect().top - want()) > 24) book.scrollIntoView({ behavior: 'instant', block: 'start' });
+            },
+            { once: true },
+          );
+        }
         if (book && Math.abs(book.getBoundingClientRect().top) > 2.5 * innerHeight) {
           const land = () => {
             const top = book.getBoundingClientRect().top;
@@ -387,7 +446,7 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
   $('thumbbar-cta')?.addEventListener('click', () => {
     if (!full) return;
     const parts = programParts(full);
-    booking.preset({ serviceId: serviceFor(full, client)?.id, cutId: parts.cut, beardId: parts.beard, cutLabel: parts.cutLabel, beardLabel: parts.beardLabel, ficha: full.ficha || null });
+    booking.preset({ serviceId: serviceFor(full, client)?.id, cutId: parts.cut, beardId: parts.beard, cutLabel: parts.cutLabel, beardLabel: parts.beardLabel, ficha: full.ficha || null, mix: full.mix || null });
   });
 
   // ---------------------------------------------------------------- phone player
@@ -530,6 +589,8 @@ export function initCarta({ client, booking, thumbbar, reducedMotion = false }) 
       full = null;
       played = null;
       renderCard(null);
+      buildRuler();
+      showFicha(false);
       if (titleEl) titleEl.textContent = '';
       if (captionEl) captionEl.textContent = '';
       onHead = empty;

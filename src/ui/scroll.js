@@ -194,6 +194,19 @@ export function initScroll({ stage: initialStage = null, canvas = document.getEl
     target.focus({ preventScroll: true });
   });
 
+  // The turn: once it comes up the screen, the mirror's chrome edge slides away and the
+  // wall settles (styles.css .beat--turn.is-active, 600 ms).
+  if (els.turn && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      (entries) => {
+        const en = entries[entries.length - 1];
+        if (en.isIntersecting) els.turn.classList.add('is-active');
+        else if (en.boundingClientRect.top > 0) els.turn.classList.remove('is-active');
+      },
+      { rootMargin: '0px 0px -20% 0px' },
+    ).observe(els.turn);
+  }
+
   // Nav links: aria-current for the section on screen (styling only).
   const links = [...document.querySelectorAll('.nav__links a[href^="#"]')];
   if (links.length && 'IntersectionObserver' in window) {

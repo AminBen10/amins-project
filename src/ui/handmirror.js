@@ -157,6 +157,23 @@ export function initHandMirror({ reducedMotion = false } = {}) {
 
   // ---------------------------------------------------------------- the mask oval
 
+  // The oval belongs to the mirror beat (and to a Carta film's own mirror step, which
+  // carta.js flags as html[data-film-mirror]). The stage can stop drawing while its last
+  // mode is still 'mask' (the room turns, the canvas fades), so the oval is also tied to
+  // the beat being on screen: it can never be left behind over the Carta or the wall.
+  const mirrorBeat = document.querySelector('.beat--mirror');
+  if (mirrorBeat && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      (entries) => {
+        // more than a sliver of the beat (an edge that only touches the viewport does not count)
+        const en = entries[entries.length - 1];
+        if (en.isIntersecting && en.intersectionRect.height > 48) root.dataset.inMirror = '1';
+        else delete root.dataset.inMirror;
+      },
+      { rootMargin: '-120px 0px -25% 0px', threshold: [0, 0.02, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1] },
+    ).observe(mirrorBeat);
+  } else root.dataset.inMirror = '1';
+
   let lastRect = '';
   function placeMask() {
     if (!mask || root.dataset.mirror !== 'mask') return;
